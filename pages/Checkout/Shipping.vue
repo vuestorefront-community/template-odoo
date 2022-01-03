@@ -20,7 +20,7 @@
           slim
         >
           <SfInput
-            v-model="form.firstName"
+            v-model="form.name"
             label="First name"
             name="firstName"
             class="form__element"
@@ -36,7 +36,7 @@
           slim
         >
           <SfInput
-            v-model="form.streetName"
+            v-model="form.street"
             label="Street name"
             name="streetName"
             class="form__element"
@@ -69,7 +69,7 @@
           slim
         >
           <SfInput
-            v-model="form.postalCode"
+            v-model="form.zip"
             label="Zip-code"
             name="zipCode"
             class="form__element form__element--half form__element--half-even"
@@ -85,7 +85,7 @@
           slim
         >
           <SfSelect
-            v-model="form.country"
+            v-model="form.country.id"
             label="Country"
             name="country"
             class="
@@ -113,7 +113,7 @@
           slim
         >
           <SfSelect
-            v-model="form.state"
+            v-model="form.state.id"
             label="State/Province"
             name="state"
             class="
@@ -167,12 +167,13 @@
         class="sf-heading--left sf-heading--no-underline title"
       />
       <VsfShippingProvider
+        name="selectedMethodShipping"
         :selectedMethodShipping="form.selectedMethodShipping"
         @submit="$router.push('/checkout/billing')"
         @selectedMethod="handleSelectedMethodShipping"
       />
       <SfButton type="submit" :disabled="invalid">
-        <slot name="btn-text"></slot>
+        {{ $t('Continue to billing') }}
       </SfButton>
     </form>
   </ValidationObserver>
@@ -184,25 +185,19 @@ import { ref, watch, onMounted, computed } from '@vue/composition-api';
 import {
   useCountrySearch,
   useUser,
-  useUserShipping,
   userShippingGetters,
   useShipping
 } from '@vue-storefront/odoo';
 import { required, min, digits } from 'vee-validate/dist/rules';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
 
-extend('required', {
-  ...required,
-  message: 'This field is required'
-});
+extend('required', { ...required, message: 'This field is required' });
 extend('min', {
   ...min,
   message: 'The field should have at least {length} characters'
 });
-extend('digits', {
-  ...digits,
-  message: 'Please provide a valid phone number'
-});
+extend('digits', { ...digits, message: 'Please provide a valid phone number' });
+
 export default {
   name: 'Shipping',
   components: {
@@ -225,8 +220,7 @@ export default {
     const isShippingDetailsStepCompleted = ref(false);
     const canAddNewAddress = ref(true);
 
-    const { loading, addAddress, shipping: userShipping } = useUserShipping();
-    const { shippingAddress, load: loadShipping } = useShipping();
+    const { load: loadShipping, shipping, save } = useShipping();
 
     const { isAuthenticated } = useUser();
 
@@ -238,21 +232,20 @@ export default {
     } = useCountrySearch();
 
     const form = ref({
-      firstName: '',
-      lastName: '',
-      streetName: '',
+      name: '',
+      street: '',
       city: '',
-      state: '',
-      country: '',
-      postalCode: '',
-      phone: '',
-      selectedMethodShipping: ''
+      state: { id: null },
+      country: { id: null },
+      zip: '',
+      phone: null,
+      selectedMethodShipping: null
     });
+
     const handleFormSubmit = async () => {
-      await addAddress({
-        address: form.value
-      });
+      await save({ shippingDetails: form.value });
       isFormSubmitted.value = true;
+
       if (root.$router.history.current.path !== '/my-account/shipping-details')
         root.$router.push('/checkout/billing');
       else root.$router.push('/my-account/shipping-details');
@@ -261,13 +254,14 @@ export default {
     };
 
     const hasSavedShippingAddress = computed(() => {
-      if (!isAuthenticated.value || !userShipping.value) {
+      if (!isAuthenticated.value || !shipping.value) {
         return false;
       }
 
-      const addresses = userShippingGetters.getAddresses(userShipping.value);
+      const addresses = userShippingGetters.getAddresses(shipping.value);
       return Boolean(addresses?.length);
     });
+
     const handleAddNewAddressBtnClick = () => {
       currentAddressId.value = '';
       form.value = {};
@@ -289,16 +283,19 @@ export default {
     onMounted(async () => {
       await search();
       await loadShipping();
-      if (shippingAddress) {
-        form.value = shippingAddress.value;
+      if (shipping.value) {
+        form.value = shipping.value;
       }
       formRef.value.validate({ silent: true });
     });
 
     watch(
-      () => form.value.country,
+      () => form.value.country.id,
       async () => {
-        await searchCountryStates(form.value.country);
+        await searchCountryStates(form.value.country.id);
+        if (!countryStates.value || countryStates.value.length === 0) {
+          form.value.state.id = null;
+        }
       }
     );
 
@@ -311,10 +308,9 @@ export default {
       defaultShippingAddress,
       handleSetCurrentAddress,
       currentAddressId,
-      userShipping,
+      shipping,
       hasSavedShippingAddress,
       isAuthenticated,
-      loading,
       isFormSubmitted,
       form,
       countries,

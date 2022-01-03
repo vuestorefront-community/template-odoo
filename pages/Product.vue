@@ -27,7 +27,7 @@
             :regular="$n(productGetters.getPrice(product).regular, 'currency')"
             :special="
               productGetters.getPrice(product).special &&
-                $n(productGetters.getPrice(product).special, 'currency')
+              $n(productGetters.getPrice(product).special, 'currency')
             "
           />
           <div>
@@ -87,7 +87,7 @@
                 :name="radio.label"
                 :value="item.value"
                 :label="item.label"
-                @input="updateFilter({ [radio.label]: item.value })"
+                @change="updateFilter({ [radio.label]: item.value })"
               />
             </template>
           </div>
@@ -252,6 +252,7 @@ import {
 } from '@vue-storefront/odoo';
 
 import { onSSR } from '@vue-storefront/core';
+
 import MobileStoreBanner from '~/components/MobileStoreBanner.vue';
 import LazyHydrate from 'vue-lazy-hydration';
 export default {
@@ -260,6 +261,7 @@ export default {
   setup(props, { root }) {
     const qty = ref(1);
     const { id } = root.$route.params;
+    const { query } = root.$route;
     const { size, color } = root.$route.query;
     const configuration = reactive({ size, color });
     const { products, search, loading: productloading } = useProduct(
@@ -270,7 +272,7 @@ export default {
       productVariants,
       realProduct,
       elementNames
-    } = useProductVariant(`products-${id}`);
+    } = useProductVariant(query);
     const { products: relatedProducts, loading: relatedLoading } = useProduct(
       'relatedProducts'
     );
@@ -310,7 +312,7 @@ export default {
         mobile: { url: img.small },
         desktop: { url: img.normal },
         big: { url: img.big },
-        alt: product.value.name
+        alt: product.value.name || 'alt'
       }))
     );
 

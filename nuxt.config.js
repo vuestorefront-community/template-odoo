@@ -1,5 +1,7 @@
 import webpack from 'webpack';
 import theme from './themeConfig';
+import { getRoutes } from './routes';
+
 const isDev = process.env.NODE_ENV !== 'production';
 
 export default {
@@ -45,18 +47,42 @@ export default {
       }
     ]
   },
+  router: {
+    extendRoutes(routes) {
+      getRoutes(`${__dirname}`)
+        .forEach((route) => routes.unshift(route));
+    },
+    middleware: ['checkout'],
+  },
+  pwa: {
+    manifest: {
+      name: 'VSF Odoo ',
+      lang: 'en',
+      useWebmanifestExtension: false
+    }
+  },
   loading: { color: '#fff' },
   plugins: [],
   buildModules: [
     // to core
+    '@nuxtjs/pwa',
+    '@nuxtjs/web-vitals',
     '@nuxtjs/tailwindcss',
     '@nuxt/typescript-build',
     '@nuxtjs/style-resources',
     [
       '@vue-storefront/nuxt',
       {
+        performance: {
+          httpPush: true,
+          purgeCSS: {
+            enabled: false,
+            paths: [
+              '**/*.vue'
+            ]
+          }
+        },
         // @core-development-only-start
-        coreDevelopment: true,
         // @core-development-only-end
         useRawSource: {
           dev: ['@vue-storefront/odoo', '@vue-storefront/core'],
@@ -68,28 +94,22 @@ export default {
     [
       '@vue-storefront/nuxt-theme',
       {
-        generate: {
-          replace: {
-            apiClient: '@vue-storefront/odoo-api',
-            composables: '@vue-storefront/odoo'
-          }
-        }
+        routes: false
       }
     ],
     // @core-development-only-end
     /* project-only-start
-    ['@vue-storefront/nuxt-theme']
+    ['@vue-storefront/nuxt-theme'],
     project-only-end */
     ['@vue-storefront/odoo/nuxt', {}]
-
-
   ],
   publicRuntimeConfig: {
     theme
   },
   modules: [
+    '@nuxtjs/pwa',
+    'nuxt-precompress',
     '@vue-storefront/middleware/nuxt',
-    '@nuxtjs/axios',
     'nuxt-i18n',
     'cookie-universal-nuxt',
     'vue-scrollto/nuxt',
@@ -116,6 +136,42 @@ export default {
       }
     ]
   ],
+  nuxtPrecompress: {
+    enabled: true,
+    report: false,
+    test: /\.(js|css|html|txt|xml|svg)$/,
+    // Serving options
+    middleware: {
+      // You can disable middleware if you serve static files using nginx...
+      enabled: true,
+      // Enable if you have .gz or .br files in /static/ folder
+      enabledStatic: true,
+      // Priority of content-encodings, first matched with request Accept-Encoding will me served
+      encodingsPriority: ['br', 'gzip']
+    },
+
+    // build time compression settings
+    gzip: {
+      // should compress to gzip?
+      enabled: true,
+      // compression config
+      // https://www.npmjs.com/package/compression-webpack-plugin
+      filename: '[path].gz[query]',
+      threshold: 10240,
+      minRatio: 0.8,
+      compressionOptions: { level: 9 }
+    },
+    brotli: {
+      // should compress to brotli?
+      enabled: true,
+      // compression config
+      // https://www.npmjs.com/package/compression-webpack-plugin
+      filename: '[path].br[query]',
+      compressionOptions: { level: 11 },
+      threshold: 10240,
+      minRatio: 0.8
+    }
+  },
   i18n: {
     currency: 'USD',
     country: 'US',
@@ -201,15 +257,5 @@ export default {
         })
       })
     ]
-  },
-
-  router: {
-    scrollBehavior(_to, _from, savedPosition) {
-      if (savedPosition) {
-        return savedPosition;
-      } else {
-        return { x: 0, y: 0 };
-      }
-    }
   }
 };

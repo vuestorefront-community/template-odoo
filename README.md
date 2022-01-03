@@ -16,7 +16,6 @@ Check our [demo](https://vsf.labs.odoogap.com/) server (it's a dev server so cou
 
 ``` js
 BASE_URL=<base_url>
-DATABASE=<database>
 REDIS_HOST=<redis_host>
 REDIS_PORT=<redis_port>
 REDIS_PASSWORD=<redis_password>

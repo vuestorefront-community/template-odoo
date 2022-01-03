@@ -193,7 +193,7 @@ export default defineComponent({
       searchCountryStates,
       countries,
       countryStates
-    } = useCountrySearch('my-account-shipping');
+    } = useCountrySearch('my-account-billing');
 
     const form = reactive({
       name: props.address.name,

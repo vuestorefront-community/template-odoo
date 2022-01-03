@@ -1,5 +1,5 @@
 <template>
-  <ValidationObserver v-slot="{ handleSubmit }" ref="formRef">
+  <ValidationObserver v-slot="{ handleSubmit, invalid }" ref="formRef">
     <SfHeading
       :level="3"
       :title="$t('Billing')"
@@ -21,7 +21,7 @@
           slim
         >
           <SfInput
-            v-model="form.firstName"
+            v-model="form.name"
             label="First name"
             name="firstName"
             class="form__element"
@@ -37,7 +37,7 @@
           slim
         >
           <SfInput
-            v-model="form.streetName"
+            v-model="form.street"
             label="Street name"
             name="streetName"
             class="form__element"
@@ -69,7 +69,7 @@
           slim
         >
           <SfInput
-            v-model="form.postalCode"
+            v-model="form.zip"
             label="Zip-code"
             name="zipCode"
             class="form__element form__element--half form__element--half-even"
@@ -85,7 +85,7 @@
           slim
         >
           <SfSelect
-            v-model="form.country"
+            v-model="form.country.id"
             label="Country"
             name="country"
             class="
@@ -109,11 +109,11 @@
         <ValidationProvider
           name="state"
           rules="required"
-          v-slot="{ errors }"
+          v-slot="{ errors, validate }"
           slim
         >
           <SfSelect
-            v-model="form.state"
+            v-model="form.state.id"
             label="State/Province"
             name="state"
             class="
@@ -122,6 +122,7 @@
               form__element--half-even
             "
             required
+            @change="validate"
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           >
@@ -154,7 +155,11 @@
       </div>
       <div class="form">
         <div class="form__action">
-          <SfButton class="form__action-button" type="submit">
+          <SfButton
+            class="form__action-button"
+            type="submit"
+            :disabled="invalid"
+          >
             {{ $t('Continue to payment') }}
           </SfButton>
         </div>
@@ -177,7 +182,7 @@ import { onSSR } from '@vue-storefront/core';
 import {
   useBilling,
   useCountrySearch,
-  useUserBilling
+  useShippingAsBillingAddress
 } from '@vue-storefront/odoo';
 import { required, min, digits } from 'vee-validate/dist/rules';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
@@ -213,66 +218,62 @@ export default {
       countries,
       countryStates
     } = useCountrySearch();
-    const {
-      load: loadBillingAddress,
-      billingAddress,
-      useShippingAsBillingAddress,
-      error
-    } = useBilling();
-    const { addAddress } = useUserBilling();
+    const { load: loadBillingAddress, billing, save, error } = useBilling();
+
+    const { use } = useShippingAsBillingAddress();
 
     const isFormSubmitted = ref(false);
     const sameAsShipping = ref(false);
     const formRef = ref(false);
 
     const form = ref({
-      firstName: '',
-      lastName: '',
-      streetName: '',
+      name: '',
+      street: '',
       city: '',
-      state: '',
-      country: '',
-      postalCode: '',
+      state: { id: null },
+      country: { id: null },
+      zip: '',
       phone: null
     });
 
     const handleCheckSameAddress = async () => {
       sameAsShipping.value = !sameAsShipping.value;
       if (sameAsShipping.value) {
-        await useShippingAsBillingAddress();
-        await loadBillingAddress();
-        form.value = billingAddress.value;
+        const shippingAddress = await use();
 
-        await searchCountryStates(form.value.country);
+        form.value = shippingAddress;
 
-        return;
+        await searchCountryStates(form.value.country.id);
       }
-      form.value = {};
     };
 
     const handleFormSubmit = async () => {
-      await addAddress({ address: form.value });
+      await save({ billingDetails: form.value });
       isFormSubmitted.value = true;
 
-      if (!error) {
+      if (!error.save) {
         root.$router.push('/checkout/payment');
       }
     };
+
     onSSR(async () => {});
 
     onMounted(async () => {
       await loadBillingAddress();
       await search();
-      if (billingAddress) {
-        form.value = billingAddress.value;
+      if (billing) {
+        form.value = billing.value;
       }
       formRef.value.validate({ silent: true });
     });
 
     watch(
-      () => form.value.country,
+      () => form?.value?.country.id,
       async () => {
-        await searchCountryStates(form.value.country);
+        await searchCountryStates(form?.value?.country?.id || null);
+        if (!countryStates.value || countryStates.value.length === 0) {
+          form.value.state.id = null;
+        }
       }
     );
 
