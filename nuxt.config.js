@@ -55,17 +55,25 @@ export default {
     middleware: ['checkout'],
   },
   pwa: {
+    meta: {
+      // eslint-disable-next-line camelcase
+      theme_color: '#fff'
+    },
     manifest: {
       name: 'VSF Odoo ',
       lang: 'en',
       useWebmanifestExtension: false
     }
   },
+  device: {
+    refreshOnResize: true
+  },
   loading: { color: '#fff' },
   plugins: [],
   buildModules: [
     // to core
     '@nuxtjs/pwa',
+    '@nuxtjs/device',
     '@nuxtjs/web-vitals',
     '@nuxtjs/tailwindcss',
     '@nuxt/typescript-build',
