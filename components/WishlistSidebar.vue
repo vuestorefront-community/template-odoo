@@ -80,6 +80,8 @@
         <div v-else class="empty-wishlist" key="empty-wishlist">
           <div class="empty-wishlist__banner">
             <SfImage
+              :width="256"
+              :height="176"
               src="/icons/empty-cart.svg"
               alt="Empty bag"
               class="empty-wishlist__icon"
@@ -98,7 +100,7 @@
           @click="toggleWishlistSidebar"
           class="sf-button--full-width color-secondary"
         >
-          {{ $t('Start shopping') }}
+          {{ $t("Start shopping") }}
         </SfButton>
       </template>
     </SfSidebar>
@@ -114,19 +116,19 @@ import {
   SfPrice,
   SfCollectedProduct,
   SfImage
-} from '@storefront-ui/vue';
-import { computed } from '@vue/composition-api';
+} from "@storefront-ui/vue";
+import { computed } from "@nuxtjs/composition-api";
 import {
   useWishlist,
   useUser,
   wishlistGetters,
   productGetters
-} from '@vue-storefront/odoo';
-import { onSSR } from '@vue-storefront/core';
-import { useUiState } from '~/composables';
+} from "@vue-storefront/odoo";
+import { onSSR } from "@vue-storefront/core";
+import { useUiState } from "~/composables";
 
 export default {
-  name: 'Wishlist',
+  name: "Wishlist",
   components: {
     SfSidebar,
     SfButton,
@@ -151,7 +153,7 @@ export default {
       // await loadWishlist();
     });
 
-    const getLocalPathFromWishListItem = (wishlistItem) => {
+    const getLocalPathFromWishListItem = wishlistItem => {
       return `/p/${productGetters.getId(
         wishlistItem.product
       )}/${productGetters.getSlug(wishlistItem.product)}`;

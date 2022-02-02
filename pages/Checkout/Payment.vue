@@ -26,6 +26,8 @@
       >
         <SfTableData class="table__image">
           <SfImage
+            :width="256"
+            :height="176"
             :src="cartGetters.getItemImage(product)"
             :alt="cartGetters.getItemName(product)"
           />
@@ -190,18 +192,18 @@ import {
   SfProperty,
   SfAccordion,
   SfLink,
-  SfRadio,
+  SfRadio
 } from "@storefront-ui/vue";
 import { onSSR } from "@vue-storefront/core";
 import { useUiHelpers } from "~/composables";
 
-import { ref, computed } from "@vue/composition-api";
+import { ref, computed } from "@nuxtjs/composition-api";
 import {
   useMakeOrder,
   useCart,
   cartGetters,
   orderGetters,
-  usePayment,
+  usePayment
 } from "@vue-storefront/odoo";
 
 export default {
@@ -228,7 +230,7 @@ export default {
     WireTransferPaymentProvider: () =>
       import("~/components/Checkout/WireTransferPaymentProvider"),
     AbstractPaymentObserver: () =>
-      import("~/components/Checkout/AbstractPaymentObserver"),
+      import("~/components/Checkout/AbstractPaymentObserver")
   },
   setup(props, context) {
     const { cart, load, setCart } = useCart();
@@ -240,7 +242,7 @@ export default {
     const terms = ref(false);
     const selectedProvider = ref({});
 
-    const selectProvider = (provider) => {
+    const selectProvider = provider => {
       isPaymentReady.value = false;
       selectedProvider.value = provider;
       context.emit("status");
@@ -256,7 +258,7 @@ export default {
 
       const thankYouPath = {
         name: "thank-you",
-        query: { order: orderGetters.getId(order.value) },
+        query: { order: orderGetters.getId(order.value) }
       };
       context.root.$router.push(context.root.localePath(thankYouPath));
       setCart(null);
@@ -282,9 +284,9 @@ export default {
       selectedProvider,
       providerListHasMoreThanOne,
       providerPaymentHandler,
-      getComponentProviderByName: th.getComponentProviderByName,
+      getComponentProviderByName: th.getComponentProviderByName
     };
-  },
+  }
 };
 </script>
 

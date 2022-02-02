@@ -150,8 +150,12 @@
               v-for="(product, i) in products"
               :key="product.id"
               :style="{ '--index': i }"
+              :imageWidth="216"
+              :imageHeight="288"
               :title="productGetters.getName(product)"
               :image="productGetters.getCoverImage(product)"
+              :nuxtImgConfig="{ fit: 'cover' }"
+              image-tag="nuxt-img"
               :regular-price="
                 $n(productGetters.getPrice(product).regular, 'currency')
               "
@@ -192,6 +196,10 @@
               v-for="(product, i) in products"
               :key="product.id"
               :style="{ '--index': i }"
+              :imageWidth="140"
+              :imageHeight="200"
+              :nuxtImgConfig="{ fit: 'cover', alt: '123' }"
+              image-tag="nuxt-img"
               :title="productGetters.getName(product)"
               :description="productGetters.getDescription(product)"
               :image="productGetters.getCoverImage(product)"
@@ -279,6 +287,8 @@
         </div>
         <div v-else key="no-results" class="before-results">
           <SfImage
+            :width="256"
+            :height="176"
             src="/error/error.svg"
             class="before-results__picture"
             alt="error"
@@ -397,15 +407,15 @@ import {
   SfLoader,
   SfColor,
   SfProperty,
-  SfImage,
+  SfImage
 } from "@storefront-ui/vue";
-import { ref, computed, onMounted } from "@vue/composition-api";
+import { ref, computed, onMounted } from "@nuxtjs/composition-api";
 import {
   useCart,
   useWishlist,
   productGetters,
   useFacet,
-  facetGetters,
+  facetGetters
 } from "@vue-storefront/odoo";
 import { useCache, CacheTagPrefix } from "@vue-storefront/cache";
 import { useUiHelpers, useUiState } from "~/composables";
@@ -425,7 +435,7 @@ export default {
     const {
       addItem: addItemToWishlist,
       removeItem: removeItemFromWishList,
-      isInWishlist,
+      isInWishlist
     } = useWishlist();
     const { result, search, loading } = useFacet();
     const { params, query } = root.$router.history.current;
@@ -460,7 +470,7 @@ export default {
 
     const currentRootCategory = computed(() => {
       const categories = result.value?.data?.categories || [];
-      const category = categories.find((category) => {
+      const category = categories.find(category => {
         return category.slug === params.slug_1;
       });
 
@@ -473,14 +483,14 @@ export default {
       facetGetters.getBreadcrumbs({
         input: {
           params,
-          currentRootCategory: currentRootCategory.value,
-        },
+          currentRootCategory: currentRootCategory.value
+        }
       })
     );
 
     onSSR(async () => {
       const params = {
-        ...th.getFacetsFromURL(),
+        ...th.getFacetsFromURL()
       };
 
       await search(params);
@@ -488,8 +498,8 @@ export default {
       addTags([
         {
           prefix: CacheTagPrefix.Category,
-          value: currentRootCategory.value.id || params.slug_2,
-        },
+          value: currentRootCategory.value.id || params.slug_2
+        }
       ]);
     });
 
@@ -502,20 +512,20 @@ export default {
 
     const isFilterSelected = (facet, option) => {
       return selectedFilters.value.some(
-        (filter) => String(filter.id) === String(option.value)
+        filter => String(filter.id) === String(option.value)
       );
     };
 
     const selectFilter = (facet, option) => {
       const alreadySelectedIndex = selectedFilters.value.findIndex(
-        (filter) => String(filter.id) === String(option.value)
+        filter => String(filter.id) === String(option.value)
       );
 
       if (alreadySelectedIndex === -1) {
         selectedFilters.value.push({
           filterName: facet.label,
           label: option.label,
-          id: option.value,
+          id: option.value
         });
 
         return;
@@ -535,7 +545,7 @@ export default {
       changeFilters(selectedFilters.value);
     };
 
-    const facetHasMoreThanOneOption = (facet) =>
+    const facetHasMoreThanOneOption = facet =>
       facet?.options?.length > 1 || false;
 
     return {
@@ -564,7 +574,7 @@ export default {
       clearFilters,
       facetHasMoreThanOneOption,
       showProducts,
-      currentCategoryNameForAccordion,
+      currentCategoryNameForAccordion
     };
   },
   components: {
@@ -585,8 +595,8 @@ export default {
     SfHeading,
     SfProperty,
     LazyHydrate,
-    SfImage,
-  },
+    SfImage
+  }
 };
 </script>
 

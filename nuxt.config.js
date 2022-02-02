@@ -72,7 +72,9 @@ export default {
   plugins: [],
   buildModules: [
     // to core
+    '@nuxtjs/composition-api/module',
     '@nuxtjs/pwa',
+    '@nuxt/image',
     '@nuxtjs/device',
     '@nuxtjs/web-vitals',
     '@nuxtjs/tailwindcss',
@@ -117,6 +119,7 @@ export default {
   modules: [
     '@nuxtjs/pwa',
     'nuxt-precompress',
+    '@nuxt/image',
     '@vue-storefront/middleware/nuxt',
     'nuxt-i18n',
     'cookie-universal-nuxt',

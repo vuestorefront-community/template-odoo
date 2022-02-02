@@ -2,62 +2,51 @@
   <SfFooter :column="4" multiple class="footer">
     <SfFooterColumn :title="$t('About us')">
       <SfList>
-        <SfListItem
-          v-for="item in aboutUs"
-          :key="item"
-          >
-          <SfMenuItem
-            :label="$t(item)"
-          />
+        <SfListItem v-for="item in aboutUs" :key="item">
+          <SfMenuItem :label="$t(item)" />
         </SfListItem>
       </SfList>
     </SfFooterColumn>
     <SfFooterColumn :title="$t('Departments')">
       <SfList>
-        <SfListItem
-          v-for="item in departments"
-          :key="item"
-        >
-          <SfMenuItem
-            :label="$t(item)"
-          />
+        <SfListItem v-for="item in departments" :key="item">
+          <SfMenuItem :label="$t(item)" />
         </SfListItem>
       </SfList>
     </SfFooterColumn>
     <SfFooterColumn :title="$t('Help')">
       <SfList>
-        <SfListItem
-          v-for="item in help"
-          :key="item"
-        >
-          <SfMenuItem
-            :label="$t(item)"
-          />
+        <SfListItem v-for="item in help" :key="item">
+          <SfMenuItem :label="$t(item)" />
         </SfListItem>
       </SfList>
     </SfFooterColumn>
     <SfFooterColumn :title="$t('Payment & Delivery')">
       <SfList>
-        <SfListItem
-          v-for="item in paymentsDelivery"
-          :key="item"
-        >
-          <SfMenuItem
-            :label="$t(item)"
-          />
+        <SfListItem v-for="item in paymentsDelivery" :key="item">
+          <SfMenuItem :label="$t(item)" />
         </SfListItem>
       </SfList>
     </SfFooterColumn>
     <SfFooterColumn title="Social">
       <div class="footer__socials">
-        <SfImage class="footer__social-image" v-for="item in social" :key="item" :src="'/icons/'+item+'.svg'" :alt="item" width="32" height="32" />
+        <SfImage
+          class="footer__social-image"
+          v-for="item in social"
+          :key="item"
+          :src="addBasePath('/icons/' + item + '.svg')"
+          :alt="item"
+          :width="32"
+          :height="32"
+        />
       </div>
     </SfFooterColumn>
   </SfFooter>
 </template>
 
 <script>
-import { SfFooter, SfList, SfImage, SfMenuItem } from '@storefront-ui/vue';
+import { SfFooter, SfList, SfImage, SfMenuItem } from "@storefront-ui/vue";
+import { addBasePath } from "@vue-storefront/core";
 
 export default {
   components: {
@@ -66,13 +55,18 @@ export default {
     SfImage,
     SfMenuItem
   },
+  setup() {
+    return {
+      addBasePath
+    };
+  },
   data() {
     return {
-      aboutUs: ['Who we are', 'Quality in the details', 'Customer Reviews'],
-      departments: ['Women fashion', 'Men fashion', 'Kidswear', 'Home'],
-      help: ['Customer service', 'Size guide', 'Contact us'],
-      paymentsDelivery: ['Purchase terms', 'Guarantee'],
-      social: ['facebook', 'pinterest', 'google', 'twitter', 'youtube'],
+      aboutUs: ["Who we are", "Quality in the details", "Customer Reviews"],
+      departments: ["Women fashion", "Men fashion", "Kidswear", "Home"],
+      help: ["Customer service", "Size guide", "Contact us"],
+      paymentsDelivery: ["Purchase terms", "Guarantee"],
+      social: ["facebook", "pinterest", "google", "twitter", "youtube"],
       isMobile: false,
       desktopMin: 1024
     };
@@ -81,7 +75,6 @@ export default {
 </script>
 
 <style lang="scss">
-
 .footer {
   margin-bottom: 3.75rem;
   @include for-desktop {

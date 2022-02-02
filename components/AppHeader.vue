@@ -4,13 +4,14 @@
       class="sf-header--has-mobile-search"
       :class="{
         'header-on-top': isSearchOpen,
-        'sf-header--multiline': topCategories.length > 7,
       }"
     >
       <!-- TODO: add mobile view buttons after SFUI team PR -->
       <template #logo>
         <nuxt-link :to="localePath('/')" class="sf-header__logo">
           <SfImage
+            :width="35"
+            :height="35"
             src="/icons/logo.svg"
             alt="Vue Storefront Next"
             class="sf-header__logo-image"
@@ -18,16 +19,14 @@
         </nuxt-link>
       </template>
       <template #navigation>
-        <div class="grid grid-cols-6 auto-cols-min">
-          <SfHeaderNavigationItem
-            v-for="(category, index) in topCategories"
-            :key="index"
-            data-cy="app-header-top-categories"
-            class="nav-item"
-            :label="category.name"
-            :link="localePath(`/c/${category.slug}/${category.id}`)"
-          />
-        </div>
+        <SfHeaderNavigationItem
+          v-for="(category, index) in filteredTopCategories"
+          :key="index"
+          data-cy="app-header-top-categories"
+          class="nav-item"
+          :label="category.name"
+          :link="localePath(`/c/${category.slug}/${category.id}`)"
+        />
       </template>
       <template #aside>
         <LocaleSelector class="smartphone-only" />
@@ -121,8 +120,8 @@ import {
   SfOverlay,
   SfBadge,
   SfHeader
-} from '@storefront-ui/vue';
-import { useUiState } from '~/composables';
+} from "@storefront-ui/vue";
+import { useUiState } from "~/composables";
 import {
   useCart,
   useWishlist,
@@ -131,16 +130,16 @@ import {
   categoryGetters,
   useCategory,
   useFacet
-} from '@vue-storefront/odoo';
-import { clickOutside } from '@storefront-ui/vue/src/utilities/directives/click-outside/click-outside-directive.js';
-import { computed, ref, watch } from '@vue/composition-api';
-import { onSSR } from '@vue-storefront/core';
-import { useUiHelpers } from '~/composables';
-import LocaleSelector from './LocaleSelector';
-import SearchResults from '~/components/SearchResults';
+} from "@vue-storefront/odoo";
+import { clickOutside } from "@storefront-ui/vue/src/utilities/directives/click-outside/click-outside-directive.js";
+import { computed, ref, watch } from "@nuxtjs/composition-api";
+import { onSSR } from "@vue-storefront/core";
+import { useUiHelpers } from "~/composables";
+import LocaleSelector from "./LocaleSelector";
+import SearchResults from "~/components/SearchResults";
 
-import debounce from 'lodash.debounce';
-import { mapMobileObserver } from '@storefront-ui/vue/src/utilities/mobile-observer.js';
+import debounce from "lodash.debounce";
+import { mapMobileObserver } from "@storefront-ui/vue/src/utilities/mobile-observer.js";
 export default {
   components: {
     SfHeader,
@@ -170,11 +169,11 @@ export default {
     const { load: loadUser, isAuthenticated } = useUser();
     const { load: loadCart, cart } = useCart();
     const { load: loadWishlist, wishlist } = useWishlist();
-    const { search: searchProductApi, result } = useFacet('AppHeader:Search');
+    const { search: searchProductApi, result } = useFacet("AppHeader:Search");
     const {
       categories: topCategories,
       search: searchTopCategoryApi
-    } = useCategory('AppHeader:TopCategories');
+    } = useCategory("AppHeader:TopCategories");
 
     const isMobile = computed(() => mapMobileObserver().isMobile.get());
 
@@ -183,7 +182,7 @@ export default {
       return count ? count.toString() : null;
     });
     const accountIcon = computed(() =>
-      isAuthenticated.value ? 'profile_fill' : 'profile'
+      isAuthenticated.value ? "profile_fill" : "profile"
     );
 
     const removeSearchResults = () => {
@@ -192,11 +191,11 @@ export default {
 
     const closeSearch = () => {
       if (!isSearchOpen.value) return;
-      term.value = '';
+      term.value = "";
       isSearchOpen.value = false;
     };
 
-    const handleSearch = debounce(async (paramValue) => {
+    const handleSearch = debounce(async paramValue => {
       if (!paramValue.target) {
         term.value = paramValue;
       } else {
@@ -209,25 +208,31 @@ export default {
       formatedResult.value = {
         products: result?.value?.data?.products,
         categories: result?.value?.data?.categories
-          .filter((category) => category.childs === null)
-          .map((category) => categoryGetters.getTree(category))
+          .filter(category => category.childs === null)
+          .map(category => categoryGetters.getTree(category))
       };
     }, 100);
     const closeOrFocusSearchBar = () => {
       if (isMobile.value) {
         return closeSearch();
       }
-      term.value = '';
+      term.value = "";
       return searchBarRef.value.$el.children[0].focus();
     };
     // TODO: https://github.com/DivanteLtd/vue-storefront/issues/4927
     const handleAccountClick = async () => {
       if (isAuthenticated.value) {
-        return root.$router.push('/my-account');
+        return root.$router.push("/my-account");
       }
 
       toggleLoginModal();
     };
+
+    const filteredTopCategories = computed(() =>
+      topCategories.value.filter(
+        cat => cat.name === "WOMEN" || cat.name === "MEN"
+      )
+    );
 
     watch(
       () => term.value,
@@ -258,7 +263,7 @@ export default {
       wishlistHasItens: computed(
         () => wishlist.value?.wishlistItems.length > 0
       ),
-      topCategories,
+      filteredTopCategories,
       accountIcon,
       closeOrFocusSearchBar,
       cartTotalItems,

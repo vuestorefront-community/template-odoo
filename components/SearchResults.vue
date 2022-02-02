@@ -59,6 +59,10 @@
                   :regular-price="
                     $n(productGetters.getPrice(product).regular, 'currency')
                   "
+                  :imageWidth="216"
+                  :imageHeight="288"
+                  :nuxtImgConfig="{ fit: 'cover' }"
+                  image-tag="nuxt-img"
                   :score-rating="productGetters.getAverageRating(product)"
                   :reviews-count="7"
                   :image="productGetters.getCoverImage(product)"
@@ -75,6 +79,10 @@
                 v-for="(product, index) in products"
                 :key="index"
                 class="result-card"
+                :imageWidth="216"
+                :imageHeight="288"
+                :nuxtImgConfig="{ fit: 'cover' }"
+                image-tag="nuxt-img"
                 :regular-price="
                   $n(productGetters.getPrice(product).regular, 'currency')
                 "
@@ -93,28 +101,30 @@
               class="action-buttons__button color-light"
               @click="$emit('close')"
             >
-              {{ $t('Cancel') }}
+              {{ $t("Cancel") }}
             </SfButton>
           </div>
         </div>
         <div v-else key="no-results" class="before-results">
           <SfImage
+            :width="256"
+            :height="176"
             src="/error/error.svg"
             class="before-results__picture"
             alt="error"
             loading="lazy"
           />
           <p class="before-results__paragraph">
-            {{ $t('You haven’t searched for items yet') }}
+            {{ $t("You haven’t searched for items yet") }}
           </p>
           <p class="before-results__paragraph">
-            {{ $t('Let’s start now – we’ll help you') }}
+            {{ $t("Let’s start now – we’ll help you") }}
           </p>
           <SfButton
             class="before-results__button color-secondary smartphone-only"
             @click="$emit('close')"
           >
-            {{ $t('Go back') }}
+            {{ $t("Go back") }}
           </SfButton>
         </div>
       </transition>
@@ -131,17 +141,17 @@ import {
   SfMenuItem,
   SfButton,
   SfImage
-} from '@storefront-ui/vue';
-import { ref, watch, computed } from '@vue/composition-api';
+} from "@storefront-ui/vue";
+import { ref, watch, computed } from "@nuxtjs/composition-api";
 import {
   productGetters,
   categoryGetters,
   useWishlist
-} from '@vue-storefront/odoo';
-import { useUiHelpers } from '~/composables';
+} from "@vue-storefront/odoo";
+import { useUiHelpers } from "~/composables";
 
 export default {
-  name: 'SearchResults',
+  name: "SearchResults",
   components: {
     SfMegaMenu,
     SfList,
@@ -163,8 +173,8 @@ export default {
   },
   watch: {
     $route() {
-      this.$emit('close');
-      this.$emit('removeSearchResults');
+      this.$emit("close");
+      this.$emit("removeSearchResults");
     }
   },
   setup(props, { emit }) {
@@ -174,20 +184,20 @@ export default {
     const categories = computed(() => props.result?.categories);
     const { addItem: addItemToWishlist } = useWishlist();
 
-    const goToProduct = (product) => {
+    const goToProduct = product => {
       return `/p/${productGetters.getId(product)}/${productGetters.getSlug(
         product
       )}`;
     };
     watch(
       () => props.visible,
-      (newVal) => {
+      newVal => {
         isSearchOpen.value = newVal;
         if (isSearchOpen.value) {
-          document.body.classList.add('no-scroll');
+          document.body.classList.add("no-scroll");
         } else {
-          document.body.classList.remove('no-scroll');
-          emit('removeSearchResults');
+          document.body.classList.remove("no-scroll");
+          emit("removeSearchResults");
         }
       }
     );
