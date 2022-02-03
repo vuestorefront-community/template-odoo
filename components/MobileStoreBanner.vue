@@ -14,6 +14,8 @@
         >
           <SfImage
             src="/homepage/apple.png"
+            :width="60"
+            :height="32"
             alt="App store"
           />
         </SfButton>
@@ -23,6 +25,8 @@
           @click="() => {}"
         >
           <SfImage
+            :width="60"
+            :height="32"
             src="/homepage/google.png"
             alt="Google play"
           />
@@ -32,22 +36,17 @@
   </SfBanner>
 </template>
 <script>
-import {
-  SfBanner,
-  SfImage,
-  SfButton
-} from '@storefront-ui/vue';
+import { SfBanner, SfImage, SfButton } from "@storefront-ui/vue";
 export default {
-  name: 'AppStoreBanner',
+  name: "AppStoreBanner",
   components: {
     SfBanner,
     SfImage,
-    SfButton
-  }
+    SfButton,
+  },
 };
 </script>
 <style lang="scss" scoped>
-
 .banner-app {
   --banner-title-margin: var(--spacer-base) 0 var(--spacer-xl) 0;
   --banner-padding: 0 0 var(--spacer-2xl);
@@ -77,5 +76,4 @@ export default {
     }
   }
 }
-
 </style>

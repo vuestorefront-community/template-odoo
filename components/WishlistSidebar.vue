@@ -40,8 +40,8 @@
                 "
                 :stock="99999"
                 :link="localePath(getLocalPathFromWishListItem(product))"
-                image-width="180"
-                image-height="200"
+                :image-width="180"
+                :image-height="200"
                 @click:remove="removeItem({ product })"
                 class="collected-product"
               >
@@ -115,14 +115,14 @@ import {
   SfProperty,
   SfPrice,
   SfCollectedProduct,
-  SfImage
+  SfImage,
 } from "@storefront-ui/vue";
 import { computed } from "@nuxtjs/composition-api";
 import {
   useWishlist,
   useUser,
   wishlistGetters,
-  productGetters
+  productGetters,
 } from "@vue-storefront/odoo";
 import { onSSR } from "@vue-storefront/core";
 import { useUiState } from "~/composables";
@@ -137,7 +137,7 @@ export default {
     SfProperty,
     SfPrice,
     SfCollectedProduct,
-    SfImage
+    SfImage,
   },
   setup() {
     const { isWishlistSidebarOpen, toggleWishlistSidebar } = useUiState();
@@ -153,7 +153,7 @@ export default {
       // await loadWishlist();
     });
 
-    const getLocalPathFromWishListItem = wishlistItem => {
+    const getLocalPathFromWishListItem = (wishlistItem) => {
       return `/p/${productGetters.getId(
         wishlistItem.product
       )}/${productGetters.getSlug(wishlistItem.product)}`;
@@ -169,9 +169,9 @@ export default {
       totals,
       totalItems,
       wishlistGetters,
-      productGetters
+      productGetters,
     };
-  }
+  },
 };
 </script>
 
