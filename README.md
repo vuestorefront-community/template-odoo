@@ -21,6 +21,15 @@ REDIS_PORT=<redis_port>
 REDIS_PASSWORD=<redis_password>
 ```
 
+or use environment variables
+
+``` bash
+export BASE_URL=<base_url>
+export REDIS_HOST=<redis_host>
+export REDIS_PORT=<redis_port>
+export REDIS_PASSWORD=<redis_password>
+```
+
 
 ```sh
 # install dependencies
