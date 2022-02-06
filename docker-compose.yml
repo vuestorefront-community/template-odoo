@@ -1,0 +1,117 @@
+version: "3.7"
+
+
+services:
+
+  redis:
+    container_name: redis
+    image: library/redis:5.0-alpine
+    restart: unless-stopped
+    networks:
+      - net1
+    volumes:
+      - redis_data:/data
+
+  nginx:
+    env_file: .env
+    image: nginx:latest
+    container_name: nginx
+    restart: unless-stopped
+    depends_on:
+      - odoo
+    ports:
+      - ${TEST_VSF_DOCKER_PORT}:${TEST_VSF_DOCKER_PORT}
+      - ${TEST_ODOO_DOCKER_PORT}:${TEST_ODOO_DOCKER_PORT}
+    volumes:
+      - ./docker/nginx/templates:/etc/nginx/templates
+      - web_root:/var/www/html
+    networks:
+      - net1
+
+  db:
+    env_file: .env
+    image: postgres:12
+    container_name: db
+    restart: unless-stopped
+    networks:
+      - net1
+    volumes:
+      - db_home:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_DB=v14_odoo
+
+  odoo_init:
+    env_file: .env
+    build:
+      context: ./docker/14.0
+      dockerfile: Dockerfile
+    container_name: odoo_ini
+    working_dir: "/mnt/extra-addons"
+    command: >
+      bash -c "if [ ! -d "/mnt/extra-addons/graphql_vuestorefront" ]; then git clone --branch 14.0 https://github.com/odoogap/vuestorefront.git .
+      && git submodule update --init --recursive
+      && /entrypoint.sh odoo -d v14_odoo -i base --max-cron-threads 0 --no-http --stop-after-init -i graphql_vuestorefront
+      && /entrypoint.sh odoo shell -d v14_odoo --max-cron-threads 0 --no-http < /start_script.py ; fi"
+    image: odoogap
+    restart: "no"
+    volumes:
+      - odoo_home:/var/lib/odoo
+      - odoo_extra:/mnt/extra-addons
+      - ./docker/14.0/odoo.conf:/etc/odoo/odoo.conf
+      - ./docker/14.0/start_script.py:/start_script.py
+    depends_on:
+      - db
+    networks:
+      - net1
+
+  odoo:
+    env_file: .env
+    build:
+      context: ./docker/14.0
+      dockerfile: Dockerfile
+    container_name: odoo
+    image: odoogap
+    restart: unless-stopped
+    volumes:
+      - odoo_home:/var/lib/odoo
+      - odoo_extra:/mnt/extra-addons
+      - ./docker/14.0/odoo.conf:/etc/odoo/odoo.conf
+    depends_on:
+      - db
+    networks:
+      - net1
+
+  vsf:
+    env_file: .env
+    environment:
+      BASE_URL: http://localhost:8069/
+      BACKEND_BASE_URL: http://odoo:8069/
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    container_name: vsf
+    image: vsf2
+    restart: unless-stopped
+    depends_on:
+      - redis
+      - odoo
+    networks:
+      - net1
+
+
+volumes:
+  db_home:
+    external: false
+  odoo_home:
+    external: false
+  odoo_extra:
+    external: False
+  web_root:
+    external: false
+  redis_data:
+    external: false
+
+networks:
+  net1:
+    name: net1

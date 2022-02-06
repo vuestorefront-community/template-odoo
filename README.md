@@ -23,7 +23,7 @@ REDIS_PASSWORD=<redis_password>
 
 or use environment variables
 
-``` bash
+```bash
 export BASE_URL=<base_url>
 export REDIS_HOST=<redis_host>
 export REDIS_PORT=<redis_port>
@@ -41,6 +41,16 @@ yarn dev
 # build for production and launch server
 yarn build
 ```
+
+or use docker-compose
+
+```bash
+docker-compose up --build -d
+# you might need to
+docker-compose restart odoo nginx
+```
+
+
 
 Want to contribute? Ping us on `odoo` channel on [our Discord](https://discord.vuestorefront.io) or email us at info (at) odoogap.com!
 
