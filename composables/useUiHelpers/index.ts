@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable camelcase */
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 
 import { useRoute, useRouter } from '@nuxtjs/composition-api';
 import { Category } from '@vue-storefront/odoo-api/server';
@@ -12,23 +13,25 @@ const useUiHelpers = (): any => {
   const router = useRouter();
   const { params, query } = route.value;
 
-  const getFacetsFromURL = () => {
+  const getFacetsFromURL = () : ParamsFromUrl => {
 
     let filters: string[] = [];
     if (query) {
       Object.keys(query).forEach((filterKey) => {
-        if (!queryParamsNotFilters.includes(filterKey)) {
-          //filters.push(query[filterKey]);
+        if (![...queryParamsNotFilters, 'price'].includes(filterKey)) {
+          filters.push(query[filterKey]);
         }
       });
 
       filters = filters.map((filter) => filter.split(',')).flat();
     }
 
+    const price = query?.price?.split('-');
+
     const pageSize = 10;
-    //query.itemsPerPage ? parseInt(query.itemsPerPage) : 10;
+    query.itemsPerPage ? parseInt(query.itemsPerPage) : 10;
     const sort = '1' as any;
-    //query?.sort?.split(',') || [];
+    query?.sort?.split(',') || [];
     const page = query?.page || 1;
     const categoryId = parseInt(params.slug_3) || parseInt(params.slug_2);
 
@@ -38,6 +41,8 @@ const useUiHelpers = (): any => {
       pageSize,
       categorySlug: params.slug_1,
       currentPage: page,
+      minPrice: price?.[0] || null,
+      maxPrice: price?.[1] || null,
       filter: {
         categoryId,
         attributeValueId: filters
@@ -68,8 +73,7 @@ const useUiHelpers = (): any => {
     Object.keys(query).forEach((label) => {
       if (queryParamsNotFilters.includes(label)) return;
 
-      const valueList = [];
-      // query[label].split(',');
+      const valueList = query[label].split(',');
 
       valueList.forEach((value) => {
         const item = {
@@ -105,7 +109,11 @@ const useUiHelpers = (): any => {
   const changeSearchTerm = (term: string) => term;
 
   const isFacetColor = (facet): boolean => {
-    return facet.display_type === 'color';
+    return facet.type === 'color';
+  };
+
+  const isFacetPrice = (facet): boolean => {
+    return facet.type === 'price';
   };
 
   const isFacetCheckbox = (facet): boolean => {
@@ -139,6 +147,7 @@ const useUiHelpers = (): any => {
     changeItemsPerPage,
     changeSearchTerm,
     isFacetColor,
+    isFacetPrice,
     isFacetCheckbox,
     facetsFromUrlToFilter,
     getComponentProviderByName

@@ -22,7 +22,7 @@
                 data-cy="collected-product-cart-sidebar"
                 v-for="product in products"
                 :key="cartGetters.getItemSku(product)"
-                :image="cartGetters.getItemImage(product)"
+                :image="$image(cartGetters.getItemImage(product))"
                 :title="cartGetters.getItemName(product)"
                 :regular-price="
                   $n(cartGetters.getItemPrice(product).regular, 'currency')
@@ -92,7 +92,7 @@
                 class="sf-button--full-width color-secondary"
                 @click="toggleCartSidebar"
               >
-                {{ $t("Go to checkout") }}
+                {{ $t('Go to checkout') }}
               </SfButton>
             </nuxt-link>
           </div>
@@ -100,7 +100,7 @@
             <SfButton
               class="sf-button--full-width color-primary"
               @click="toggleCartSidebar"
-              >{{ $t("Go back shopping") }}</SfButton
+              >{{ $t('Go back shopping') }}</SfButton
             >
           </div>
         </transition>
@@ -118,14 +118,14 @@ import {
   SfPrice,
   SfCollectedProduct,
   SfImage
-} from "@storefront-ui/vue";
-import { computed } from "@nuxtjs/composition-api";
-import { useCart, useUser, cartGetters } from "@vue-storefront/odoo";
-import { useUiState } from "~/composables";
-import { onSSR } from "@vue-storefront/core";
+} from '@storefront-ui/vue';
+import { computed } from '@nuxtjs/composition-api';
+import { useCart, useUser, cartGetters } from '@vue-storefront/odoo';
+import { useUiState } from '~/composables';
+import { onSSR } from '@vue-storefront/core';
 
 export default {
-  name: "Cart",
+  name: 'Cart',
   components: {
     SfSidebar,
     SfButton,
