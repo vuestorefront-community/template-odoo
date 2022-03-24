@@ -9,6 +9,9 @@ export default {
     port: 3000,
     host: '0.0.0.0'
   },
+  components: [
+    '~/components/'
+  ],
   css: ['@/assets/styles.scss'],
   head: {
     title: 'Vue Storefront',
@@ -69,7 +72,7 @@ export default {
     refreshOnResize: true
   },
   loading: { color: '#fff' },
-  plugins: [],
+  plugins: ['~/plugins/getImage.ts'],
   buildModules: [
     // to core
     '@nuxtjs/composition-api/module',
