@@ -1,9 +1,5 @@
 <template>
-  <SfModal
-    :visible="isNewsletterModalOpen"
-    class="modal"
-    @close="closeModal"
-  >
+  <SfModal :visible="isNewsletterModalOpen" class="modal" @close="closeModal">
     <template #modal-bar>
       <SfBar
         class="modal__title smartphone-only"
@@ -19,46 +15,62 @@
           :title="$t('Subscribe to newsletter')"
           class="modal__title desktop-only"
         />
-        <form @submit.prevent="$emit('email-submitted', emailAddress)">
-          <SfInput
-            type="email"
-            :label="$t('Email address')"
-            v-model="emailAddress"
-            class="modal__input"
-          />
-          <SfButton class="modal__button" type="submit">
-            {{ $t('I confirm subscription') }}
-          </SfButton>
-        </form>
+        <ValidationObserver v-slot="{ handleSubmit, invalid }" key="log-in">
+          <form @submit.prevent="$emit('email-submitted', emailAddress)">
+            <ValidationProvider rules="required|email" v-slot="{ errors }">
+              <SfInput
+                type="email"
+                :label="$t('Email address')"
+                :valid="!errors[0]"
+                :errorMessage="errors[0]"
+                v-model="emailAddress"
+                class="modal__input"
+              />
+            </ValidationProvider>
+
+            <SfButton
+              class="modal__button"
+              type="submit"
+              :disabled="loading || invalid"
+            >
+              {{ $t('I confirm subscription') }}
+            </SfButton>
+          </form>
+        </ValidationObserver>
+
         <SfHeading
           :description="$t('You can unsubscribe at any time')"
           :level="3"
         />
-        <SfScrollable maxContentHeight="3.75rem" :class="{ 'is-open': !isHidden }">
-          <i18n tag="p" class="modal__content" path="subscribeToNewsletterModalContent">
-            <SfLink link="https://www.vuestorefront.io/privacy-policy">{{ $t('Privacy Policy') }}</SfLink>
-          </i18n>
-          <template #view-all>
-            <SfButton
-              class="sf-button--text sf-scrollable__view-all desktop-only"
-              @click="isHidden = !isHidden"
-            >
-              <span>{{ isHidden ? $t('show more') : $t('hide') }}</span>
-            </SfButton>
-          </template>
-        </SfScrollable>
       </div>
     </transition>
   </SfModal>
 </template>
 <script>
-import { SfModal, SfHeading, SfInput, SfButton, SfScrollable, SfBar, SfLink } from '@storefront-ui/vue';
+import {
+  SfModal,
+  SfHeading,
+  SfInput,
+  SfButton,
+  SfScrollable,
+  SfBar,
+  SfLink
+} from '@storefront-ui/vue';
 import { ref } from '@nuxtjs/composition-api';
 import { useUiState } from '~/composables';
+import { ValidationProvider, ValidationObserver } from 'vee-validate';
 
 export default {
   name: 'NewsletterModal',
+  props: {
+    loading: {
+      type: Boolean,
+      default: false
+    }
+  },
   components: {
+    ValidationProvider,
+    ValidationObserver,
     SfModal,
     SfHeading,
     SfInput,
@@ -89,7 +101,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .modal {
   display: flex;
   justify-content: center;
@@ -112,5 +123,4 @@ export default {
     font-weight: var(--font-weight--light);
   }
 }
-
 </style>

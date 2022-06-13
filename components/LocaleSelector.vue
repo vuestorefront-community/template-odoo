@@ -5,10 +5,11 @@
       @click="isLangModalOpen = !isLangModalOpen"
     >
       <SfImage
-        :src="`/icons/langs/${locale}.webp`"
-        :width="20"
         :height="20"
+        :width="20"
+        :src="addBasePath(`/icons/langs/${locale}.webp`)"
         alt="Flag"
+        class="language__flag"
       />
     </SfButton>
     <SfBottomModal
@@ -25,7 +26,7 @@
               </template>
               <template #icon>
                 <SfImage
-                  :src="`/icons/langs/${lang.code}.webp`"
+                  :src="addBasePath(`/icons/langs/${lang.code}.webp`)"
                   :width="20"
                   :height="20"
                   alt="Flag"
@@ -47,9 +48,10 @@ import {
   SfButton,
   SfList,
   SfBottomModal,
-  SfCharacteristic,
-} from "@storefront-ui/vue";
-import { ref, computed } from "@vue/composition-api";
+  SfCharacteristic
+} from '@storefront-ui/vue';
+import { ref, computed } from '@nuxtjs/composition-api';
+import { addBasePath } from '@vue-storefront/core';
 export default {
   components: {
     SfImage,
@@ -57,7 +59,7 @@ export default {
     SfButton,
     SfList,
     SfBottomModal,
-    SfCharacteristic,
+    SfCharacteristic
   },
   setup(props, context) {
     const { locales, locale } = context.root.$i18n;
@@ -69,8 +71,9 @@ export default {
       availableLocales,
       locale,
       isLangModalOpen,
+      addBasePath
     };
-  },
+  }
 };
 </script>
 
@@ -88,6 +91,11 @@ export default {
       --bottom-modal-height: 100vh;
     }
   }
+  .sf-bottom-modal::v-deep .sf-bottom-modal__close {
+    position: var(--circle-icon-position, absolute);
+    top: var(--spacer-xs);
+    right: var(--spacer-xs);
+  }
   .sf-list {
     .language {
       padding: var(--spacer-sm);
@@ -100,7 +108,6 @@ export default {
     }
   }
   &__lang {
-    width: 20px;
     --button-box-shadow: none;
     background: none;
     padding: 0 5px;
