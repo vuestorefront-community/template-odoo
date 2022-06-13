@@ -26,7 +26,7 @@
 <script>
 import { SfSteps, SfButton } from '@storefront-ui/vue';
 import CartPreview from '~/components/Checkout/CartPreview';
-import { computed } from '@vue/composition-api';
+import { computed } from '@nuxtjs/composition-api';
 const STEPS = {
   shipping: 'Shipping',
   billing: 'Billing',
@@ -46,6 +46,7 @@ export default {
     const currentStepIndex = computed(() =>
       Object.keys(STEPS).findIndex((s) => s === currentStep.value)
     );
+
     const isThankYou = computed(() => currentStep.value === 'thank-you');
     const handleStepClick = (stepIndex) => {
       const key = Object.keys(STEPS)[stepIndex];

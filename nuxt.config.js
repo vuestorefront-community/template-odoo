@@ -129,28 +129,26 @@ export default {
     'nuxt-i18n',
     'cookie-universal-nuxt',
     'vue-scrollto/nuxt',
-    [
-      '~/helpers/cache/nuxt',
-      {
-        invalidation: {
+    ['@vue-storefront/cache/nuxt', {
+      enabled: !isDev,
+      invalidation: {
           endpoint: '/cache-invalidate',
           key: '0ead60c3-d118-40be-9519-d531462ddc60',
           handlers: ['./helpers/cache/defaultHandler']
-        },
-        driver: [
-          './helpers/cache.js',
+      },
+      driver: [
+          '@vue-storefront/redis-cache',
           {
-            isDev,
-            redis: {
-              host: process.env.REDIS_HOST,
-              port: process.env.REDIS_PORT,
-              password: process.env.REDIS_PASSWORD,
-              defaultTimeout: 86400
-            }
+              defaultTimeout: 86400,
+              redis: {
+                  host: process.env.REDIS_HOST,
+                  port: process.env.REDIS_PORT,
+                  password: process.env.REDIS_PASSWORD
+              }
           }
-        ]
-      }
-    ]
+      ]
+  }
+],
   ],
   nuxtPrecompress: {
     enabled: true,
