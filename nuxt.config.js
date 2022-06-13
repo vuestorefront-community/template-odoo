@@ -1,10 +1,13 @@
 import webpack from 'webpack';
-import theme from './themeConfig';
 import { getRoutes } from './routes';
+import hooks from './hooks';
+import redirect from './customRoutes/redirects.json';
 
 const isDev = process.env.NODE_ENV !== 'production';
 
 export default {
+  hooks,
+  redirect,
   server: {
     port: 3000,
     host: '0.0.0.0'
@@ -117,9 +120,7 @@ export default {
     ['@vue-storefront/odoo/nuxt', {}]
   ],
   publicRuntimeConfig: {
-    theme,
     baseURL: process.env.PUBLIC_PATH || process.env.BASE_URL || 'https://vsfdemo.labs.odoogap.com/'
-
   },
   modules: [
     '@nuxtjs/pwa',
