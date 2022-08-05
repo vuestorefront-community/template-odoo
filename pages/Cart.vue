@@ -197,6 +197,7 @@ export default {
     SfOrderSummary,
   },
   setup() {
+    // simple test submodule
     const { isAuthenticated } = useUser();
     const { cart, removeItem, updateItemQty } = useCart();
     const { isCartSidebarOpen, toggleCartSidebar } = useUiState();
