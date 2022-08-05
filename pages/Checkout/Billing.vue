@@ -88,10 +88,7 @@
             v-model="form.country.id"
             label="Country"
             name="country"
-            class="
-              form__element form__element--half form__select
-              sf-select--underlined
-            "
+            class="form__element form__element--half form__select sf-select--underlined"
             required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
@@ -116,11 +113,10 @@
             v-model="form.state.id"
             label="State/Province"
             name="state"
-            class="
-              form__element form__element--half form__select
-              sf-select--underlined
-              form__element--half-even
-            "
+            class="form__element form__element--half form__select sf-select--underlined form__element--half-even"
+            :class="[
+              countryStates && countryStates.length ? 'visible' : 'invisible',
+            ]"
             required
             @change="validate"
             :valid="!errors[0]"
@@ -128,8 +124,8 @@
           >
             <SfSelectOption
               v-for="countryStateOption in countryStates"
-              :key="countryStateOption.id"
-              :value="countryStateOption.id"
+              :key="countryStateOption && countryStateOption.id"
+              :value="countryStateOption && countryStateOption.id"
             >
               {{ countryStateOption.name }}
             </SfSelectOption>
@@ -175,29 +171,31 @@ import {
   SfButton,
   SfSelect,
   SfRadio,
-  SfCheckbox
+  SfCheckbox,
 } from '@storefront-ui/vue';
-import { ref, onMounted, watch } from '@vue/composition-api';
+import { ref, onMounted, watch, computed } from '@vue/composition-api';
 import { onSSR } from '@vue-storefront/core';
 import {
   useBilling,
   useCountrySearch,
-  useShippingAsBillingAddress
+  useShippingAsBillingAddress,
+  useCart,
+  cartGetters,
 } from '@vue-storefront/odoo';
 import { required, min, digits } from 'vee-validate/dist/rules';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
 
 extend('required', {
   ...required,
-  message: 'This field is required'
+  message: 'This field is required',
 });
 extend('min', {
   ...min,
-  message: 'The field should have at least {length} characters'
+  message: 'The field should have at least {length} characters',
 });
 extend('digits', {
   ...digits,
-  message: 'Please provide a valid phone number'
+  message: 'Please provide a valid phone number',
 });
 export default {
   name: 'Billing',
@@ -209,15 +207,15 @@ export default {
     SfRadio,
     SfCheckbox,
     ValidationProvider,
-    ValidationObserver
+    ValidationObserver,
   },
   setup(props, { root }) {
-    const {
-      search,
-      searchCountryStates,
-      countries,
-      countryStates
-    } = useCountrySearch();
+    const { cart } = useCart();
+    const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
+    if (totalItems.value === 0) root.$router.push('/cart');
+
+    const { search, searchCountryStates, countries, countryStates } =
+      useCountrySearch();
     const { load: loadBillingAddress, billing, save, error } = useBilling();
 
     const { use } = useShippingAsBillingAddress();
@@ -233,7 +231,7 @@ export default {
       state: { id: null },
       country: { id: null },
       zip: '',
-      phone: null
+      phone: null,
     });
 
     const handleCheckSameAddress = async () => {
@@ -272,9 +270,18 @@ export default {
       async () => {
         await searchCountryStates(form?.value?.country?.id || null);
         if (!countryStates.value || countryStates.value.length === 0) {
-          form.value.state.id = null;
+          form.value.state.id = 1;
+        } else {
+          form.value.state.id = countryStates.value[0].id;
         }
-      }
+      },
+    );
+
+    watch(
+      () => totalItems.value,
+      () => {
+        if (totalItems.value === 0) root.$router.push('/cart');
+      },
     );
 
     return {
@@ -285,9 +292,9 @@ export default {
       handleCheckSameAddress,
       sameAsShipping,
       form,
-      handleFormSubmit
+      handleFormSubmit,
     };
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>

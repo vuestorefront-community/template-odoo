@@ -88,18 +88,15 @@
             v-model="form.country.id"
             label="Country"
             name="country"
-            class="
-              form__element form__element--half form__select
-              sf-select--underlined
-            "
+            class="form__element form__element--half form__select sf-select--underlined"
             required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           >
             <SfSelectOption
               v-for="countryOption in countries"
-              :key="countryOption.id"
-              :value="countryOption.id"
+              :key="countryOption && countryOption.id"
+              :value="countryOption && countryOption.id"
             >
               {{ countryOption.name }}
             </SfSelectOption>
@@ -116,19 +113,18 @@
             v-model="form.state.id"
             label="State/Province"
             name="state"
-            class="
-              form__element form__element--half form__select
-              sf-select--underlined
-              form__element--half-even
-            "
+            class="form__element form__element--half form__select sf-select--underlined form__element--half-even"
+            :class="[
+              countryStates && countryStates.length ? 'visible' : 'invisible',
+            ]"
             required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           >
             <SfSelectOption
               v-for="countryStateOption in countryStates"
-              :key="countryStateOption.id"
-              :value="countryStateOption.id"
+              :key="countryStateOption && countryStateOption.id"
+              :value="countryStateOption && countryStateOption.id"
             >
               {{ countryStateOption.name }}
             </SfSelectOption>
@@ -172,7 +168,11 @@
         @submit="$router.push('/checkout/billing')"
         @selectedMethod="handleSelectedMethodShipping"
       />
-      <SfButton type="submit" :disabled="invalid">
+      <SfButton
+        type="submit"
+        :disabled="!form.selectedMethodShipping || invalid"
+        class="sf-button--full-width mt-4"
+      >
         {{ $t('Continue to billing') }}
       </SfButton>
     </form>
@@ -186,7 +186,9 @@ import {
   useCountrySearch,
   useUser,
   userShippingGetters,
-  useShipping
+  useShipping,
+  useCart,
+  cartGetters,
 } from '@vue-storefront/odoo';
 import { required, min, digits } from 'vee-validate/dist/rules';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
@@ -194,7 +196,7 @@ import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
 extend('required', { ...required, message: 'This field is required' });
 extend('min', {
   ...min,
-  message: 'The field should have at least {length} characters'
+  message: 'The field should have at least {length} characters',
 });
 extend('digits', { ...digits, message: 'Please provide a valid phone number' });
 
@@ -210,7 +212,7 @@ export default {
     UserShippingAddresses: () =>
       import('~/components/Checkout/UserShippingAddresses.vue'),
     VsfShippingProvider: () =>
-      import('~/components/Checkout/VsfShippingProvider')
+      import('~/components/Checkout/VsfShippingProvider'),
   },
   setup(props, { root, emit }) {
     const isFormSubmitted = ref(false);
@@ -219,17 +221,16 @@ export default {
     const defaultShippingAddress = ref(false);
     const isShippingDetailsStepCompleted = ref(false);
     const canAddNewAddress = ref(true);
+    const { cart } = useCart();
+
+    const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
 
     const { load: loadShipping, shipping, save } = useShipping();
 
     const { isAuthenticated } = useUser();
 
-    const {
-      search,
-      searchCountryStates,
-      countries,
-      countryStates
-    } = useCountrySearch();
+    const { search, searchCountryStates, countries, countryStates } =
+      useCountrySearch();
 
     const form = ref({
       name: '',
@@ -239,11 +240,17 @@ export default {
       country: { id: null },
       zip: '',
       phone: null,
-      selectedMethodShipping: null
+      selectedMethodShipping: null,
     });
 
     const handleFormSubmit = async () => {
-      await save({ shippingDetails: form.value });
+      await save({
+        params: {
+          ...form.value,
+          stateId: parseInt(form.value.state.id),
+          countryId: parseInt(form.value.country.id),
+        },
+      });
       isFormSubmitted.value = true;
 
       if (root.$router.history.current.path !== '/my-account/shipping-details')
@@ -294,9 +301,17 @@ export default {
       async () => {
         await searchCountryStates(form.value.country.id);
         if (!countryStates.value || countryStates.value.length === 0) {
-          form.value.state.id = null;
+          form.value.state.id = 0;
+        } else {
+          form.value.state.id = countryStates.value[0].id;
         }
-      }
+      },
+    );
+    watch(
+      () => totalItems.value,
+      () => {
+        if (totalItems.value === 0) root.$router.push('/cart');
+      },
     );
 
     return {
@@ -315,9 +330,9 @@ export default {
       form,
       countries,
       countryStates,
-      handleFormSubmit
+      handleFormSubmit,
     };
-  }
+  },
 };
 </script>
 

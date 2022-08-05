@@ -29,7 +29,7 @@
               <SfCollectedProduct
                 v-for="product in products"
                 :key="wishlistGetters.getItemSku(product)"
-                :image="wishlistGetters.getItemImage(product)"
+                :image="$image(wishlistGetters.getItemImage(product), 180, 200, wishlistGetters.getItemImageFilename(product))"
                 :title="wishlistGetters.getItemName(product)"
                 :regular-price="
                   $n(wishlistGetters.getItemPrice(product).regular, 'currency')
@@ -123,6 +123,7 @@ import {
   useUser,
   wishlistGetters,
   productGetters,
+  cartGetters
 } from "@vue-storefront/odoo";
 import { onSSR } from "@vue-storefront/core";
 import { useUiState } from "~/composables";
@@ -170,6 +171,7 @@ export default {
       totalItems,
       wishlistGetters,
       productGetters,
+      cartGetters
     };
   },
 };

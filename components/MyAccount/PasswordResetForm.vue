@@ -1,6 +1,8 @@
 <template>
   <ValidationObserver v-slot="{ handleSubmit, reset }">
     <form class="form" @submit.prevent="handleSubmit(submitForm(reset))">
+      <h1>Update password</h1>
+
       <ValidationProvider
         v-slot="{ errors }"
         rules="required"

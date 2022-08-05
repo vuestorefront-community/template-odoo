@@ -41,7 +41,7 @@
               :data-cy="`category-filter_color_${option.value}`"
               :color="option.htmlColor"
               :selected="isFilterSelected(facet, option)"
-              class="filters__color tw-mr-3"
+              class="filters__color mr-3"
               @click="() => selectFilter(facet, option)"
             />
           </div>
@@ -94,7 +94,7 @@
     </template>
   </SfSidebar>
 </template>
-<script >
+<script>
 import {
   SfSidebar,
   SfHeading,
@@ -107,7 +107,7 @@ import {
   SfProperty,
   SfImage,
   SfRange,
-  SfAccordion
+  SfAccordion,
 } from '@storefront-ui/vue';
 import { facetGetters } from '@vue-storefront/odoo';
 import {
@@ -115,7 +115,7 @@ import {
   ref,
   onMounted,
   reactive,
-  computed
+  computed,
 } from '@nuxtjs/composition-api';
 import { useUiState, useUiHelpers } from '~/composables';
 
@@ -132,13 +132,13 @@ export default defineComponent({
     SfProperty,
     SfAccordion,
     SfImage,
-    SfRange
+    SfRange,
   },
   props: {
     facetsList: {
       type: Object,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   setup(props) {
     const selectedFilters = ref([]);
@@ -152,7 +152,7 @@ export default defineComponent({
       orientation: 'horizontal',
       behaviour: 'tap-drag',
       tooltips: true,
-      keyboardSupport: true
+      keyboardSupport: true,
     });
 
     const { changeFilters, isFacetColor, isFacetPrice, facetsFromUrlToFilter } =
@@ -172,7 +172,7 @@ export default defineComponent({
 
     const isFilterSelected = (facet, option) => {
       return selectedFilters.value.some(
-        (filter) => String(filter.id) === String(option.value)
+        (filter) => String(filter.id) === String(option.value),
       );
     };
 
@@ -183,7 +183,7 @@ export default defineComponent({
       const newValue = `${values[0]}-${values[1]}`;
       price.value = values;
       const selectedValue = selectedFilters.value.find(
-        (item) => item?.filterName === 'price'
+        (item) => item?.filterName === 'price',
       );
 
       if (selectedValue) {
@@ -194,20 +194,20 @@ export default defineComponent({
       selectedFilters.value.push({
         label: 'Price',
         filterName: 'price',
-        id: newValue
+        id: newValue,
       });
     };
 
     const selectFilter = (facet, option) => {
       const alreadySelectedIndex = selectedFilters.value.findIndex(
-        (filter) => String(filter.id) === String(option.value)
+        (filter) => String(filter.id) === String(option.value),
       );
 
       if (alreadySelectedIndex === -1) {
         selectedFilters.value.push({
           filterName: facet.label,
           label: option.label,
-          id: option.value
+          id: option.value,
         });
 
         return;
@@ -220,14 +220,14 @@ export default defineComponent({
       {
         id: null,
         label: 'Price',
-        type: 'price'
+        type: 'price',
       },
-      ...facetGetters.getGrouped(props.facetsList, ['color', 'size'])
+      ...facetGetters.getGrouped(props.facetsList, ['color', 'size']),
     ]);
 
     const setPrice = () => {
       const selectedValue = selectedFilters.value.find(
-        (item) => item?.filterName === 'price'
+        (item) => item?.filterName === 'price',
       );
 
       if (selectedValue) {
@@ -257,9 +257,9 @@ export default defineComponent({
       selectFilter,
       isFilterSelected,
       clearFilters,
-      applyFilters
+      applyFilters,
     };
-  }
+  },
 });
 </script>
 <style scoped lang="scss">

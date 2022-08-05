@@ -52,9 +52,6 @@
           </div>
         </div>
         <div>
-          <p class="product__description desktop-only">
-            {{ description }}
-          </p>
           <SfButton
             data-cy="product-btn_size-guide"
             class="sf-button--text desktop-only product__guide"
@@ -119,49 +116,22 @@
               </SfColor>
             </template>
           </div>
+
           <SfAddToCart
             data-cy="product-cart_add"
             :stock="stock"
-            v-model="qty"
             :disabled="loading || !allOptionsSelected"
-            :canAddToCart="stock > 0"
             class="product__add-to-cart"
-            @click="addItem({ product, quantity: parseInt(qty) })"
+            @click="handleAddToCart()"
           />
         </div>
 
         <LazyHydrate when-idle>
           <SfTabs :open-tab="1" class="product__tabs">
             <SfTab data-cy="product-tab_description" title="Description">
-              <div class="product__description">
-                {{ $t('Product description') }}
-              </div>
-
-              <SfProperty
-                name="Product Code"
-                value="Product Code"
-                class="product__property"
-              >
-                <template #value>
-                  <SfButton class="product__property__button sf-button--text">
-                    {{ code }}
-                  </SfButton>
-                </template>
-              </SfProperty>
-
-              <SfProperty
-                v-for="(property, i) in properties"
-                :key="i"
-                :name="property.attributeName"
-                :value="property.value"
-                class="product__property"
-              >
-                <template v-if="property.name === 'Category'" #value>
-                  <SfButton class="product__property__button sf-button--text">
-                    {{ property.value }}
-                  </SfButton>
-                </template>
-              </SfProperty>
+              <p class="product__description desktop-only">
+                {{ description }}
+              </p>
             </SfTab>
             <SfTab title="Read reviews" data-cy="product-tab_reviews">
               <SfReview
@@ -264,6 +234,8 @@ import { onSSR } from '@vue-storefront/core';
 
 import MobileStoreBanner from '~/components/MobileStoreBanner.vue';
 import LazyHydrate from 'vue-lazy-hydration';
+import { useUiState } from '~/composables';
+
 export default {
   name: 'Product',
   transition: 'fade',
@@ -284,6 +256,8 @@ export default {
       useProduct('relatedProducts');
     const { addItem, loading } = useCart();
     const { addTags } = useCache();
+    const { toggleCartSidebar } =
+      useUiState();
 
     const { reviews: productReviews } = useReview('productReviews');
 
@@ -315,9 +289,9 @@ export default {
 
     const productGallery = computed(() =>
       productGetters.getGallery(product.value).map((img) => ({
-        mobile: { url: root.$image(img.small) },
-        desktop: { url: root.$image(img.normal) },
-        big: { url: root.$image(img.big) },
+        mobile: { url: root.$image(img.small, 128, 128, product.value.imageFilename) },
+        desktop: { url: root.$image(img.normal, 422, 644, product.value.imageFilename) },
+        big: { url: root.$image(img.big, 422, 644, product.value.imageFilename) },
         alt: product.value.name || 'alt'
       }))
     );
@@ -339,6 +313,17 @@ export default {
         query: { ...root.$route.query, ...filter }
       });
     };
+
+    const handleAddToCart = async () => {
+      const params = {
+        product: product.value,
+        quantity: 1
+      }
+
+      await addItem(params);
+
+      toggleCartSidebar();
+    }
 
     const allOptionsSelected = computed(() => {
       let keys = [];
@@ -387,7 +372,9 @@ export default {
       loading,
       productGetters,
       productVariants,
-      productGallery
+      productGallery,
+      toggleCartSidebar,
+      handleAddToCart
     };
   },
   components: {

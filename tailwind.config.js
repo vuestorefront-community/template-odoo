@@ -1,5 +1,22 @@
+const isDev = process.env.NODE_ENV !== 'production';
+
 module.exports = {
-  purge: [],
+  purge: {
+    enabled: !isDev,
+    content: [
+      'components/**/*.vue',
+      'layouts/**/*.vue',
+      'pages/**/*.vue',
+      'plugins/**/*.js',
+      'nuxt.config.js'
+    ],
+    options: {
+      whitelist: [
+      ],
+      whitelistPatternsChildren: [
+      ]
+    }
+  },
   important: true,
   theme: {
     extend: {

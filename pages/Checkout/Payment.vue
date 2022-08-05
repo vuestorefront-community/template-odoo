@@ -8,7 +8,7 @@
     <SfTable class="sf-table--bordered table desktop-only">
       <SfTableHeading class="table__row">
         <SfTableHeader class="table__header table__image">{{
-          $t("Item")
+          $t('Item')
         }}</SfTableHeader>
         <SfTableHeader
           v-for="tableHeader in tableHeaders"
@@ -28,7 +28,7 @@
           <SfImage
             :width="256"
             :height="176"
-            :src="$image(cartGetters.getItemImage(product))"
+            :image="$image(cartGetters.getItemImage(product), 256, 176, cartGetters.getItemImageFilename(product))"
             :alt="cartGetters.getItemName(product)"
           />
         </SfTableData>
@@ -71,7 +71,7 @@
             :value="
               $n(
                 totals.special > 0 ? totals.special : totals.subtotal,
-                'currency'
+                'currency',
               )
             "
             class="sf-property--full-width property"
@@ -83,10 +83,7 @@
         <SfProperty
           name="Total price"
           :value="$n(totals.total, 'currency')"
-          class="
-            sf-property--full-width sf-property--large
-            summary__property-total
-          "
+          class="sf-property--full-width sf-property--large summary__property-total"
         />
 
         <SfHeading
@@ -151,8 +148,8 @@
         >
           <template #label>
             <div class="sf-checkbox__label">
-              {{ $t("I agree to") }}
-              <SfLink href="#"> {{ $t("Terms and conditions") }}</SfLink>
+              {{ $t('I agree to') }}
+              <SfLink href="#"> {{ $t('Terms and conditions') }}</SfLink>
             </div>
           </template>
         </SfCheckbox>
@@ -163,7 +160,7 @@
             class="sf-button color-secondary summary__back-button"
             @click="$router.push('/checkout/billing')"
           >
-            {{ $t("Go back") }}
+            {{ $t('Go back') }}
           </SfButton>
           <SfButton
             v-e2e="'make-an-order'"
@@ -171,7 +168,7 @@
             class="summary__action-button"
             @click="providerPaymentHandler"
           >
-            {{ $t("Make an order") }}
+            {{ $t('Make an order') }}
           </SfButton>
         </div>
       </div>
@@ -192,22 +189,22 @@ import {
   SfProperty,
   SfAccordion,
   SfLink,
-  SfRadio
-} from "@storefront-ui/vue";
-import { onSSR } from "@vue-storefront/core";
-import { useUiHelpers } from "~/composables";
+  SfRadio,
+} from '@storefront-ui/vue';
+import { onSSR } from '@vue-storefront/core';
+import { useUiHelpers } from '~/composables';
 
-import { ref, computed } from "@nuxtjs/composition-api";
+import { ref, computed, watch } from '@nuxtjs/composition-api';
 import {
   useMakeOrder,
   useCart,
   cartGetters,
   orderGetters,
-  usePayment
-} from "@vue-storefront/odoo";
+  usePayment,
+} from '@vue-storefront/odoo';
 
 export default {
-  name: "ReviewOrder",
+  name: 'ReviewOrder',
   components: {
     SfHeading,
     SfTable,
@@ -222,18 +219,21 @@ export default {
     SfLink,
     SfRadio,
     VsfPaymentProvider: () =>
-      import("~/components/Checkout/VsfPaymentProvider"),
+      import('~/components/Checkout/VsfPaymentProvider'),
     AdyenPaymentProvider: () =>
-      import("~/components/Checkout/AdyenPaymentProvider"),
+      import('~/components/Checkout/AdyenPaymentProvider'),
     AdyenExternalPaymentProvider: () =>
-      import("~/components/Checkout/AdyenExternalPaymentProvider"),
+      import('~/components/Checkout/AdyenExternalPaymentProvider'),
     WireTransferPaymentProvider: () =>
-      import("~/components/Checkout/WireTransferPaymentProvider"),
+      import('~/components/Checkout/WireTransferPaymentProvider'),
     AbstractPaymentObserver: () =>
-      import("~/components/Checkout/AbstractPaymentObserver")
+      import('~/components/Checkout/AbstractPaymentObserver'),
   },
   setup(props, context) {
     const { cart, load, setCart } = useCart();
+    const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
+    if (totalItems.value === 0) context.root.$router.push('/cart');
+
     const { providerList, getPaymentProviderList } = usePayment();
     const { order, make, loading } = useMakeOrder();
     const th = useUiHelpers();
@@ -242,10 +242,10 @@ export default {
     const terms = ref(false);
     const selectedProvider = ref({});
 
-    const selectProvider = provider => {
+    const selectProvider = (provider) => {
       isPaymentReady.value = false;
       selectedProvider.value = provider;
-      context.emit("status");
+      context.emit('status');
     };
 
     onSSR(async () => {
@@ -257,17 +257,24 @@ export default {
       await make();
 
       const thankYouPath = {
-        name: "thank-you",
-        query: { order: orderGetters.getId(order.value) }
+        name: 'thank-you',
+        query: { order: orderGetters.getId(order.value) },
       };
       context.root.$router.push(context.root.localePath(thankYouPath));
       setCart(null);
     };
 
+    watch(
+      () => totalItems.value,
+      () => {
+        if (totalItems.value === 0) context.root.$router.push('/cart');
+      },
+    );
+
     const providerPaymentHandler = () => {};
 
     const providerListHasMoreThanOne = computed(
-      () => providerList.value.length > 1
+      () => providerList.value.length > 1,
     );
 
     return {
@@ -276,7 +283,7 @@ export default {
       loading,
       products: computed(() => cartGetters.getItems(cart.value)),
       totals: computed(() => cartGetters.getTotals(cart.value)),
-      tableHeaders: ["Description", "Size", "Color", "Quantity", "Amount"],
+      tableHeaders: ['Description', 'Size', 'Color', 'Quantity', 'Amount'],
       cartGetters,
       processOrder,
       providerList,
@@ -284,9 +291,9 @@ export default {
       selectedProvider,
       providerListHasMoreThanOne,
       providerPaymentHandler,
-      getComponentProviderByName: th.getComponentProviderByName
+      getComponentProviderByName: th.getComponentProviderByName,
     };
-  }
+  },
 };
 </script>
 
