@@ -10,7 +10,7 @@ const state = reactive({
   isMobileMenuOpen: false
 });
 
-const useUiState = () : any => {
+const useUiState = () => {
   const isMobileMenuOpen = computed(() => state.isMobileMenuOpen);
   const toggleMobileMenu = () => {
     state.isMobileMenuOpen = !state.isMobileMenuOpen;
