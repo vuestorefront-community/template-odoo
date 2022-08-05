@@ -1,5 +1,9 @@
-const odooBaseUrl = process.env.BACKEND_BASE_URL || process.env.BASE_URL || 'https://vsfdemo.labs.odoogap.com/';
+const odooBaseUrl = 'https://vsfdemo.labs.odoogap.com/';
 const graphqlBaseUrl = `${odooBaseUrl}graphql/vsf`;
+const baseDomain = process.env.BASE_DOMAIN || 'vsfdemo.labs.odoogap.com'
+
+const extendApiMethods = require('./custom-api/api');
+const customQueries = require('./custom-api/customQueries');
 
 module.exports = {
   integrations: {
@@ -7,9 +11,17 @@ module.exports = {
       location: '@vue-storefront/odoo-api/server',
       configuration: {
         odooBaseUrl,
-        graphqlBaseUrl
-      }
+        graphqlBaseUrl,
+        baseDomain,
+      },
+      extensions: (extensions) => [
+        ...extensions,
+        {
+          name: 'odoo-extension',
+          extendApiMethods,
+        },
+      ],
+      customQueries,
     }
   }
 };
-

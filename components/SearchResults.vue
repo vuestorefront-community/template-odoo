@@ -28,8 +28,8 @@
                 <SfMenuItem
                   :label="category.label"
                   :link="uiHelper.getCatLinkForSearch(category)"
+                  icon="chevron_right"
                 >
-                  <template #mobile-nav-icon> &#8203; </template>
                 </SfMenuItem>
               </SfListItem>
             </SfList>
@@ -46,11 +46,7 @@
                 <template #mobile-nav-icon> &#8203; </template>
               </SfMenuItem>
             </template>
-            <SfScrollable
-              class="results--desktop desktop-only"
-              show-text=""
-              hide-text=""
-            >
+            <div class="results--desktop desktop-only">
               <div class="results-listing">
                 <SfProductCard
                   v-for="(product, index) in products"
@@ -65,7 +61,7 @@
                   image-tag="nuxt-img"
                   :score-rating="productGetters.getAverageRating(product)"
                   :reviews-count="7"
-                  :image="$image(productGetters.getCoverImage(product))"
+                  :image="$image(productGetters.getCoverImage(product), 216, 288, productGetters.getImageFilename(product))"
                   :alt="productGetters.getName(product)"
                   :title="productGetters.getName(product)"
                   :link="localePath(goToProduct(product))"
@@ -73,7 +69,15 @@
                   @click="$emit('close')"
                 />
               </div>
-            </SfScrollable>
+              <div class="sf-button--text">
+                <SfButton
+                  class="sf-button--text custom__text"
+                  @click="$emit('close')"
+                >
+                  {{ $t('See all results') }}
+                </SfButton>
+              </div>
+            </div>
             <div class="results--mobile smartphone-only">
               <SfProductCard
                 v-for="(product, index) in products"
@@ -88,7 +92,7 @@
                 "
                 :score-rating="productGetters.getAverageRating(product)"
                 :reviews-count="7"
-                :image="$image(productGetters.getCoverImage(product))"
+                :image="$image(productGetters.getCoverImage(product), 216, 288, productGetters.getImageFilename(product))"
                 :alt="productGetters.getName(product)"
                 :title="productGetters.getName(product)"
                 :link="localePath(goToProduct(product))"
@@ -97,6 +101,12 @@
             </div>
           </SfMegaMenuColumn>
           <div class="action-buttons smartphone-only">
+            <SfButton
+              class="action-buttons__button color-secondary mb-4"
+              @click="$emit('close')"
+            >
+              {{ $t('See all results') }}
+            </SfButton>
             <SfButton
               class="action-buttons__button color-light"
               @click="$emit('close')"
@@ -160,16 +170,16 @@ export default {
     SfScrollable,
     SfMenuItem,
     SfButton,
-    SfImage
+    SfImage,
   },
   props: {
     visible: {
       type: Boolean,
-      default: false
+      default: false,
     },
     result: {
-      type: Object
-    }
+      type: Object,
+    },
   },
   watch: {
     $route() {
@@ -186,7 +196,7 @@ export default {
 
     const goToProduct = (product) => {
       return `/p/${productGetters.getId(product)}/${productGetters.getSlug(
-        product
+        product,
       )}`;
     };
     watch(
@@ -199,7 +209,7 @@ export default {
           document.body.classList.remove('no-scroll');
           emit('removeSearchResults');
         }
-      }
+      },
     );
     return {
       addItemToWishlist,
@@ -209,9 +219,9 @@ export default {
       categoryGetters,
       productGetters,
       products,
-      categories
+      categories,
     };
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -255,7 +265,7 @@ export default {
 }
 .results {
   &--desktop {
-    --scrollable-max-height: 35vh;
+    // --scrollable-max-height: 35vh;
   }
   &--mobile {
     display: flex;
@@ -274,7 +284,7 @@ export default {
   background: var(--c-white);
   width: 100%;
   &__button {
-    width: calc(100% - 32px);
+    width: 100%;
   }
 }
 .results-listing {
@@ -288,6 +298,13 @@ export default {
     margin: var(--spacer-2xs) 0;
   }
 }
+.custom__text {
+  color: #0468db;
+  margin-top: 40px;
+}
+.custom__text:hover {
+  color: #5ece7b;
+}
 .before-results {
   box-sizing: border-box;
   padding: var(--spacer-base) var(--spacer-sm) var(--spacer-2xl);
@@ -295,6 +312,7 @@ export default {
   text-align: center;
   @include for-desktop {
     padding: 0;
+    height: 100vh;
   }
   &__picture {
     --image-width: 230px;

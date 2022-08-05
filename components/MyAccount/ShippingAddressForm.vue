@@ -6,9 +6,9 @@
       @submit.prevent="handleSubmit(submitForm)"
     >
       <ValidationProvider
+        v-slot="{ errors }"
         name="firstName"
         rules="required|min:2"
-        v-slot="{ errors }"
         slim
       >
         <SfInput
@@ -18,13 +18,13 @@
           class="form__element"
           required
           :valid="!errors[0]"
-          :errorMessage="errors[0]"
+          :error-message="errors[0]"
         />
       </ValidationProvider>
       <ValidationProvider
+        v-slot="{ errors }"
         name="streetName"
         rules="required|min:2"
-        v-slot="{ errors }"
         slim
       >
         <SfInput
@@ -34,14 +34,14 @@
           class="form__element"
           required
           :valid="!errors[0]"
-          :errorMessage="errors[0]"
+          :error-message="errors[0]"
         />
       </ValidationProvider>
 
       <ValidationProvider
+        v-slot="{ errors }"
         name="city"
         rules="required|min:2"
-        v-slot="{ errors }"
         slim
       >
         <SfInput
@@ -51,13 +51,13 @@
           class="form__element form__element--half"
           required
           :valid="!errors[0]"
-          :errorMessage="errors[0]"
+          :error-message="errors[0]"
         />
       </ValidationProvider>
       <ValidationProvider
+        v-slot="{ errors }"
         name="zipCode"
         rules="required|min:2"
-        v-slot="{ errors }"
         slim
       >
         <SfInput
@@ -67,13 +67,13 @@
           class="form__element form__element--half form__element--half-even"
           required
           :valid="!errors[0]"
-          :errorMessage="errors[0]"
+          :error-message="errors[0]"
         />
       </ValidationProvider>
       <ValidationProvider
+        v-slot="{ errors }"
         name="country"
         rules="required"
-        v-slot="{ errors }"
         slim
       >
         <SfSelect
@@ -86,7 +86,7 @@
           "
           required
           :valid="!errors[0]"
-          :errorMessage="errors[0]"
+          :error-message="errors[0]"
         >
           <SfSelectOption
             v-for="countryOption in countries"
@@ -99,9 +99,9 @@
       </ValidationProvider>
 
       <ValidationProvider
+        v-slot="{ errors }"
         name="state"
         rules="required"
-        v-slot="{ errors }"
         slim
       >
         <SfSelect
@@ -115,7 +115,7 @@
           "
           required
           :valid="!errors[0]"
-          :errorMessage="errors[0]"
+          :error-message="errors[0]"
         >
           <SfSelectOption
             v-for="countryStateOption in countryStates"
@@ -128,9 +128,9 @@
       </ValidationProvider>
 
       <ValidationProvider
+        v-slot="{ errors }"
         name="phone"
         rules="required|digits:9"
-        v-slot="{ errors }"
         slim
       >
         <SfInput
@@ -140,11 +140,14 @@
           class="form__element form__element--half"
           required
           :valid="!errors[0]"
-          :errorMessage="errors[0]"
+          :error-message="errors[0]"
         />
       </ValidationProvider>
-      <SfButton class="form__button" :disabled="invalid">
-        {{ isNew ? 'Add the address' : 'Update the address' }}
+      <SfButton
+        class="form__button"
+        :disabled="invalid"
+      >
+        {{ isNew ? "Add the address" : "Update the address" }}
       </SfButton>
     </form>
   </ValidationObserver>
@@ -154,13 +157,13 @@
 import { SfInput, SfButton, SfSelect, SfCheckbox } from '@storefront-ui/vue';
 import { useCountrySearch } from '@vue-storefront/odoo';
 import { required, min, digits } from 'vee-validate/dist/rules';
-import { watch } from '@nuxtjs/composition-api';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
 import {
   reactive,
+  watch,
   onBeforeMount,
   defineComponent
-} from '@nuxtjs/composition-api';
+} from '@vue/composition-api';
 extend('required', { ...required, message: 'This field is required' });
 extend('min', {
   ...min,
@@ -192,19 +195,15 @@ export default defineComponent({
     }
   },
   setup(props, { emit }) {
-    const {
-      search,
-      searchCountryStates,
-      countries,
-      countryStates
-    } = useCountrySearch('my-account-shipping');
+    const { search, searchCountryStates, countries, countryStates } =
+      useCountrySearch('my-account-shipping');
 
     const form = reactive({
       name: props.address.name,
       street: props.address.street,
       city: props.address.city,
-      state: { id: String(props.address.state.id) },
-      country: { id: String(props.address.country.id) },
+      state: { id: String(props.address?.state?.id) },
+      country: { id: String(props.address?.country?.id) },
       zip: props.address.zip,
       phone: props.address.phone,
       ...(props.isNew ? {} : { id: props.address.id })

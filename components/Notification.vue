@@ -11,7 +11,7 @@
       visible
     >
       <template #icon v-if="notification.icon">
-        <SfIcon :icon="notification.icon" color="white"/>
+        <SfIcon :icon="notification.icon" color="white" />
       </template>
     </SfNotification>
   </transition-group>
@@ -25,15 +25,15 @@ export default {
   name: 'Notification',
   components: {
     SfNotification,
-    SfIcon
+    SfIcon,
   },
-  setup () {
+  setup() {
     const { notifications } = useUiNotification();
 
     return {
-      notifications
+      notifications,
     };
-  }
+  },
 };
 </script>
 

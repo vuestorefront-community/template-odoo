@@ -28,7 +28,7 @@
           <SfImage
             :width="256"
             :height="176"
-            :src="$image(cartGetters.getItemImage(product))"
+            :image="$image(cartGetters.getItemImage(product), 256, 176, cartGetters.getItemImageFilename(product))"
             :alt="cartGetters.getItemName(product)"
           />
         </SfTableData>
@@ -71,7 +71,7 @@
             :value="
               $n(
                 totals.special > 0 ? totals.special : totals.subtotal,
-                'currency'
+                'currency',
               )
             "
             class="sf-property--full-width property"
@@ -83,10 +83,7 @@
         <SfProperty
           name="Total price"
           :value="$n(totals.total, 'currency')"
-          class="
-            sf-property--full-width sf-property--large
-            summary__property-total
-          "
+          class="sf-property--full-width sf-property--large summary__property-total"
         />
 
         <SfHeading
@@ -192,18 +189,18 @@ import {
   SfProperty,
   SfAccordion,
   SfLink,
-  SfRadio
+  SfRadio,
 } from '@storefront-ui/vue';
 import { onSSR } from '@vue-storefront/core';
 import { useUiHelpers } from '~/composables';
 
-import { ref, computed } from '@nuxtjs/composition-api';
+import { ref, computed, watch } from '@nuxtjs/composition-api';
 import {
   useMakeOrder,
   useCart,
   cartGetters,
   orderGetters,
-  usePayment
+  usePayment,
 } from '@vue-storefront/odoo';
 
 export default {
@@ -230,10 +227,13 @@ export default {
     WireTransferPaymentProvider: () =>
       import('~/components/Checkout/WireTransferPaymentProvider'),
     AbstractPaymentObserver: () =>
-      import('~/components/Checkout/AbstractPaymentObserver')
+      import('~/components/Checkout/AbstractPaymentObserver'),
   },
   setup(props, context) {
     const { cart, load, setCart } = useCart();
+    const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
+    if (totalItems.value === 0) context.root.$router.push('/cart');
+
     const { providerList, getPaymentProviderList } = usePayment();
     const { order, make, loading } = useMakeOrder();
     const th = useUiHelpers();
@@ -258,16 +258,23 @@ export default {
 
       const thankYouPath = {
         name: 'thank-you',
-        query: { order: orderGetters.getId(order.value) }
+        query: { order: orderGetters.getId(order.value) },
       };
       context.root.$router.push(context.root.localePath(thankYouPath));
       setCart(null);
     };
 
+    watch(
+      () => totalItems.value,
+      () => {
+        if (totalItems.value === 0) context.root.$router.push('/cart');
+      },
+    );
+
     const providerPaymentHandler = () => {};
 
     const providerListHasMoreThanOne = computed(
-      () => providerList.value.length > 1
+      () => providerList.value.length > 1,
     );
 
     return {
@@ -284,9 +291,9 @@ export default {
       selectedProvider,
       providerListHasMoreThanOne,
       providerPaymentHandler,
-      getComponentProviderByName: th.getComponentProviderByName
+      getComponentProviderByName: th.getComponentProviderByName,
     };
-  }
+  },
 };
 </script>
 

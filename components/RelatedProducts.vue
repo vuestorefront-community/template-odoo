@@ -60,29 +60,29 @@ import {
   SfCarousel,
   SfProductCard,
   SfSection,
-  SfLoader
-} from '@storefront-ui/vue';
+  SfLoader,
+} from "@storefront-ui/vue";
 import {
   productGetters,
   useWishlist,
   wishlistGetters,
-  useCart
-} from '@vue-storefront/odoo';
-import { computed } from '@vue/composition-api';
-import { addBasePath } from '@vue-storefront/core';
+  useCart,
+} from "@vue-storefront/odoo";
+import { computed } from "@vue/composition-api";
+import { addBasePath } from "@vue-storefront/core";
 
 export default {
-  name: 'RelatedProducts',
+  name: "RelatedProducts",
   components: {
     SfCarousel,
     SfProductCard,
     SfSection,
-    SfLoader
+    SfLoader,
   },
   props: {
     title: String,
     products: Array,
-    loading: Boolean
+    loading: Boolean,
   },
   setup() {
     const { addItem: addItemToCart, isInCart } = useCart();
@@ -90,7 +90,7 @@ export default {
       addItem: addItemToWishlist,
       isInWishlist,
       removeItem: removeItemFromWishlist,
-      wishlist
+      wishlist,
     } = useWishlist();
     const removeProductFromWishlist = (productItem) => {
       const productsInWhishlist = computed(() =>
@@ -108,9 +108,9 @@ export default {
       removeProductFromWishlist,
       addItemToCart,
       isInCart,
-      addBasePath
+      addBasePath,
     };
-  }
+  },
 };
 </script>
 

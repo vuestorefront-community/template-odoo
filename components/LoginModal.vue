@@ -10,19 +10,32 @@
     </template>
     <transition name="sf-fade" mode="out-in">
       <div v-if="isLogin">
-        <p class="reset-pass-text" v-show="isForgottenPassword">
-          {{
-            $t(
-              'Enter your email to receive instructions on how to reset your password'
-            )
-          }}
-        </p>
+        <div v-show="isForgottenPassword">
+          <p class="sign-title">Reset your password.</p>
+          <p class="reset-pass-text">
+            {{
+              $t(
+                'Enter the mobile number or email address associated with your account, and we will send you a link to reset your password.',
+              )
+            }}
+          </p>
+        </div>
+        <div v-show="!isForgottenPassword">
+          <p class="sign-title">Log into your account!</p>
+          <p class="reset-pass-text">
+            {{
+              $t(
+                'View orders and update your details. Make your checkout fast and easy!',
+              )
+            }}
+          </p>
+        </div>
         <ValidationObserver v-slot="{ handleSubmit }" key="log-in">
           <form
             class="form"
             @submit.prevent="
               handleSubmit(
-                isForgottenPassword ? handlePasswordRecovery : handleLogin
+                isForgottenPassword ? handlePasswordRecovery : handleLogin,
               )
             "
           >
@@ -33,7 +46,7 @@
                 :valid="!errors[0]"
                 :errorMessage="errors[0]"
                 name="email"
-                label="Your email"
+                label="Your email addres"
                 class="form__element"
               />
             </ValidationProvider>
@@ -45,18 +58,38 @@
                   :valid="!errors[0]"
                   :errorMessage="errors[0]"
                   name="password"
-                  label="Password"
-                  type="password"
+                  :icon="{ icon: 'show_password' }"
+                  type:icon="text"
+                  label="Your password"
+                  @click:icon="
+                    {
+                      showPassword = !showPassword;
+                    }
+                  "
+                  :type="showPassword ? 'text' : 'password'"
                   class="form__element"
                 />
               </ValidationProvider>
-              <SfCheckbox
-                data-cy="login-checkbox-remember-me"
-                v-model="rememberMe"
-                name="remember-me"
-                label="Remember me"
-                class="form__element checkbox"
-              />
+              <div class="action">
+                <SfCheckbox
+                  data-cy="login-checkbox-remember-me"
+                  v-model="rememberMe"
+                  name="remember-me"
+                  label="Remember me"
+                  class="form__element checkbox"
+                />
+                <SfButton
+                  data-cy="login-btn_forgot-password"
+                  class="sf-button--text color-primary"
+                  @click="isForgottenPassword = !isForgottenPassword"
+                >
+                  {{
+                    isForgottenPassword
+                      ? $t('log in into your account?')
+                      : $t('I forgot my password?')
+                  }}
+                </SfButton>
+              </div>
             </template>
 
             <SfButton
@@ -67,30 +100,48 @@
             >
               <SfLoader :class="{ loader: loading }" :loading="loading">
                 <div>
-                  {{ isForgottenPassword ? $t('Reset password') : $t('Login') }}
+                  {{
+                    isForgottenPassword
+                      ? $t('Reset password')
+                      : $t('log in into your account?')
+                  }}
                 </div>
               </SfLoader>
             </SfButton>
+            <SfButton
+              data-cy="login-btn_submit"
+              class="sf-button--full-width sf-button--outline sf-button--se form__button mt-4"
+              @click="displayChoosedTrue(() => (isCreateAccount = true))"
+            >
+              <div>
+                {{ $t('create new account') }}
+              </div>
+            </SfButton>
           </form>
         </ValidationObserver>
-        <div class="action">
-          <SfButton
-            data-cy="login-btn_forgot-password"
-            class="sf-button--text"
-            @click="isForgottenPassword = !isForgottenPassword"
-          >
-            {{ isForgottenPassword ? $t('Login?') : $t('Forgotten password?') }}
-          </SfButton>
-        </div>
-        <div class="bottom">
-          <p class="bottom__paragraph">{{ $t('No account') }}</p>
-          <SfButton
-            data-cy="login-btn_sign-up"
-            class="sf-button--text"
-            @click="displayChoosedTrue(() => (isCreateAccount = true))"
-          >
-            {{ $t('Register today') }}
-          </SfButton>
+
+        <div class="bottom" v-show="!isForgottenPassword">
+          <p class="bottom-enjoy">Enjoy these perks with your free account!</p>
+          <div class="block lg:flex justify-around">
+            <div class="flex additional-account">
+              <SfIcon
+                icon="clock"
+                size="sm"
+                viewBox="0 0 12 12"
+                :coverage="1"
+              />
+              <p>Faster checkout</p>
+            </div>
+            <div class="flex additional-account">
+              <SfIcon
+                icon="heart"
+                size="sm"
+                viewBox="0 0 12 12"
+                :coverage="1"
+              />
+              <p>Manage your wishlist</p>
+            </div>
+          </div>
         </div>
       </div>
       <div v-else class="form">
@@ -100,17 +151,16 @@
             @submit.prevent="handleSubmit(handleRegister)"
             autocomplete="off"
           >
-            <ValidationProvider rules="required|email" v-slot="{ errors }">
-              <SfInput
-                data-cy="login-input_email"
-                v-model="form.email"
-                :valid="!errors[0]"
-                :errorMessage="errors[0]"
-                name="email"
-                label="Your email"
-                class="form__element"
-              />
-            </ValidationProvider>
+            <div>
+              <p class="sign-title">Create your new account!</p>
+              <p class="reset-pass-text">
+                {{
+                  $t(
+                    'Find your favorite products and brands. Add favorites and make your checkout fast and easy!',
+                  )
+                }}
+              </p>
+            </div>
             <ValidationProvider rules="required" v-slot="{ errors }">
               <SfInput
                 data-cy="login-input_name"
@@ -118,10 +168,22 @@
                 :valid="!errors[0]"
                 :errorMessage="errors[0]"
                 name="name"
-                label="Name"
+                label="Your name"
                 class="form__element"
               />
             </ValidationProvider>
+            <ValidationProvider rules="required|email" v-slot="{ errors }">
+              <SfInput
+                data-cy="login-input_email"
+                v-model="form.email"
+                :valid="!errors[0]"
+                :errorMessage="errors[0]"
+                name="Your email address"
+                label="Your email"
+                class="form__element"
+              />
+            </ValidationProvider>
+
             <ValidationProvider rules="required" v-slot="{ errors }">
               <SfInput
                 data-cy="login-input_password"
@@ -130,7 +192,13 @@
                 :errorMessage="errors[0]"
                 name="password"
                 label="Password"
-                type="password"
+                :icon="{ icon: 'show_password' }"
+                @click:icon="
+                  {
+                    showPassword = !showPassword;
+                  }
+                "
+                :type="showPassword ? 'text' : 'password'"
                 class="form__element"
               />
             </ValidationProvider>
@@ -138,14 +206,20 @@
               :rules="{ required: { allowFalse: false } }"
               v-slot="{ errors }"
             >
-              <SfCheckbox
-                v-model="createAccount"
-                :valid="!errors[0]"
-                :errorMessage="errors[0]"
-                name="create-account"
-                label="I want to create an account"
-                class="form__element"
-              />
+              <div class="term-declare">
+                <SfCheckbox
+                  v-model="createAccount"
+                  :valid="!errors[0]"
+                  :errorMessage="errors[0]"
+                  name="create-account"
+                  class="form__element"
+                />
+                <p>
+                  I declare that I have read and agree to the
+                  <span>Privacy Policy</span> and
+                  <span>Terms of Use.</span>
+                </p>
+              </div>
             </ValidationProvider>
 
             <SfButton
@@ -155,37 +229,60 @@
               :disabled="loading"
             >
               <SfLoader :class="{ loader: loading }" :loading="loading">
-                <div>{{ $t('Create an account') }}</div>
+                <div>{{ $t('Create new account') }}</div>
               </SfLoader>
+            </SfButton>
+            <SfButton
+              data-cy="login-btn_submit"
+              class="sf-button--full-width sf-button--outline sf-button--se form__button mt-4"
+              @click="displayChoosedTrue(() => (isLogin = true))"
+            >
+              <div>
+                {{ $t('login in to your account') }}
+              </div>
             </SfButton>
           </form>
         </ValidationObserver>
-        <div class="action">
-          {{ $t('or') }}
-          <SfButton
-            data-cy="login-btn_login-into-account"
-            class="sf-button--text"
-            @click="displayChoosedTrue(() => (isLogin = true))"
-          >
-            {{ $t('login in to your account') }}
-          </SfButton>
+        <div class="bottom">
+          <p class="bottom-enjoy">Enjoy these perks with your free account!</p>
+          <div class="block lg:flex justify-around">
+            <div class="flex additional-account">
+              <SfIcon
+                icon="clock"
+                size="sm"
+                viewBox="0 0 12 12"
+                :coverage="1"
+              />
+              <p>Faster checkout</p>
+            </div>
+            <div class="flex additional-account">
+              <SfIcon
+                icon="heart"
+                size="sm"
+                viewBox="0 0 12 12"
+                :coverage="1"
+              />
+              <p>Manage your wishlist</p>
+            </div>
+          </div>
         </div>
       </div>
     </transition>
   </SfModal>
 </template>
 <script>
-import { ref, watch } from '@nuxtjs/composition-api';
+import { ref, watch } from '@vue/composition-api';
 import { useUiNotification } from '~/composables';
 
 import {
   SfModal,
   SfInput,
+  SfIcon,
   SfButton,
   SfCheckbox,
   SfLoader,
   SfAlert,
-  SfBar
+  SfBar,
 } from '@storefront-ui/vue';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
 import { required, email } from 'vee-validate/dist/rules';
@@ -194,12 +291,12 @@ import { useUiState } from '~/composables';
 
 extend('email', {
   ...email,
-  message: 'Invalid email'
+  message: 'Invalid email',
 });
 
 extend('required', {
   ...required,
-  message: 'This field is required'
+  message: 'This field is required',
 });
 
 export default {
@@ -207,20 +304,22 @@ export default {
   components: {
     SfModal,
     SfInput,
+    SfIcon,
     SfButton,
     SfCheckbox,
     SfLoader,
     SfAlert,
     ValidationProvider,
     ValidationObserver,
-    SfBar
+    SfBar,
   },
   setup() {
     const { isLoginModalOpen, toggleLoginModal } = useUiState();
     const { send } = useUiNotification();
     const form = ref({});
 
-    const isLogin = ref(false);
+    const showPassword = ref(false);
+    const isLogin = ref(true);
     const isForgottenPassword = ref(false);
     const isCreateAccount = ref(true);
 
@@ -230,7 +329,7 @@ export default {
     const {
       sendResetPassword,
       errors: errorPassword,
-      resetPasswordErrors
+      resetPasswordErrors,
     } = usePassword();
 
     watch(isLoginModalOpen, () => {
@@ -254,11 +353,11 @@ export default {
       if (isForgottenPassword.value) {
         send({
           message: `Thanks! If there is an account registered with the ${form.value.email} email, you will find message with a password reset link in your inbox. If the message is not arriving in your inbox, try another email address you might’ve used to register.`,
-          type: 'info'
+          type: 'info',
         });
       }
 
-      if (user.value !== null) {
+      if (user.value !== undefined) {
         toggleLoginModal();
       }
     };
@@ -277,19 +376,26 @@ export default {
 
     const handleRegister = async () => handleForm(register, form.value)();
 
-    const handleLogin = async () =>
+    const handleLogin = async () => {
       handleForm(login, {
         username: form.value.email,
-        password: form.value.password
+        password: form.value.password,
       })();
+
+      send({
+        message: 'You are logged in. Welcome!',
+        type: 'success',
+      });
+    }
 
     const handlePasswordRecovery = async () =>
       handleForm(sendResetPassword, {
-        email: form.value.email
+        email: form.value.email,
       })();
 
     return {
       form,
+      showPassword,
       loading,
       errorPassword,
       isLogin,
@@ -304,52 +410,113 @@ export default {
       handleRegister,
       displayChoosedTrue,
       isCreateAccount,
-      showIsForgottenPassword
+      showIsForgottenPassword,
     };
-  }
+  },
 };
 </script>
 
 <style lang="scss" scoped>
+.term-declare {
+  display: flex;
+  margin-bottom: 24px;
+  p {
+    font-weight: 400;
+    margin-top: -5px;
+    margin-left: 5px;
+    span {
+      color: blue;
+    }
+  }
+}
+.sf-modal__bar {
+  font-size: 16px;
+  font-weight: 500;
+}
+.additional-account {
+  align-items: center;
+  @include for-mobile {
+    margin-top: 24px;
+  }
+  p {
+    font-size: 16px;
+    font-weight: 400;
+    margin-left: 12px;
+    margin-top: 3px;
+  }
+}
+.modal::v-deep .sf-modal {
+  &__container {
+    @include for-desktop {
+      width: 610px !important;
+    }
+    .sf-modal__content {
+      padding: 40px 79px;
+      @include for-mobile {
+        padding: 40px 16px;
+      }
+    }
+  }
+}
+
+.sf-button--outline {
+  border-color: black;
+}
+
+.sign-title {
+  font-size: 36px;
+  font-weight: 600;
+  text-align: center;
+  @include for-mobile {
+    font-size: 24px;
+    text-align: left;
+  }
+}
 .reset-pass-text {
   margin-bottom: var(--spacer-xl);
+  font-size: 16px;
+  font-weight: 400;
+  text-align: center;
+  margin-top: 20px;
+  @include for-mobile {
+    text-align: left;
+  }
 }
 
 .form {
   margin-top: var(--spacer-sm);
   &__element {
-    margin: 0 0 var(--spacer-xl) 0;
+    margin: 0 0 var(--spacer-md) 0;
   }
 }
 .action {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin: var(--spacer-xl) 0 var(--spacer-xl) 0;
+  justify-content: space-between;
+  margin: 0 0 var(--spacer-xl) 0;
   font: var(--font-weight--light) var(--font-size--base) / 1.6
     var(--font-family--secondary);
   & > * {
     margin: 0 0 0 var(--spacer-xs);
   }
 }
-.action {
-  margin: var(--spacer-xl) 0 var(--spacer-xl) 0;
-}
-.checkbox {
-  margin-bottom: var(--spacer-2xl);
-}
+
 .bottom {
-  text-align: center;
-  margin-bottom: var(--spacer-lg);
-  font-size: var(--h3-font-size);
-  font-weight: var(--font-weight--semibold);
-  font-family: var(--font-family--secondary);
-  &__paragraph {
-    color: var(--c-primary);
-    margin: 0 0 var(--spacer-base) 0;
-    @include for-desktop {
-      margin: 0;
-    }
+  @include for-desktop {
+    text-align: center;
+  }
+  .bottom-enjoy {
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: 24px;
+    margin-bottom: 16px;
+    color: #43464e;
+  }
+}
+::v-deep .sf-loader {
+  height: 19px;
+  .sf-loader__overlay {
+    background: #f1f2f3;
   }
 }
 </style>

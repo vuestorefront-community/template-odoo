@@ -150,7 +150,7 @@ export default {
     LocaleSelector,
     SearchResults,
     SfOverlay,
-    SfBadge
+    SfBadge,
   },
   directives: { clickOutside },
   setup(props, { root }) {
@@ -244,23 +244,23 @@ export default {
         if (shouldSearchBeOpened) {
           isSearchOpen.value = true;
         }
-      }
+      },
     );
 
     onSSR(async () => {
       await Promise.all([
         searchTopCategoryApi({
-          filter: { parent: true }
+          filter: { parent: true },
         }),
         loadUser(),
         loadWishlist(),
-        loadCart()
+        loadCart(),
       ]);
     });
 
     return {
       wishlistHasItens: computed(
-        () => wishlist.value?.wishlistItems.length > 0
+        () => wishlist.value?.wishlistItems.length > 0,
       ),
       filteredTopCategories,
       accountIcon,
@@ -277,13 +277,13 @@ export default {
       term,
       isMobile,
       handleSearch,
-      closeSearch
+      closeSearch,
     };
-  }
+  },
 };
 </script>
 
-<style lang='scss' scoped >
+<style lang="scss" scoped>
 .sf-header {
   --header-padding: var(--spacer-sm);
   @include for-desktop {
@@ -293,6 +293,7 @@ export default {
     height: 100%;
   }
 }
+
 .header-on-top {
   z-index: 2;
 }
@@ -307,5 +308,4 @@ export default {
   bottom: 40%;
   left: 40%;
 }
-</style>
 </style>

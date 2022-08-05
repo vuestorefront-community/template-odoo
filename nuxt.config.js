@@ -1,13 +1,12 @@
 import webpack from 'webpack';
 import { getRoutes } from './routes';
+import getAppRoutes from './sitemap';
+import redirects from './customRoutes/redirects.json';
 import hooks from './hooks';
-import redirect from './customRoutes/redirects.json';
-
-const isDev = process.env.NODE_ENV !== 'production';
+import theme from './themeConfig';
 
 export default {
   hooks,
-  redirect,
   server: {
     port: 3000,
     host: '0.0.0.0'
@@ -33,24 +32,6 @@ export default {
         type: 'image/x-icon',
         href: '/favicon.ico'
       },
-      {
-        rel: 'preconnect',
-        href: 'https://fonts.gstatic.com',
-        crossorigin: 'crossorigin'
-      },
-      {
-        rel: 'preload',
-        href:
-          'https://fonts.googleapis.com/css?family=Raleway:300,400,400i,500,600,700|Roboto:300,300i,400,400i,500,700&display=swap',
-        as: 'style'
-      },
-      {
-        rel: 'stylesheet',
-        href:
-          'https://fonts.googleapis.com/css?family=Raleway:300,400,400i,500,600,700|Roboto:300,300i,400,400i,500,700&display=swap',
-        media: 'print',
-        onload: 'this.media=\'all\''
-      }
     ]
   },
   router: {
@@ -60,16 +41,46 @@ export default {
     },
     middleware: ['checkout'],
   },
+  googleFonts: {
+    families: {
+      Roboto: true,
+      Montserrat: {
+        wght: [100, 200, 300, 400, 500, 600, 700, 800, 900]
+      },
+      Lato: {
+        wght: [100, 300, 400, 700, 900]
+      },
+      Raleway: {
+        wght: [100, 200, 300, 400, 500, 600, 700, 800, 900]
+      }
+    },
+    download: false,
+  },
   pwa: {
     meta: {
-      // eslint-disable-next-line camelcase
-      theme_color: '#fff'
+      name: 'VSF Odoo',
+      theme_color: '#fff',
+      lang: 'en',
+      description: 'VSF Odoo',
+      twitterCard: 'summary_large_image'
     },
     manifest: {
-      name: 'VSF Odoo ',
+      name: 'VSF Odoo',
+      description: 'VSF Odoo',
+      short_name: 'VSFOdoo',
       lang: 'en',
-      useWebmanifestExtension: false
-    }
+    },
+    icon: {
+      purpose: 'maskable',
+    },
+    workbox: {
+      cleanupOutdatedCaches: true,
+      preCaching:[
+        '/error/error.svg',
+        '/icons/*',
+        '/favicon.ico',
+      ],
+    },
   },
   device: {
     refreshOnResize: true
@@ -86,17 +97,12 @@ export default {
     '@nuxtjs/tailwindcss',
     '@nuxt/typescript-build',
     '@nuxtjs/style-resources',
+    '@nuxtjs/google-fonts',
     [
       '@vue-storefront/nuxt',
       {
         performance: {
           httpPush: true,
-          purgeCSS: {
-            enabled: false,
-            paths: [
-              '**/*.vue'
-            ]
-          }
         },
         // @core-development-only-start
         // @core-development-only-end
@@ -120,7 +126,11 @@ export default {
     ['@vue-storefront/odoo/nuxt', {}]
   ],
   publicRuntimeConfig: {
-    baseURL: process.env.PUBLIC_PATH || process.env.BASE_URL || 'https://vsfdemo.labs.odoogap.com/'
+    theme,
+    baseURL: process.env.BASE_URL && process.env.BASE_URL.slice(-1) == '/' ?
+              process.env.BASE_URL :
+              process.env.BASE_URL + '/' || 'https://vsfdemo.labs.odoogap.com/',
+    siteURL: process.env.SITE_URL || 'https://vsf.labs.odoogap.com/'
   },
   modules: [
     '@nuxtjs/pwa',
@@ -131,26 +141,49 @@ export default {
     'cookie-universal-nuxt',
     'vue-scrollto/nuxt',
     ['@vue-storefront/cache/nuxt', {
-      enabled: !isDev,
+      enabled: (process.env.REDIS_ENABLED === 'true') || false,
       invalidation: {
-          endpoint: '/cache-invalidate',
-          key: '0ead60c3-d118-40be-9519-d531462ddc60',
-          handlers: ['./helpers/cache/defaultHandler']
+        endpoint: '/cache-invalidate',
+        key: '0ead60c3-d118-40be-9519-d531462ddc60',
+        handlers: [
+          '@vue-storefront/cache/defaultHandler'
+        ]
       },
       driver: [
-          '@vue-storefront/redis-cache',
-          {
-              defaultTimeout: 86400,
-              redis: {
-                  host: process.env.REDIS_HOST,
-                  port: process.env.REDIS_PORT,
-                  password: process.env.REDIS_PASSWORD
-              }
-          }
+        '@vue-storefront/redis-cache',
+        {
+          defaultTimeout: 86400,
+          redis: {
+            host: process.env.REDIS_HOST || '127.0.0.1',
+            port: process.env.REDIS_PORT || 6379,
+            password: process.env.REDIS_PASSWORD || ''
+          },
+        }
       ]
-  }
-],
+    }],
+    // google tag manager
+    '@nuxtjs/gtm',
+    // sitemap generator
+    '@nuxtjs/sitemap',
+    // redirect
+    '@nuxtjs/redirect-module',
   ],
+
+  // google tag manager
+  gtm: {
+    id: process.env.GOOGLE_TAG_MANAGER_ID,
+    enabled: process.env.GOOGLE_TAG_MANAGER_ENABLED || true,
+    pageTracking: true,
+    pageViewEventName: 'PageView',
+    debug: process.env.NODE_ENV !== 'production',
+  },
+
+  // redirect
+  redirect: {
+    statusCode: 301,
+    rules: redirects,
+  },
+
   nuxtPrecompress: {
     enabled: true,
     report: false,
@@ -239,6 +272,27 @@ export default {
       cookieKey: 'vsf-locale'
     }
   },
+
+  // sitemap options
+  sitemap: {
+    hostname: process.env.SITE_URL || 'https://vsf.labs.odoogap.com/',
+    exclude: ['/checkout/**', '/checkout', '/cart', '/my-account', '/order-history'],
+    i18n: false,
+    cacheTime: 6000,
+    gzip: true,
+    defaults: {
+      changefreq: 'daily',
+      priority: 1,
+      lastmod: new Date()
+    },
+    routes: getAppRoutes,
+    filter: ({ routes }) => {
+      return routes.filter(route => {
+        return route.path?.toLowerCase() === route.path;
+      });
+    }
+  },
+
   styleResources: {
     scss: [
       require.resolve('@storefront-ui/shared/styles/_helpers.scss', {

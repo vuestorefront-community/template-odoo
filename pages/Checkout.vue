@@ -1,4 +1,3 @@
-
 <template>
   <div id="checkout">
     <div class="checkout">
@@ -26,40 +25,41 @@
 <script>
 import { SfSteps, SfButton } from '@storefront-ui/vue';
 import CartPreview from '~/components/Checkout/CartPreview';
-import { computed } from '@nuxtjs/composition-api';
+import { computed } from '@vue/composition-api';
 const STEPS = {
   shipping: 'Shipping',
   billing: 'Billing',
-  payment: 'Payment'
+  payment: 'Payment',
 };
 export default {
   name: 'Checkout',
   components: {
     SfButton,
     SfSteps,
-    CartPreview
+    CartPreview,
   },
   setup(props, context) {
     const currentStep = computed(() =>
-      context.root.$route.path.split('/').pop()
+      context.root.$route.path.split('/').pop(),
     );
     const currentStepIndex = computed(() =>
-      Object.keys(STEPS).findIndex((s) => s === currentStep.value)
+      Object.keys(STEPS).findIndex((s) => s === currentStep.value),
     );
-
     const isThankYou = computed(() => currentStep.value === 'thank-you');
     const handleStepClick = (stepIndex) => {
       const key = Object.keys(STEPS)[stepIndex];
-      context.root.$router.push(`/checkout/${key}`);
+      if (stepIndex <= currentStepIndex.value) {
+        context.root.$router.push(`/checkout/${key}`);
+      }
     };
     return {
       handleStepClick,
       STEPS,
       currentStepIndex,
       isThankYou,
-      currentStep
+      currentStep,
     };
-  }
+  },
 };
 </script>
 

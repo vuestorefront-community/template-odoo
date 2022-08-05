@@ -134,13 +134,13 @@
 
 <script>
 import { SfTabs, SfTable, SfButton, SfProperty } from '@storefront-ui/vue';
-import { computed, ref } from '@nuxtjs/composition-api';
+import { computed, ref } from '@vue/composition-api';
 import { useUserOrder, orderGetters } from '@vue-storefront/odoo';
 import { AgnosticOrderStatus } from '@vue-storefront/core';
 import { onSSR } from '@vue-storefront/core';
 
 export default {
-  name: 'PersonalDetails',
+  name: 'order-history',
   components: {
     SfTabs,
     SfTable,
