@@ -56,7 +56,7 @@ const useUiHelpers = (): any => {
 
     const sort = query.sort ? `?sort=${query.sort}` : '';
 
-    return `/c/${params.slug_1}/${category.slug}/${category.id}${sort}`;
+    return `/c/${params.slug_1}${category.slug}/${category.id}${sort}`;
   };
 
   const getCatLinkForSearch = (category: Category): string => {

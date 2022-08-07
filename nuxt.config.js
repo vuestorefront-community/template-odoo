@@ -127,10 +127,8 @@ export default {
   ],
   publicRuntimeConfig: {
     theme,
-    baseURL: process.env.BASE_URL && process.env.BASE_URL.slice(-1) == '/' ?
-              process.env.BASE_URL :
-              process.env.BASE_URL + '/' || 'https://vsfdemo.labs.odoogap.com/',
-    siteURL: process.env.SITE_URL || 'https://vsf.labs.odoogap.com/'
+    baseURL: process.env.BASE_URL || 'https://vsfdemo15.labs.odoogap.com/',
+    siteURL: process.env.SITE_URL || 'https://vsfdemo15.labs.odoogap.com/'
   },
   modules: [
     '@nuxtjs/pwa',

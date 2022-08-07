@@ -1,6 +1,6 @@
-const odooBaseUrl = 'https://vsfdemo.labs.odoogap.com/';
+const odooBaseUrl = 'https://vsfdemo15.labs.odoogap.com/';
 const graphqlBaseUrl = `${odooBaseUrl}graphql/vsf`;
-const baseDomain = process.env.BASE_DOMAIN || 'vsfdemo.labs.odoogap.com'
+const baseDomain = process.env.BASE_DOMAIN || 'vsfdemo15.labs.odoogap.com'
 
 const extendApiMethods = require('./custom-api/api');
 const customQueries = require('./custom-api/customQueries');
