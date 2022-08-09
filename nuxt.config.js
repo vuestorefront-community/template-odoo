@@ -219,6 +219,8 @@ export default {
     }
   },
   i18n: {
+    baseUrl: 'https://vsf.labs.odoogap.com/',
+    strategy: 'no_prefix',
     currency: 'USD',
     country: 'US',
     countries: [

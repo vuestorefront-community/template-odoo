@@ -1,5 +1,6 @@
 const gql = require('graphql-tag');
 const orderFragment = require('./fragments/orderFragment.ts');
+import productFragment from './fragments/productFragment';
 
 module.exports = {
   customCartLoad: ({ variables }) => ({
@@ -41,7 +42,10 @@ module.exports = {
       }
     `,
   }),
-
+  customGetProduct: ({variables}) => ({
+    query: gql`query ($slug: String) { product(slug: $slug) { ${productFragment} } }`,
+    variables
+  }),
   customRegister: ({ variables }) => ({
     variables,
     query: gql`

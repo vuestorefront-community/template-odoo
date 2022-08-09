@@ -231,7 +231,7 @@ import {
 } from '@vue-storefront/odoo';
 
 import { onSSR } from '@vue-storefront/core';
-
+import { useRoute } from "@nuxtjs/composition-api";
 import MobileStoreBanner from '~/components/MobileStoreBanner.vue';
 import LazyHydrate from 'vue-lazy-hydration';
 import { useUiState } from '~/composables';
@@ -242,6 +242,8 @@ export default {
   setup(props, { root }) {
     const qty = ref(1);
     const { id } = root.$route.params;
+    const { path } = useRoute().value;
+
     const { query } = root.$route;
     const { size, color } = root.$route.query;
     const configuration = reactive({ size, color });
@@ -249,7 +251,7 @@ export default {
       products,
       search,
       loading: productloading
-    } = useProduct(`products-${id}`);
+    } = useProduct(`products-${path}`);
     const { searchRealProduct, productVariants, realProduct, elementNames } =
       useProductVariant(query);
     const { products: relatedProducts, loading: relatedLoading } =
@@ -297,14 +299,16 @@ export default {
     );
 
     onSSR(async () => {
+      await search({
+        slug: path,
+        customQuery: { getProductTemplate: "customGetProduct" },
+      });
+
       await searchRealProduct({
-        productTemplateId: parseInt(id),
+        productTemplateId: products.value.id,
         combinationIds: Object.values(root.$route.query)
       });
-      await search({ id: parseInt(id) });
       addTags([{ prefix: CacheTagPrefix.Product, value: id }]);
-      // await searchRelatedProducts({ catId: [categories.value[0]], limit: 8 });
-      // await searchReviews({ productId: id });
     });
 
     const updateFilter = (filter) => {
