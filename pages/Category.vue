@@ -83,13 +83,7 @@
               :show-add-to-cart-button="true"
               :isInWishlist="isInWishlist({ product })"
               :isAddedToCart="isInCart({ product })"
-              :link="
-                localePath(
-                  `/p/${productGetters.getId(product)}/${productGetters.getSlug(
-                    product
-                  )}`
-                )
-              "
+              :link="productGetters.getSlug(product)"
               class="products__product-card"
               @click:wishlist="
                 isInWishlist({ product })
