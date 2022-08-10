@@ -31,13 +31,13 @@
   </div>
 </template>
 <script>
-import { SfButton, SfImage, SfHeading } from "@storefront-ui/vue";
+import { SfButton, SfImage, SfHeading } from '@storefront-ui/vue';
 export default {
-  name: "ErrorLayout",
+  name: 'ErrorLayout',
 
-  props: ["error"],
+  props: ['error'],
 
-  components: { SfButton, SfImage, SfHeading },
+  components: { SfButton, SfImage, SfHeading }
 };
 </script>
 <style lang="scss" scoped>

@@ -120,7 +120,7 @@ import {
   SfProperty,
   SfPrice,
   SfCollectedProduct,
-  SfImage,
+  SfImage
 } from '@storefront-ui/vue';
 import { computed } from '@nuxtjs/composition-api';
 import { useCart, useUser, cartGetters } from '@vue-storefront/odoo';
@@ -137,7 +137,7 @@ export default {
     SfProperty,
     SfPrice,
     SfCollectedProduct,
-    SfImage,
+    SfImage
   },
   setup() {
     const { isCartSidebarOpen, toggleCartSidebar } = useUiState();
@@ -160,9 +160,9 @@ export default {
       toggleCartSidebar,
       totals,
       totalItems,
-      cartGetters,
+      cartGetters
     };
-  },
+  }
 };
 </script>
 

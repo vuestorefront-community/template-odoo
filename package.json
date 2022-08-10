@@ -11,7 +11,6 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "start": "nuxt start",
-    "precommit": "lint-staged",
     "update:check": "ncu",
     "update:update": "ncu -u",
     "test": "jest"

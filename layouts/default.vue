@@ -10,7 +10,6 @@
     <div id="layout">
       <nuxt :key="$route.fullPath" />
 
-
       <MobileMenuSidebar />
       <LazyHydrate when-visible>
         <BottomNavigation />
@@ -49,8 +48,8 @@ export default {
     CartSidebar,
     WishlistSidebar,
     LoginModal,
-    Notification,
-  },
+    Notification
+  }
 };
 </script>
 

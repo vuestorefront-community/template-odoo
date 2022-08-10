@@ -19,7 +19,7 @@ const useUiHelpers = (): any => {
     if (query) {
       Object.keys(query).forEach((filterKey) => {
         if (![...queryParamsNotFilters, 'price'].includes(filterKey)) {
-          filters.push(query[filterKey]);
+          filters.push(Number(query[filterKey]));
         }
       });
 
@@ -35,7 +35,6 @@ const useUiHelpers = (): any => {
     const page = query?.page || 1;
 
     return {
-
       fetchCategory: true,
       categoryParams: {
         slug: path === '/' ? null : path
@@ -46,8 +45,8 @@ const useUiHelpers = (): any => {
         search: '',
         sort: { [sort[0]]: sort[1] },
         filter: {
-          minPrice: price?.[0] || null,
-          maxPrice: price?.[1] || null,
+          minPrice: Number(price?.[0]) || null,
+          maxPrice: Number(price?.[1]) || null,
           attributeValueId: filters,
           categorySlug: path === '/' ? null : path
         }

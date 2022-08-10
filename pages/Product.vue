@@ -231,7 +231,7 @@ import {
 } from '@vue-storefront/odoo';
 
 import { onSSR } from '@vue-storefront/core';
-import { useRoute } from "@nuxtjs/composition-api";
+import { useRoute } from '@nuxtjs/composition-api';
 import MobileStoreBanner from '~/components/MobileStoreBanner.vue';
 import LazyHydrate from 'vue-lazy-hydration';
 import { useUiState } from '~/composables';
@@ -301,7 +301,7 @@ export default {
     onSSR(async () => {
       await search({
         slug: path,
-        customQuery: { getProductTemplate: "customGetProduct" },
+        customQuery: { getProductTemplate: 'customGetProduct' }
       });
 
       await searchRealProduct({
@@ -322,12 +322,12 @@ export default {
       const params = {
         product: product.value,
         quantity: 1
-      }
+      };
 
       await addItem(params);
 
       toggleCartSidebar();
-    }
+    };
 
     const allOptionsSelected = computed(() => {
       let keys = [];

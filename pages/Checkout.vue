@@ -29,21 +29,21 @@ import { computed } from '@vue/composition-api';
 const STEPS = {
   shipping: 'Shipping',
   billing: 'Billing',
-  payment: 'Payment',
+  payment: 'Payment'
 };
 export default {
   name: 'Checkout',
   components: {
     SfButton,
     SfSteps,
-    CartPreview,
+    CartPreview
   },
   setup(props, context) {
     const currentStep = computed(() =>
-      context.root.$route.path.split('/').pop(),
+      context.root.$route.path.split('/').pop()
     );
     const currentStepIndex = computed(() =>
-      Object.keys(STEPS).findIndex((s) => s === currentStep.value),
+      Object.keys(STEPS).findIndex((s) => s === currentStep.value)
     );
     const isThankYou = computed(() => currentStep.value === 'thank-you');
     const handleStepClick = (stepIndex) => {
@@ -57,9 +57,9 @@ export default {
       STEPS,
       currentStepIndex,
       isThankYou,
-      currentStep,
+      currentStep
     };
-  },
+  }
 };
 </script>
 
