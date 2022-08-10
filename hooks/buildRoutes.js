@@ -37,11 +37,11 @@ export default async () => {
 
   await fsExtra.outputJson('customRoutes/products.json', removeLastItemFromArray(data.data.products.products));
   await fsExtra.outputJson('customRoutes/categories.json', categoriesData.data.categories.categories
-  .filter(item => item.slug && item.slug !== 'false')
-  .map(item => ({
-    name: item.name,
-    path: item.slug
-  })));
+    .filter(item => item.slug && item.slug !== 'false')
+    .map(item => ({
+      name: `${item.name}-${item.id}`,
+      path: item.slug
+    })));
 
   consola.success(chalk.bold('ODOO'), ' - Finish build custom routes!');
 };

@@ -109,11 +109,7 @@ export default defineComponent({
       facetGetters.getCategoryTree(result.value)
     );
 
-    const filteredTopCategories = computed(() =>
-      topCategories.value.filter(
-        (cat) => cat.name === 'WOMEN' || cat.name === 'MEN'
-      )
-    );
+    const filteredTopCategories = computed(() => topCategories.value);
 
     const openChilds = async (menuName) => {
       currentParentMenu.value = menuName;

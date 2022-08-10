@@ -35,35 +35,32 @@ const useUiHelpers = (): any => {
     const page = query?.page || 1;
 
     return {
-      search: '',
-      sort: { [sort[0]]: sort[1] },
-      pageSize,
-      currentPage: page,
-      minPrice: price?.[0] || null,
-      maxPrice: price?.[1] || null,
+
       fetchCategory: true,
       categoryParams: {
-        categorySlug: path === '/' ? null : path,
+        slug: path === '/' ? null : path
       },
-      filter: {
-        parent: false,
-        attributeValueId: filters
+      productParams: {
+        pageSize,
+        currentPage: page,
+        search: '',
+        sort: { [sort[0]]: sort[1] },
+        filter: {
+          minPrice: price?.[0] || null,
+          maxPrice: price?.[1] || null,
+          attributeValueId: filters,
+          categorySlug: path === '/' ? null : path
+        }
       }
     };
   };
 
   const getCatLink = (category: Category): string => {
-    const { params, query } = route.value;
-
-    const sort = query.sort ? `?sort=${query.sort}` : '';
-
-    return `/c/${params.slug_1}${category.slug}/${category.id}${sort}`;
+    return category.slug;
   };
 
   const getCatLinkForSearch = (category: Category): string => {
-    const splitedSlug = category.slug.split('-');
-
-    return `/c/${splitedSlug[0]}/${category.slug}/${category.id}`;
+    return category.slug;
   };
 
   const changeSorting = (sort: string) => {
