@@ -45,6 +45,10 @@ module.exports = {
   customGetProduct: ({variables}) => ({
     query: gql`query ($slug: String) { product(slug: $slug) { ${productFragment} } }`,
     variables
+  }),  
+  customGetCategory: ({variables}) => ({
+    query: gql`query ($slug: String) { product(slug: $slug) { ${productFragment} } }`,
+    variables
   }),
   customRegister: ({ variables }) => ({
     variables,

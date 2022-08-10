@@ -11,7 +11,7 @@ const queryParamsNotFilters = ['page', 'sort', 'itemsPerPage'];
 const useUiHelpers = (): any => {
   const route = useRoute();
   const router = useRouter();
-  const { params, query } = route.value;
+  const { params, query, path } = route.value;
 
   const getFacetsFromURL = () : ParamsFromUrl => {
 
@@ -33,19 +33,20 @@ const useUiHelpers = (): any => {
     const sort = '1' as any;
     query?.sort?.split(',') || [];
     const page = query?.page || 1;
-    const categoryId = parseInt(params.slug_3) || parseInt(params.slug_2);
 
     return {
       search: '',
       sort: { [sort[0]]: sort[1] },
       pageSize,
-      categorySlug: params.slug_1,
       currentPage: page,
       minPrice: price?.[0] || null,
       maxPrice: price?.[1] || null,
       fetchCategory: true,
+      categoryParams: {
+        categorySlug: path === '/' ? null : path,
+      },
       filter: {
-        categoryId,
+        parent: false,
         attributeValueId: filters
       }
     };

@@ -1,5 +1,6 @@
 const path = require('path');
 import productRoutes from './customRoutes/products.json'
+import categoryRoutes from './customRoutes/categories.json'
 export function getRoutes(themeDir = __dirname) {
   return [
     {
@@ -12,11 +13,11 @@ export function getRoutes(themeDir = __dirname) {
       path: item.path,
       component: path.resolve(themeDir, 'pages/Product.vue')
     })),
-    {
-      name: 'category',
-      path: '/c/:slug_1/:slug_2?/:slug_3?/:slug_4?/:slug_5?',
-      component: path.resolve(themeDir, 'pages/Category.vue'),
-    },
+    ...categoryRoutes.map(item => ({
+      name: item.name,
+      path: item.path,
+      component: path.resolve(themeDir, 'pages/Category.vue')
+    })),
     {
       name: 'cart',
       path: '/cart',
