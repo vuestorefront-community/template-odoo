@@ -12,10 +12,6 @@ const headers = { headers: {
   'resquest-host': integrations.odoo.configuration.baseDomain
 }};
 
-const cleanPath = (path) => {
-  return path.replace('ø', 'o');
-};
-
 const fetchProducts = async () => {
   return await axios.post(graphqlBaseUrl, { query: `${queries.products}` }, headers);
 };
@@ -40,7 +36,12 @@ export default async () => {
   const { data: categoriesData } = await fetchCategories();
 
   await fsExtra.outputJson('customRoutes/products.json', removeLastItemFromArray(data.data.products.products));
-  await fsExtra.outputJson('customRoutes/categories.json', categoriesData.data.categories.categories.map(item => cleanPath(item.slug)));
+  await fsExtra.outputJson('customRoutes/categories.json', categoriesData.data.categories.categories
+  .filter(item => item.slug && item.slug !== 'false')
+  .map(item => ({
+    name: item.name,
+    path: item.slug
+  })));
 
   consola.success(chalk.bold('ODOO'), ' - Finish build custom routes!');
 };

@@ -318,7 +318,7 @@ export default defineComponent({
       })
     );
 
-    onSSR(async () => {
+onSSR(async () => {
       const params = {
         ...th.getFacetsFromURL()
       };

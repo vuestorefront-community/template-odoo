@@ -14,6 +14,7 @@ query {
   categories (pageSize: 10000) {
     categories {
       id
+      name
       slug
       parent {
         id
