@@ -68,7 +68,14 @@
               :imageWidth="216"
               :imageHeight="288"
               :title="productGetters.getName(product)"
-              :image="$image(productGetters.getCoverImage(product), 216, 288, productGetters.getImageFilename(product))"
+              :image="
+                $image(
+                  productGetters.getCoverImage(product),
+                  216,
+                  288,
+                  productGetters.getImageFilename(product)
+                )
+              "
               :nuxtImgConfig="{ fit: 'cover' }"
               image-tag="nuxt-img"
               :regular-price="
@@ -111,7 +118,14 @@
               image-tag="nuxt-img"
               :title="productGetters.getName(product)"
               :description="productGetters.getDescription(product)"
-              :image="$image(productGetters.getCoverImage(product), 140, 200, productGetters.getImageFilename(product))"
+              :image="
+                $image(
+                  productGetters.getCoverImage(product),
+                  140,
+                  200,
+                  productGetters.getImageFilename(product)
+                )
+              "
               :regular-price="
                 $n(productGetters.getPrice(product).regular, 'currency')
               "
@@ -286,8 +300,7 @@ export default defineComponent({
     );
 
     const currentCategory = computed(() => {
-      const categories = result.value?.data?.categories || [];
-      return categories[0] || {};
+      return result.value?.data.category || [];
     });
 
     const currentCategoryNameForAccordion = computed(() => {
@@ -299,10 +312,7 @@ export default defineComponent({
     });
 
     const currentRootCategory = computed(() => {
-      const categories = result.value?.data?.categories || [];
-      const category = categories.find((category) => {
-        return category.slug === params.slug_1;
-      });
+      const category = result.value?.data?.category;
 
       const categoryFromParent = currentCategory.value?.parent?.parent;
 
@@ -318,7 +328,7 @@ export default defineComponent({
       })
     );
 
-onSSR(async () => {
+    onSSR(async () => {
       const params = {
         ...th.getFacetsFromURL()
       };

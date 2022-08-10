@@ -150,7 +150,7 @@ export default {
     LocaleSelector,
     SearchResults,
     SfOverlay,
-    SfBadge,
+    SfBadge
   },
   directives: { clickOutside },
   setup(props, { root }) {
@@ -199,16 +199,22 @@ export default {
       if (term.value.length < 2) return;
 
       await searchProductApi({
-        search: term.value,
-        pageSize: 12,
-        fetchCategory: true
+        fetchCategories: true,
+        productParams: {
+          search: term.value,
+          pageSize: 12
+        },
+        categoryParams: {
+          search: term.value
+        }
       });
 
       formatedResult.value = {
         products: result?.value?.data?.products,
-        categories: result?.value?.data?.categories
-          .filter((category) => category.childs === null)
-          .map((category) => categoryGetters.getTree(category))
+        categories:
+          result?.value?.data?.categories
+            ?.filter((category) => category.childs === null)
+            ?.map((category) => categoryGetters.getTree(category)) || []
       };
     }, 100);
     const closeOrFocusSearchBar = () => {
@@ -228,7 +234,7 @@ export default {
     };
 
     const filteredTopCategories = computed(() =>
-      topCategories.value.filter(
+      topCategories.value?.filter(
         (cat) => cat.name === 'WOMEN' || cat.name === 'MEN'
       )
     );
@@ -244,23 +250,23 @@ export default {
         if (shouldSearchBeOpened) {
           isSearchOpen.value = true;
         }
-      },
+      }
     );
 
     onSSR(async () => {
       await Promise.all([
         searchTopCategoryApi({
-          filter: { parent: true },
+          filter: { parent: true }
         }),
         loadUser(),
         loadWishlist(),
-        loadCart(),
+        loadCart()
       ]);
     });
 
     return {
       wishlistHasItens: computed(
-        () => wishlist.value?.wishlistItems.length > 0,
+        () => wishlist.value?.wishlistItems.length > 0
       ),
       filteredTopCategories,
       accountIcon,
@@ -277,9 +283,9 @@ export default {
       term,
       isMobile,
       handleSearch,
-      closeSearch,
+      closeSearch
     };
-  },
+  }
 };
 </script>
 
