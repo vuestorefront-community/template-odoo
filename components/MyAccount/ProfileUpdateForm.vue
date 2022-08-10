@@ -1,9 +1,6 @@
 <template>
   <ValidationObserver>
-    <form
-      class="form"
-      @submit.prevent="submitForm()"
-    >
+    <form class="form" @submit.prevent="submitForm()">
       <h1>My profile</h1>
 
       <div class="form__horizontal">
@@ -45,7 +42,7 @@
         @close="requirePassword = false"
       >
         {{
-          $t("Please type your current password to change your email address.")
+          $t('Please type your current password to change your email address.')
         }}
         <SfInput
           v-model="currentPassword"
@@ -57,15 +54,12 @@
           style="margin-top: 10px"
           @keypress.enter="submitForm()"
         />
-        <SfButton
-          class="form__button"
-          type="submit"
-        >
-          {{ $t("Update personal data") }}
+        <SfButton class="form__button" type="submit">
+          {{ $t('Update personal data') }}
         </SfButton>
       </SfModal>
       <SfButton class="form__button">
-        {{ $t("Update personal data") }}
+        {{ $t('Update personal data') }}
       </SfButton>
     </form>
   </ValidationObserver>
@@ -94,7 +88,7 @@ export default {
     }
   },
   emits: ['submit'],
-  setup(props, { emit }) {
+  setup() {
     const { send } = useUiNotification();
     const { user, updateUser } = useUser();
 
@@ -118,13 +112,12 @@ export default {
         form.value = resetForm();
         requirePassword.value = false;
         currentPassword.value = '';
-      }
-      catch(e) {
+      } catch (e) {
         form.value = resetForm();
         requirePassword.value = false;
         currentPassword.value = '';
 
-        send({ message: error?.value, type: 'danger' });
+        send({ message: e?.value, type: 'danger' });
       }
     };
 

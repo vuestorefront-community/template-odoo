@@ -16,7 +16,11 @@
             <div v-for="item in summary" :key="item.name" class="mb-3 px-7">
               <SfProperty
                 :name="item.name"
-                class="sf-property--full-width sf-property--large my-cart__total-price property-data"
+                class="
+                  sf-property--full-width sf-property--large
+                  my-cart__total-price
+                  property-data
+                "
               >
                 <template #value>
                   <span class="card__text" v-if="item.name === 'Products'">
@@ -102,7 +106,14 @@
               <SfCollectedProduct
                 v-for="product in products"
                 :key="cartGetters.getItemSku(product)"
-                :image="$image(cartGetters.getItemImage(product), 140, 236, cartGetters.getItemImageFilename(product))"
+                :image="
+                  $image(
+                    cartGetters.getItemImage(product),
+                    140,
+                    236,
+                    cartGetters.getItemImageFilename(product)
+                  )
+                "
                 :title="cartGetters.getItemName(product)"
                 :regular-price="
                   $n(cartGetters.getItemPrice(product).regular, 'currency')
@@ -177,7 +188,7 @@ import {
   SfProperty,
   SfHeading,
   SfBreadcrumbs,
-  SfOrderSummary,
+  SfOrderSummary
 } from '@storefront-ui/vue';
 import { ref } from '@nuxtjs/composition-api';
 import { computed } from '@nuxtjs/composition-api';
@@ -194,7 +205,7 @@ export default {
     SfButton,
     SfHeading,
     SfProperty,
-    SfOrderSummary,
+    SfOrderSummary
   },
   setup() {
     // simple test submodule 3
@@ -211,27 +222,27 @@ export default {
     const summary = ref([
       {
         name: 'Products',
-        value: totalItems,
+        value: totalItems
       },
       {
         name: 'Sub Total',
-        value: totals,
+        value: totals
       },
 
       {
         name: 'Shipping:',
-        value: 'Free',
-      },
+        value: 'Free'
+      }
     ]);
     const breadcrumbs = [
       {
         text: 'Home',
-        link: '/',
+        link: '/'
       },
       {
         text: 'Cart',
-        link: '#',
-      },
+        link: '#'
+      }
     ];
 
     return {
@@ -244,11 +255,10 @@ export default {
       breadcrumbs,
       totals,
       totalItems,
-      breadcrumbs,
       summary,
-      cartGetters,
+      cartGetters
     };
-  },
+  }
 };
 </script>
 <style lang="scss" scoped>

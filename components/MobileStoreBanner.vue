@@ -36,14 +36,14 @@
   </SfBanner>
 </template>
 <script>
-import { SfBanner, SfImage, SfButton } from "@storefront-ui/vue";
+import { SfBanner, SfImage, SfButton } from '@storefront-ui/vue';
 export default {
-  name: "AppStoreBanner",
+  name: 'AppStoreBanner',
   components: {
     SfBanner,
     SfImage,
-    SfButton,
-  },
+    SfButton
+  }
 };
 </script>
 <style lang="scss" scoped>

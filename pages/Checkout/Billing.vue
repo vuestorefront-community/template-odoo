@@ -171,7 +171,7 @@ import {
   SfButton,
   SfSelect,
   SfRadio,
-  SfCheckbox,
+  SfCheckbox
 } from '@storefront-ui/vue';
 import { ref, onMounted, watch, computed } from '@vue/composition-api';
 import { onSSR } from '@vue-storefront/core';
@@ -180,22 +180,22 @@ import {
   useCountrySearch,
   useShippingAsBillingAddress,
   useCart,
-  cartGetters,
+  cartGetters
 } from '@vue-storefront/odoo';
 import { required, min, digits } from 'vee-validate/dist/rules';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
 
 extend('required', {
   ...required,
-  message: 'This field is required',
+  message: 'This field is required'
 });
 extend('min', {
   ...min,
-  message: 'The field should have at least {length} characters',
+  message: 'The field should have at least {length} characters'
 });
 extend('digits', {
   ...digits,
-  message: 'Please provide a valid phone number',
+  message: 'Please provide a valid phone number'
 });
 export default {
   name: 'Billing',
@@ -207,7 +207,7 @@ export default {
     SfRadio,
     SfCheckbox,
     ValidationProvider,
-    ValidationObserver,
+    ValidationObserver
   },
   setup(props, { root }) {
     const { cart } = useCart();
@@ -231,7 +231,7 @@ export default {
       state: { id: null },
       country: { id: null },
       zip: '',
-      phone: null,
+      phone: null
     });
 
     const handleCheckSameAddress = async () => {
@@ -274,14 +274,14 @@ export default {
         } else {
           form.value.state.id = countryStates.value[0].id;
         }
-      },
+      }
     );
 
     watch(
       () => totalItems.value,
       () => {
         if (totalItems.value === 0) root.$router.push('/cart');
-      },
+      }
     );
 
     return {
@@ -292,9 +292,9 @@ export default {
       handleCheckSameAddress,
       sameAsShipping,
       form,
-      handleFormSubmit,
+      handleFormSubmit
     };
-  },
+  }
 };
 </script>
 <style lang="scss" scoped>

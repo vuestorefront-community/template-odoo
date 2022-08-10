@@ -170,16 +170,16 @@ export default {
     SfScrollable,
     SfMenuItem,
     SfButton,
-    SfImage,
+    SfImage
   },
   props: {
     visible: {
       type: Boolean,
-      default: false,
+      default: false
     },
     result: {
-      type: Object,
-    },
+      type: Object
+    }
   },
   watch: {
     $route() {
@@ -196,7 +196,7 @@ export default {
 
     const goToProduct = (product) => {
       return `/p/${productGetters.getId(product)}/${productGetters.getSlug(
-        product,
+        product
       )}`;
     };
     watch(
@@ -209,7 +209,7 @@ export default {
           document.body.classList.remove('no-scroll');
           emit('removeSearchResults');
         }
-      },
+      }
     );
     return {
       addItemToWishlist,
@@ -219,9 +219,9 @@ export default {
       categoryGetters,
       productGetters,
       products,
-      categories,
+      categories
     };
-  },
+  }
 };
 </script>
 <style lang="scss" scoped>

@@ -189,7 +189,7 @@ import {
   SfProperty,
   SfAccordion,
   SfLink,
-  SfRadio,
+  SfRadio
 } from '@storefront-ui/vue';
 import { onSSR } from '@vue-storefront/core';
 import { useUiHelpers } from '~/composables';
@@ -200,7 +200,7 @@ import {
   useCart,
   cartGetters,
   orderGetters,
-  usePayment,
+  usePayment
 } from '@vue-storefront/odoo';
 
 export default {
@@ -227,7 +227,7 @@ export default {
     WireTransferPaymentProvider: () =>
       import('~/components/Checkout/WireTransferPaymentProvider'),
     AbstractPaymentObserver: () =>
-      import('~/components/Checkout/AbstractPaymentObserver'),
+      import('~/components/Checkout/AbstractPaymentObserver')
   },
   setup(props, context) {
     const { cart, load, setCart } = useCart();
@@ -258,7 +258,7 @@ export default {
 
       const thankYouPath = {
         name: 'thank-you',
-        query: { order: orderGetters.getId(order.value) },
+        query: { order: orderGetters.getId(order.value) }
       };
       context.root.$router.push(context.root.localePath(thankYouPath));
       setCart(null);
@@ -268,13 +268,13 @@ export default {
       () => totalItems.value,
       () => {
         if (totalItems.value === 0) context.root.$router.push('/cart');
-      },
+      }
     );
 
     const providerPaymentHandler = () => {};
 
     const providerListHasMoreThanOne = computed(
-      () => providerList.value.length > 1,
+      () => providerList.value.length > 1
     );
 
     return {
@@ -291,9 +291,9 @@ export default {
       selectedProvider,
       providerListHasMoreThanOne,
       providerPaymentHandler,
-      getComponentProviderByName: th.getComponentProviderByName,
+      getComponentProviderByName: th.getComponentProviderByName
     };
-  },
+  }
 };
 </script>
 

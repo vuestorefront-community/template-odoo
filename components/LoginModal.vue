@@ -282,7 +282,7 @@ import {
   SfCheckbox,
   SfLoader,
   SfAlert,
-  SfBar,
+  SfBar
 } from '@storefront-ui/vue';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
 import { required, email } from 'vee-validate/dist/rules';
@@ -291,12 +291,12 @@ import { useUiState } from '~/composables';
 
 extend('email', {
   ...email,
-  message: 'Invalid email',
+  message: 'Invalid email'
 });
 
 extend('required', {
   ...required,
-  message: 'This field is required',
+  message: 'This field is required'
 });
 
 export default {
@@ -311,7 +311,7 @@ export default {
     SfAlert,
     ValidationProvider,
     ValidationObserver,
-    SfBar,
+    SfBar
   },
   setup() {
     const { isLoginModalOpen, toggleLoginModal } = useUiState();
@@ -329,7 +329,7 @@ export default {
     const {
       sendResetPassword,
       errors: errorPassword,
-      resetPasswordErrors,
+      resetPasswordErrors
     } = usePassword();
 
     watch(isLoginModalOpen, () => {
@@ -353,7 +353,7 @@ export default {
       if (isForgottenPassword.value) {
         send({
           message: `Thanks! If there is an account registered with the ${form.value.email} email, you will find message with a password reset link in your inbox. If the message is not arriving in your inbox, try another email address you might’ve used to register.`,
-          type: 'info',
+          type: 'info'
         });
       }
 
@@ -379,18 +379,18 @@ export default {
     const handleLogin = async () => {
       handleForm(login, {
         username: form.value.email,
-        password: form.value.password,
+        password: form.value.password
       })();
 
       send({
         message: 'You are logged in. Welcome!',
-        type: 'success',
+        type: 'success'
       });
-    }
+    };
 
     const handlePasswordRecovery = async () =>
       handleForm(sendResetPassword, {
-        email: form.value.email,
+        email: form.value.email
       })();
 
     return {
@@ -410,9 +410,9 @@ export default {
       handleRegister,
       displayChoosedTrue,
       isCreateAccount,
-      showIsForgottenPassword,
+      showIsForgottenPassword
     };
-  },
+  }
 };
 </script>
 
