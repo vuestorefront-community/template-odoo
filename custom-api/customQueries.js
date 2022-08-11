@@ -6,12 +6,12 @@ module.exports = {
   customCartLoad: ({ variables }) => ({
     variables,
     query: gql`
-      query {
+      query { 
         cart {
           ${orderFragment}
         }
       }
-    `,
+    `
   }),
 
   customLogin: ({ variables }) => ({
@@ -40,12 +40,12 @@ module.exports = {
           }
         }
       }
-    `,
+    `
   }),
   customGetProduct: ({variables}) => ({
     query: gql`query ($slug: String) { product(slug: $slug) { ${productFragment} } }`,
     variables
-  }),  
+  }),
   customGetCategory: ({variables}) => ({
     query: gql`query ($slug: String) { product(slug: $slug) { ${productFragment} } }`,
     variables
@@ -61,6 +61,6 @@ module.exports = {
       ) {
         register(emailPhone: $email, firstName: $firstName, lastName: $lastName, password: $password)
       }
-    `,
-  }),
-}
+    `
+  })
+};

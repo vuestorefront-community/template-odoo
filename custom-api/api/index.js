@@ -1,5 +1,5 @@
-import loadCart from './loadCart'
+import loadCart from './loadCart';
 
 export {
-    loadCart
-}
+  loadCart
+};
