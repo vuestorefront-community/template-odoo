@@ -376,16 +376,19 @@ export default {
 
     const handleRegister = async () => handleForm(register, form.value)();
 
-    const handleLogin = async () => {
-      handleForm(login, {
+     const handleLogin = async () => {
+      await handleForm(login, {
         username: form.value.email,
         password: form.value.password
       })();
 
-      send({
-        message: 'You are logged in. Welcome!',
-        type: 'success'
-      });
+      if(!error.value.login) {
+        send({
+          message: 'You are logged in. Welcome!',
+          type: 'success'
+        });
+      }
+      
     };
 
     const handlePasswordRecovery = async () =>
