@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import webpack from 'webpack';
 import { getRoutes } from './routes';
 import getAppRoutes from './sitemap';
@@ -31,7 +32,7 @@ export default {
         rel: 'icon',
         type: 'image/x-icon',
         href: '/favicon.ico'
-      },
+      }
     ]
   },
   router: {
@@ -39,7 +40,7 @@ export default {
       getRoutes(`${__dirname}`)
         .forEach((route) => routes.unshift(route));
     },
-    middleware: ['checkout'],
+    middleware: ['checkout']
   },
   googleFonts: {
     families: {
@@ -54,7 +55,7 @@ export default {
         wght: [100, 200, 300, 400, 500, 600, 700, 800, 900]
       }
     },
-    download: false,
+    download: false
   },
   pwa: {
     meta: {
@@ -68,19 +69,19 @@ export default {
       name: 'VSF Odoo',
       description: 'VSF Odoo',
       short_name: 'VSFOdoo',
-      lang: 'en',
+      lang: 'en'
     },
     icon: {
-      purpose: 'maskable',
+      purpose: 'maskable'
     },
     workbox: {
       cleanupOutdatedCaches: true,
-      preCaching:[
+      preCaching: [
         '/error/error.svg',
         '/icons/*',
-        '/favicon.ico',
-      ],
-    },
+        '/favicon.ico'
+      ]
+    }
   },
   device: {
     refreshOnResize: true
@@ -102,7 +103,7 @@ export default {
       '@vue-storefront/nuxt',
       {
         performance: {
-          httpPush: true,
+          httpPush: true
         },
         // @core-development-only-start
         // @core-development-only-end
@@ -155,7 +156,7 @@ export default {
             host: process.env.REDIS_HOST || '127.0.0.1',
             port: process.env.REDIS_PORT || 6379,
             password: process.env.REDIS_PASSWORD || ''
-          },
+          }
         }
       ]
     }],
@@ -164,7 +165,7 @@ export default {
     // sitemap generator
     '@nuxtjs/sitemap',
     // redirect
-    '@nuxtjs/redirect-module',
+    '@nuxtjs/redirect-module'
   ],
 
   // google tag manager
@@ -173,13 +174,13 @@ export default {
     enabled: process.env.GOOGLE_TAG_MANAGER_ENABLED || true,
     pageTracking: true,
     pageViewEventName: 'PageView',
-    debug: process.env.NODE_ENV !== 'production',
+    debug: process.env.NODE_ENV !== 'production'
   },
 
   // redirect
   redirect: {
     statusCode: 301,
-    rules: redirects,
+    rules: redirects
   },
 
   nuxtPrecompress: {
