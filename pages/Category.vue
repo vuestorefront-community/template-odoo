@@ -300,7 +300,7 @@ export default defineComponent({
     );
 
     const currentCategory = computed(() => {
-      return result.value?.data.category || [];
+      return result.value?.data?.category || [];
     });
 
     const currentCategoryNameForAccordion = computed(() => {

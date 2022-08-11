@@ -128,7 +128,7 @@ import {
   useUser,
   cartGetters,
   categoryGetters,
-  useCategory,
+  useCategories,
   useFacet
 } from '@vue-storefront/odoo';
 import { clickOutside } from '@storefront-ui/vue/src/utilities/directives/click-outside/click-outside-directive.js';
@@ -168,7 +168,7 @@ export default {
     const { load: loadWishlist, wishlist } = useWishlist();
     const { search: searchProductApi, result } = useFacet('AppHeader:Search');
     const { categories: topCategories, search: searchTopCategoryApi } =
-      useCategory('AppHeader:TopCategories');
+      useCategories('AppHeader:TopCategories');
 
     const isMobile = computed(() => mapMobileObserver().isMobile.get());
 
