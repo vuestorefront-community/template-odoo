@@ -6,6 +6,17 @@ import redirects from './customRoutes/redirects.json';
 import hooks from './hooks';
 import theme from './themeConfig';
 
+const isDev = process.env.NODE_ENV !== 'production';
+
+const localesMap = {
+  'en-EN': 'en',
+  'de-DE': 'de',
+  'da-DK': 'da',
+  'sv-SV': 'sv'
+};
+
+const localeIndex = localesMap[process.env.NODE_LOCALE];
+
 export default {
   hooks,
   server: {
@@ -128,8 +139,8 @@ export default {
   ],
   publicRuntimeConfig: {
     theme,
-    baseURL: process.env.BASE_URL || 'https://vsfdemo15.labs.odoogap.com/',
-    siteURL: process.env.SITE_URL || 'https://vsfdemo15.labs.odoogap.com/'
+    baseURL: process.env.BASE_URL,
+    siteURL: process.env.SITE_URL
   },
   modules: [
     '@nuxtjs/pwa',
@@ -171,7 +182,7 @@ export default {
   // google tag manager
   gtm: {
     id: process.env.GOOGLE_TAG_MANAGER_ID,
-    enabled: process.env.GOOGLE_TAG_MANAGER_ENABLED || true,
+    enabled: !isDev,
     pageTracking: true,
     pageViewEventName: 'PageView',
     debug: process.env.NODE_ENV !== 'production'
@@ -184,7 +195,7 @@ export default {
   },
 
   nuxtPrecompress: {
-    enabled: true,
+    enabled: !isDev,
     report: false,
     test: /\.(js|css|html|txt|xml|svg)$/,
     // Serving options
@@ -199,8 +210,7 @@ export default {
 
     // build time compression settings
     gzip: {
-      // should compress to gzip?
-      enabled: true,
+      enabled: !isDev,
       // compression config
       // https://www.npmjs.com/package/compression-webpack-plugin
       filename: '[path].gz[query]',
@@ -209,8 +219,7 @@ export default {
       compressionOptions: { level: 9 }
     },
     brotli: {
-      // should compress to brotli?
-      enabled: true,
+      enabled: !isDev,
       // compression config
       // https://www.npmjs.com/package/compression-webpack-plugin
       filename: '[path].br[query]',
@@ -220,7 +229,7 @@ export default {
     }
   },
   i18n: {
-    baseUrl: 'https://vsf.labs.odoogap.com/',
+    baseUrl: process.env.SITE_URL,
     strategy: 'no_prefix',
     currency: 'USD',
     country: 'US',
@@ -276,7 +285,7 @@ export default {
 
   // sitemap options
   sitemap: {
-    hostname: process.env.SITE_URL || 'https://vsf.labs.odoogap.com/',
+    hostname: process.env.SITE_URL,
     exclude: ['/checkout/**', '/checkout', '/cart', '/my-account', '/order-history'],
     i18n: false,
     cacheTime: 6000,
