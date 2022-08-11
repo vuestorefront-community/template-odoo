@@ -24,7 +24,8 @@ export default {
     host: '0.0.0.0'
   },
   components: [
-    '~/components/'
+    '~/components/',
+    '~/components/Core/Atoms',
   ],
   css: ['@/assets/styles.scss'],
   head: {

@@ -1,5 +1,5 @@
 <template>
-  <ValidationObserver>
+  <ValidationObserver v-slot="{ invalid } ">
     <form class="form" @submit.prevent="submitForm()">
       <h1>My profile</h1>
 
@@ -54,38 +54,30 @@
           style="margin-top: 10px"
           @keypress.enter="submitForm()"
         />
-        <SfButton class="form__button" type="submit">
+        <OdooButton type="submit"  :disabled="invalid" :loading="loading">
           {{ $t('Update personal data') }}
-        </SfButton>
+        </OdooButton>
       </SfModal>
-      <SfButton class="form__button">
+      <OdooButton :disabled="invalid" :loading="loading">
         {{ $t('Update personal data') }}
-      </SfButton>
+      </OdooButton>
     </form>
   </ValidationObserver>
 </template>
 
-<script>
-import { ref } from '@nuxtjs/composition-api';
+<script lang="ts">
+import { defineComponent, ref } from '@nuxtjs/composition-api';
+import { SfInput, SfModal } from '@storefront-ui/vue';
+import { userGetters, useUser } from '@vue-storefront/odoo';
+import { ValidationObserver, ValidationProvider } from 'vee-validate';
 import { useUiNotification } from '~/composables';
-import { ValidationProvider, ValidationObserver } from 'vee-validate';
-import { useUser, userGetters } from '@vue-storefront/odoo';
-import { SfInput, SfButton, SfModal } from '@storefront-ui/vue';
-export default {
+export default defineComponent({
   name: 'ProfileUpdateForm',
   components: {
     SfInput,
-    SfButton,
     SfModal,
     ValidationProvider,
     ValidationObserver
-  },
-  props: {
-    loading: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
   },
   emits: ['submit'],
   setup() {
@@ -94,19 +86,23 @@ export default {
 
     const currentPassword = ref('');
     const requirePassword = ref(false);
+    const loading = ref(false);
 
     const resetForm = () => ({
-      name: userGetters.getFirstName(user.value),
-      email: userGetters.getEmailAddress(user.value)
+      name: userGetters.getFirstName(user.value) || '',
+      email: userGetters.getEmailAddress(user.value) || ''
     });
     const form = ref(resetForm());
 
-    const submitForm = async () => () => {
+    const submitForm = async () => {
+      loading.value = true
       try {
-        updateUser({
-          ...user,
-          name: form.value.name,
-          email: form.value.email
+        await updateUser({
+          user: {
+            ...user,
+            name: form.value.name,
+            email: form.value.email
+          },
         });
 
         form.value = resetForm();
@@ -119,9 +115,12 @@ export default {
 
         send({ message: e?.value, type: 'danger' });
       }
+
+      loading.value = false
     };
 
     return {
+      loading,
       submitForm,
       user,
       requirePassword,
@@ -129,7 +128,7 @@ export default {
       form
     };
   }
-};
+});
 </script>
 <style lang="scss" scoped>
 .form {
