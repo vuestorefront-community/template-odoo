@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "@nuxt/typescript-build": "latest",
-    "@vue/test-utils": "^1.0.0-beta.27",
+    "@vue/test-utils": "^1.0.0-beta.28",
     "autoprefixer": "^10.2.6",
     "babel-jest": "^24.1.0",
     "cypress": "7.5.0",
