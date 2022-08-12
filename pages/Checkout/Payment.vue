@@ -204,7 +204,7 @@ import {
 } from '@vue-storefront/odoo';
 
 export default {
-  name: 'ReviewOrder',
+  name: 'Payment',
   components: {
     SfHeading,
     SfTable,
@@ -250,7 +250,7 @@ export default {
 
     onSSR(async () => {
       await load();
-      await getPaymentProviderList();
+      // await getPaymentProviderList();
     });
 
     const processOrder = async () => {

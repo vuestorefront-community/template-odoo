@@ -33,7 +33,7 @@
 
       <SfContentCategory title="Order details">
         <SfContentPage title="Order history">
-          <SfOrderHistory :orders="account.orders" />
+          <OrderHistory />
         </SfContentPage>
 
         <SfContentPage title="My reviews">
@@ -59,6 +59,8 @@ import { onSSR } from '@vue-storefront/core';
 import { useUiNotification } from '~/composables';
 import ProfileUpdateForm from '~/components/MyAccount/ProfileUpdateForm.vue';
 import PasswordResetForm from '~/components/MyAccount/PasswordResetForm.vue';
+import OrderHistory from '~/components/MyAccount/OrderHistory.vue';
+
 
 export default {
   name: 'my-profile',
@@ -69,7 +71,8 @@ export default {
     SfMyNewsletter,
     SfOrderHistory,
     ProfileUpdateForm,
-    PasswordResetForm
+    PasswordResetForm,
+    OrderHistory
   },
   setup(props, { root }) {
     const activePage = ref('My profile');

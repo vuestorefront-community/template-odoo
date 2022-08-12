@@ -1,5 +1,5 @@
 <template>
-  <ValidationObserver v-slot="{ handleSubmit, reset }">
+  <ValidationObserver v-slot="{ handleSubmit, reset, invalid }">
     <form class="form" @submit.prevent="handleSubmit(submitForm(reset))">
       <h1>Update password</h1>
 
@@ -51,9 +51,9 @@
           />
         </ValidationProvider>
       </div>
-      <SfButton class="form__button">
+      <OdooButton type="submit"  :disabled="invalid" :loading="loading">
         {{ $t('Update password') }}
-      </SfButton>
+      </OdooButton>
     </form>
   </ValidationObserver>
 </template>
@@ -77,6 +77,8 @@ export default {
       repeatPassword: ''
     });
     const form = ref(resetForm());
+    const loading = ref(false);
+
     const submitForm = (resetValidationFn) => () => {
       const onComplete = () => {
         form.value = resetForm();
@@ -89,7 +91,8 @@ export default {
     };
     return {
       form,
-      submitForm
+      submitForm,
+      loading
     };
   }
 };

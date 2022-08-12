@@ -54,11 +54,6 @@ export function getRoutes(themeDir = __dirname) {
       name: 'my-profile',
       path: '/my-account',
       component: path.resolve(themeDir, 'pages/MyAccount/MyProfile.vue'),
-    },
-    {
-      name: 'order-history',
-      path: '/order-history',
-      component: path.resolve(themeDir, 'pages/MyAccount/OrderHistory.vue'),
     }
   ];
 }
