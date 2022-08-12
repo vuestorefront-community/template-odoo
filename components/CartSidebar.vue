@@ -86,7 +86,7 @@
             </SfProperty>
 
             <nuxt-link to="/checkout/shipping">
-              <SfButton class="sf-button--full-width color-primary mb-4">{{
+              <SfButton class="sf-button--full-width color-primary mb-4" @click="toggleCartSidebar">{{
                 $t('GO TO CHECKOUT')
               }}</SfButton>
             </nuxt-link>
