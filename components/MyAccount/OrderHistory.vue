@@ -42,14 +42,7 @@
             :key="i"
           >
             <SfTableData class="products__name">
-              <nuxt-link
-                :to="
-                  '/p/' +
-                  orderGetters.getItemSku(item) +
-                  '/' +
-                  orderGetters.getItemSku(item)
-                "
-              >
+              <nuxt-link :to="productGetters.getSlug(item.product)">
                 {{ orderGetters.getItemName(item) }}
               </nuxt-link>
             </SfTableData>
@@ -75,8 +68,8 @@
         <SfTable v-else class="orders">
           <SfTableHeading>
             <SfTableHeader
-              v-for="tableHeader in tableHeaders"
-              :key="tableHeader"
+              v-for="(tableHeader, index) in tableHeaders"
+              :key="index"
               >{{ tableHeader }}</SfTableHeader
             >
             <SfTableHeader class="orders__element--right">
@@ -125,7 +118,11 @@
 <script>
 import { SfTabs, SfTable, SfButton, SfProperty } from '@storefront-ui/vue';
 import { computed, ref } from '@vue/composition-api';
-import { useUserOrder, orderGetters } from '@vue-storefront/odoo';
+import {
+  useUserOrder,
+  orderGetters,
+  productGetters
+} from '@vue-storefront/odoo';
 import { AgnosticOrderStatus } from '@vue-storefront/core';
 import { onSSR } from '@vue-storefront/core';
 
@@ -193,7 +190,8 @@ export default {
       orderGetters,
       downloadOrder,
       downloadOrders,
-      currentOrder
+      currentOrder,
+      productGetters
     };
   }
 };
@@ -201,5 +199,4 @@ export default {
 
 <style lang='scss' scoped>
 @import '~/assets/css/account/orderHistory.scss';
-
 </style>
