@@ -1,4 +1,4 @@
-const odooBaseUrl = process.env.BASE_URL;
+const odooBaseUrl = process.env.BACKEND_BASE_URL ||process.env.BASE_URL;
 const graphqlBaseUrl = `${odooBaseUrl}graphql/vsf`;
 const baseDomain = process.env.BASE_DOMAIN;
 
