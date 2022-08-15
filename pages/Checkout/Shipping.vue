@@ -300,10 +300,10 @@ export default {
       () => form.value.country.id,
       async () => {
         await searchCountryStates(form.value.country.id);
-        if (!countryStates.value || countryStates.value.length === 0) {
-          form.value.state.id = 0;
+         if (!countryStates.value || countryStates.value.length === 0) {
+          form.value.state.id = '0';
         } else {
-          form.value.state.id = countryStates.value[0].id;
+          form.value.state.id = String(countryStates.value?.[0].id);
         }
       }
     );

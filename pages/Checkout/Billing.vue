@@ -270,9 +270,9 @@ export default {
       async () => {
         await searchCountryStates(form?.value?.country?.id || null);
         if (!countryStates.value || countryStates.value.length === 0) {
-          form.value.state.id = 1;
+          form.value.state.id = '1';
         } else {
-          form.value.state.id = countryStates.value[0].id;
+          form.value.state.id = String(countryStates.value?.[0]?.id);
         }
       }
     );
