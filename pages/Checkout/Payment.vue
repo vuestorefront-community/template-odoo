@@ -28,7 +28,7 @@
           <SfImage
             :width="256"
             :height="176"
-            :image="$image(cartGetters.getItemImage(product), 256, 176, cartGetters.getItemImageFilename(product))"
+            :src="$image(cartGetters.getItemImage(product), 256, 176, cartGetters.getItemImageFilename(product))"
             :alt="cartGetters.getItemName(product)"
           />
         </SfTableData>
@@ -121,25 +121,6 @@
           />
         </abstract-payment-observer>
 
-        <!-- <SfAccordion
-          transition="sf-expand"
-          showChevron
-          v-if="providerListHasMoreThanOne"
-        >
-          <SfAccordionItem
-            :header="provider.name"
-            v-for="provider in providerList"
-            :key="provider.id"
-          >
-            <component :is="getComponentProviderByName(provider.name)" />
-          </SfAccordionItem>
-        </SfAccordion>
-
-        <component
-          :is="getComponentProviderByName(providerList[0].name)"
-          v-else
-        /> -->
-
         <SfCheckbox
           v-e2e="'terms'"
           v-model="terms"
@@ -149,7 +130,7 @@
           <template #label>
             <div class="sf-checkbox__label">
               {{ $t('I agree to') }}
-              <SfLink href="#"> {{ $t('Terms and conditions') }}</SfLink>
+              <SfLink link="#"> {{ $t('Terms and conditions') }}</SfLink>
             </div>
           </template>
         </SfCheckbox>
@@ -250,7 +231,7 @@ export default {
 
     onSSR(async () => {
       await load();
-      // await getPaymentProviderList();
+      await getPaymentProviderList();
     });
 
     const processOrder = async () => {
@@ -274,7 +255,7 @@ export default {
     const providerPaymentHandler = () => {};
 
     const providerListHasMoreThanOne = computed(
-      () => providerList.value.length > 1
+      () => providerList?.value?.length > 1
     );
 
     return {
