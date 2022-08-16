@@ -1,6 +1,6 @@
 const odooBaseUrl = process.env.BACKEND_BASE_URL ||process.env.BASE_URL;
 const graphqlBaseUrl = `${odooBaseUrl}graphql/vsf`;
-const baseDomain = process.env.BASE_DOMAIN;
+const baseDomain = process.env.SITE_URL.replace('https://', '').slice(0, -1);
 
 const extendApiMethods = require('./custom-api/api');
 const customQueries = require('./custom-api/customQueries');
