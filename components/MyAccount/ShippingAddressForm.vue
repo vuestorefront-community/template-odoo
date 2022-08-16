@@ -143,12 +143,15 @@
           :error-message="errors[0]"
         />
       </ValidationProvider>
-      <SfButton
-        class="form__button"
-        :disabled="invalid"
-      >
-        {{ isNew ? "Add the address" : "Update the address" }}
-      </SfButton>
+      <div class="flex gap-3">
+         <OdooButton type="submit"  :disabled="invalid" :loading="loading">
+          {{ isNew ? "Add the address" : "Update the address" }}
+         </OdooButton>
+         <OdooButton @click="$emit('cancel')" styleType="Tertiary" color="Grey">
+           Cancel
+         </OdooButton>
+      </div>
+
     </form>
   </ValidationObserver>
 </template>
@@ -225,6 +228,7 @@ export default defineComponent({
       }
     );
     return {
+      loading: false,
       form,
       submitForm,
       countries,

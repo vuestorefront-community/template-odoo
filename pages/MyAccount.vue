@@ -22,10 +22,12 @@
           <SfShippingDetails
             :account="account"
             data-testid="shipping-details-tabs"
-            @update:shipping="addAddress"
-            @change-address="updateAddress"
             @delete-address="deleteAddress"
-          />
+          >
+            <template #form>
+              <ShippingAddressForm></ShippingAddressForm>
+            </template>
+          </SfShippingDetails>
         </SfContentPage>
 
         <SfContentPage title="Newsletter">
@@ -44,7 +46,7 @@
   </div>
 </template>
 
-<script type="module">
+<script type="ts">
 import {
   SfMyProfile,
   SfShippingDetails,
@@ -52,15 +54,16 @@ import {
   SfOrderHistory,
   SfContentPages
 } from '@storefront-ui/vue';
-import { ref, computed } from '@vue/composition-api';
+import { ref, computed, defineComponent } from '@nuxtjs/composition-api';
 import { useUser, useUserShipping } from '@vue-storefront/odoo';
 import { onSSR } from '@vue-storefront/core';
 import { useUiNotification } from '~/composables';
 import ProfileUpdateForm from '~/components/MyAccount/ProfileUpdateForm.vue';
 import PasswordResetForm from '~/components/MyAccount/PasswordResetForm.vue';
 import OrderHistory from '~/components/MyAccount/OrderHistory.vue';
+import ShippingAddressForm from '~/components/MyAccount/ShippingAddressForm.vue';
 
-export default {
+export default defineComponent({
   name: 'MyAccount',
   components: {
     SfContentPages,
@@ -70,13 +73,13 @@ export default {
     SfOrderHistory,
     ProfileUpdateForm,
     PasswordResetForm,
-    OrderHistory
-  },
+    OrderHistory,
+    ShippingAddressForm
+},
   setup(props, { root }) {
     const activePage = ref('My profile');
     const { user, load: loadUser, logout } = useUser();
-    const { shipping, load, addAddress, deleteAddress, updateAddress } =
-      useUserShipping();
+    const { shipping, load, addAddress, deleteAddress, updateAddress } = useUserShipping();
     const { send } = useUiNotification();
 
     onSSR(async () => {
@@ -85,15 +88,18 @@ export default {
     });
 
     const account = computed(() => ({
-      firstName: user ? user?.value.name.split()[0] : '',
-      lastName: user
-        ? user?.value.name.split()[user?.value.name.split().length - 1]
-        : '',
-      email: user ? user?.value.email : '',
+      firstName: user?.value?.name?.split()?.[0] || '',
+      lastName: user?.value?.name?.split()[user?.value?.name?.split()?.length - 1] || '',
+      email: user?.value?.email || '',
       password: '',
+      city: '',
       shipping: shipping.value || [],
       orders: []
     }));
+
+    const handleUpdateAddress = (address, asa) => {
+      console.log(address, asa);
+    }
 
     const changeActivePage = async (title) => {
       if (title === 'Log out') {
@@ -112,6 +118,7 @@ export default {
     };
 
     return {
+      handleUpdateAddress,
       addAddress,
       updateAddress,
       deleteAddress,
@@ -120,7 +127,7 @@ export default {
       changeActivePage
     };
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>
