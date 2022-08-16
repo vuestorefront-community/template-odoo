@@ -20,7 +20,7 @@
           data-testid="shipping-details"
         >
           <SfShippingDetails
-            :account="account"
+            :account="{}"
             data-testid="shipping-details-tabs"
             @update:shipping="account = { ...account, ...$event }"
           />
@@ -34,9 +34,6 @@
       <SfContentCategory title="Order details">
         <SfContentPage title="Order history">
           <OrderHistory />
-        </SfContentPage>
-
-        <SfContentPage title="My reviews">
         </SfContentPage>
       </SfContentCategory>
 
@@ -53,17 +50,16 @@ import {
   SfOrderHistory,
   SfContentPages
 } from '@storefront-ui/vue';
-import { ref, reactive } from '@vue/composition-api';
-import { useUser } from '@vue-storefront/odoo';
+import { ref, computed } from '@vue/composition-api';
+import { useUser, useShippingMethods } from '@vue-storefront/odoo';
 import { onSSR } from '@vue-storefront/core';
 import { useUiNotification } from '~/composables';
 import ProfileUpdateForm from '~/components/MyAccount/ProfileUpdateForm.vue';
 import PasswordResetForm from '~/components/MyAccount/PasswordResetForm.vue';
 import OrderHistory from '~/components/MyAccount/OrderHistory.vue';
 
-
 export default {
-  name: 'my-profile',
+  name: 'MyAccount',
   components: {
     SfContentPages,
     SfMyProfile,
@@ -76,27 +72,25 @@ export default {
   },
   setup(props, { root }) {
     const activePage = ref('My profile');
-    const account = reactive({});
     const { user, load: loadUser, logout } = useUser();
+    const { searchShippingMethods, shippingMethods } = useShippingMethods();
     const { send } = useUiNotification();
-
-    const getAccountData = () => {
-      account.value = {
-        firstName: user ? user?.value.name.split()[0] : '',
-        lastName: user
-          ? user?.value.name.split()[user?.value.name.split().length - 1]
-          : '',
-        email: user ? user?.value.email : '',
-        password: '',
-        shipping: [],
-        orders: []
-      };
-    };
 
     onSSR(async () => {
       await loadUser();
-      getAccountData();
+      await searchShippingMethods();
     });
+
+    const account = computed(() => ({
+      firstName: user ? user?.value.name.split()[0] : '',
+      lastName: user
+        ? user?.value.name.split()[user?.value.name.split().length - 1]
+        : '',
+      email: user ? user?.value.email : '',
+      password: '',
+      shipping: shippingMethods.value || [],
+      orders: []
+    }));
 
     const changeActivePage = async (title) => {
       if (title === 'Log out') {

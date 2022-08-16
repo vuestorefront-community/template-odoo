@@ -2,6 +2,7 @@
   <div id="wishlist">
     <SfSidebar
       :visible="isWishlistSidebarOpen"
+      position="right"
       :button="false"
       title="My Wishlist"
       @close="toggleWishlistSidebar"
@@ -29,7 +30,14 @@
               <SfCollectedProduct
                 v-for="product in products"
                 :key="wishlistGetters.getItemSku(product)"
-                :image="$image(wishlistGetters.getItemImage(product), 180, 200, wishlistGetters.getItemImageFilename(product))"
+                :image="
+                  $image(
+                    wishlistGetters.getItemImage(product),
+                    180,
+                    200,
+                    wishlistGetters.getItemImageFilename(product)
+                  )
+                "
                 :title="wishlistGetters.getItemName(product)"
                 :regular-price="
                   $n(wishlistGetters.getItemPrice(product).regular, 'currency')
@@ -100,7 +108,7 @@
           @click="toggleWishlistSidebar"
           class="sf-button--full-width color-secondary"
         >
-          {{ $t("Start shopping") }}
+          {{ $t('Start shopping') }}
         </SfButton>
       </template>
     </SfSidebar>

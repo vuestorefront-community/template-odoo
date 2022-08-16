@@ -2,6 +2,7 @@
   <div id="cart">
     <SfSidebar
       :visible="isCartSidebarOpen"
+      position="right"
       title="My Cart"
       class="sf-sidebar--right"
       @close="toggleCartSidebar"
@@ -22,7 +23,14 @@
                 data-cy="collected-product-cart-sidebar"
                 v-for="product in products"
                 :key="cartGetters.getItemSku(product)"
-                :image="$image(cartGetters.getItemImage(product), 140, 236, cartGetters.getItemImageFilename(product))"
+                :image="
+                  $image(
+                    cartGetters.getItemImage(product),
+                    140,
+                    236,
+                    cartGetters.getItemImageFilename(product)
+                  )
+                "
                 :title="cartGetters.getItemName(product)"
                 :regular-price="
                   $n(cartGetters.getItemPrice(product).regular, 'currency')
@@ -42,7 +50,7 @@
                     <SfProperty
                       v-for="(attribute, key) in cartGetters.getItemAttributes(
                         product,
-                        ['color', 'size'],
+                        ['color', 'size']
                       )"
                       :key="key"
                       :name="key"
@@ -78,7 +86,10 @@
           <div v-if="totalItems">
             <SfProperty
               name="Total price"
-              class="sf-property--full-width sf-property--large my-cart__total-price"
+              class="
+                sf-property--full-width sf-property--large
+                my-cart__total-price
+              "
             >
               <template #value>
                 <SfPrice :regular="$n(totals.subtotal, 'currency')" />
@@ -86,9 +97,11 @@
             </SfProperty>
 
             <nuxt-link to="/checkout/shipping">
-              <SfButton class="sf-button--full-width color-primary mb-4" @click="toggleCartSidebar">{{
-                $t('GO TO CHECKOUT')
-              }}</SfButton>
+              <SfButton
+                class="sf-button--full-width color-primary mb-4"
+                @click="toggleCartSidebar"
+                >{{ $t('GO TO CHECKOUT') }}</SfButton
+              >
             </nuxt-link>
             <nuxt-link to="/cart">
               <SfButton

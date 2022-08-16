@@ -139,7 +139,6 @@ import LocaleSelector from './LocaleSelector';
 import SearchResults from '~/components/SearchResults';
 
 import debounce from 'lodash.debounce';
-import { mapMobileObserver } from '@storefront-ui/vue/src/utilities/mobile-observer.js';
 export default {
   components: {
     SfHeader,
@@ -169,8 +168,6 @@ export default {
     const { search: searchProductApi, result } = useFacet('AppHeader:Search');
     const { categories: topCategories, search: searchTopCategoryApi } =
       useCategories('AppHeader:TopCategories');
-
-    const isMobile = computed(() => mapMobileObserver().isMobile.get());
 
     const cartTotalItems = computed(() => {
       const count = cartGetters.getTotalItems(cart.value);
@@ -218,9 +215,6 @@ export default {
       };
     }, 100);
     const closeOrFocusSearchBar = () => {
-      if (isMobile.value) {
-        return closeSearch();
-      }
       term.value = '';
       return searchBarRef.value.$el.children[0].focus();
     };
@@ -243,7 +237,6 @@ export default {
       () => term.value,
       (newVal, oldVal) => {
         const shouldSearchBeOpened =
-          !isMobile.value &&
           term.value.length > 0 &&
           ((!oldVal && newVal) ||
             (newVal.length !== oldVal.length && isSearchOpen.value === false));
@@ -281,7 +274,6 @@ export default {
       changeSearchTerm,
       formatedResult,
       term,
-      isMobile,
       handleSearch,
       closeSearch
     };
