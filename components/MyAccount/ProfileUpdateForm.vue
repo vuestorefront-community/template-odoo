@@ -58,7 +58,7 @@
           {{ $t('Update personal data') }}
         </OdooButton>
       </SfModal>
-      <OdooButton :disabled="invalid" :loading="loading">
+      <OdooButton type="submit" :disabled="invalid" :loading="loading">
         {{ $t('Update personal data') }}
       </OdooButton>
     </form>
