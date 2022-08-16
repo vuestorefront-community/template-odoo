@@ -1,132 +1,135 @@
 <template>
   <ValidationObserver v-slot="{ handleSubmit, invalid }">
-    <form
-      id="shipping-details-form"
-      class="form"
-      @submit.prevent="handleSubmit(submitForm)"
-    >
-      <ValidationProvider
-        v-slot="{ errors }"
-        name="firstName"
-        rules="required|min:2"
-        slim
-      >
-        <SfInput
-          v-model="form.name"
-          label="First name"
+    <form @submit.prevent="handleSubmit(submitForm)">
+      <div class="flex justify-between">
+        <ValidationProvider
+          v-slot="{ errors }"
           name="firstName"
-          class="form__element"
-          required
-          :valid="!errors[0]"
-          :error-message="errors[0]"
-        />
-      </ValidationProvider>
-      <ValidationProvider
-        v-slot="{ errors }"
-        name="streetName"
-        rules="required|min:2"
-        slim
-      >
-        <SfInput
-          v-model="form.street"
-          label="Street name"
+          rules="required|min:2"
+          slim
+        >
+          <SfInput
+            class="w-full"
+            v-model="form.name"
+            label="First name"
+            name="firstName"
+            required
+            :valid="!errors[0]"
+            :error-message="errors[0]"
+          />
+        </ValidationProvider>
+      
+      </div>
+
+      <div class="flex gap-3">
+        <ValidationProvider
+          v-slot="{ errors }"
           name="streetName"
-          class="form__element"
-          required
-          :valid="!errors[0]"
-          :error-message="errors[0]"
-        />
-      </ValidationProvider>
-
-      <ValidationProvider
-        v-slot="{ errors }"
-        name="city"
-        rules="required|min:2"
-        slim
-      >
-        <SfInput
-          v-model="form.city"
-          label="City"
+          rules="required|min:2"
+          slim
+        >
+          <SfInput
+            class="w-full"
+            v-model="form.street"
+            label="Street name"
+            name="streetName"
+            required
+            :valid="!errors[0]"
+            :error-message="errors[0]"
+          /> 
+        </ValidationProvider>
+        <ValidationProvider
+          v-slot="{ errors }"
           name="city"
-          class="form__element form__element--half"
-          required
-          :valid="!errors[0]"
-          :error-message="errors[0]"
-        />
-      </ValidationProvider>
-      <ValidationProvider
-        v-slot="{ errors }"
-        name="zipCode"
-        rules="required|min:2"
-        slim
-      >
-        <SfInput
-          v-model="form.zip"
-          label="Zip-code"
+          rules="required|min:2"
+          slim
+          >
+            <SfInput
+              v-model="form.city"
+              label="City"
+              name="city"
+              class="w-full"
+              required
+              :valid="!errors[0]"
+              :error-message="errors[0]"
+            />
+        </ValidationProvider>
+      </div>
+    
+      <div class="flex gap-3">
+        <ValidationProvider
+          v-slot="{ errors }"
           name="zipCode"
-          class="form__element form__element--half form__element--half-even"
-          required
-          :valid="!errors[0]"
-          :error-message="errors[0]"
-        />
-      </ValidationProvider>
-      <ValidationProvider
-        v-slot="{ errors }"
-        name="country"
-        rules="required"
-        slim
-      >
-        <SfSelect
-          v-model="form.country.id"
-          label="Country"
+          rules="required|min:2"
+          slim
+        >
+          <SfInput
+            v-model="form.zip"
+            label="Zip-code"
+            name="zipCode"
+            class="form__element form__element--half form__element--half-even"
+            required
+            :valid="!errors[0]"
+            :error-message="errors[0]"
+          />
+        </ValidationProvider>
+        <ValidationProvider
+          v-slot="{ errors }"
           name="country"
-          class="
-            form__element form__element--half form__select
-            sf-select--underlined
-          "
-          required
-          :valid="!errors[0]"
-          :error-message="errors[0]"
+          rules="required"
+          slim
         >
-          <SfSelectOption
-            v-for="countryOption in countries"
-            :key="countryOption.id"
-            :value="countryOption.id"
+          <SfSelect
+            v-model="form.country.id"
+            label="Country"
+            name="country"
+            class="
+              form__element form__element--half form__select
+              sf-select--underlined
+            "
+            required
+            :valid="!errors[0]"
+            :error-message="errors[0]"
           >
-            {{ countryOption.name }}
-          </SfSelectOption>
-        </SfSelect>
-      </ValidationProvider>
+            <SfSelectOption
+              v-for="countryOption in countries"
+              :key="countryOption.id"
+              :value="countryOption.id"
+            >
+              {{ countryOption.name }}
+            </SfSelectOption>
+          </SfSelect>
+        </ValidationProvider>
 
-      <ValidationProvider
-        v-slot="{ errors }"
-        name="state"
-        rules="required"
-        slim
-      >
-        <SfSelect
-          v-model="form.state.id"
-          label="State/Province"
+        <ValidationProvider
+          v-slot="{ errors }"
           name="state"
-          class="
-            form__element form__element--half form__select
-            sf-select--underlined
-            form__element--half-even
-          "
-          required
-          :valid="!errors[0]"
-          :error-message="errors[0]"
+          rules="required"
+          slim
         >
-          <SfSelectOption
-            v-for="countryStateOption in countryStates"
-            :key="countryStateOption.id"
-            :value="countryStateOption.id"
+          <SfSelect
+            v-model="form.state.id"
+            label="State/Province"
+            name="state"
+            class="
+              form__element form__element--half form__select
+              sf-select--underlined
+              form__element--half-even
+            "
+            required
+            :valid="!errors[0]"
+            :error-message="errors[0]"
           >
-            {{ countryStateOption.name }}
-          </SfSelectOption>
-        </SfSelect>
-      </ValidationProvider>
-
+            <SfSelectOption
+              v-for="countryStateOption in countryStates"
+              :key="countryStateOption.id"
+              :value="countryStateOption.id"
+            >
+              {{ countryStateOption.name }}
+            </SfSelectOption>
+          </SfSelect>
+        </ValidationProvider>
+      </div>
       <ValidationProvider
         v-slot="{ errors }"
         name="phone"
@@ -147,12 +150,11 @@
          <OdooButton type="submit"  :disabled="invalid" :loading="loading">
           {{ isNew ? "Add the address" : "Update the address" }}
          </OdooButton>
-         <OdooButton @click="$emit('cancel')" styleType="Tertiary" color="Grey">
-           Cancel
-         </OdooButton>
       </div>
-
     </form>
+    <OdooButton @click="$emit('cancel')" styleType="Tertiary" color="Grey">
+      Cancel
+    </OdooButton>
   </ValidationObserver>
 </template>
 
@@ -239,42 +241,7 @@ export default defineComponent({
 </script>
 
 <style lang='scss' scoped>
-.form {
-  &__element {
-    display: block;
-    margin-bottom: var(--spacer-base);
-  }
-  &__select {
-    display: flex;
-    align-items: center;
-    --select-option-font-size: var(--font-size--lg);
-    flex-wrap: wrap;
-    ::v-deep .sf-select__dropdown {
-      font-size: var(--font-size--lg);
-      // margin: 0;
-      font-family: var(--font-family--secondary);
-      font-weight: var(--font-weight--normal);
-    }
-  }
-  &__button {
-    display: block;
-    margin-top: var(--spacer-lg);
-  }
-  &__horizontal {
-    @include for-desktop {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-    }
-    .form__element {
-      @include for-desktop {
-        flex: 1;
-        margin-right: var(--spacer-lg);
-      }
-      &:last-child {
-        margin-right: 0;
-      }
-    }
-  }
+.flex {
+  margin-bottom: 7%;
 }
 </style>
