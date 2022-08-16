@@ -68,7 +68,7 @@ export default defineComponent({
         return 'bg-primary-black big-text font-semibold';
       }
       if (props.styleType === ButtonType.Tertiary && props.color === ButtonColor.Grey) {
-        return 'bg-tertiary-grey big-text text-primary-grey font-semibold';
+        return 'bg-zinc-500 text-slate-50';
       }
 
       switch (props.styleType) {

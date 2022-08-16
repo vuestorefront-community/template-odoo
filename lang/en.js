@@ -150,6 +150,7 @@ export default {
   'Enter the mobile number or email address associated with your account, and we will send you a link to reset your password.': 'Enter the mobile number or email address associated with your account, and we will send you a link to reset your password.',
   'View orders and update your details. Make your checkout fast and easy!': 'View orders and update your details. Make your checkout fast and easy!',
   'See all': 'See all',
+  'This field must have be checked': 'This field must have be checked',
   'Subscribe': 'Subscribe',
   'Subscribe to newsletter': 'Subscribe to newsletter',
   'You can unsubscribe at any time': 'You can unsubscribe at any time'
