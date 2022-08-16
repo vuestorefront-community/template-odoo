@@ -108,6 +108,10 @@ export default defineComponent({
         form.value = resetForm();
         requirePassword.value = false;
         currentPassword.value = '';
+          send({
+          message: 'Successfull update!',
+          type: 'success'
+        });
       } catch (e) {
         form.value = resetForm();
         requirePassword.value = false;
