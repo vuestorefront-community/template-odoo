@@ -285,19 +285,8 @@ import {
   SfBar
 } from '@storefront-ui/vue';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
-import { required, email } from 'vee-validate/dist/rules';
 import { useUser, usePassword } from '@vue-storefront/odoo';
 import { useUiState } from '~/composables';
-
-extend('email', {
-  ...email,
-  message: 'Invalid email'
-});
-
-extend('required', {
-  ...required,
-  message: 'This field is required'
-});
 
 export default {
   name: 'LoginModal',

@@ -198,15 +198,7 @@ import {
   cartGetters,
   useUserShipping
 } from '@vue-storefront/odoo';
-import { required, min, digits } from 'vee-validate/dist/rules';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
-
-extend('required', { ...required, message: 'This field is required' });
-extend('min', {
-  ...min,
-  message: 'The field should have at least {length} characters'
-});
-extend('digits', { ...digits, message: 'Please provide a valid phone number' });
 
 export default {
   name: 'Shipping',
@@ -244,8 +236,8 @@ export default {
       name: '',
       street: '',
       city: '',
-      state: { id: null },
-      country: { id: null },
+      state: { id: '' },
+      country: { id: '' },
       zip: '',
       phone: null,
       selectedMethodShipping: null
@@ -256,7 +248,7 @@ export default {
         params: {
           ...form.value,
           stateId: parseInt(form.value.state.id),
-          countryId: parseInt(form.value.country.id)
+          countryId: parseInt(form.value?.country?.id)
         }
       });
       isFormSubmitted.value = true;
@@ -298,16 +290,13 @@ export default {
     onMounted(async () => {
       await search();
       await loadShipping();
-      if (shipping.value) {
-        form.value = shipping.value;
-      }
       formRef.value.validate({ silent: true });
     });
 
     watch(
-      () => form.value.country.id,
+      () => form.value?.country?.id,
       async () => {
-        await searchCountryStates(form.value.country.id);
+        await searchCountryStates(form.value?.country?.id);
         if (!countryStates.value || countryStates.value.length === 0) {
           form.value.state.id = '0';
         } else {

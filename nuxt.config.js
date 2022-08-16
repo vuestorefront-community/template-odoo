@@ -99,7 +99,10 @@ export default {
     refreshOnResize: true
   },
   loading: { color: '#fff' },
-  plugins: ['~/plugins/getImage.ts'],
+  plugins: [
+    '~/plugins/getImage.ts',
+    '~/plugins/vee-validate.ts'
+  ],
   buildModules: [
     // to core
     '@nuxtjs/composition-api/module',
