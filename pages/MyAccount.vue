@@ -20,9 +20,11 @@
           data-testid="shipping-details"
         >
           <SfShippingDetails
-            :account="{}"
+            :account="account"
             data-testid="shipping-details-tabs"
-            @update:shipping="account = { ...account, ...$event }"
+            @update:shipping="addAddress"
+            @change-address="updateAddress"
+            @delete-address="deleteAddress"
           />
         </SfContentPage>
 
@@ -51,7 +53,7 @@ import {
   SfContentPages
 } from '@storefront-ui/vue';
 import { ref, computed } from '@vue/composition-api';
-import { useUser, useShippingMethods } from '@vue-storefront/odoo';
+import { useUser, useUserShipping } from '@vue-storefront/odoo';
 import { onSSR } from '@vue-storefront/core';
 import { useUiNotification } from '~/composables';
 import ProfileUpdateForm from '~/components/MyAccount/ProfileUpdateForm.vue';
@@ -73,12 +75,13 @@ export default {
   setup(props, { root }) {
     const activePage = ref('My profile');
     const { user, load: loadUser, logout } = useUser();
-    const { searchShippingMethods, shippingMethods } = useShippingMethods();
+    const { shipping, load, addAddress, deleteAddress, updateAddress } =
+      useUserShipping();
     const { send } = useUiNotification();
 
     onSSR(async () => {
       await loadUser();
-      await searchShippingMethods();
+      await load();
     });
 
     const account = computed(() => ({
@@ -88,7 +91,7 @@ export default {
         : '',
       email: user ? user?.value.email : '',
       password: '',
-      shipping: shippingMethods.value || [],
+      shipping: shipping.value || [],
       orders: []
     }));
 
@@ -109,6 +112,9 @@ export default {
     };
 
     return {
+      addAddress,
+      updateAddress,
+      deleteAddress,
       activePage,
       account,
       changeActivePage

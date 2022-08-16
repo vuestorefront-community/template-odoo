@@ -88,7 +88,10 @@
             v-model="form.country.id"
             label="Country"
             name="country"
-            class="form__element form__element--half form__select sf-select--underlined"
+            class="
+              form__element form__element--half form__select
+              sf-select--underlined
+            "
             required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
@@ -113,7 +116,11 @@
             v-model="form.state.id"
             label="State/Province"
             name="state"
-            class="form__element form__element--half form__select sf-select--underlined form__element--half-even"
+            class="
+              form__element form__element--half form__select
+              sf-select--underlined
+              form__element--half-even
+            "
             :class="[
               countryStates && countryStates.length ? 'visible' : 'invisible',
             ]"
@@ -188,7 +195,8 @@ import {
   userShippingGetters,
   useShipping,
   useCart,
-  cartGetters
+  cartGetters,
+  useUserShipping
 } from '@vue-storefront/odoo';
 import { required, min, digits } from 'vee-validate/dist/rules';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
@@ -225,7 +233,7 @@ export default {
 
     const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
 
-    const { load: loadShipping, shipping, save } = useShipping();
+    const { load: loadShipping, shipping, save } = useUserShipping();
 
     const { isAuthenticated } = useUser();
 
@@ -300,7 +308,7 @@ export default {
       () => form.value.country.id,
       async () => {
         await searchCountryStates(form.value.country.id);
-         if (!countryStates.value || countryStates.value.length === 0) {
+        if (!countryStates.value || countryStates.value.length === 0) {
           form.value.state.id = '0';
         } else {
           form.value.state.id = String(countryStates.value?.[0].id);
