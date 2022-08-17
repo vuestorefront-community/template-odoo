@@ -1,15 +1,20 @@
-const { integrations } = require('../middleware.config');
-const redirectUrl = `${integrations.odoo.configuration.odooBaseUrl}vsf/redirects`;
+const odooBaseUrl = process.env.BACKEND_BASE_URL || process.env.BASE_URL;
+const redirectUrl = `${odooBaseUrl}vsf/redirects`;
 const consola = require('consola');
 const chalk = require('chalk');
 const axios = require('axios');
 const fsExtra = require('fs-extra');
 
-export default async () => {
+module.exports = () => {
   consola.info(chalk.bold('ODOO'), ' - Started fetch ODOO redirects...');
 
-  const { data } = await axios.get(redirectUrl);
-  await fsExtra.writeJson('customRoutes/redirects.json', data);
-
-  consola.success(chalk.bold('ODOO'), ' - Redirects.json written!');
-};
+  axios.get(redirectUrl)
+  .then(({ data }) => {
+    fsExtra.writeJson('customRoutes/redirects.json', data).then(() => {
+      consola.success(chalk.bold('ODOO'), ' - Redirects.json written!');
+    });
+  }).catch((error) => {
+    consola.error(chalk.bold('ODOO'), ' - Redirects request failed');
+    consola.error(error);
+  });
+}

@@ -3,7 +3,6 @@ import webpack from 'webpack';
 import { getRoutes } from './routes';
 import getAppRoutes from './sitemap';
 import redirects from './customRoutes/redirects.json';
-import hooks from './hooks';
 import theme from './themeConfig';
 
 const isDev = process.env.NODE_ENV !== 'production';
@@ -18,7 +17,6 @@ const localesMap = {
 const localeIndex = localesMap[process.env.NODE_LOCALE];
 
 export default {
-  hooks,
   server: {
     port: 3000,
     host: '0.0.0.0'
@@ -111,6 +109,7 @@ export default {
     '@nuxtjs/device',
     '@nuxtjs/web-vitals',
     '@nuxtjs/tailwindcss',
+
     '@nuxt/typescript-build',
     '@nuxtjs/style-resources',
     '@nuxtjs/google-fonts',

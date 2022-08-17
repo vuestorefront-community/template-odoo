@@ -1,6 +1,5 @@
-const { integrations } = require('../middleware.config');
-const graphqlBaseUrl = integrations.odoo.configuration.graphqlBaseUrl;
-
+const odooBaseUrl = process.env.BACKEND_BASE_URL || process.env.BASE_URL;
+const graphqlBaseUrl = `${odooBaseUrl}graphql/vsf`;
 const consola = require('consola');
 const chalk = require('chalk');
 const axios = require('axios');
@@ -9,7 +8,7 @@ const queries = require('../helpers/buildQueries');
 
 const headers = { headers: {
   'Content-Type': 'application/json',
-  'resquest-host': integrations.odoo.configuration.baseDomain
+  'resquest-host': odooBaseUrl
 }};
 
 const fetchProducts = async () => {
