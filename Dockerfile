@@ -2,7 +2,7 @@ FROM node:14 as vsf-pre
 
 WORKDIR /app
 
-COPY . /
+COPY . /app
 
 RUN apt-get install -y --no-install-recommends git \
   && yarn install \
@@ -27,6 +27,5 @@ WORKDIR /app
 COPY --from=vsf-pre /app  .
 
 ENV HOST 0.0.0.0
-
 
 CMD [ "yarn", "start" ]
