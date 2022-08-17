@@ -13,6 +13,8 @@
     "start": "nuxt start",
     "update:check": "ncu",
     "update:update": "ncu -u",
+    "update:routes": "node hooks/execute.js routes",
+    "update:redirects": "node hooks/execute redirects",
     "test": "jest"
   },
   "dependencies": {
