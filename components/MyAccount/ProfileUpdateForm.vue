@@ -1,5 +1,5 @@
 <template>
-  <ValidationObserver v-slot="{ invalid } ">
+  <ValidationObserver v-slot="{ invalid }">
     <form class="form" @submit.prevent="submitForm()">
       <h1>My profile</h1>
 
@@ -54,7 +54,7 @@
           style="margin-top: 10px"
           @keypress.enter="submitForm()"
         />
-        <OdooButton type="submit"  :disabled="invalid" :loading="loading">
+        <OdooButton type="submit" :disabled="invalid" :loading="loading">
           {{ $t('Update personal data') }}
         </OdooButton>
       </SfModal>
@@ -77,7 +77,7 @@ export default defineComponent({
     SfInput,
     SfModal,
     ValidationProvider,
-    ValidationObserver
+    ValidationObserver,
   },
   emits: ['submit'],
   setup() {
@@ -90,27 +90,27 @@ export default defineComponent({
 
     const resetForm = () => ({
       name: userGetters.getFirstName(user.value) || '',
-      email: userGetters.getEmailAddress(user.value) || ''
+      email: userGetters.getEmailAddress(user.value) || '',
     });
     const form = ref(resetForm());
 
     const submitForm = async () => {
-      loading.value = true
+      loading.value = true;
       try {
         await updateUser({
           user: {
             ...user,
             name: form.value.name,
-            email: form.value.email
+            email: form.value.email,
           },
         });
 
         form.value = resetForm();
         requirePassword.value = false;
         currentPassword.value = '';
-          send({
+        send({
           message: 'Successfull update!',
-          type: 'success'
+          type: 'success',
         });
       } catch (e) {
         form.value = resetForm();
@@ -120,7 +120,7 @@ export default defineComponent({
         send({ message: e?.value, type: 'danger' });
       }
 
-      loading.value = false
+      loading.value = false;
     };
 
     return {
@@ -129,9 +129,9 @@ export default defineComponent({
       user,
       requirePassword,
       currentPassword,
-      form
+      form,
     };
-  }
+  },
 });
 </script>
 <style lang="scss" scoped>

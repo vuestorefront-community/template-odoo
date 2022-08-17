@@ -31,7 +31,7 @@
         </SfContentPage>
 
         <SfContentPage title="Newsletter">
-          <SfMyNewsletter />
+          <MyAccountNewsletterForm />
         </SfContentPage>
       </SfContentCategory>
 
@@ -75,11 +75,12 @@ export default defineComponent({
     PasswordResetForm,
     OrderHistory,
     ShippingAddressForm
-},
+  },
   setup(props, { root }) {
     const activePage = ref('My profile');
     const { user, load: loadUser, logout } = useUser();
-    const { shipping, load, addAddress, deleteAddress, updateAddress } = useUserShipping();
+    const { shipping, load, addAddress, deleteAddress, updateAddress } =
+      useUserShipping();
     const { send } = useUiNotification();
 
     onSSR(async () => {
@@ -89,7 +90,9 @@ export default defineComponent({
 
     const account = computed(() => ({
       firstName: user?.value?.name?.split()?.[0] || '',
-      lastName: user?.value?.name?.split()[user?.value?.name?.split()?.length - 1] || '',
+      lastName:
+        user?.value?.name?.split()[user?.value?.name?.split()?.length - 1] ||
+        '',
       email: user?.value?.email || '',
       password: '',
       city: '',
@@ -99,7 +102,7 @@ export default defineComponent({
 
     const handleUpdateAddress = (address, asa) => {
       console.log(address, asa);
-    }
+    };
 
     const changeActivePage = async (title) => {
       if (title === 'Log out') {
