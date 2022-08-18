@@ -100,9 +100,7 @@ export default defineComponent({
       orders: []
     }));
 
-    const handleUpdateAddress = (address, asa) => {
-      console.log(address, asa);
-    };
+    const handleUpdateAddress = (address, asa) => {};
 
     const changeActivePage = async (title) => {
       if (title === 'Log out') {
