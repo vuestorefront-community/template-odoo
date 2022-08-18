@@ -61,7 +61,14 @@
                   image-tag="nuxt-img"
                   :score-rating="productGetters.getAverageRating(product)"
                   :reviews-count="7"
-                  :image="$image(productGetters.getCoverImage(product), 216, 288, productGetters.getImageFilename(product))"
+                  :image="
+                    $image(
+                      productGetters.getCoverImage(product),
+                      216,
+                      288,
+                      productGetters.getImageFilename(product)
+                    )
+                  "
                   :alt="productGetters.getName(product)"
                   :title="productGetters.getName(product)"
                   :link="localePath(goToProduct(product))"
@@ -92,7 +99,14 @@
                 "
                 :score-rating="productGetters.getAverageRating(product)"
                 :reviews-count="7"
-                :image="$image(productGetters.getCoverImage(product), 216, 288, productGetters.getImageFilename(product))"
+                :image="
+                  $image(
+                    productGetters.getCoverImage(product),
+                    216,
+                    288,
+                    productGetters.getImageFilename(product)
+                  )
+                "
                 :alt="productGetters.getName(product)"
                 :title="productGetters.getName(product)"
                 :link="localePath(goToProduct(product))"
@@ -195,9 +209,7 @@ export default {
     const { addItem: addItemToWishlist } = useWishlist();
 
     const goToProduct = (product) => {
-      return `/p/${productGetters.getId(product)}/${productGetters.getSlug(
-        product
-      )}`;
+      return productGetters.getSlug(product);
     };
     watch(
       () => props.visible,
