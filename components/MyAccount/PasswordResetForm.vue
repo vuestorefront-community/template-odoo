@@ -51,7 +51,7 @@
           />
         </ValidationProvider>
       </div>
-      <OdooButton type="submit"  :disabled="invalid" :loading="loading">
+      <OdooButton type="submit" :disabled="invalid" :loading="loading">
         {{ $t('Update password') }}
       </OdooButton>
     </form>
@@ -59,9 +59,10 @@
 </template>
 
 <script>
-import { ref } from '@vue/composition-api';
+import { ref } from '@nuxtjs/composition-api';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { SfInput, SfButton } from '@storefront-ui/vue';
+import { usePassword } from '@vue-storefront/odoo';
 export default {
   name: 'PasswordResetForm',
   components: {
@@ -71,23 +72,19 @@ export default {
     ValidationObserver
   },
   setup(_, { emit }) {
+    const { updatePassword, loading } = usePassword();
     const resetForm = () => ({
       currentPassword: '',
       newPassword: '',
       repeatPassword: ''
     });
     const form = ref(resetForm());
-    const loading = ref(false);
 
-    const submitForm = (resetValidationFn) => () => {
-      const onComplete = () => {
-        form.value = resetForm();
-        resetValidationFn();
-      };
-      const onError = () => {
-        // TODO: Handle error
-      };
-      emit('submit', { form, onComplete, onError });
+    const submitForm = async (resetFunction) => {
+      await updatePassword(form.value.currentPassword, form.value.newPassword);
+
+      form.value = resetForm();
+      resetFunction();
     };
     return {
       form,
