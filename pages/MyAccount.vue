@@ -19,27 +19,37 @@
           title="Shipping & Payment Details"
           data-testid="shipping-details"
         >
-          <SfShippingDetails
-            ref="shippingDetails"
-            :account="account"
+          <SfTabs
+            key="edit-address"
+            :open-tab="1"
+            class="tab-orphan"
             data-testid="shipping-details-tabs"
           >
-            <template #form>
+            <SfTab title="Edit Address" v-if="state === 'edit'">
               <ShippingAddressForm
                 @cancel="handleCancelEditing"
                 @save="handleSaveAddress"
                 :address="addressToUpdate"
                 :isNew="!addressToUpdate.id"
               ></ShippingAddressForm>
-            </template>
-            <template #shipping-list>
+            </SfTab>
+
+            <SfTab title="Shipping Addresses" v-if="state === 'list'">
               <MyAccountShippingList
                 :addresses="shipping"
                 @change="handleChangeAddress"
                 key="shipping-list"
               />
-            </template>
-          </SfShippingDetails>
+
+              <OdooButton
+                class="action-button"
+                data-testid="add-new-address"
+                @click="handleAddNewAddress"
+              >
+                {{ $t('Add New Address') }}</OdooButton
+              >
+            </SfTab>
+          </SfTabs>
         </SfContentPage>
 
         <SfContentPage title="Newsletter">
@@ -65,6 +75,7 @@ import {
   SfMyNewsletter,
   SfOrderHistory,
   SfContentPages,
+  SfTabs,
 } from '@storefront-ui/vue';
 import { ref, computed, defineComponent } from '@nuxtjs/composition-api';
 import { useUser, useUserShipping } from '@vue-storefront/odoo';
@@ -80,6 +91,7 @@ export default defineComponent({
   components: {
     SfContentPages,
     SfMyProfile,
+    SfTabs,
     SfShippingDetails,
     SfMyNewsletter,
     SfOrderHistory,
@@ -90,6 +102,7 @@ export default defineComponent({
   },
   setup(props, { root }) {
     const activePage = ref('My profile');
+    const state = ref('list');
     const addressToUpdate = ref({});
     const shippingDetails = ref(null);
     const { user, load: loadUser, logout } = useUser();
@@ -115,7 +128,12 @@ export default defineComponent({
     }));
 
     const handleCancelEditing = () => {
-      shippingDetails.value.cancelEditing();
+      state.value = 'list';
+    };
+
+    const handleAddNewAddress = () => {
+      addressToUpdate.value = {};
+      state.value = 'edit';
     };
 
     const handleSaveAddress = async () => {
@@ -129,7 +147,7 @@ export default defineComponent({
 
     const handleChangeAddress = (shipping) => {
       addressToUpdate.value = shipping;
-      shippingDetails.value.editAddress = true;
+      state.value = 'edit';
     };
 
     const changeActivePage = async (title) => {
@@ -149,6 +167,7 @@ export default defineComponent({
     };
 
     return {
+      handleAddNewAddress,
       handleChangeAddress,
       handleSaveAddress,
       handleCancelEditing,
@@ -160,6 +179,7 @@ export default defineComponent({
       shipping,
       changeActivePage,
       addressToUpdate,
+      state,
     };
   },
 });

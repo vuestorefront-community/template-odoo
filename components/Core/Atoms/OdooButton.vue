@@ -85,10 +85,10 @@ export default defineComponent({
         props.styleType === ButtonType.Tertiary &&
         props.color === ButtonColor.Grey
       ) {
-        return 'bg-zinc-500 text-slate-50';
+        return 'bg-neutral-600 text-white';
       }
       if (props.styleType === ButtonType.Danger) {
-        return 'bg-red-600	 text-white';
+        return 'bg-red-600 text-white';
       }
 
       switch (props.styleType) {
