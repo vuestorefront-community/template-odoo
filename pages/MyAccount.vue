@@ -23,13 +23,21 @@
             ref="shippingDetails"
             :account="account"
             data-testid="shipping-details-tabs"
-            @delete-address="handleDeleteAddress"
           >
             <template #form>
               <ShippingAddressForm
                 @cancel="handleCancelEditing"
                 @save="handleSaveAddress"
-                :isNew="!account.id"></ShippingAddressForm>
+                :address="addressToUpdate"
+                :isNew="!addressToUpdate.id"
+              ></ShippingAddressForm>
+            </template>
+            <template #shipping-list>
+              <MyAccountShippingList
+                :addresses="shipping"
+                @change="handleChangeAddress"
+                key="shipping-list"
+              />
             </template>
           </SfShippingDetails>
         </SfContentPage>
@@ -50,13 +58,13 @@
   </div>
 </template>
 
-<script type="ts">
+<script lang="ts">
 import {
   SfMyProfile,
   SfShippingDetails,
   SfMyNewsletter,
   SfOrderHistory,
-  SfContentPages
+  SfContentPages,
 } from '@storefront-ui/vue';
 import { ref, computed, defineComponent } from '@nuxtjs/composition-api';
 import { useUser, useUserShipping } from '@vue-storefront/odoo';
@@ -78,14 +86,14 @@ export default defineComponent({
     ProfileUpdateForm,
     PasswordResetForm,
     OrderHistory,
-    ShippingAddressForm
+    ShippingAddressForm,
   },
   setup(props, { root }) {
     const activePage = ref('My profile');
+    const addressToUpdate = ref({});
     const shippingDetails = ref(null);
     const { user, load: loadUser, logout } = useUser();
-    const { shipping, load, addAddress, deleteAddress, updateAddress } =
-      useUserShipping();
+    const { shipping, load, addAddress, updateAddress } = useUserShipping();
     const { send } = useUiNotification();
 
     onSSR(async () => {
@@ -93,47 +101,42 @@ export default defineComponent({
       await load();
     });
 
-    const addresses = computed(() => shipping.value.map(item => ({
-      ...item,
-      country: item.country.name,
-      state: item.state.name,
-      countryId: item.state.id,
-      stateId: item.state.id
-    })));
-
     const account = computed(() => ({
-      firstName: user?.value?.name?.split()?.[0] || '',
+      firstName: user?.value?.name?.split(' ')?.[0] || '',
       lastName:
-        user?.value?.name?.split()[user?.value?.name?.split()?.length - 1] ||
-        '',
+        user?.value?.name?.split(' ')[
+          user?.value?.name?.split(' ')?.length - 1
+        ] || '',
       email: user?.value?.email || '',
       password: '',
       city: '',
-      shipping: addresses.value,
-      orders: []
+      shipping: shipping?.value,
+      orders: [],
     }));
 
     const handleCancelEditing = () => {
       shippingDetails.value.cancelEditing();
     };
 
-    const handleSaveAddress = () => {
+    const handleSaveAddress = async () => {
       send({
         message: 'Succefully saved!',
-        type: 'success'
+        type: 'success',
       });
       handleCancelEditing();
+      await load();
     };
 
-    const handleDeleteAddress = async(addressIndex) => {
-      await deleteAddress({ address: { id: addresses.value[addressIndex]?.id}});
+    const handleChangeAddress = (shipping) => {
+      addressToUpdate.value = shipping;
+      shippingDetails.value.editAddress = true;
     };
 
     const changeActivePage = async (title) => {
       if (title === 'Log out') {
         send({
           message: 'You are logged out. We hope you come back soon mate!',
-          type: 'info'
+          type: 'info',
         });
 
         root.$router.push('/');
@@ -146,18 +149,19 @@ export default defineComponent({
     };
 
     return {
+      handleChangeAddress,
       handleSaveAddress,
       handleCancelEditing,
-      handleDeleteAddress,
       shippingDetails,
       addAddress,
       updateAddress,
       activePage,
       account,
       shipping,
-      changeActivePage
+      changeActivePage,
+      addressToUpdate,
     };
-  }
+  },
 });
 </script>
 

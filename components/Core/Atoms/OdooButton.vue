@@ -1,14 +1,7 @@
 <template>
-  <SfButton
-    :class="classes"
-    v-bind="$props"
-    @click="$emit('click')"
-  >
+  <SfButton :class="classes" v-bind="$props" @click="$emit('click')">
     <span style="grid-column-start: 2" class="pr-3"><slot /> </span>
-    <div
-      v-show="loading"
-      class="lds-ring"
-    >
+    <div v-show="loading" class="lds-ring">
       <div />
       <div />
       <div />
@@ -19,76 +12,108 @@
 
 <script lang="ts">
 import { SfButton } from '@storefront-ui/vue';
-import { defineComponent, PropType, ComputedRef, computed } from '@nuxtjs/composition-api';
-import { ButtonColor, ButtonShape, ButtonSize, ButtonType } from '~/custom-api/types';
+import {
+  defineComponent,
+  PropType,
+  ComputedRef,
+  computed,
+} from '@nuxtjs/composition-api';
+import {
+  ButtonColor,
+  ButtonShape,
+  ButtonSize,
+  ButtonType,
+} from '@vue-storefront/odoo-api/src/types';
 export default defineComponent({
   components: {
-    SfButton
+    SfButton,
   },
   props: {
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     loading: {
       type: Boolean,
-      default: false
+      default: false,
     },
     link: {
       type: [String, Object],
-      default: null
+      default: null,
     },
     styleType: {
       type: String as PropType<ButtonType>,
-      default: ButtonType.Primary
+      default: ButtonType.Primary,
     },
     shape: {
       type: String as PropType<ButtonShape>,
-      default: ButtonShape.Round
+      default: ButtonShape.Round,
     },
     size: {
       type: String as PropType<ButtonSize>,
-      default: ButtonSize.Small
+      default: ButtonSize.Small,
     },
     color: {
       type: String as PropType<ButtonColor>,
-      default: ButtonColor.Green
-    }
+      default: ButtonColor.Green,
+    },
   },
   emits: ['click'],
-  setup (props) {
-    const typeClasses : ComputedRef<string> = computed(() => {
-      if (props.styleType === ButtonType.Primary && props.shape === ButtonShape.Round && props.color === ButtonColor.Green) {
+  setup(props) {
+    const typeClasses: ComputedRef<string> = computed(() => {
+      if (
+        props.styleType === ButtonType.Primary &&
+        props.shape === ButtonShape.Round &&
+        props.color === ButtonColor.Green
+      ) {
         return 'bg-pine-primary-dark-green__with-hover big-text font-semibold';
       }
-      if (props.styleType === ButtonType.Primary && props.shape === ButtonShape.Rectangle && props.color === ButtonColor.Green) {
+      if (
+        props.styleType === ButtonType.Primary &&
+        props.shape === ButtonShape.Rectangle &&
+        props.color === ButtonColor.Green
+      ) {
         return 'bg-primary-green';
       }
-      if (props.styleType === ButtonType.Primary && props.color === ButtonColor.Black) {
+      if (
+        props.styleType === ButtonType.Primary &&
+        props.color === ButtonColor.Black
+      ) {
         return 'bg-primary-black big-text font-semibold';
       }
-      if (props.styleType === ButtonType.Tertiary && props.color === ButtonColor.Grey) {
+      if (
+        props.styleType === ButtonType.Tertiary &&
+        props.color === ButtonColor.Grey
+      ) {
         return 'bg-zinc-500 text-slate-50';
+      }
+      if (props.styleType === ButtonType.Danger) {
+        return 'bg-red-600	 text-white';
       }
 
       switch (props.styleType) {
-        case ButtonType.Secondary: return 'bg-fern-primary-medium-green__with-hover';
-        default: break;
+        case ButtonType.Secondary:
+          return 'bg-fern-primary-medium-green__with-hover';
+        default:
+          break;
       }
     });
 
-    const classes : ComputedRef<string> =
-      computed(() => `btn ${typeClasses.value} ${props.shape.toLowerCase()} ${props.size.toLowerCase()} cursor-pointer`);
+    const classes: ComputedRef<string> = computed(
+      () =>
+        `btn ${
+          typeClasses.value
+        } ${props.shape.toLowerCase()} ${props.size.toLowerCase()} cursor-pointer`
+    );
 
     return {
-      classes
+      classes,
     };
-  }
+  },
 });
 </script>
 
 <style lang="scss" scoped>
-
 .is-disabled--button {
   color: var(--disabled-grey-color);
   background: var(--disabled-grey-background);
