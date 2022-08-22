@@ -20,12 +20,16 @@
           data-testid="shipping-details"
         >
           <SfShippingDetails
+            ref="shippingDetails"
             :account="account"
             data-testid="shipping-details-tabs"
-            @delete-address="deleteAddress"
+            @delete-address="handleDeleteAddress"
           >
             <template #form>
-              <ShippingAddressForm></ShippingAddressForm>
+              <ShippingAddressForm
+                @cancel="handleCancelEditing"
+                @save="handleSaveAddress"
+                :isNew="!account.id"></ShippingAddressForm>
             </template>
           </SfShippingDetails>
         </SfContentPage>
@@ -78,6 +82,7 @@ export default defineComponent({
   },
   setup(props, { root }) {
     const activePage = ref('My profile');
+    const shippingDetails = ref(null);
     const { user, load: loadUser, logout } = useUser();
     const { shipping, load, addAddress, deleteAddress, updateAddress } =
       useUserShipping();
@@ -88,6 +93,14 @@ export default defineComponent({
       await load();
     });
 
+    const addresses = computed(() => shipping.value.map(item => ({
+      ...item,
+      country: item.country.name,
+      state: item.state.name,
+      countryId: item.state.id,
+      stateId: item.state.id
+    })));
+
     const account = computed(() => ({
       firstName: user?.value?.name?.split()?.[0] || '',
       lastName:
@@ -96,11 +109,25 @@ export default defineComponent({
       email: user?.value?.email || '',
       password: '',
       city: '',
-      shipping: shipping.value || [],
+      shipping: addresses.value,
       orders: []
     }));
 
-    const handleUpdateAddress = (address, asa) => {};
+    const handleCancelEditing = () => {
+      shippingDetails.value.cancelEditing();
+    };
+
+    const handleSaveAddress = () => {
+      send({
+        message: 'Succefully saved!',
+        type: 'success'
+      });
+      handleCancelEditing();
+    };
+
+    const handleDeleteAddress = async(addressIndex) => {
+      await deleteAddress({ address: { id: addresses.value[addressIndex]?.id}});
+    };
 
     const changeActivePage = async (title) => {
       if (title === 'Log out') {
@@ -119,12 +146,15 @@ export default defineComponent({
     };
 
     return {
-      handleUpdateAddress,
+      handleSaveAddress,
+      handleCancelEditing,
+      handleDeleteAddress,
+      shippingDetails,
       addAddress,
       updateAddress,
-      deleteAddress,
       activePage,
       account,
+      shipping,
       changeActivePage
     };
   }

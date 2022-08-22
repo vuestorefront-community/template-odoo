@@ -1,5 +1,5 @@
 <template>
-  <ValidationObserver v-slot="{ handleSubmit, invalid }">
+  <ValidationObserver v-slot="{ handleSubmit, invalid }" tag="div" class="w-full">
     <form @submit.prevent="handleSubmit(submitForm)">
       <div class="flex justify-between">
         <ValidationProvider
@@ -18,10 +18,10 @@
             :error-message="errors[0]"
           />
         </ValidationProvider>
-      
+
       </div>
 
-      <div class="flex gap-3">
+      <div class="flex flex-row gap-3">
         <ValidationProvider
           v-slot="{ errors }"
           name="streetName"
@@ -36,7 +36,7 @@
             required
             :valid="!errors[0]"
             :error-message="errors[0]"
-          /> 
+          />
         </ValidationProvider>
         <ValidationProvider
           v-slot="{ errors }"
@@ -55,8 +55,8 @@
             />
         </ValidationProvider>
       </div>
-    
-      <div class="flex gap-3">
+
+      <div class="flex flex-row gap-3">
         <ValidationProvider
           v-slot="{ errors }"
           name="zipCode"
@@ -67,13 +67,18 @@
             v-model="form.zip"
             label="Zip-code"
             name="zipCode"
-            class="form__element form__element--half form__element--half-even"
+            class="form__element w-full"
+            :class="{
+              'basis-1/3' : countryStates.length > 0,
+              'basis-1/2' : countryStates.length === 0
+            }"
             required
             :valid="!errors[0]"
             :error-message="errors[0]"
           />
         </ValidationProvider>
         <ValidationProvider
+          class="basis-1/3"
           v-slot="{ errors }"
           name="country"
           rules="required"
@@ -83,11 +88,12 @@
             v-model="form.country.id"
             label="Country"
             name="country"
-            class="
-              form__element form__element--half form__select
-              sf-select--underlined
-            "
+            class="form__select sf-select--underlined w-full"
             required
+            :class="{
+              'basis-1/3' : countryStates.length > 0,
+              'basis-1/2' : countryStates.length === 0
+            }"
             :valid="!errors[0]"
             :error-message="errors[0]"
           >
@@ -101,7 +107,8 @@
           </SfSelect>
         </ValidationProvider>
 
-        <ValidationProvider
+       <ValidationProvider
+          v-if="countryStates.length > 0"
           v-slot="{ errors }"
           name="state"
           rules="required"
@@ -111,11 +118,7 @@
             v-model="form.state.id"
             label="State/Province"
             name="state"
-            class="
-              form__element form__element--half form__select
-              sf-select--underlined
-              form__element--half-even
-            "
+            class="form__select sf-select--underlined w-full basis-1/3"
             required
             :valid="!errors[0]"
             :error-message="errors[0]"
@@ -146,28 +149,30 @@
           :error-message="errors[0]"
         />
       </ValidationProvider>
-      <div class="flex gap-3">
+      <div class="flex flex-row gap-3 mt-10">
          <OdooButton type="submit"  :disabled="invalid" :loading="loading">
           {{ isNew ? "Add the address" : "Update the address" }}
          </OdooButton>
+
+         <OdooButton @click="$emit('cancel')" styleType="Tertiary" color="Grey">
+           Cancel
+         </OdooButton>
       </div>
     </form>
-    <OdooButton @click="$emit('cancel')" styleType="Tertiary" color="Grey">
-      Cancel
-    </OdooButton>
   </ValidationObserver>
 </template>
 
-<script type="module">
+<script type="ts">
 import { SfInput, SfButton, SfSelect, SfCheckbox } from '@storefront-ui/vue';
-import { useCountrySearch } from '@vue-storefront/odoo';
-import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
+import { useCountrySearch, useShipping } from '@vue-storefront/odoo';
+import { useUiNotification } from '~/composables';
+import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import {
   reactive,
   watch,
-  onBeforeMount,
-  defineComponent
-} from '@vue/composition-api';
+  defineComponent,
+  onMounted
+} from '@nuxtjs/composition-api';
 export default defineComponent({
   name: 'AddressForm',
   components: {
@@ -192,8 +197,9 @@ export default defineComponent({
     }
   },
   setup(props, { emit }) {
-    const { search, searchCountryStates, countries, countryStates } =
-      useCountrySearch('my-account-shipping');
+    const { search, searchCountryStates, countries, countryStates } = useCountrySearch('my-account-shipping');
+    const { save, error } = useShipping();
+    const { send } = useUiNotification();
 
     const form = reactive({
       name: props.address.name,
@@ -206,14 +212,22 @@ export default defineComponent({
       ...(props.isNew ? {} : { id: props.address.id })
     });
 
-    const submitForm = () => {
-      emit('submit', {
-        form: form,
-        onComplete: () => {},
-        onError: () => {}
-      });
+    const submitForm = async () => {
+      try {
+        await save({ params: {
+          ...form,
+          countryId: Number(form.country.id),
+          stateId: Number(form.state.id)
+        }});
+
+        emit('save');
+      } catch (error) {
+        send({ message: 'Some error', type: 'danger' });
+      }
+
     };
-    onBeforeMount(async () => {
+
+    onMounted(async () => {
       await search();
       if (form?.country?.id && form.country.id !== 'null') {
         await searchCountryStates(form.country.id);
@@ -229,6 +243,7 @@ export default defineComponent({
         }
       }
     );
+
     return {
       loading: false,
       form,
@@ -243,5 +258,9 @@ export default defineComponent({
 <style lang='scss' scoped>
 .flex {
   margin-bottom: 7%;
+}
+
+::v-deep .sf-select {
+  padding: 42px 0 0 0;
 }
 </style>
