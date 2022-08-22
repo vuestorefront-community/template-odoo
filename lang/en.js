@@ -153,5 +153,8 @@ export default {
   'This field must have be checked': 'This field must have be checked',
   'Subscribe': 'Subscribe',
   'Subscribe to newsletter': 'Subscribe to newsletter',
-  'You can unsubscribe at any time': 'You can unsubscribe at any time'
+  'You can unsubscribe at any time': 'You can unsubscribe at any time',
+  'This field must be an email': 'This field must be an email',
+  'This field is required.': 'This field is required.',
+  'Add New Address': 'Add New Address'
 };

@@ -8,13 +8,12 @@
         class="shipping"
         data-testid="shipping-address-list-item"
       >
-        <div class="flex flex-row justify-between items-end">
+        <div class="flex flex-row justify-between items-end mb-5">
           <div class="shipping__content">
             <p class="shipping__address">
-              <span class="shipping__client-name"
-                >{{ shipping.firstName }} {{ shipping.lastName }}</span
+              <span class="font-bold">{{ shipping.name }}</span
               ><br />
-              {{ shipping.streetName }} {{ shipping.apartment }}<br />{{
+              {{ shipping.street }} {{ shipping.apartment }}<br />{{
                 shipping.zipCode
               }}
               {{ shipping.city }},<br />{{ shipping.country.name }}

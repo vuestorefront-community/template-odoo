@@ -161,9 +161,9 @@
           {{ isNew ? 'Add the address' : 'Update the address' }}
         </OdooButton>
 
-        <OdooButton @click="$emit('cancel')" styleType="Tertiary" color="Grey">
+        <SfButton @click="$emit('cancel')" class="color-light sf-button">
           Cancel
-        </OdooButton>
+        </SfButton>
       </div>
     </form>
   </ValidationObserver>
