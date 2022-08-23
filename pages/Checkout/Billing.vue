@@ -88,7 +88,10 @@
             v-model="form.country.id"
             label="Country"
             name="country"
-            class="form__element form__element--half form__select sf-select--underlined"
+            class="
+              form__element form__element--half form__select
+              sf-select--underlined
+            "
             required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
@@ -113,7 +116,11 @@
             v-model="form.state.id"
             label="State/Province"
             name="state"
-            class="form__element form__element--half form__select sf-select--underlined form__element--half-even"
+            class="
+              form__element form__element--half form__select
+              sf-select--underlined
+              form__element--half-even
+            "
             :class="[
               countryStates && countryStates.length ? 'visible' : 'invisible',
             ]"
@@ -233,7 +240,13 @@ export default {
     };
 
     const handleFormSubmit = async () => {
-      await save({ billingDetails: form.value });
+      await save({
+        params: {
+          ...form.value,
+          stateId: parseInt(form.value.state.id),
+          countryId: parseInt(form.value?.country?.id)
+        }
+      });
       isFormSubmitted.value = true;
 
       if (!error.save) {
