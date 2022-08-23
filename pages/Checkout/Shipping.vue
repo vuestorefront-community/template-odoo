@@ -225,7 +225,7 @@ export default {
 
     const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
 
-    const { load: loadShipping, shipping, save } = useUserShipping();
+    const { load: loadShipping, shipping, save } = useShipping();
 
     const { isAuthenticated } = useUser();
 

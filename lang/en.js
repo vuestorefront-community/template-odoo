@@ -156,5 +156,8 @@ export default {
   'You can unsubscribe at any time': 'You can unsubscribe at any time',
   'This field must be an email': 'This field must be an email',
   'This field is required.': 'This field is required.',
-  'Add New Address': 'Add New Address'
+  'Add New Address': 'Add New Address',
+  'This field must have': 'This field must have',
+  'This field must have be': 'This field must have be',
+  'digits': 'digits'
 };
