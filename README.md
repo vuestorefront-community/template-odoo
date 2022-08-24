@@ -23,10 +23,13 @@ Check our [demo](https://vsf.labs.odoogap.com/) server (it's a dev server so cou
 2. DOT NOT COMMIT .env file
 
 
-
 ```sh
 # install dependencies
 yarn install
+
+# generate routes and redirects from ODOO
+yarn update:routes 
+yarn update:redirects
 
 # serve with hot reload at localhost:3000
 yarn dev
