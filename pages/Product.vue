@@ -128,12 +128,12 @@
 
         <LazyHydrate when-idle>
           <SfTabs :open-tab="1" class="product__tabs">
-            <SfTab data-cy="product-tab_description" title="Description">
+            <SfTab data-cy="product-tab_description" :title="$t('Description')">
               <p class="product__description desktop-only">
                 {{ description }}
               </p>
             </SfTab>
-            <SfTab title="Read reviews" data-cy="product-tab_reviews">
+            <SfTab :title="$t('Read reviews')" data-cy="product-tab_reviews">
               <SfReview
                 v-for="review in reviews"
                 :key="reviewGetters.getReviewId(review)"
@@ -149,7 +149,7 @@
               />
             </SfTab>
             <SfTab
-              title="Additional Information"
+              :title="$t('Additional Information')"
               data-cy="product-tab_additional"
               class="product__additional-info"
             >
@@ -179,7 +179,7 @@
       <RelatedProducts
         :products="relatedProducts"
         :loading="relatedLoading"
-        title="Match it with"
+        :title="$t('Match it with')"
       />
     </LazyHydrate>
 

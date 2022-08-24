@@ -142,13 +142,7 @@
                 addItemToCart({ product, quantity: product.qty })
               "
               v-model="products[i].qty"
-              :link="
-                localePath(
-                  `/p/${productGetters.getId(product)}/${productGetters.getSlug(
-                    product
-                  )}`
-                )
-              "
+              :link="localePath(productGetters.getSlug(product))"
             >
               <template #configuration>
                 <SfProperty

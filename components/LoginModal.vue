@@ -21,7 +21,7 @@
           </p>
         </div>
         <div v-show="!isForgottenPassword">
-          <p class="sign-title">Log into your account!</p>
+          <p class="sign-title">{{ $t('Log into your account') }}</p>
           <p class="reset-pass-text">
             {{
               $t(
@@ -46,7 +46,7 @@
                 :valid="!errors[0]"
                 :errorMessage="errors[0]"
                 name="email"
-                label="Your email addres"
+                :label="$t('Your email address')"
                 class="form__element"
               />
             </ValidationProvider>
@@ -60,7 +60,7 @@
                   name="password"
                   :icon="{ icon: 'show_password' }"
                   type:icon="text"
-                  label="Your password"
+                  :label="$t('Your password')"
                   @click:icon="
                     {
                       showPassword = !showPassword;
@@ -75,7 +75,7 @@
                   data-cy="login-checkbox-remember-me"
                   v-model="rememberMe"
                   name="remember-me"
-                  label="Remember me"
+                  :label="$t('Remember me')"
                   class="form__element checkbox"
                 />
                 <SfButton
@@ -121,7 +121,7 @@
         </ValidationObserver>
 
         <div class="bottom" v-show="!isForgottenPassword">
-          <p class="bottom-enjoy">Enjoy these perks with your free account!</p>
+          <p class="bottom-enjoy">{{ $t('Enjoy these perks with your free account') }}</p>
           <div class="block lg:flex justify-around">
             <div class="flex additional-account">
               <SfIcon
@@ -130,7 +130,7 @@
                 viewBox="0 0 12 12"
                 :coverage="1"
               />
-              <p>Faster checkout</p>
+              <p>{{ $t('Faster checkout') }}</p>
             </div>
             <div class="flex additional-account">
               <SfIcon
@@ -139,7 +139,7 @@
                 viewBox="0 0 12 12"
                 :coverage="1"
               />
-              <p>Manage your wishlist</p>
+              <p>{{ $t('Manage your wishlist') }}</p>
             </div>
           </div>
         </div>
@@ -377,7 +377,7 @@ export default {
           type: 'success'
         });
       }
-      
+
     };
 
     const handlePasswordRecovery = async () =>

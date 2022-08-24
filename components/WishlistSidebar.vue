@@ -4,7 +4,7 @@
       :visible="isWishlistSidebarOpen"
       position="right"
       :button="false"
-      title="My Wishlist"
+      :title="$t('My Wishlist')"
       @close="toggleWishlistSidebar"
       class="sidebar sf-sidebar--right"
     >
@@ -95,9 +95,8 @@
               class="empty-wishlist__icon"
             />
             <SfHeading
-              title="Your bag is empty"
-              description="Looks like you haven’t added any items to the bag yet. Start
-              shopping to fill it in."
+              :title="$t('Your wishlist is empty')"
+              :description="$t('Empty')"
               class="empty-wishlist__label"
             />
           </div>
