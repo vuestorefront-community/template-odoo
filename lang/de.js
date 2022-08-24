@@ -40,7 +40,6 @@ export default {
   'Clear all': 'Alles löschen',
   'Empty': 'Sieht so aus, als hätten Sie der Tasche noch keine Artikel hinzugefügt. Beginnen Sie mit dem Einkaufen, um es auszufüllen.',
   'Help & FAQs': 'Hilfe & FAQs',
-  'Download': 'Laden Sie unsere Anwendung herunter',
   'Find out more': 'Finde mehr heraus',
   'Login': 'Anmeldung',
   'Forgotten password?': 'Passwort vergessen?',

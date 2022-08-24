@@ -12,7 +12,7 @@ const useUiHelpers = (): any => {
   const route = useRoute();
   const router = useRouter();
   const { params, query, path } = route.value;
-  const localePrefixes = ['/en', '/de'];
+  const localePrefixes = ['/en', '/de', '/ru'];
 
   const pathToSlug = () : string => {
     for (const localePrefix of localePrefixes) {

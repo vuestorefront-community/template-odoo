@@ -3,7 +3,7 @@
     <SfSidebar
       :visible="isCartSidebarOpen"
       position="right"
-      title="My Cart"
+      :title="$t('My Cart')"
       class="sf-sidebar--right"
       @close="toggleCartSidebar"
     >
@@ -72,11 +72,10 @@
               src="/icons/empty-cart.svg"
             />
             <SfHeading
-              title="Your cart is empty"
+              :title="$t('Your bag is empty')"
               :level="2"
               class="empty-cart__heading"
-              description="Looks like you haven’t added any items to the bag yet. Start
-              shopping to fill it in."
+              :description="$t('EmptyCart')"
             />
           </div>
         </div>
