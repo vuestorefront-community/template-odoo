@@ -90,7 +90,7 @@
               :show-add-to-cart-button="true"
               :isInWishlist="isInWishlist({ product })"
               :isAddedToCart="isInCart({ product })"
-              :link="productGetters.getSlug(product)"
+              :link="localePath(productGetters.getSlug(product))"
               class="products__product-card"
               @click:wishlist="
                 isInWishlist({ product })
@@ -257,7 +257,7 @@ import {
   ref,
   computed,
   onMounted,
-  defineComponent
+  defineComponent, useRoute
 } from '@nuxtjs/composition-api';
 import {
   useCart,
@@ -287,7 +287,9 @@ export default defineComponent({
       isInWishlist
     } = useWishlist();
     const { result, search, loading } = useFacet();
-    const { params } = root.$router.history.current;
+
+    const route = useRoute();
+    const { params, path } = route.value;
 
     const products = computed(() => facetGetters.getProducts(result.value));
     const categoryTree = computed(() =>

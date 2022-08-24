@@ -234,13 +234,14 @@ import { onSSR } from '@vue-storefront/core';
 import { useRoute } from '@nuxtjs/composition-api';
 import MobileStoreBanner from '~/components/MobileStoreBanner.vue';
 import LazyHydrate from 'vue-lazy-hydration';
-import { useUiState } from '~/composables';
+import {useUiHelpers, useUiState} from '~/composables';
 
 export default {
   name: 'Product',
   transition: 'fade',
   setup(props, { root }) {
     const qty = ref(1);
+    const th = useUiHelpers();
     const { id } = root.$route.params;
     const { path } = useRoute().value;
 
@@ -300,7 +301,7 @@ export default {
 
     onSSR(async () => {
       await search({
-        slug: path,
+        slug: th.pathToSlug(),
         customQuery: { getProductTemplate: 'customGetProduct' }
       });
 
@@ -347,6 +348,7 @@ export default {
     };
 
     return {
+      th,
       productloading,
       breadcrumbs,
       allOptionsSelected,
