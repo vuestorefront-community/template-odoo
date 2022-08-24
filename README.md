@@ -33,7 +33,11 @@ yarn dev
 
 # build for production and launch server
 yarn build
+# build local
+yarn build:local
 ```
+
+
 
 or use docker-compose
 
