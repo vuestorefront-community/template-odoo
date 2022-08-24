@@ -30,8 +30,7 @@ const useUiHelpers = (): any => {
 
     const pageSize = 10;
     query.itemsPerPage ? parseInt(query.itemsPerPage) : 10;
-    const sort = '1' as any;
-    query?.sort?.split(',') || [];
+    const sort = query?.sort?.split(',') || [];
     const page = query?.page || 1;
 
     return {
