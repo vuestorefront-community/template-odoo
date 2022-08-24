@@ -233,7 +233,7 @@ export default {
   },
   i18n: {
     baseUrl: process.env.SITE_URL,
-    strategy: 'no_prefix',
+    strategy: 'prefix_and_default',
     currency: 'USD',
     country: 'US',
     countries: [

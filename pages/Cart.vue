@@ -54,7 +54,7 @@
           <template #promo>
             <div>
               <div>
-                <nuxt-link to="/checkout/shipping">
+                <nuxt-link :to="localePath('/checkout/shipping')">
                   <SfButton class="color-primary custom__width">{{
                     $t('GO TO CHECKOUT')
                   }}</SfButton>

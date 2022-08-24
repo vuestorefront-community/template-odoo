@@ -96,14 +96,14 @@
               </template>
             </SfProperty>
 
-            <nuxt-link to="/checkout/shipping">
+            <nuxt-link :to="localePath('/checkout/shipping')">
               <SfButton
                 class="sf-button--full-width color-primary mb-4"
                 @click="toggleCartSidebar"
                 >{{ $t('GO TO CHECKOUT') }}</SfButton
               >
             </nuxt-link>
-            <nuxt-link to="/cart">
+            <nuxt-link :to="localePath('/cart')">
               <SfButton
                 class="sf-button--full-width color-secondary"
                 @click="toggleCartSidebar"

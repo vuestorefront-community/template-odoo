@@ -27,7 +27,7 @@
               <SfListItem v-for="(category, key) in categories" :key="key">
                 <SfMenuItem
                   :label="category.label"
-                  :link="uiHelper.getCatLinkForSearch(category)"
+                  :link="localePath(uiHelper.getCatLinkForSearch(category))"
                   icon="chevron_right"
                 >
                 </SfMenuItem>

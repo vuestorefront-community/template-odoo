@@ -25,7 +25,7 @@
           data-cy="app-header-top-categories"
           class="nav-item"
           :label="category.name"
-          :link="category.slug"
+          :link="localePath(category.slug)"
         />
       </template>
       <template #aside>
