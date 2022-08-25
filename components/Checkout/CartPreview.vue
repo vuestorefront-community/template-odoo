@@ -131,7 +131,7 @@ export default {
         },
         {
           title: root.$t('Easy shipping'),
-          description: root.$t('You’ll receive dispatch confirmation and an arrival date'),
+          description: root.$t('You\'ll receive dispatch confirmation and an arrival date'),
           icon: 'shipping'
         },
         {
