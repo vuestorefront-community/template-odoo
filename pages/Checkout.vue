@@ -49,7 +49,7 @@ export default {
     const handleStepClick = (stepIndex) => {
       const key = Object.keys(STEPS)[stepIndex];
       if (stepIndex <= currentStepIndex.value) {
-        context.root.$router.push(`/checkout/${key}`);
+        context.root.$router.push(context.root.localePath(`/checkout/${key}`));
       }
     };
     return {

@@ -319,7 +319,7 @@ export default {
 
     const updateFilter = (filter) => {
       root.$router.push({
-        path: root.$route.path,
+        path: root.localePath(root.$route.path),
         query: { ...root.$route.query, ...filter }
       });
     };

@@ -139,7 +139,7 @@
           <SfButton
             type="button"
             class="sf-button color-secondary summary__back-button"
-            @click="$router.push('/checkout/billing')"
+            @click="$router.push(localePath('/checkout/billing'))"
           >
             {{ $t('Go back') }}
           </SfButton>
@@ -213,7 +213,7 @@ export default {
   setup(props, context) {
     const { cart, load, setCart } = useCart();
     const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
-    if (totalItems.value === 0) context.root.$router.push('/cart');
+    if (totalItems.value === 0) context.root.$router.push(context.root.localePath('/cart'));
 
     const { providerList, getPaymentProviderList } = usePayment();
     const { order, make, loading } = useMakeOrder();
@@ -248,7 +248,7 @@ export default {
     watch(
       () => totalItems.value,
       () => {
-        if (totalItems.value === 0) context.root.$router.push('/cart');
+        if (totalItems.value === 0) context.root.$router.push(context.root.localePath('/cart'));
       }
     );
 
