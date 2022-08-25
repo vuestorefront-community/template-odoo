@@ -172,7 +172,7 @@
       <VsfShippingProvider
         name="selectedMethodShipping"
         :selectedMethodShipping="form.selectedMethodShipping"
-        @submit="$router.push('/checkout/billing')"
+        @submit="$router.push(localePath('/checkout/billing'))"
         @selectedMethod="handleSelectedMethodShipping"
       />
       <SfButton
@@ -254,8 +254,8 @@ export default {
       isFormSubmitted.value = true;
 
       if (root.$router.history.current.path !== '/my-account/shipping-details')
-        root.$router.push('/checkout/billing');
-      else root.$router.push('/my-account/shipping-details');
+        root.$router.push(root.localePath('/checkout/billing'));
+      else root.$router.push(root.localePath('/my-account/shipping-details'));
 
       emit('finish', true);
     };
@@ -307,7 +307,7 @@ export default {
     watch(
       () => totalItems.value,
       () => {
-        if (totalItems.value === 0) root.$router.push('/cart');
+        if (totalItems.value === 0) root.$router.push(root.localePath('/cart'));
       }
     );
 
