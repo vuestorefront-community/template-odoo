@@ -128,12 +128,12 @@
 
         <LazyHydrate when-idle>
           <SfTabs :open-tab="1" class="product__tabs">
-            <SfTab data-cy="product-tab_description" title="Description">
+            <SfTab data-cy="product-tab_description" :title="$t('Description')">
               <p class="product__description desktop-only">
                 {{ description }}
               </p>
             </SfTab>
-            <SfTab title="Read reviews" data-cy="product-tab_reviews">
+            <SfTab :title="$t('Read reviews')" data-cy="product-tab_reviews">
               <SfReview
                 v-for="review in reviews"
                 :key="reviewGetters.getReviewId(review)"
@@ -149,7 +149,7 @@
               />
             </SfTab>
             <SfTab
-              title="Additional Information"
+              :title="$t('Additional Information')"
               data-cy="product-tab_additional"
               class="product__additional-info"
             >
@@ -179,7 +179,7 @@
       <RelatedProducts
         :products="relatedProducts"
         :loading="relatedLoading"
-        title="Match it with"
+        :title="$t('Match it with')"
       />
     </LazyHydrate>
 
@@ -234,13 +234,14 @@ import { onSSR } from '@vue-storefront/core';
 import { useRoute } from '@nuxtjs/composition-api';
 import MobileStoreBanner from '~/components/MobileStoreBanner.vue';
 import LazyHydrate from 'vue-lazy-hydration';
-import { useUiState } from '~/composables';
+import {useUiHelpers, useUiState} from '~/composables';
 
 export default {
   name: 'Product',
   transition: 'fade',
   setup(props, { root }) {
     const qty = ref(1);
+    const th = useUiHelpers();
     const { id } = root.$route.params;
     const { path } = useRoute().value;
 
@@ -281,8 +282,13 @@ export default {
     );
     const code = computed(() => productGetters.getCode(product.value));
 
-    const breadcrumbs = computed(() =>
-      facetGetters.getBreadcrumbsByProduct(product.value)
+    const breadcrumbs = computed(() => {
+      const breadcrumbs = facetGetters.getBreadcrumbsByProduct(product.value)
+
+      if (breadcrumbs.length > 0 && breadcrumbs[0].text === 'Home')
+        breadcrumbs[0].text = root.$t('Home');
+      return breadcrumbs;
+    }
     );
 
     const reviews = computed(() =>
@@ -300,7 +306,7 @@ export default {
 
     onSSR(async () => {
       await search({
-        slug: path,
+        slug: th.pathToSlug(),
         customQuery: { getProductTemplate: 'customGetProduct' }
       });
 
@@ -313,7 +319,7 @@ export default {
 
     const updateFilter = (filter) => {
       root.$router.push({
-        path: root.$route.path,
+        path: root.localePath(root.$route.path),
         query: { ...root.$route.query, ...filter }
       });
     };
@@ -347,6 +353,7 @@ export default {
     };
 
     return {
+      th,
       productloading,
       breadcrumbs,
       allOptionsSelected,

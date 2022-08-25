@@ -8,7 +8,7 @@
           :class="{ checkout__steps: true }"
           @change="handleStepClick"
         >
-          <SfStep v-for="(step, key) in STEPS" :key="key" :name="step">
+          <SfStep v-for="(step, key) in STEPS" :key="key" :name="$t(step)">
             <nuxt-child />
           </SfStep>
         </SfSteps>
@@ -49,7 +49,7 @@ export default {
     const handleStepClick = (stepIndex) => {
       const key = Object.keys(STEPS)[stepIndex];
       if (stepIndex <= currentStepIndex.value) {
-        context.root.$router.push(`/checkout/${key}`);
+        context.root.$router.push(context.root.localePath(`/checkout/${key}`));
       }
     };
     return {

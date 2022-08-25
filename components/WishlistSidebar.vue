@@ -4,13 +4,13 @@
       :visible="isWishlistSidebarOpen"
       position="right"
       :button="false"
-      title="My Wishlist"
+      :title="$t('My Wishlist')"
       @close="toggleWishlistSidebar"
       class="sidebar sf-sidebar--right"
     >
       <template #title>
         <div class="heading__wrapper">
-          <SfHeading :level="3" title="My wishlist" class="sf-heading--left" />
+          <SfHeading :level="3" :title="$t('My Wishlist')" class="sf-heading--left" />
           <SfButton
             class="heading__close-button sf-button--pure"
             aria-label="Wishlist sidebar close button"
@@ -23,7 +23,7 @@
       <transition name="fade" mode="out-in">
         <div v-if="totalItems" class="my-wishlist" key="my-wishlist">
           <div class="my-wishlist__total-items">
-            Total items: <strong>{{ totalItems }}</strong>
+            {{ $t('Total items') }}: <strong>{{ totalItems }}</strong>
           </div>
           <div class="collected-product-list">
             <transition-group name="fade" tag="div">
@@ -77,7 +77,7 @@
               class="sf-property--full-width my-wishlist__total-price"
             >
               <template #name>
-                <span class="my-wishlist__total-price-label">Total price:</span>
+                <span class="my-wishlist__total-price-label">{{ $t('Total price') }}:</span>
               </template>
               <template #value>
                 <SfPrice :regular="$n(totals.subtotal, 'currency')" />
@@ -95,9 +95,8 @@
               class="empty-wishlist__icon"
             />
             <SfHeading
-              title="Your bag is empty"
-              description="Looks like you haven’t added any items to the bag yet. Start
-              shopping to fill it in."
+              :title="$t('Your wishlist is empty')"
+              :description="$t('EmptyWishlist')"
               class="empty-wishlist__label"
             />
           </div>

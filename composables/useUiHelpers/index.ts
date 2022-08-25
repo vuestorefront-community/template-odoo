@@ -12,9 +12,18 @@ const useUiHelpers = (): any => {
   const route = useRoute();
   const router = useRouter();
   const { params, query, path } = route.value;
+  const localePrefixes = ['/en', '/de', '/ru'];
+
+  const pathToSlug = () : string => {
+    for (const localePrefix of localePrefixes) {
+      if (path.startsWith(localePrefix)) {
+        return path.replace(localePrefix, '');
+      }
+    }
+    return path;
+  };
 
   const getFacetsFromURL = () : ParamsFromUrl => {
-
     let filters: string[] = [];
     if (query) {
       Object.keys(query).forEach((filterKey) => {
@@ -36,7 +45,7 @@ const useUiHelpers = (): any => {
     return {
       fetchCategory: true,
       categoryParams: {
-        slug: path === '/' ? null : path
+        slug: path === '/' ? null : pathToSlug()
       },
       productParams: {
         pageSize,
@@ -47,7 +56,7 @@ const useUiHelpers = (): any => {
           minPrice: Number(price?.[0]) || null,
           maxPrice: Number(price?.[1]) || null,
           attributeValueId: filters,
-          categorySlug: path === '/' ? null : path
+          categorySlug: path === '/' ? null : pathToSlug()
         }
       }
     };
@@ -147,7 +156,8 @@ const useUiHelpers = (): any => {
     isFacetPrice,
     isFacetCheckbox,
     facetsFromUrlToFilter,
-    getComponentProviderByName
+    getComponentProviderByName,
+    pathToSlug
   };
 };
 

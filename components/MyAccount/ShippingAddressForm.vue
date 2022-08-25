@@ -15,7 +15,7 @@
           <SfInput
             class="w-full"
             v-model="form.name"
-            label="First name"
+            :label="$t('First name')"
             name="firstName"
             required
             :valid="!errors[0]"
@@ -34,7 +34,7 @@
           <SfInput
             class="w-full"
             v-model="form.street"
-            label="Street name"
+            :label="$t('Street name')"
             name="streetName"
             required
             :valid="!errors[0]"
@@ -49,7 +49,7 @@
         >
           <SfInput
             v-model="form.city"
-            label="City"
+            :label="$t('City')"
             name="city"
             class="w-full"
             required
@@ -68,7 +68,7 @@
         >
           <SfInput
             v-model="form.zip"
-            label="Zip-code"
+            :label="$t('Zip-code')"
             name="zipCode"
             class="form__element w-full"
             :class="{
@@ -89,7 +89,7 @@
         >
           <SfSelect
             v-model="form.country.id"
-            label="Country"
+            :label="$t('Country')"
             name="country"
             class="form__select sf-select--underlined w-full"
             required
@@ -119,7 +119,7 @@
         >
           <SfSelect
             v-model="form.state.id"
-            label="State/Province"
+            :label="$t('State/Province')"
             name="state"
             class="form__select sf-select--underlined w-full basis-1/3"
             required
@@ -144,7 +144,7 @@
       >
         <SfInput
           v-model="form.phone"
-          label="Phone number"
+          :label="$t('Phone number')"
           name="phone"
           class="form__element form__element--half"
           required
@@ -158,11 +158,11 @@
           :disabled="invalid || loading"
           :loading="loading"
         >
-          {{ isNew ? 'Add the address' : 'Update the address' }}
+          {{ $t(isNew ? 'Add the address' : 'Update the address') }}
         </OdooButton>
 
         <SfButton @click="$emit('cancel')" class="color-light sf-button">
-          Cancel
+          {{ $t('Cancel') }}
         </SfButton>
       </div>
     </form>

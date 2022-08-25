@@ -7,15 +7,6 @@ import theme from './themeConfig';
 
 const isDev = process.env.NODE_ENV !== 'production';
 
-const localesMap = {
-  'en-EN': 'en',
-  'de-DE': 'de',
-  'da-DK': 'da',
-  'sv-SV': 'sv'
-};
-
-const localeIndex = localesMap[process.env.NODE_LOCALE];
-
 export default {
   server: {
     port: 3000,
@@ -233,16 +224,18 @@ export default {
   },
   i18n: {
     baseUrl: process.env.SITE_URL,
-    strategy: 'no_prefix',
+    strategy: 'prefix_and_default',
     currency: 'USD',
     country: 'US',
     countries: [
       { name: 'US', label: 'United States' },
-      { name: 'DE', label: 'Germany' }
+      { name: 'DE', label: 'Germany' },
+      { name: 'RU', label: 'Russian' }
     ],
     currencies: [
       { name: 'EUR', label: 'Euro' },
-      { name: 'USD', label: 'Dollar' }
+      { name: 'USD', label: 'Dollar' },
+      { name: 'RUB', label: 'Rubble' }
     ],
     locales: [
       {
@@ -256,6 +249,12 @@ export default {
         label: 'German',
         file: 'de.js',
         iso: 'de'
+      },
+      {
+        code: 'ru',
+        label: 'Russian',
+        file: 'ru.js',
+        iso: 'ru'
       }
     ],
     defaultLocale: 'en',
@@ -276,6 +275,13 @@ export default {
           currency: {
             style: 'currency',
             currency: 'EUR',
+            currencyDisplay: 'symbol'
+          }
+        },
+        ru: {
+          currency: {
+            style: 'currency',
+            currency: 'RUB',
             currencyDisplay: 'symbol'
           }
         }

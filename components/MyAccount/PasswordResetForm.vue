@@ -1,7 +1,7 @@
 <template>
   <ValidationObserver v-slot="{ handleSubmit, invalid }">
     <form class="form" @submit.prevent="handleSubmit(submitForm)">
-      <h1>Update password</h1>
+      <h1>{{ $t('Update password') }}</h1>
 
       <ValidationProvider
         v-slot="{ errors }"
@@ -12,7 +12,7 @@
           v-model="form.currentPassword"
           type="password"
           name="currentPassword"
-          label="Current Password"
+          :label="$t('Current Password')"
           required
           :valid="!errors[0]"
           :error-message="errors[0]"
@@ -29,7 +29,7 @@
             v-model="form.newPassword"
             type="password"
             name="newPassword"
-            label="New Password"
+            :label="$t('New Password')"
             required
             :valid="!errors[0]"
             :error-message="errors[0]"
@@ -44,7 +44,7 @@
             v-model="form.repeatPassword"
             type="password"
             name="repeatPassword"
-            label="Repeat Password"
+            :label="$t('Repeat Password')"
             required
             :valid="!errors[0]"
             :error-message="errors[0]"
@@ -76,7 +76,7 @@ export default {
     ValidationProvider,
     ValidationObserver
   },
-  setup(_, { emit }) {
+  setup(_, { root }) {
     const { updatePassword, loading, errors } = usePassword();
     const { send } = useUiNotification();
 
@@ -100,7 +100,7 @@ export default {
       form.value = resetForm();
 
       send({
-        message: 'Successfull update!',
+        message: root.$t('Successfull update!'),
         type: 'success'
       });
     };

@@ -2,7 +2,7 @@
   <div>
     <SfHeading
       :level="3"
-      title="Payment"
+      :title="$t('Payment')"
       class="sf-heading--left sf-heading--no-underline title"
     />
     <SfTable class="sf-table--bordered table desktop-only">
@@ -16,7 +16,7 @@
           class="table__header"
           :class="{ table__description: tableHeader === 'Description' }"
         >
-          {{ tableHeader }}
+          {{ $t(tableHeader) }}
         </SfTableHeader>
       </SfTableHeading>
       <SfTableRow
@@ -67,7 +67,7 @@
       <div class="summary__group">
         <div class="summary__total">
           <SfProperty
-            name="Subtotal"
+            :name="$t('Sub Total')"
             :value="
               $n(
                 totals.special > 0 ? totals.special : totals.subtotal,
@@ -81,21 +81,21 @@
         <SfDivider />
 
         <SfProperty
-          name="Total price"
+          :name="$t('Total Price')"
           :value="$n(totals.total, 'currency')"
           class="sf-property--full-width sf-property--large summary__property-total"
         />
 
         <SfHeading
           :level="3"
-          title="Choose payment provider"
+          :title="$t('Choose payment provider')"
           class="sf-heading--left sf-heading--no-underline title"
         />
 
         <SfRadio
           v-for="provider in providerList"
           :key="provider.id"
-          :label="provider.name"
+          :label="$t(provider.name)"
           :value="String(provider.id)"
           :selected="String(selectedProvider.id)"
           name="shippingMethod"
@@ -139,7 +139,7 @@
           <SfButton
             type="button"
             class="sf-button color-secondary summary__back-button"
-            @click="$router.push('/checkout/billing')"
+            @click="$router.push(localePath('/checkout/billing'))"
           >
             {{ $t('Go back') }}
           </SfButton>
@@ -213,7 +213,7 @@ export default {
   setup(props, context) {
     const { cart, load, setCart } = useCart();
     const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
-    if (totalItems.value === 0) context.root.$router.push('/cart');
+    if (totalItems.value === 0) context.root.$router.push(context.root.localePath('/cart'));
 
     const { providerList, getPaymentProviderList } = usePayment();
     const { order, make, loading } = useMakeOrder();
@@ -248,7 +248,7 @@ export default {
     watch(
       () => totalItems.value,
       () => {
-        if (totalItems.value === 0) context.root.$router.push('/cart');
+        if (totalItems.value === 0) context.root.$router.push(context.root.localePath('/cart'));
       }
     );
 

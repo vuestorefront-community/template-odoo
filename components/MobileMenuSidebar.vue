@@ -92,7 +92,7 @@ export default defineComponent({
     SfList,
     SfMenuItem
   },
-  setup() {
+  setup(_, {root}) {
     const isChildsOpened = ref(false);
     const currentParentMenu = ref('Menu');
     const router = useRouter();
@@ -127,7 +127,7 @@ export default defineComponent({
     };
 
     const goToSubCategory = (subCategory) => {
-      router.push(getCatLink(subCategory));
+      router.push(root.localePath(getCatLink(subCategory)));
       toggleMobileMenu();
     };
 

@@ -19,7 +19,7 @@
     >
       <SfList>
         <SfListItem v-for="lang in availableLocales" :key="lang.code">
-          <a :href="switchLocalePath(lang.code)">
+          <a :href="switchLocalePath(lang.code)" @click="$i18n.setLocale(lang.code)">
             <SfCharacteristic class="language">
               <template #title>
                 <span>{{ lang.label }}</span>

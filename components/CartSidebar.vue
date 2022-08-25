@@ -3,7 +3,7 @@
     <SfSidebar
       :visible="isCartSidebarOpen"
       position="right"
-      title="My Cart"
+      :title="$t('My Cart')"
       class="sf-sidebar--right"
       @close="toggleCartSidebar"
     >
@@ -11,7 +11,7 @@
         <SfProperty
           v-if="totalItems"
           class="sf-property--large cart-summary desktop-only"
-          name="Total items"
+          :name="$t('Total items')"
           :value="totalItems"
         />
       </template>
@@ -72,11 +72,10 @@
               src="/icons/empty-cart.svg"
             />
             <SfHeading
-              title="Your cart is empty"
+              :title="$t('Your bag is empty')"
               :level="2"
               class="empty-cart__heading"
-              description="Looks like you haven’t added any items to the bag yet. Start
-              shopping to fill it in."
+              :description="$t('EmptyCart')"
             />
           </div>
         </div>
@@ -85,7 +84,7 @@
         <transition name="sf-fade">
           <div v-if="totalItems">
             <SfProperty
-              name="Total price"
+              :name="$t('Total price')"
               class="
                 sf-property--full-width sf-property--large
                 my-cart__total-price
@@ -96,14 +95,14 @@
               </template>
             </SfProperty>
 
-            <nuxt-link to="/checkout/shipping">
+            <nuxt-link :to="localePath('/checkout/shipping')">
               <SfButton
                 class="sf-button--full-width color-primary mb-4"
                 @click="toggleCartSidebar"
                 >{{ $t('GO TO CHECKOUT') }}</SfButton
               >
             </nuxt-link>
-            <nuxt-link to="/cart">
+            <nuxt-link :to="localePath('/cart')">
               <SfButton
                 class="sf-button--full-width color-secondary"
                 @click="toggleCartSidebar"
