@@ -178,5 +178,6 @@ export default {
   'Shipping methods & charges.': 'Способы доставки и стоимость.',
   'GO BACK SHOPPING': 'Продолжить покупки',
   'Add message or gift wrap': 'Добавьте сообщение',
-  'Products': 'Товары'
+  'Products': 'Товары',
+  'Safety': 'Безопасно'
 };
