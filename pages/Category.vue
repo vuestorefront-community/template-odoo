@@ -315,13 +315,17 @@ export default defineComponent({
       return category || categoryFromParent || {};
     });
 
-    const breadcrumbs = computed(() =>
-      facetGetters.getBreadcrumbs({
+    const breadcrumbs = computed(() => {
+      const breadcrumbs = facetGetters.getBreadcrumbs({
         input: {
           params,
           currentRootCategory: currentRootCategory.value
         }
-      })
+      });
+      if (breadcrumbs.length > 0 && breadcrumbs[0].text === 'Home')
+        breadcrumbs[0].text = root.$t('Home');
+      return breadcrumbs;
+    }
     );
 
     onSSR(async () => {
