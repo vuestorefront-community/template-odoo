@@ -157,7 +157,7 @@ export default defineComponent({
           type: 'info',
         });
 
-        root.$router.push('/');
+        root.$router.push(root.localePath('/'));
         await logout();
 
         return;

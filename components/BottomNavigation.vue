@@ -67,7 +67,7 @@ export default {
     SfCircleIcon,
     SfBadge
   },
-  setup() {
+  setup(_, {root}) {
     const route = useRoute();
     const router = useRouter();
     const {
@@ -82,14 +82,14 @@ export default {
 
     const handleAccountClick = async () => {
       if (isAuthenticated.value) {
-        return router.push('/my-account');
+        return router.push(root.localePath('/my-account'));
       }
       toggleLoginModal();
     };
 
     const handleHomeClick = () => {
       isMobileMenuOpen.value ? toggleMobileMenu() : false;
-      router.push('/');
+      router.push(root.localePath('/'));
     };
 
     const cartTotalItems = computed(() => {
