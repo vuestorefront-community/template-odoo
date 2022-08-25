@@ -4,22 +4,21 @@
     class="sf-my-newsletter tab-orphan"
     tabMaxContentHeight="100%"
   >
-    <SfTab title="My newsletter" data-testid="newsletter-tab">
+    <SfTab :title="$t('My newsletter')" data-testid="newsletter-tab">
       <slot name="tab-description">
         <p class="message">
-          Set up your newsletter and we will send you information about new
-          products and trends from the sections you selected every week.
+          {{ $t('Set up newsletter') }}
         </p>
       </slot>
       <div class="form">
-        <p class="form__title">Sections that interest you</p>
+        <p class="form__title">{{ $t('Sections that interest you') }}</p>
         <slot name="form">
           <div class="form__checkbox-group">
             <SfCheckbox
               v-for="(mailing, i) in mailingList"
               :key="mailing.id"
               v-model="checkedNewsletter"
-              :label="mailing.name"
+              :label="$t(mailing.name)"
               :name="mailing.name"
               :value="String(mailing.id)"
               class="form__element"
@@ -38,9 +37,8 @@
       </div>
       <slot name="notice">
         <p class="notice">
-          I have read and understand the <a href="#">Privacy</a> and
-          <a href="#">Cookies Policy</a> and agree to receive personalized
-          commercial information from Brand name by email.
+          {{ $t('I have read and understand the') }} <a href="#">{{ $t('Privacy') }}</a> {{ $t('and') }}
+          <a href="#">{{ $t('Cookies Policy') }}</a> {{ $t('and agree to receive personalized commercial information from Brand name by email.') }}
         </p>
       </slot>
     </SfTab>
@@ -62,7 +60,7 @@ export default defineComponent({
     ValidationProvider,
     ValidationObserver
   },
-  setup() {
+  setup(_, { root}) {
     const checkedNewsletter = ref([]);
     const { send } = useUiNotification();
 
@@ -104,7 +102,7 @@ export default defineComponent({
       );
 
       send({
-        message: 'Successfull update!',
+        message: root.$t('Successfull update!'),
         type: 'success'
       });
     };

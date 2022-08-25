@@ -9,22 +9,22 @@
         >
         <div class="highlighted highlighted--total">
           <SfProperty
-            name="Order ID"
+            :name="$t('Order ID')"
             :value="orderGetters.getId(currentOrder)"
             class="sf-property--full-width property"
           />
           <SfProperty
-            name="Date"
+            :name="$t('Date')"
             :value="orderGetters.getDate(currentOrder)"
             class="sf-property--full-width property"
           />
           <SfProperty
-            name="Status"
+            :name="$t('Status')"
             :value="orderGetters.getStatus(currentOrder)"
             class="sf-property--full-width property"
           />
           <SfProperty
-            name="Total"
+            :name="$t('Total')"
             :value="$n(orderGetters.getPrice(currentOrder), 'currency')"
             class="sf-property--full-width property"
           />
@@ -70,7 +70,7 @@
             <SfTableHeader
               v-for="(tableHeader, index) in tableHeaders"
               :key="index"
-              >{{ tableHeader }}</SfTableHeader
+              >{{ $t(tableHeader) }}</SfTableHeader
             >
             <SfTableHeader class="orders__element--right">
               <span class="smartphone-only">{{ $t('Download') }}</span>
@@ -109,7 +109,7 @@
             </SfTableData>
           </SfTableRow>
         </SfTable>
-        <p>Total orders - {{ totalOrders }}</p>
+        <p>{{ $t('Total orders') }} - {{ totalOrders }}</p>
       </div>
     </SfTab>
   </SfTabs>

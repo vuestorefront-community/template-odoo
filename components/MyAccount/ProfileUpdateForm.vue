@@ -1,7 +1,7 @@
 <template>
   <ValidationObserver v-slot="{ invalid }">
     <form class="form" @submit.prevent="submitForm()">
-      <h1>My profile</h1>
+      <h1>{{ $t('My profile') }}</h1>
 
       <div class="form__horizontal">
         <ValidationProvider
@@ -12,7 +12,7 @@
           <SfInput
             v-model="form.name"
             name="name"
-            label="Name"
+            :label="$t('Name')"
             required
             :valid="!errors[0]"
             :error-message="errors[0]"
@@ -28,7 +28,7 @@
           v-model="form.email"
           type="email"
           name="email"
-          label="Your e-mail"
+          :label="$t('Your e-mail')"
           required
           :valid="!errors[0]"
           :error-message="errors[0]"
@@ -48,7 +48,7 @@
           v-model="currentPassword"
           type="password"
           name="currentPassword"
-          label="Current Password"
+          :label="$t('Current Password')"
           required
           class="form__element"
           style="margin-top: 10px"
@@ -80,7 +80,7 @@ export default defineComponent({
     ValidationObserver,
   },
   emits: ['submit'],
-  setup() {
+  setup(_, { root }) {
     const { send } = useUiNotification();
     const { user, updateUser } = useUser();
 
@@ -109,7 +109,7 @@ export default defineComponent({
         requirePassword.value = false;
         currentPassword.value = '';
         send({
-          message: 'Successfull update!',
+          message: root.$t('Successfull update!'),
           type: 'success',
         });
       } catch (e) {
