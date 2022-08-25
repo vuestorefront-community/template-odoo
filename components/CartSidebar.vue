@@ -11,7 +11,7 @@
         <SfProperty
           v-if="totalItems"
           class="sf-property--large cart-summary desktop-only"
-          name="Total items"
+          :name="$t('Total items')"
           :value="totalItems"
         />
       </template>
@@ -84,7 +84,7 @@
         <transition name="sf-fade">
           <div v-if="totalItems">
             <SfProperty
-              name="Total price"
+              :name="$t('Total price')"
               class="
                 sf-property--full-width sf-property--large
                 my-cart__total-price

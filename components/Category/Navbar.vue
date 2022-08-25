@@ -30,7 +30,7 @@
         <LazyHydrate on-interaction>
           <SfSelect
             :value="sortBy.selected"
-            placeholder="Select sorting"
+            :placeholder="$t('Select sorting')"
             data-cy="category-select_sortBy"
             class="navbar__select"
             @input="changeSorting"

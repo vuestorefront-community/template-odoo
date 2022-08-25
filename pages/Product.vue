@@ -282,8 +282,13 @@ export default {
     );
     const code = computed(() => productGetters.getCode(product.value));
 
-    const breadcrumbs = computed(() =>
-      facetGetters.getBreadcrumbsByProduct(product.value)
+    const breadcrumbs = computed(() => {
+      const breadcrumbs = facetGetters.getBreadcrumbsByProduct(product.value)
+
+      if (breadcrumbs.length > 0 && breadcrumbs[0].text === 'Home')
+        breadcrumbs[0].text = root.$t('Home');
+      return breadcrumbs;
+    }
     );
 
     const reviews = computed(() =>
