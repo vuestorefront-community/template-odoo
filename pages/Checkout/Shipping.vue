@@ -21,7 +21,7 @@
         >
           <SfInput
             v-model="form.name"
-            label="First name"
+            :label="$t('First name')"
             name="firstName"
             class="form__element"
             required
@@ -37,7 +37,7 @@
         >
           <SfInput
             v-model="form.street"
-            label="Street name"
+            :label="$t('Street name')"
             name="streetName"
             class="form__element"
             required
@@ -54,7 +54,7 @@
         >
           <SfInput
             v-model="form.city"
-            label="City"
+            :label="$t('City')"
             name="city"
             class="form__element form__element--half"
             required
@@ -70,7 +70,7 @@
         >
           <SfInput
             v-model="form.zip"
-            label="Zip-code"
+            :label="$t('Zip-code')"
             name="zipCode"
             class="form__element form__element--half form__element--half-even"
             required
@@ -86,7 +86,7 @@
         >
           <SfSelect
             v-model="form.country.id"
-            label="Country"
+            :label="$t('Country')"
             name="country"
             class="
               form__element form__element--half form__select
@@ -114,7 +114,7 @@
         >
           <SfSelect
             v-model="form.state.id"
-            label="State/Province"
+            :label="$t('State/Province')"
             name="state"
             class="
               form__element form__element--half form__select
@@ -146,7 +146,7 @@
         >
           <SfInput
             v-model="form.phone"
-            label="Phone number"
+            :label="$t('Phone number')"
             name="phone"
             class="form__element form__element--half"
             required

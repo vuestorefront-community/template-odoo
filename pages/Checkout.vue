@@ -8,7 +8,7 @@
           :class="{ checkout__steps: true }"
           @change="handleStepClick"
         >
-          <SfStep v-for="(step, key) in STEPS" :key="key" :name="step">
+          <SfStep v-for="(step, key) in STEPS" :key="key" :name="$t(step)">
             <nuxt-child />
           </SfStep>
         </SfSteps>
