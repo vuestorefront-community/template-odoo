@@ -1,3 +1,4 @@
+require('dotenv').config();
 const odooBaseUrl = process.env.BACKEND_BASE_URL || process.env.BASE_URL;
 const graphqlBaseUrl = `${odooBaseUrl}graphql/vsf`;
 const consola = require('consola');
@@ -54,6 +55,10 @@ const removeLastItemFromArray = (array) => {
 };
 
 module.exports = async () => {
+  if (!odooBaseUrl) {
+    consola.error(chalk.bold('ODOO'), ' - You need create a .env or set BACKEND_BASE_URL || BASE_URL ');
+    return;
+  }
   consola.info(chalk.bold('ODOO'), ' - Started fetch (product|categories) to build custom routes...');
 
   const { data } = await fetchProducts();
