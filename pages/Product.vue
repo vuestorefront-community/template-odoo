@@ -285,8 +285,10 @@ export default {
     const breadcrumbs = computed(() => {
       const breadcrumbs = facetGetters.getBreadcrumbsByProduct(product.value)
 
-      if (breadcrumbs.length > 0 && breadcrumbs[0].text === 'Home')
+      if (breadcrumbs.length > 0 && breadcrumbs[0].text === 'Home') {
         breadcrumbs[0].text = root.$t('Home');
+      }
+      breadcrumbs.forEach(el=>el.link = root.localePath(el.link));
       return breadcrumbs;
     }
     );

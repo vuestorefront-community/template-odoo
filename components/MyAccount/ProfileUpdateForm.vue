@@ -65,7 +65,7 @@
   </ValidationObserver>
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent, ref } from '@nuxtjs/composition-api';
 import { SfInput, SfModal } from '@storefront-ui/vue';
 import { userGetters, useUser } from '@vue-storefront/odoo';

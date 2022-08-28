@@ -322,8 +322,10 @@ export default defineComponent({
           currentRootCategory: currentRootCategory.value
         }
       });
-      if (breadcrumbs.length > 0 && breadcrumbs[0].text === 'Home')
+      if (breadcrumbs.length > 0 && breadcrumbs[0].text === 'Home') {
         breadcrumbs[0].text = root.$t('Home');
+      }
+      breadcrumbs.forEach(el=>el.link = root.localePath(el.link));
       return breadcrumbs;
     }
     );

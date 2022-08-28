@@ -141,7 +141,7 @@ export default {
     'nuxt-precompress',
     '@nuxt/image',
     '@vue-storefront/middleware/nuxt',
-    'nuxt-i18n',
+    '@nuxtjs/i18n',
     'cookie-universal-nuxt',
     'vue-scrollto/nuxt',
     ['@vue-storefront/cache/nuxt', {

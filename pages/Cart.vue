@@ -237,7 +237,7 @@ export default {
     const breadcrumbs = [
       {
         text: root.$t('Home'),
-        link: '/'
+        link: root.localePath('/')
       },
       {
         text: root.$t('Cart'),
