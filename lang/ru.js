@@ -227,4 +227,5 @@ export default {
   'I have read and understand the': 'Я прочитал и принял',
   'Imported Contacts': 'Импортированные контакты',
   'Successfull update!': 'Успешно обновлено!',
+  'Choose language': 'Выберите язык'
 };

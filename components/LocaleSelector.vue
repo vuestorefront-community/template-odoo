@@ -8,13 +8,13 @@
         :height="20"
         :width="20"
         :src="addBasePath(`/icons/langs/${locale}.webp`)"
-        alt="Flag"
+        :alt="`${locale} flag`"
         class="language__flag"
       />
     </SfButton>
     <SfBottomModal
       :is-open="isLangModalOpen"
-      title="Choose language"
+      :title="$t('Choose language')"
       @click:close="isLangModalOpen = !isLangModalOpen"
     >
       <SfList>
@@ -101,9 +101,6 @@ export default {
       &__flag {
         margin-right: var(--spacer-sm);
       }
-    }
-    @include for-desktop {
-      display: flex;
     }
   }
   &__lang {
