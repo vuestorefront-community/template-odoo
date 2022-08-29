@@ -14,7 +14,7 @@ export default {
   },
   components: [
     '~/components/',
-    '~/components/Core/Atoms',
+    '~/components/Core/Atoms'
   ],
   css: ['@/assets/styles.scss'],
   head: {
@@ -241,19 +241,19 @@ export default {
       {
         code: 'en',
         label: 'English',
-        file: 'en.js',
+        file: 'en.json',
         iso: 'en'
       },
       {
         code: 'de',
         label: 'German',
-        file: 'de.js',
+        file: 'de.json',
         iso: 'de'
       },
       {
         code: 'ru',
         label: 'Russian',
-        file: 'ru.js',
+        file: 'ru.json',
         iso: 'ru'
       }
     ],
