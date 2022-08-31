@@ -19,6 +19,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@adyen/adyen-web": "^5.23.1",
     "@nuxt/image": "^0.6.1",
     "@nuxt/types": "latest",
     "@nuxtjs/amp": "^0.5.4",
