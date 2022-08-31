@@ -169,7 +169,7 @@
             <SfPagination
               v-if="!loading"
               data-cy="category-pagination"
-              class="products__pagination desktop-only"
+              class="products__pagination"
               v-show="pagination.totalPages > 1"
               :current="pagination.currentPage"
               :total="pagination.totalPages"
@@ -251,7 +251,8 @@ import {
   ref,
   computed,
   onMounted,
-  defineComponent, useRoute
+  defineComponent,
+  useRoute
 } from '@nuxtjs/composition-api';
 import {
   useCart,
@@ -325,8 +326,7 @@ export default defineComponent({
       if (breadcrumbs.length > 0 && breadcrumbs[0].text === 'Home')
         breadcrumbs[0].text = root.$t('Home');
       return breadcrumbs;
-    }
-    );
+    });
 
     onSSR(async () => {
       const params = {
@@ -385,6 +385,18 @@ export default defineComponent({
     SfLoader,
     LazyHydrate,
     SfImage
+  },
+  head: {
+    script: [
+      {
+        type: 'application/ld+json',
+        json: {
+          '@context': 'https://schema.org',
+          '@type': 'Category',
+          name: 'Category Page'
+        }
+      }
+    ]
   }
 });
 </script>

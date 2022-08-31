@@ -234,7 +234,7 @@ import { onSSR } from '@vue-storefront/core';
 import { useRoute } from '@nuxtjs/composition-api';
 import MobileStoreBanner from '~/components/MobileStoreBanner.vue';
 import LazyHydrate from 'vue-lazy-hydration';
-import {useUiHelpers, useUiState} from '~/composables';
+import { useUiHelpers, useUiState } from '~/composables';
 
 export default {
   name: 'Product',
@@ -259,8 +259,7 @@ export default {
       useProduct('relatedProducts');
     const { addItem, loading } = useCart();
     const { addTags } = useCache();
-    const { toggleCartSidebar } =
-      useUiState();
+    const { toggleCartSidebar } = useUiState();
 
     const { reviews: productReviews } = useReview('productReviews');
 
@@ -283,13 +282,12 @@ export default {
     const code = computed(() => productGetters.getCode(product.value));
 
     const breadcrumbs = computed(() => {
-      const breadcrumbs = facetGetters.getBreadcrumbsByProduct(product.value)
+      const breadcrumbs = facetGetters.getBreadcrumbsByProduct(product.value);
 
       if (breadcrumbs.length > 0 && breadcrumbs[0].text === 'Home')
         breadcrumbs[0].text = root.$t('Home');
       return breadcrumbs;
-    }
-    );
+    });
 
     const reviews = computed(() =>
       reviewGetters.getItems(productReviews.value)
@@ -297,9 +295,15 @@ export default {
 
     const productGallery = computed(() =>
       productGetters.getGallery(product.value).map((img) => ({
-        mobile: { url: root.$image(img.small, 128, 128, product.value.imageFilename) },
-        desktop: { url: root.$image(img.normal, 422, 644, product.value.imageFilename) },
-        big: { url: root.$image(img.big, 422, 644, product.value.imageFilename) },
+        mobile: {
+          url: root.$image(img.small, 128, 128, product.value.imageFilename)
+        },
+        desktop: {
+          url: root.$image(img.normal, 422, 644, product.value.imageFilename)
+        },
+        big: {
+          url: root.$image(img.big, 422, 644, product.value.imageFilename)
+        },
         alt: product.value.name || 'alt'
       }))
     );
@@ -422,187 +426,54 @@ export default {
         'Brand name is the perfect pairing of quality and design. This label creates major everyday vibes with its collection of modern brooches, silver and gold jewellery, or clips it back with hair accessories in geo styles.',
       careInstructions: 'Do not wash!'
     };
+  },
+  head() {
+    return {
+      title: this.product?.jsonLdname,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.product?.description
+        },
+        { hid: 'twitter-site', name: 'twitter:site', content: '@greenmind' },
+        {
+          hid: 'twitter-type',
+          name: 'twitter:card',
+          content: 'summary_large_image'
+        },
+        {
+          hid: 'twitter-title',
+          name: 'twitter:title',
+          content: this.product?.combinationInfo?.display_name || ''
+        },
+        {
+          hid: 'twitter-desc',
+          name: 'twitter:description',
+          content: this.product?.description || ''
+        },
+        {
+          hid: 'twitter-image',
+          name: 'twitter:image',
+          content: this.productGallery?.[0]?.desktop?.url || ''
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.product?.description
+        }
+      ],
+      script: [
+        {
+          type: 'application/ld+json',
+          json: this.product?.jsonLd
+        }
+      ]
+    };
   }
 };
 </script>
 
 <style lang="scss" scoped>
-#product {
-  box-sizing: border-box;
-  @include for-desktop {
-    max-width: 1272px;
-    margin: 0 auto;
-  }
-}
-.product {
-  @include for-desktop {
-    display: flex;
-  }
-
-  &__info {
-    margin: var(--spacer-sm) auto;
-    @include for-desktop {
-      max-width: 32.625rem;
-      margin: 0 0 0 7.5rem;
-    }
-  }
-  &__header {
-    --heading-title-color: var(--c-link);
-    --heading-title-font-weight: var(--font-weight--bold);
-    --heading-padding: 0;
-    margin: 0 var(--spacer-sm);
-    display: flex;
-    justify-content: space-between;
-    @include for-desktop {
-      --heading-title-font-weight: var(--font-weight--semibold);
-      margin: 0 auto;
-    }
-  }
-  &__drag-icon {
-    animation: moveicon 1s ease-in-out infinite;
-  }
-  &__price-and-rating {
-    margin: 0 var(--spacer-sm) var(--spacer-base);
-    align-items: center;
-    @include for-desktop {
-      display: flex;
-      justify-content: space-between;
-      margin: var(--spacer-sm) 0 var(--spacer-lg) 0;
-    }
-  }
-  &__rating {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin: var(--spacer-xs) 0 var(--spacer-xs);
-  }
-  &__count {
-    @include font(
-      --count-font,
-      var(--font-weight--normal),
-      var(--font-size--sm),
-      1.4,
-      var(--font-family--secondary)
-    );
-    color: var(--c-text);
-    text-decoration: none;
-    margin: 0 0 0 var(--spacer-xs);
-  }
-  &__description {
-    @include font(
-      --product-description-font,
-      var(--font-weight--light),
-      var(--font-size--base),
-      1.6,
-      var(--font-family--primary)
-    );
-  }
-  &__select-size {
-    margin: 0 var(--spacer-sm);
-    @include for-desktop {
-      margin: 0;
-    }
-  }
-  &__colors {
-    @include font(
-      --product-color-font,
-      var(--font-weight--normal),
-      var(--font-size--lg),
-      1.6,
-      var(--font-family--secondary)
-    );
-    display: flex;
-    align-items: center;
-    margin-top: var(--spacer-xl);
-  }
-  &__radio-label {
-    @include font(
-      --product-color-font,
-      var(--font-weight--normal),
-      var(--font-size--lg),
-      1.6,
-      var(--font-family--secondary)
-    );
-    margin: 0 var(--spacer-lg) 0 0;
-  }
-  &__color-label {
-    margin: 0 var(--spacer-lg) 0 0;
-  }
-  &__color {
-    margin: 0 var(--spacer-2xs);
-  }
-  &__add-to-cart {
-    margin: var(--spacer-base) var(--spacer-sm) 0;
-    @include for-desktop {
-      margin-top: var(--spacer-2xl);
-    }
-  }
-  &__guide,
-  &__compare,
-  &__save {
-    display: block;
-    margin: var(--spacer-xl) 0 var(--spacer-base) auto;
-  }
-  &__compare {
-    margin-top: 0;
-  }
-  &__tabs {
-    margin: var(--spacer-lg) auto var(--spacer-2xl);
-    --tabs-title-font-size: var(--font-size--lg);
-    @include for-desktop {
-      margin-top: var(--spacer-2xl);
-    }
-  }
-  &__property {
-    margin: var(--spacer-base) 0;
-    &__button {
-      --button-font-size: var(--font-size--base);
-    }
-  }
-  &__review {
-    padding-bottom: 24px;
-    border-bottom: var(--c-light) solid 1px;
-    margin-bottom: var(--spacer-base);
-  }
-  &__additional-info {
-    color: var(--c-link);
-    @include font(
-      --additional-info-font,
-      var(--font-weight--light),
-      var(--font-size--sm),
-      1.6,
-      var(--font-family--primary)
-    );
-    &__title {
-      font-weight: var(--font-weight--normal);
-      font-size: var(--font-size--base);
-      margin: 0 0 var(--spacer-sm);
-      &:not(:first-child) {
-        margin-top: 3.5rem;
-      }
-    }
-    &__paragraph {
-      margin: 0;
-    }
-  }
-  &__gallery {
-    flex: 1;
-  }
-}
-
-.breadcrumbs {
-  margin: var(--spacer-base) auto var(--spacer-lg);
-  text-transform: capitalize;
-}
-@keyframes moveicon {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  50% {
-    transform: translate3d(0, 30%, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-}
+@import '~/assets/css/product.scss';
 </style>
