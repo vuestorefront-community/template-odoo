@@ -9,22 +9,22 @@
         >
         <div class="highlighted highlighted--total">
           <SfProperty
-            name="Order ID"
+            :name="$t('Order ID')"
             :value="orderGetters.getId(currentOrder)"
             class="sf-property--full-width property"
           />
           <SfProperty
-            name="Date"
+            :name="$t('Date')"
             :value="orderGetters.getDate(currentOrder)"
             class="sf-property--full-width property"
           />
           <SfProperty
-            name="Status"
+            :name="$t('Status')"
             :value="orderGetters.getStatus(currentOrder)"
             class="sf-property--full-width property"
           />
           <SfProperty
-            name="Total"
+            :name="$t('Total')"
             :value="$n(orderGetters.getPrice(currentOrder), 'currency')"
             class="sf-property--full-width property"
           />
@@ -42,14 +42,7 @@
             :key="i"
           >
             <SfTableData class="products__name">
-              <nuxt-link
-                :to="
-                  '/p/' +
-                  orderGetters.getItemSku(item) +
-                  '/' +
-                  orderGetters.getItemSku(item)
-                "
-              >
+              <nuxt-link :to="productGetters.getSlug(item.product)">
                 {{ orderGetters.getItemName(item) }}
               </nuxt-link>
             </SfTableData>
@@ -75,9 +68,9 @@
         <SfTable v-else class="orders">
           <SfTableHeading>
             <SfTableHeader
-              v-for="tableHeader in tableHeaders"
-              :key="tableHeader"
-              >{{ tableHeader }}</SfTableHeader
+              v-for="(tableHeader, index) in tableHeaders"
+              :key="index"
+              >{{ $t(tableHeader) }}</SfTableHeader
             >
             <SfTableHeader class="orders__element--right">
               <span class="smartphone-only">{{ $t('Download') }}</span>
@@ -116,18 +109,8 @@
             </SfTableData>
           </SfTableRow>
         </SfTable>
-        <p>Total orders - {{ totalOrders }}</p>
+        <p>{{ $t('Total orders') }} - {{ totalOrders }}</p>
       </div>
-    </SfTab>
-    <SfTab title="Returns">
-      <p class="message">
-        This feature is not implemented yet! Please take a look at
-        <br />
-        <SfLink class="message__link" href="#"
-          >https://github.com/DivanteLtd/vue-storefront/issues</SfLink
-        >
-        for our Roadmap!
-      </p>
     </SfTab>
   </SfTabs>
 </template>
@@ -135,7 +118,11 @@
 <script>
 import { SfTabs, SfTable, SfButton, SfProperty } from '@storefront-ui/vue';
 import { computed, ref } from '@vue/composition-api';
-import { useUserOrder, orderGetters } from '@vue-storefront/odoo';
+import {
+  useUserOrder,
+  orderGetters,
+  productGetters
+} from '@vue-storefront/odoo';
 import { AgnosticOrderStatus } from '@vue-storefront/core';
 import { onSSR } from '@vue-storefront/core';
 
@@ -203,108 +190,13 @@ export default {
       orderGetters,
       downloadOrder,
       downloadOrders,
-      currentOrder
+      currentOrder,
+      productGetters
     };
   }
 };
 </script>
 
 <style lang='scss' scoped>
-.no-orders {
-  &__title {
-    margin: 0 0 var(--spacer-lg) 0;
-    font: var(--font-weight--normal) var(--font-size--base) / 1.6
-      var(--font-family--primary);
-  }
-  &__button {
-    --button-width: 100%;
-    @include for-desktop {
-      --button-width: 17, 5rem;
-    }
-  }
-}
-.orders {
-  @include for-desktop {
-    &__element {
-      &--right {
-        --table-column-flex: 0;
-        text-align: right;
-      }
-    }
-  }
-}
-.all-orders {
-  --button-padding: var(--spacer-base) 0;
-}
-.message {
-  margin: 0 0 var(--spacer-xl) 0;
-  font: var(--font-weight--light) var(--font-size--base) / 1.6
-    var(--font-family--primary);
-  &__link {
-    color: var(--c-primary);
-    font-weight: var(--font-weight--medium);
-    font-family: var(--font-family--primary);
-    font-size: var(--font-size--base);
-    text-decoration: none;
-    &:hover {
-      color: var(--c-text);
-    }
-  }
-}
-.product {
-  &__properties {
-    margin: var(--spacer-xl) 0 0 0;
-  }
-  &__property,
-  &__action {
-    font-size: var(--font-size--sm);
-  }
-  &__action {
-    color: var(--c-gray-variant);
-    font-size: var(--font-size--sm);
-    margin: 0 0 var(--spacer-sm) 0;
-    &:last-child {
-      margin: 0;
-    }
-  }
-  &__qty {
-    color: var(--c-text);
-  }
-}
-.products {
-  --table-column-flex: 1;
-  &__name {
-    margin-right: var(--spacer-sm);
-    @include for-desktop {
-      --table-column-flex: 2;
-    }
-  }
-}
-.highlighted {
-  box-sizing: border-box;
-  width: 100%;
-  background-color: var(--c-light);
-  padding: var(--spacer-sm);
-  --property-value-font-size: var(--font-size--base);
-  --property-name-font-size: var(--font-size--base);
-  &:last-child {
-    margin-bottom: 0;
-  }
-  ::v-deep .sf-property__name {
-    white-space: nowrap;
-  }
-  ::v-deep .sf-property__value {
-    text-align: right;
-  }
-  &--total {
-    margin-bottom: var(--spacer-sm);
-  }
-  @include for-desktop {
-    padding: var(--spacer-xl);
-    --property-name-font-size: var(--font-size--lg);
-    --property-name-font-weight: var(--font-weight--medium);
-    --property-value-font-size: var(--font-size--lg);
-    --property-value-font-weight: var(--font-weight--semibold);
-  }
-}
+@import '~/assets/css/account/orderHistory.scss';
 </style>

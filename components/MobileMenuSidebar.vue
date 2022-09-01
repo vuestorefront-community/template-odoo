@@ -92,7 +92,7 @@ export default defineComponent({
     SfList,
     SfMenuItem
   },
-  setup() {
+  setup(_, {root}) {
     const isChildsOpened = ref(false);
     const currentParentMenu = ref('Menu');
     const router = useRouter();
@@ -109,11 +109,7 @@ export default defineComponent({
       facetGetters.getCategoryTree(result.value)
     );
 
-    const filteredTopCategories = computed(() =>
-      topCategories.value.filter(
-        (cat) => cat.name === 'WOMEN' || cat.name === 'MEN'
-      )
-    );
+    const filteredTopCategories = computed(() => topCategories.value);
 
     const openChilds = async (menuName) => {
       currentParentMenu.value = menuName;
@@ -131,7 +127,7 @@ export default defineComponent({
     };
 
     const goToSubCategory = (subCategory) => {
-      router.push(getCatLink(subCategory));
+      router.push(root.localePath(getCatLink(subCategory)));
       toggleMobileMenu();
     };
 

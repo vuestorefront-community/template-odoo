@@ -25,7 +25,7 @@
           data-cy="app-header-top-categories"
           class="nav-item"
           :label="category.name"
-          :link="localePath(`/c${category.slug}/${category.id}`)"
+          :link="localePath(category.slug)"
         />
       </template>
       <template #aside>
@@ -128,7 +128,7 @@ import {
   useUser,
   cartGetters,
   categoryGetters,
-  useCategory,
+  useCategories,
   useFacet
 } from '@vue-storefront/odoo';
 import { clickOutside } from '@storefront-ui/vue/src/utilities/directives/click-outside/click-outside-directive.js';
@@ -139,7 +139,6 @@ import LocaleSelector from './LocaleSelector';
 import SearchResults from '~/components/SearchResults';
 
 import debounce from 'lodash.debounce';
-import { mapMobileObserver } from '@storefront-ui/vue/src/utilities/mobile-observer.js';
 export default {
   components: {
     SfHeader,
@@ -150,7 +149,7 @@ export default {
     LocaleSelector,
     SearchResults,
     SfOverlay,
-    SfBadge,
+    SfBadge
   },
   directives: { clickOutside },
   setup(props, { root }) {
@@ -168,9 +167,7 @@ export default {
     const { load: loadWishlist, wishlist } = useWishlist();
     const { search: searchProductApi, result } = useFacet('AppHeader:Search');
     const { categories: topCategories, search: searchTopCategoryApi } =
-      useCategory('AppHeader:TopCategories');
-
-    const isMobile = computed(() => mapMobileObserver().isMobile.get());
+      useCategories('AppHeader:TopCategories');
 
     const cartTotalItems = computed(() => {
       const count = cartGetters.getTotalItems(cart.value);
@@ -199,36 +196,39 @@ export default {
       if (term.value.length < 2) return;
 
       await searchProductApi({
-        search: term.value,
-        pageSize: 12,
-        fetchCategory: true
+        fetchCategories: true,
+        productParams: {
+          search: term.value,
+          pageSize: 12
+        },
+        categoryParams: {
+          search: term.value
+        }
       });
 
       formatedResult.value = {
         products: result?.value?.data?.products,
-        categories: result?.value?.data?.categories
-          .filter((category) => category.childs === null)
-          .map((category) => categoryGetters.getTree(category))
+        categories:
+          result?.value?.data?.categories
+            ?.filter((category) => category.childs === null)
+            ?.map((category) => categoryGetters.getTree(category)) || []
       };
     }, 100);
     const closeOrFocusSearchBar = () => {
-      if (isMobile.value) {
-        return closeSearch();
-      }
       term.value = '';
       return searchBarRef.value.$el.children[0].focus();
     };
     // TODO: https://github.com/DivanteLtd/vue-storefront/issues/4927
     const handleAccountClick = async () => {
       if (isAuthenticated.value) {
-        return root.$router.push('/my-account');
+        return root.$router.push(root.localePath('/my-account'));
       }
 
       toggleLoginModal();
     };
 
     const filteredTopCategories = computed(() =>
-      topCategories.value.filter(
+      topCategories.value?.filter(
         (cat) => cat.name === 'WOMEN' || cat.name === 'MEN'
       )
     );
@@ -237,30 +237,29 @@ export default {
       () => term.value,
       (newVal, oldVal) => {
         const shouldSearchBeOpened =
-          !isMobile.value &&
           term.value.length > 0 &&
           ((!oldVal && newVal) ||
             (newVal.length !== oldVal.length && isSearchOpen.value === false));
         if (shouldSearchBeOpened) {
           isSearchOpen.value = true;
         }
-      },
+      }
     );
 
     onSSR(async () => {
       await Promise.all([
         searchTopCategoryApi({
-          filter: { parent: true },
+          filter: { parent: true }
         }),
         loadUser(),
         loadWishlist(),
-        loadCart(),
+        loadCart()
       ]);
     });
 
     return {
       wishlistHasItens: computed(
-        () => wishlist.value?.wishlistItems.length > 0,
+        () => wishlist.value?.wishlistItems.length > 0
       ),
       filteredTopCategories,
       accountIcon,
@@ -275,11 +274,10 @@ export default {
       changeSearchTerm,
       formatedResult,
       term,
-      isMobile,
       handleSearch,
-      closeSearch,
+      closeSearch
     };
-  },
+  }
 };
 </script>
 

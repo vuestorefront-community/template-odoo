@@ -25,15 +25,15 @@ export default {
   name: 'Notification',
   components: {
     SfNotification,
-    SfIcon,
+    SfIcon
   },
   setup() {
     const { notifications } = useUiNotification();
 
     return {
-      notifications,
+      notifications
     };
-  },
+  }
 };
 </script>
 

@@ -1,18 +1,20 @@
+/* eslint-disable camelcase */
 import webpack from 'webpack';
 import { getRoutes } from './routes';
 import getAppRoutes from './sitemap';
 import redirects from './customRoutes/redirects.json';
-import hooks from './hooks';
 import theme from './themeConfig';
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 export default {
-  hooks,
   server: {
     port: 3000,
     host: '0.0.0.0'
   },
   components: [
-    '~/components/'
+    '~/components/',
+    '~/components/Core/Atoms'
   ],
   css: ['@/assets/styles.scss'],
   head: {
@@ -31,7 +33,7 @@ export default {
         rel: 'icon',
         type: 'image/x-icon',
         href: '/favicon.ico'
-      },
+      }
     ]
   },
   router: {
@@ -39,7 +41,7 @@ export default {
       getRoutes(`${__dirname}`)
         .forEach((route) => routes.unshift(route));
     },
-    middleware: ['checkout'],
+    middleware: ['checkout']
   },
   googleFonts: {
     families: {
@@ -54,7 +56,7 @@ export default {
         wght: [100, 200, 300, 400, 500, 600, 700, 800, 900]
       }
     },
-    download: false,
+    download: false
   },
   pwa: {
     meta: {
@@ -68,25 +70,28 @@ export default {
       name: 'VSF Odoo',
       description: 'VSF Odoo',
       short_name: 'VSFOdoo',
-      lang: 'en',
+      lang: 'en'
     },
     icon: {
-      purpose: 'maskable',
+      purpose: 'maskable'
     },
     workbox: {
       cleanupOutdatedCaches: true,
-      preCaching:[
+      preCaching: [
         '/error/error.svg',
         '/icons/*',
-        '/favicon.ico',
-      ],
-    },
+        '/favicon.ico'
+      ]
+    }
   },
   device: {
     refreshOnResize: true
   },
   loading: { color: '#fff' },
-  plugins: ['~/plugins/getImage.ts'],
+  plugins: [
+    '~/plugins/getImage.ts',
+    '~/plugins/vee-validate.ts'
+  ],
   buildModules: [
     // to core
     '@nuxtjs/composition-api/module',
@@ -95,6 +100,7 @@ export default {
     '@nuxtjs/device',
     '@nuxtjs/web-vitals',
     '@nuxtjs/tailwindcss',
+
     '@nuxt/typescript-build',
     '@nuxtjs/style-resources',
     '@nuxtjs/google-fonts',
@@ -102,7 +108,7 @@ export default {
       '@vue-storefront/nuxt',
       {
         performance: {
-          httpPush: true,
+          httpPush: true
         },
         // @core-development-only-start
         // @core-development-only-end
@@ -127,8 +133,8 @@ export default {
   ],
   publicRuntimeConfig: {
     theme,
-    baseURL: process.env.BASE_URL || 'https://vsfdemo15.labs.odoogap.com/',
-    siteURL: process.env.SITE_URL || 'https://vsfdemo15.labs.odoogap.com/'
+    baseURL: process.env.BASE_URL,
+    siteURL: process.env.SITE_URL
   },
   modules: [
     '@nuxtjs/pwa',
@@ -155,7 +161,7 @@ export default {
             host: process.env.REDIS_HOST || '127.0.0.1',
             port: process.env.REDIS_PORT || 6379,
             password: process.env.REDIS_PASSWORD || ''
-          },
+          }
         }
       ]
     }],
@@ -164,26 +170,26 @@ export default {
     // sitemap generator
     '@nuxtjs/sitemap',
     // redirect
-    '@nuxtjs/redirect-module',
+    '@nuxtjs/redirect-module'
   ],
 
   // google tag manager
   gtm: {
     id: process.env.GOOGLE_TAG_MANAGER_ID,
-    enabled: process.env.GOOGLE_TAG_MANAGER_ENABLED || true,
+    enabled: !isDev,
     pageTracking: true,
     pageViewEventName: 'PageView',
-    debug: process.env.NODE_ENV !== 'production',
+    debug: process.env.NODE_ENV !== 'production'
   },
 
   // redirect
   redirect: {
     statusCode: 301,
-    rules: redirects,
+    rules: redirects
   },
 
   nuxtPrecompress: {
-    enabled: true,
+    enabled: !isDev,
     report: false,
     test: /\.(js|css|html|txt|xml|svg)$/,
     // Serving options
@@ -198,8 +204,7 @@ export default {
 
     // build time compression settings
     gzip: {
-      // should compress to gzip?
-      enabled: true,
+      enabled: !isDev,
       // compression config
       // https://www.npmjs.com/package/compression-webpack-plugin
       filename: '[path].gz[query]',
@@ -208,8 +213,7 @@ export default {
       compressionOptions: { level: 9 }
     },
     brotli: {
-      // should compress to brotli?
-      enabled: true,
+      enabled: !isDev,
       // compression config
       // https://www.npmjs.com/package/compression-webpack-plugin
       filename: '[path].br[query]',
@@ -219,28 +223,38 @@ export default {
     }
   },
   i18n: {
+    baseUrl: process.env.SITE_URL,
+    strategy: 'prefix_and_default',
     currency: 'USD',
     country: 'US',
     countries: [
       { name: 'US', label: 'United States' },
-      { name: 'DE', label: 'Germany' }
+      { name: 'DE', label: 'Germany' },
+      { name: 'RU', label: 'Russian' }
     ],
     currencies: [
       { name: 'EUR', label: 'Euro' },
-      { name: 'USD', label: 'Dollar' }
+      { name: 'USD', label: 'Dollar' },
+      { name: 'RUB', label: 'Rubble' }
     ],
     locales: [
       {
         code: 'en',
         label: 'English',
-        file: 'en.js',
+        file: 'en.json',
         iso: 'en'
       },
       {
         code: 'de',
         label: 'German',
-        file: 'de.js',
+        file: 'de.json',
         iso: 'de'
+      },
+      {
+        code: 'ru',
+        label: 'Russian',
+        file: 'ru.json',
+        iso: 'ru'
       }
     ],
     defaultLocale: 'en',
@@ -263,6 +277,13 @@ export default {
             currency: 'EUR',
             currencyDisplay: 'symbol'
           }
+        },
+        ru: {
+          currency: {
+            style: 'currency',
+            currency: 'RUB',
+            currencyDisplay: 'symbol'
+          }
         }
       }
     },
@@ -273,7 +294,7 @@ export default {
 
   // sitemap options
   sitemap: {
-    hostname: process.env.SITE_URL || 'https://vsf.labs.odoogap.com/',
+    hostname: process.env.SITE_URL,
     exclude: ['/checkout/**', '/checkout', '/cart', '/my-account', '/order-history'],
     i18n: false,
     cacheTime: 6000,

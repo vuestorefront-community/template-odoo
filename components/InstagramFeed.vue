@@ -1,49 +1,96 @@
 <template>
-  <SfSection title-heading="Share Your Look" subtitle-heading="#YOURLOOK" class="title">
+  <SfSection
+    title-heading="Share Your Look"
+    subtitle-heading="#YOURLOOK"
+    class="title"
+  >
     <div class="grid grid-images">
       <div class="grid__row">
         <div class="grid__col">
-          <SfImage v-if="isMobile" src="/homepage/imageAm.webp" alt="katherina_trn" :width="160" :height="160">katherina_trn</SfImage>
-          <SfImage v-else src="/homepage/imageAd.webp" alt="katherina_trn" :width="470" :height="470">katherina_trn</SfImage>
+          <SfImage
+            v-if="$device.isMobile"
+            src="/homepage/imageAm.webp"
+            alt="katherina_trn"
+            :width="160"
+            :height="160"
+            >katherina_trn</SfImage
+          >
+          <SfImage
+            v-else
+            src="/homepage/imageAd.webp"
+            alt="katherina_trn"
+            :width="470"
+            :height="470"
+            >katherina_trn</SfImage
+          >
         </div>
         <div class="grid__col small">
-          <SfImage v-if="isMobile" src="/homepage/imageBm.webp" alt="katherina_trn" :width="160" :height="160">katherina_trn</SfImage>
-          <SfImage v-else src="/homepage/imageCd.webp" alt="katherina_trn" :width="470" :height="160">katherina_trn</SfImage>
+          <SfImage
+            v-if="$device.isMobile"
+            src="/homepage/imageBm.webp"
+            alt="katherina_trn"
+            :width="160"
+            :height="160"
+            >katherina_trn</SfImage
+          >
+          <SfImage
+            v-else
+            src="/homepage/imageCd.webp"
+            alt="katherina_trn"
+            :width="470"
+            :height="160"
+            >katherina_trn</SfImage
+          >
         </div>
       </div>
       <div class="grid__row">
         <div class="grid__col small">
-          <SfImage v-if="isMobile" src="/homepage/imageCm.webp" alt="katherina_trn" :width="160" :height="160">katherina_trn</SfImage>
-           <SfImage v-else src="/homepage/imageBd.webp" alt="katherina_trn" :width="470" :height="160">katherina_trn</SfImage>
+          <SfImage
+            v-if="$device.isMobile"
+            src="/homepage/imageCm.webp"
+            alt="katherina_trn"
+            :width="160"
+            :height="160"
+            >katherina_trn</SfImage
+          >
+          <SfImage
+            v-else
+            src="/homepage/imageBd.webp"
+            alt="katherina_trn"
+            :width="470"
+            :height="160"
+            >katherina_trn</SfImage
+          >
         </div>
         <div class="grid__col">
-          <SfImage v-if="isMobile" src="/homepage/imageDm.webp" alt="katherina_trn" :width="160" :height="160">katherina_trn</SfImage>
-          <SfImage v-else src="/homepage/imageDd.webp" alt="katherina_trn" :width="470" :height="470">katherina_trn</SfImage>
+          <SfImage
+            v-if="$device.isMobile"
+            src="/homepage/imageDm.webp"
+            alt="katherina_trn"
+            :width="160"
+            :height="160"
+            >katherina_trn</SfImage
+          >
+          <SfImage
+            v-else
+            src="/homepage/imageDd.webp"
+            alt="katherina_trn"
+            :width="470"
+            :height="470"
+            >katherina_trn</SfImage
+          >
         </div>
       </div>
     </div>
   </SfSection>
 </template>
 <script>
-import {
-  SfSection,
-  SfImage
-} from '@storefront-ui/vue';
-import {
-  mapMobileObserver,
-  unMapMobileObserver
-} from '@storefront-ui/vue/src/utilities/mobile-observer.js';
+import { SfSection, SfImage } from '@storefront-ui/vue';
 export default {
   name: 'InstagramFeed',
   components: {
     SfSection,
     SfImage
-  },
-  computed: {
-    ...mapMobileObserver()
-  },
-  beforeDestroy() {
-    unMapMobileObserver();
   }
 };
 </script>
@@ -86,8 +133,8 @@ export default {
       &.small {
         height: 10rem;
       }
-     width: 29.375rem;
-     height: 29.375rem;
+      width: 29.375rem;
+      height: 29.375rem;
     }
     & + & {
       margin-top: var(--spacer-xs);
@@ -97,5 +144,4 @@ export default {
     }
   }
 }
-
 </style>

@@ -8,7 +8,7 @@
           :class="{ checkout__steps: true }"
           @change="handleStepClick"
         >
-          <SfStep v-for="(step, key) in STEPS" :key="key" :name="step">
+          <SfStep v-for="(step, key) in STEPS" :key="key" :name="$t(step)">
             <nuxt-child />
           </SfStep>
         </SfSteps>
@@ -29,27 +29,27 @@ import { computed } from '@vue/composition-api';
 const STEPS = {
   shipping: 'Shipping',
   billing: 'Billing',
-  payment: 'Payment',
+  payment: 'Payment'
 };
 export default {
   name: 'Checkout',
   components: {
     SfButton,
     SfSteps,
-    CartPreview,
+    CartPreview
   },
   setup(props, context) {
     const currentStep = computed(() =>
-      context.root.$route.path.split('/').pop(),
+      context.root.$route.path.split('/').pop()
     );
     const currentStepIndex = computed(() =>
-      Object.keys(STEPS).findIndex((s) => s === currentStep.value),
+      Object.keys(STEPS).findIndex((s) => s === currentStep.value)
     );
     const isThankYou = computed(() => currentStep.value === 'thank-you');
     const handleStepClick = (stepIndex) => {
       const key = Object.keys(STEPS)[stepIndex];
       if (stepIndex <= currentStepIndex.value) {
-        context.root.$router.push(`/checkout/${key}`);
+        context.root.$router.push(context.root.localePath(`/checkout/${key}`));
       }
     };
     return {
@@ -57,9 +57,9 @@ export default {
       STEPS,
       currentStepIndex,
       isThankYou,
-      currentStep,
+      currentStep
     };
-  },
+  }
 };
 </script>
 

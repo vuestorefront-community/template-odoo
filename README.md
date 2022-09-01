@@ -19,35 +19,28 @@ Check our [demo](https://vsf.labs.odoogap.com/) server (it's a dev server so cou
 
 ## How to start?
 
-1. Create an .env on root folder like the example
-
-``` js
-BASE_URL=<base_url>
-REDIS_HOST=<redis_host>
-REDIS_PORT=<redis_port>
-REDIS_PASSWORD=<redis_password>
-```
-
-or use environment variables
-
-```bash
-export BASE_URL=<base_url>
-export REDIS_HOST=<redis_host>
-export REDIS_PORT=<redis_port>
-export REDIS_PASSWORD=<redis_password>
-```
+1. Copy .env.example to .env
+2. DOT NOT COMMIT .env file
 
 
 ```sh
 # install dependencies
 yarn install
 
+# generate routes and redirects from ODOO
+yarn update:routes 
+yarn update:redirects
+
 # serve with hot reload at localhost:3000
 yarn dev
 
 # build for production and launch server
 yarn build
+# build local
+yarn build:local
 ```
+
+
 
 or use docker-compose
 

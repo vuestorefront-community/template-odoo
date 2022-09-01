@@ -122,7 +122,7 @@ export default {
     });
 
     const redirectToPayment = () => {
-      return root.$router.push('/checkout/payment');
+      return root.$router.push(root.localePath('/checkout/payment'));
     };
 
     return {

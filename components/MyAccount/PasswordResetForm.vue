@@ -1,7 +1,7 @@
 <template>
-  <ValidationObserver v-slot="{ handleSubmit, reset }">
-    <form class="form" @submit.prevent="handleSubmit(submitForm(reset))">
-      <h1>Update password</h1>
+  <ValidationObserver v-slot="{ handleSubmit, invalid }">
+    <form class="form" @submit.prevent="handleSubmit(submitForm)">
+      <h1>{{ $t('Update password') }}</h1>
 
       <ValidationProvider
         v-slot="{ errors }"
@@ -12,7 +12,7 @@
           v-model="form.currentPassword"
           type="password"
           name="currentPassword"
-          label="Current Password"
+          :label="$t('Current Password')"
           required
           :valid="!errors[0]"
           :error-message="errors[0]"
@@ -29,7 +29,7 @@
             v-model="form.newPassword"
             type="password"
             name="newPassword"
-            label="New Password"
+            :label="$t('New Password')"
             required
             :valid="!errors[0]"
             :error-message="errors[0]"
@@ -44,24 +44,30 @@
             v-model="form.repeatPassword"
             type="password"
             name="repeatPassword"
-            label="Repeat Password"
+            :label="$t('Repeat Password')"
             required
             :valid="!errors[0]"
             :error-message="errors[0]"
           />
         </ValidationProvider>
       </div>
-      <SfButton class="form__button">
+      <OdooButton
+        type="submit"
+        :disabled="invalid || loading"
+        :loading="loading"
+      >
         {{ $t('Update password') }}
-      </SfButton>
+      </OdooButton>
     </form>
   </ValidationObserver>
 </template>
 
 <script>
-import { ref } from '@vue/composition-api';
+import { ref } from '@nuxtjs/composition-api';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { SfInput, SfButton } from '@storefront-ui/vue';
+import { usePassword } from '@vue-storefront/odoo';
+import { useUiNotification } from '~/composables';
 export default {
   name: 'PasswordResetForm',
   components: {
@@ -70,26 +76,38 @@ export default {
     ValidationProvider,
     ValidationObserver
   },
-  setup(_, { emit }) {
+  setup(_, { root }) {
+    const { updatePassword, loading, errors } = usePassword();
+    const { send } = useUiNotification();
+
     const resetForm = () => ({
       currentPassword: '',
       newPassword: '',
       repeatPassword: ''
     });
     const form = ref(resetForm());
-    const submitForm = (resetValidationFn) => () => {
-      const onComplete = () => {
-        form.value = resetForm();
-        resetValidationFn();
-      };
-      const onError = () => {
-        // TODO: Handle error
-      };
-      emit('submit', { form, onComplete, onError });
+
+    const submitForm = async () => {
+      await updatePassword(form.value.currentPassword, form.value.newPassword);
+
+      if (errors.value) {
+        return send({
+          message: errors.value?.[0].message || 'Something wrong!',
+          type: 'danger'
+        });
+      }
+
+      form.value = resetForm();
+
+      send({
+        message: root.$t('Successfull update!'),
+        type: 'success'
+      });
     };
     return {
       form,
-      submitForm
+      submitForm,
+      loading
     };
   }
 };

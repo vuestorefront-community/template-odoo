@@ -68,7 +68,14 @@
               :imageWidth="216"
               :imageHeight="288"
               :title="productGetters.getName(product)"
-              :image="$image(productGetters.getCoverImage(product), 216, 288, productGetters.getImageFilename(product))"
+              :image="
+                $image(
+                  productGetters.getCoverImage(product),
+                  216,
+                  288,
+                  productGetters.getImageFilename(product)
+                )
+              "
               :nuxtImgConfig="{ fit: 'cover' }"
               image-tag="nuxt-img"
               :regular-price="
@@ -83,13 +90,7 @@
               :show-add-to-cart-button="true"
               :isInWishlist="isInWishlist({ product })"
               :isAddedToCart="isInCart({ product })"
-              :link="
-                localePath(
-                  `/p/${productGetters.getId(product)}/${productGetters.getSlug(
-                    product
-                  )}`
-                )
-              "
+              :link="localePath(productGetters.getSlug(product))"
               class="products__product-card"
               @click:wishlist="
                 isInWishlist({ product })
@@ -117,7 +118,14 @@
               image-tag="nuxt-img"
               :title="productGetters.getName(product)"
               :description="productGetters.getDescription(product)"
-              :image="$image(productGetters.getCoverImage(product), 140, 200, productGetters.getImageFilename(product))"
+              :image="
+                $image(
+                  productGetters.getCoverImage(product),
+                  140,
+                  200,
+                  productGetters.getImageFilename(product)
+                )
+              "
               :regular-price="
                 $n(productGetters.getPrice(product).regular, 'currency')
               "
@@ -134,13 +142,7 @@
                 addItemToCart({ product, quantity: product.qty })
               "
               v-model="products[i].qty"
-              :link="
-                localePath(
-                  `/p/${productGetters.getId(product)}/${productGetters.getSlug(
-                    product
-                  )}`
-                )
-              "
+              :link="localePath(productGetters.getSlug(product))"
             >
               <template #configuration>
                 <SfProperty
@@ -167,7 +169,7 @@
             <SfPagination
               v-if="!loading"
               data-cy="category-pagination"
-              class="products__pagination desktop-only"
+              class="products__pagination"
               v-show="pagination.totalPages > 1"
               :current="pagination.currentPage"
               :total="pagination.totalPages"
@@ -249,7 +251,8 @@ import {
   ref,
   computed,
   onMounted,
-  defineComponent
+  defineComponent,
+  useRoute
 } from '@nuxtjs/composition-api';
 import {
   useCart,
@@ -279,7 +282,9 @@ export default defineComponent({
       isInWishlist
     } = useWishlist();
     const { result, search, loading } = useFacet();
-    const { params } = root.$router.history.current;
+
+    const route = useRoute();
+    const { params, path } = route.value;
 
     const products = computed(() => facetGetters.getProducts(result.value));
     const categoryTree = computed(() =>
@@ -292,8 +297,7 @@ export default defineComponent({
     );
 
     const currentCategory = computed(() => {
-      const categories = result.value?.data?.categories || [];
-      return categories[0] || {};
+      return result.value?.data?.category || [];
     });
 
     const currentCategoryNameForAccordion = computed(() => {
@@ -305,24 +309,24 @@ export default defineComponent({
     });
 
     const currentRootCategory = computed(() => {
-      const categories = result.value?.data?.categories || [];
-      const category = categories.find((category) => {
-        return category.slug === params.slug_1;
-      });
+      const category = result.value?.data?.category;
 
       const categoryFromParent = currentCategory.value?.parent?.parent;
 
       return category || categoryFromParent || {};
     });
 
-    const breadcrumbs = computed(() =>
-      facetGetters.getBreadcrumbs({
+    const breadcrumbs = computed(() => {
+      const breadcrumbs = facetGetters.getBreadcrumbs({
         input: {
           params,
           currentRootCategory: currentRootCategory.value
         }
-      })
-    );
+      });
+      if (breadcrumbs.length > 0 && breadcrumbs[0].text === 'Home')
+        breadcrumbs[0].text = root.$t('Home');
+      return breadcrumbs;
+    });
 
     onSSR(async () => {
       const params = {
@@ -381,6 +385,18 @@ export default defineComponent({
     SfLoader,
     LazyHydrate,
     SfImage
+  },
+  head: {
+    script: [
+      {
+        type: 'application/ld+json',
+        json: {
+          '@context': 'https://schema.org',
+          '@type': 'Category',
+          name: 'Category Page'
+        }
+      }
+    ]
   }
 });
 </script>

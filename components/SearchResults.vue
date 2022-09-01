@@ -27,7 +27,7 @@
               <SfListItem v-for="(category, key) in categories" :key="key">
                 <SfMenuItem
                   :label="category.label"
-                  :link="uiHelper.getCatLinkForSearch(category)"
+                  :link="localePath(uiHelper.getCatLinkForSearch(category))"
                   icon="chevron_right"
                 >
                 </SfMenuItem>
@@ -61,7 +61,14 @@
                   image-tag="nuxt-img"
                   :score-rating="productGetters.getAverageRating(product)"
                   :reviews-count="7"
-                  :image="$image(productGetters.getCoverImage(product), 216, 288, productGetters.getImageFilename(product))"
+                  :image="
+                    $image(
+                      productGetters.getCoverImage(product),
+                      216,
+                      288,
+                      productGetters.getImageFilename(product)
+                    )
+                  "
                   :alt="productGetters.getName(product)"
                   :title="productGetters.getName(product)"
                   :link="localePath(goToProduct(product))"
@@ -92,7 +99,14 @@
                 "
                 :score-rating="productGetters.getAverageRating(product)"
                 :reviews-count="7"
-                :image="$image(productGetters.getCoverImage(product), 216, 288, productGetters.getImageFilename(product))"
+                :image="
+                  $image(
+                    productGetters.getCoverImage(product),
+                    216,
+                    288,
+                    productGetters.getImageFilename(product)
+                  )
+                "
                 :alt="productGetters.getName(product)"
                 :title="productGetters.getName(product)"
                 :link="localePath(goToProduct(product))"
@@ -125,10 +139,10 @@
             loading="lazy"
           />
           <p class="before-results__paragraph">
-            {{ $t('You haven’t searched for items yet') }}
+            {{ $t('You haven\'t searched for items yet') }}
           </p>
           <p class="before-results__paragraph">
-            {{ $t('Let’s start now – we’ll help you') }}
+            {{ $t('Let\'s start now - we\'ll help you') }}
           </p>
           <SfButton
             class="before-results__button color-secondary smartphone-only"
@@ -170,16 +184,16 @@ export default {
     SfScrollable,
     SfMenuItem,
     SfButton,
-    SfImage,
+    SfImage
   },
   props: {
     visible: {
       type: Boolean,
-      default: false,
+      default: false
     },
     result: {
-      type: Object,
-    },
+      type: Object
+    }
   },
   watch: {
     $route() {
@@ -195,9 +209,7 @@ export default {
     const { addItem: addItemToWishlist } = useWishlist();
 
     const goToProduct = (product) => {
-      return `/p/${productGetters.getId(product)}/${productGetters.getSlug(
-        product,
-      )}`;
+      return productGetters.getSlug(product);
     };
     watch(
       () => props.visible,
@@ -209,7 +221,7 @@ export default {
           document.body.classList.remove('no-scroll');
           emit('removeSearchResults');
         }
-      },
+      }
     );
     return {
       addItemToWishlist,
@@ -219,9 +231,9 @@ export default {
       categoryGetters,
       productGetters,
       products,
-      categories,
+      categories
     };
-  },
+  }
 };
 </script>
 <style lang="scss" scoped>

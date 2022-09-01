@@ -8,11 +8,11 @@ const throwErrors = (errors: Array<{ message?: string }>) => {
   }
 };
 
-const useCart = () => {
+const useCart = () : any => {
   const context = useVSFContext();
 
   const { cart, setCart } = baseUseCart();
-  const loading = sharedRef(null, `useCart-loading`);
+  const loading = sharedRef(null, 'useCart-loading');
   const error = sharedRef({
     load: null,
     clearCart: null,
@@ -30,11 +30,11 @@ const useCart = () => {
       error.value.load = null;
     } catch (err) {
       error.value.load = err;
-      Logger.error(`useCart-load-error`, err);
+      Logger.error('useCart-load-error', err);
     } finally {
       loading.value = false;
     }
-  }
+  };
 
   const updateCartItem = async (itemId: number, quantity: number) => {
     try {
@@ -52,18 +52,18 @@ const useCart = () => {
       error.value.cartUpdateItem = null;
     } catch (err) {
       error.value.cartUpdateItem = err;
-      Logger.error(`useCart-cartUpdateItem-error`, err);
+      Logger.error('useCart-cartUpdateItem-error', err);
     } finally {
       loading.value = false;
     }
-  }
+  };
 
   return {
     cart,
     loading: computed(() => loading.value),
     load,
     updateCartItem,
-    error: computed(() => error.value),
+    error: computed(() => error.value)
   };
 };
 

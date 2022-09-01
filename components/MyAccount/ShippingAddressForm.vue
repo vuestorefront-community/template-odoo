@@ -1,132 +1,141 @@
 <template>
-  <ValidationObserver v-slot="{ handleSubmit, invalid }">
-    <form
-      id="shipping-details-form"
-      class="form"
-      @submit.prevent="handleSubmit(submitForm)"
-    >
-      <ValidationProvider
-        v-slot="{ errors }"
-        name="firstName"
-        rules="required|min:2"
-        slim
-      >
-        <SfInput
-          v-model="form.name"
-          label="First name"
+  <ValidationObserver
+    v-slot="{ handleSubmit, invalid }"
+    tag="div"
+    class="w-full"
+  >
+    <form @submit.prevent="handleSubmit(submitForm)">
+      <div class="flex justify-between">
+        <ValidationProvider
+          v-slot="{ errors }"
           name="firstName"
-          class="form__element"
-          required
-          :valid="!errors[0]"
-          :error-message="errors[0]"
-        />
-      </ValidationProvider>
-      <ValidationProvider
-        v-slot="{ errors }"
-        name="streetName"
-        rules="required|min:2"
-        slim
-      >
-        <SfInput
-          v-model="form.street"
-          label="Street name"
+          rules="required|min:2"
+          slim
+        >
+          <SfInput
+            class="w-full"
+            v-model="form.name"
+            :label="$t('First name')"
+            name="firstName"
+            required
+            :valid="!errors[0]"
+            :error-message="errors[0]"
+          />
+        </ValidationProvider>
+      </div>
+
+      <div class="flex flex-row gap-3">
+        <ValidationProvider
+          v-slot="{ errors }"
           name="streetName"
-          class="form__element"
-          required
-          :valid="!errors[0]"
-          :error-message="errors[0]"
-        />
-      </ValidationProvider>
-
-      <ValidationProvider
-        v-slot="{ errors }"
-        name="city"
-        rules="required|min:2"
-        slim
-      >
-        <SfInput
-          v-model="form.city"
-          label="City"
+          rules="required|min:2"
+          slim
+        >
+          <SfInput
+            class="w-full"
+            v-model="form.street"
+            :label="$t('Street name')"
+            name="streetName"
+            required
+            :valid="!errors[0]"
+            :error-message="errors[0]"
+          />
+        </ValidationProvider>
+        <ValidationProvider
+          v-slot="{ errors }"
           name="city"
-          class="form__element form__element--half"
-          required
-          :valid="!errors[0]"
-          :error-message="errors[0]"
-        />
-      </ValidationProvider>
-      <ValidationProvider
-        v-slot="{ errors }"
-        name="zipCode"
-        rules="required|min:2"
-        slim
-      >
-        <SfInput
-          v-model="form.zip"
-          label="Zip-code"
+          rules="required|min:2"
+          slim
+        >
+          <SfInput
+            v-model="form.city"
+            :label="$t('City')"
+            name="city"
+            class="w-full"
+            required
+            :valid="!errors[0]"
+            :error-message="errors[0]"
+          />
+        </ValidationProvider>
+      </div>
+
+      <div class="flex flex-row gap-3">
+        <ValidationProvider
+          v-slot="{ errors }"
           name="zipCode"
-          class="form__element form__element--half form__element--half-even"
-          required
-          :valid="!errors[0]"
-          :error-message="errors[0]"
-        />
-      </ValidationProvider>
-      <ValidationProvider
-        v-slot="{ errors }"
-        name="country"
-        rules="required"
-        slim
-      >
-        <SfSelect
-          v-model="form.country.id"
-          label="Country"
+          rules="required|min:2"
+          slim
+        >
+          <SfInput
+            v-model="form.zip"
+            :label="$t('Zip-code')"
+            name="zipCode"
+            class="form__element w-full"
+            :class="{
+              'basis-1/3': countryStates.length > 0,
+              'basis-1/2': countryStates.length === 0,
+            }"
+            required
+            :valid="!errors[0]"
+            :error-message="errors[0]"
+          />
+        </ValidationProvider>
+        <ValidationProvider
+          class="basis-1/3"
+          v-slot="{ errors }"
           name="country"
-          class="
-            form__element form__element--half form__select
-            sf-select--underlined
-          "
-          required
-          :valid="!errors[0]"
-          :error-message="errors[0]"
+          rules="required"
+          slim
         >
-          <SfSelectOption
-            v-for="countryOption in countries"
-            :key="countryOption.id"
-            :value="countryOption.id"
+          <SfSelect
+            v-model="form.country.id"
+            :label="$t('Country')"
+            name="country"
+            class="form__select sf-select--underlined w-full"
+            required
+            :class="{
+              'basis-1/3': countryStates.length > 0,
+              'basis-1/2': countryStates.length === 0,
+            }"
+            :valid="!errors[0]"
+            :error-message="errors[0]"
           >
-            {{ countryOption.name }}
-          </SfSelectOption>
-        </SfSelect>
-      </ValidationProvider>
+            <SfSelectOption
+              v-for="countryOption in countries"
+              :key="countryOption.id"
+              :value="countryOption.id"
+            >
+              {{ countryOption.name }}
+            </SfSelectOption>
+          </SfSelect>
+        </ValidationProvider>
 
-      <ValidationProvider
-        v-slot="{ errors }"
-        name="state"
-        rules="required"
-        slim
-      >
-        <SfSelect
-          v-model="form.state.id"
-          label="State/Province"
+        <ValidationProvider
+          v-if="countryStates.length > 0"
+          v-slot="{ errors }"
           name="state"
-          class="
-            form__element form__element--half form__select
-            sf-select--underlined
-            form__element--half-even
-          "
-          required
-          :valid="!errors[0]"
-          :error-message="errors[0]"
+          rules="required"
+          slim
         >
-          <SfSelectOption
-            v-for="countryStateOption in countryStates"
-            :key="countryStateOption.id"
-            :value="countryStateOption.id"
+          <SfSelect
+            v-model="form.state.id"
+            :label="$t('State/Province')"
+            name="state"
+            class="form__select sf-select--underlined w-full basis-1/3"
+            required
+            :valid="!errors[0]"
+            :error-message="errors[0]"
           >
-            {{ countryStateOption.name }}
-          </SfSelectOption>
-        </SfSelect>
-      </ValidationProvider>
-
+            <SfSelectOption
+              v-for="countryStateOption in countryStates"
+              :key="countryStateOption.id"
+              :value="countryStateOption.id"
+            >
+              {{ countryStateOption.name }}
+            </SfSelectOption>
+          </SfSelect>
+        </ValidationProvider>
+      </div>
       <ValidationProvider
         v-slot="{ errors }"
         name="phone"
@@ -135,7 +144,7 @@
       >
         <SfInput
           v-model="form.phone"
-          label="Phone number"
+          :label="$t('Phone number')"
           name="phone"
           class="form__element form__element--half"
           required
@@ -143,34 +152,36 @@
           :error-message="errors[0]"
         />
       </ValidationProvider>
-      <SfButton
-        class="form__button"
-        :disabled="invalid"
-      >
-        {{ isNew ? "Add the address" : "Update the address" }}
-      </SfButton>
+      <div class="flex flex-row gap-3 mt-10">
+        <OdooButton
+          type="submit"
+          :disabled="invalid || loading"
+          :loading="loading"
+        >
+          {{ $t(isNew ? 'Add the address' : 'Update the address') }}
+        </OdooButton>
+
+        <SfButton @click="$emit('cancel')" class="color-light sf-button">
+          {{ $t('Cancel') }}
+        </SfButton>
+      </div>
     </form>
   </ValidationObserver>
 </template>
 
-<script type="module">
+<script>
 import { SfInput, SfButton, SfSelect, SfCheckbox } from '@storefront-ui/vue';
-import { useCountrySearch } from '@vue-storefront/odoo';
-import { required, min, digits } from 'vee-validate/dist/rules';
-import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
+import { useCountrySearch, useShipping } from '@vue-storefront/odoo';
+import { Address } from '@vue-storefront/odoo-api';
+import { useUiNotification } from '~/composables';
+import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import {
   reactive,
   watch,
-  onBeforeMount,
-  defineComponent
-} from '@vue/composition-api';
-extend('required', { ...required, message: 'This field is required' });
-extend('min', {
-  ...min,
-  message: 'The field should have at least {length} characters'
-});
-extend('digits', { ...digits, message: 'Please provide a valid phone number' });
-
+  defineComponent,
+  onMounted,
+  PropType
+} from '@nuxtjs/composition-api';
 export default defineComponent({
   name: 'AddressForm',
   components: {
@@ -184,10 +195,7 @@ export default defineComponent({
   props: {
     address: {
       type: Object,
-      default: () => ({
-        state: { id: null },
-        country: { id: null }
-      })
+      default: {}
     },
     isNew: {
       type: Boolean,
@@ -197,6 +205,8 @@ export default defineComponent({
   setup(props, { emit }) {
     const { search, searchCountryStates, countries, countryStates } =
       useCountrySearch('my-account-shipping');
+    const { save, loading } = useShipping();
+    const { send } = useUiNotification();
 
     const form = reactive({
       name: props.address.name,
@@ -209,14 +219,23 @@ export default defineComponent({
       ...(props.isNew ? {} : { id: props.address.id })
     });
 
-    const submitForm = () => {
-      emit('submit', {
-        form: form,
-        onComplete: () => {},
-        onError: () => {}
-      });
+    const submitForm = async () => {
+      try {
+        await save({
+          params: {
+            ...form,
+            countryId: Number(form.country.id),
+            stateId: Number(form.state.id)
+          }
+        });
+
+        emit('save');
+      } catch (error) {
+        send({ message: 'Some error', type: 'danger' });
+      }
     };
-    onBeforeMount(async () => {
+
+    onMounted(async () => {
       await search();
       if (form?.country?.id && form.country.id !== 'null') {
         await searchCountryStates(form.country.id);
@@ -232,7 +251,9 @@ export default defineComponent({
         }
       }
     );
+
     return {
+      loading,
       form,
       submitForm,
       countries,
@@ -243,42 +264,11 @@ export default defineComponent({
 </script>
 
 <style lang='scss' scoped>
-.form {
-  &__element {
-    display: block;
-    margin-bottom: var(--spacer-base);
-  }
-  &__select {
-    display: flex;
-    align-items: center;
-    --select-option-font-size: var(--font-size--lg);
-    flex-wrap: wrap;
-    ::v-deep .sf-select__dropdown {
-      font-size: var(--font-size--lg);
-      // margin: 0;
-      font-family: var(--font-family--secondary);
-      font-weight: var(--font-weight--normal);
-    }
-  }
-  &__button {
-    display: block;
-    margin-top: var(--spacer-lg);
-  }
-  &__horizontal {
-    @include for-desktop {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-    }
-    .form__element {
-      @include for-desktop {
-        flex: 1;
-        margin-right: var(--spacer-lg);
-      }
-      &:last-child {
-        margin-right: 0;
-      }
-    }
-  }
+.flex {
+  margin-bottom: 7%;
+}
+
+::v-deep .sf-select {
+  padding: 42px 0 0 0;
 }
 </style>

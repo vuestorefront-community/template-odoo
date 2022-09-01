@@ -30,13 +30,13 @@ const getAppRoutes = async (): Promise<Array<string>> => {
   consola.success(chalk.bold('ODOO'), ' - Finished fetch sitemap dynamic routes from odoo!');
 
   return [
-    ...data.data.products.products.map(product => `p/${product.id}/${product.slug}`),
+    ...data.data.products.products.map(product => product.slug),
     ...categoriesData.data.categories.categories.map(category => {
       if (category.parent) {
-        return `/c/${category.parent.slug}/${category.slug}/${category.id}`;
+        return category.parent.slug;
       }
 
-      return `/c/${category.slug}/${category.id}`;
+      return category.slug;
     })
   ];
 };

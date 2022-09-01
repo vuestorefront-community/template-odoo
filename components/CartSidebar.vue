@@ -2,7 +2,8 @@
   <div id="cart">
     <SfSidebar
       :visible="isCartSidebarOpen"
-      title="My Cart"
+      position="right"
+      :title="$t('My Cart')"
       class="sf-sidebar--right"
       @close="toggleCartSidebar"
     >
@@ -10,7 +11,7 @@
         <SfProperty
           v-if="totalItems"
           class="sf-property--large cart-summary desktop-only"
-          name="Total items"
+          :name="$t('Total items')"
           :value="totalItems"
         />
       </template>
@@ -22,7 +23,14 @@
                 data-cy="collected-product-cart-sidebar"
                 v-for="product in products"
                 :key="cartGetters.getItemSku(product)"
-                :image="$image(cartGetters.getItemImage(product), 140, 236, cartGetters.getItemImageFilename(product))"
+                :image="
+                  $image(
+                    cartGetters.getItemImage(product),
+                    140,
+                    236,
+                    cartGetters.getItemImageFilename(product)
+                  )
+                "
                 :title="cartGetters.getItemName(product)"
                 :regular-price="
                   $n(cartGetters.getItemPrice(product).regular, 'currency')
@@ -42,7 +50,7 @@
                     <SfProperty
                       v-for="(attribute, key) in cartGetters.getItemAttributes(
                         product,
-                        ['color', 'size'],
+                        ['color', 'size']
                       )"
                       :key="key"
                       :name="key"
@@ -64,11 +72,10 @@
               src="/icons/empty-cart.svg"
             />
             <SfHeading
-              title="Your cart is empty"
+              :title="$t('Your bag is empty')"
               :level="2"
               class="empty-cart__heading"
-              description="Looks like you haven’t added any items to the bag yet. Start
-              shopping to fill it in."
+              :description="$t('EmptyCart')"
             />
           </div>
         </div>
@@ -77,20 +84,25 @@
         <transition name="sf-fade">
           <div v-if="totalItems">
             <SfProperty
-              name="Total price"
-              class="sf-property--full-width sf-property--large my-cart__total-price"
+              :name="$t('Total price')"
+              class="
+                sf-property--full-width sf-property--large
+                my-cart__total-price
+              "
             >
               <template #value>
                 <SfPrice :regular="$n(totals.subtotal, 'currency')" />
               </template>
             </SfProperty>
 
-            <nuxt-link to="/checkout/shipping">
-              <SfButton class="sf-button--full-width color-primary mb-4">{{
-                $t('GO TO CHECKOUT')
-              }}</SfButton>
+            <nuxt-link :to="localePath('/checkout/shipping')">
+              <SfButton
+                class="sf-button--full-width color-primary mb-4"
+                @click="toggleCartSidebar"
+                >{{ $t('GO TO CHECKOUT') }}</SfButton
+              >
             </nuxt-link>
-            <nuxt-link to="/cart">
+            <nuxt-link :to="localePath('/cart')">
               <SfButton
                 class="sf-button--full-width color-secondary"
                 @click="toggleCartSidebar"
@@ -120,7 +132,7 @@ import {
   SfProperty,
   SfPrice,
   SfCollectedProduct,
-  SfImage,
+  SfImage
 } from '@storefront-ui/vue';
 import { computed } from '@nuxtjs/composition-api';
 import { useCart, useUser, cartGetters } from '@vue-storefront/odoo';
@@ -137,7 +149,7 @@ export default {
     SfProperty,
     SfPrice,
     SfCollectedProduct,
-    SfImage,
+    SfImage
   },
   setup() {
     const { isCartSidebarOpen, toggleCartSidebar } = useUiState();
@@ -160,9 +172,9 @@ export default {
       toggleCartSidebar,
       totals,
       totalItems,
-      cartGetters,
+      cartGetters
     };
-  },
+  }
 };
 </script>
 

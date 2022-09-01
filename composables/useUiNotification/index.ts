@@ -4,8 +4,6 @@ import Vue from 'vue';
 // We need to register it again because of Vue instance instantiation issues
 Vue.use(VueCompositionAPI);
 interface UiNotification {
-  message: string;
-  action?: { text: string; onClick: (...args: any) => void };
   type: 'danger' | 'success' | 'info';
   icon?: string;
   persist?: boolean;
@@ -18,18 +16,18 @@ interface Notifications {
 }
 
 const state = reactive<Notifications>({
-  notifications: [],
+  notifications: []
 });
 const maxVisibleNotifications = 3;
 const timeToLive = 3000;
 
-const useUiNotification = () => {
+const useUiNotification = () : any => {
   const send = (notification: UiNotification) => {
     const id = Symbol('id');
 
     const dismiss = () => {
       const index = state.notifications.findIndex(
-        (notification) => notification.id === id,
+        (notification) => notification.id === id
       );
 
       if (index !== -1) state.notifications.splice(index, 1);
@@ -38,7 +36,7 @@ const useUiNotification = () => {
     const newNotification = {
       ...notification,
       id,
-      dismiss,
+      dismiss
     };
 
     state.notifications.push(newNotification);
@@ -53,7 +51,7 @@ const useUiNotification = () => {
 
   return {
     send,
-    notifications: computed(() => state.notifications),
+    notifications: computed(() => state.notifications)
   };
 };
 

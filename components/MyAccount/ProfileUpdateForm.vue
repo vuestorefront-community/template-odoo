@@ -1,10 +1,7 @@
 <template>
-  <ValidationObserver>
-    <form
-      class="form"
-      @submit.prevent="submitForm()"
-    >
-      <h1>My profile</h1>
+  <ValidationObserver v-slot="{ invalid }">
+    <form class="form" @submit.prevent="submitForm()">
+      <h1>{{ $t('My profile') }}</h1>
 
       <div class="form__horizontal">
         <ValidationProvider
@@ -15,7 +12,7 @@
           <SfInput
             v-model="form.name"
             name="name"
-            label="Name"
+            :label="$t('Name')"
             required
             :valid="!errors[0]"
             :error-message="errors[0]"
@@ -31,7 +28,7 @@
           v-model="form.email"
           type="email"
           name="email"
-          label="Your e-mail"
+          :label="$t('Your e-mail')"
           required
           :valid="!errors[0]"
           :error-message="errors[0]"
@@ -45,98 +42,97 @@
         @close="requirePassword = false"
       >
         {{
-          $t("Please type your current password to change your email address.")
+          $t('Please type your current password to change your email address.')
         }}
         <SfInput
           v-model="currentPassword"
           type="password"
           name="currentPassword"
-          label="Current Password"
+          :label="$t('Current Password')"
           required
           class="form__element"
           style="margin-top: 10px"
           @keypress.enter="submitForm()"
         />
-        <SfButton
-          class="form__button"
-          type="submit"
-        >
-          {{ $t("Update personal data") }}
-        </SfButton>
+        <OdooButton type="submit" :disabled="invalid" :loading="loading">
+          {{ $t('Update personal data') }}
+        </OdooButton>
       </SfModal>
-      <SfButton class="form__button">
-        {{ $t("Update personal data") }}
-      </SfButton>
+      <OdooButton type="submit" :disabled="invalid" :loading="loading">
+        {{ $t('Update personal data') }}
+      </OdooButton>
     </form>
   </ValidationObserver>
 </template>
 
-<script>
-import { ref } from '@nuxtjs/composition-api';
+<script lang="ts">
+import { defineComponent, ref } from '@nuxtjs/composition-api';
+import { SfInput, SfModal } from '@storefront-ui/vue';
+import { userGetters, useUser } from '@vue-storefront/odoo';
+import { ValidationObserver, ValidationProvider } from 'vee-validate';
 import { useUiNotification } from '~/composables';
-import { ValidationProvider, ValidationObserver } from 'vee-validate';
-import { useUser, userGetters } from '@vue-storefront/odoo';
-import { SfInput, SfButton, SfModal } from '@storefront-ui/vue';
-export default {
+export default defineComponent({
   name: 'ProfileUpdateForm',
   components: {
     SfInput,
-    SfButton,
     SfModal,
     ValidationProvider,
-    ValidationObserver
-  },
-  props: {
-    loading: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
+    ValidationObserver,
   },
   emits: ['submit'],
-  setup(props, { emit }) {
+  setup(_, { root }) {
     const { send } = useUiNotification();
     const { user, updateUser } = useUser();
 
     const currentPassword = ref('');
     const requirePassword = ref(false);
+    const loading = ref(false);
 
     const resetForm = () => ({
-      name: userGetters.getFirstName(user.value),
-      email: userGetters.getEmailAddress(user.value)
+      name: userGetters.getFirstName(user.value) || '',
+      email: userGetters.getEmailAddress(user.value) || '',
     });
     const form = ref(resetForm());
 
-    const submitForm = async () => () => {
+    const submitForm = async () => {
+      loading.value = true;
       try {
-        updateUser({
-          ...user,
-          name: form.value.name,
-          email: form.value.email
+        await updateUser({
+          user: {
+            ...user,
+            name: form.value.name,
+            email: form.value.email,
+          },
         });
 
         form.value = resetForm();
         requirePassword.value = false;
         currentPassword.value = '';
-      }
-      catch(e) {
+        send({
+          message: root.$t('Successfull update!'),
+          type: 'success',
+        });
+      } catch (e) {
         form.value = resetForm();
         requirePassword.value = false;
         currentPassword.value = '';
 
-        send({ message: error?.value, type: 'danger' });
+        send({ message: e?.value, type: 'danger' });
       }
+
+      loading.value = false;
     };
 
     return {
+      loading,
       submitForm,
       user,
       requirePassword,
       currentPassword,
-      form
+      form,
     };
-  }
-};
+  },
+});
 </script>
 <style lang="scss" scoped>
 .form {
