@@ -9,9 +9,9 @@
 /* eslint-disable camelcase */
 
 import { ref, onMounted, useRouter } from '@nuxtjs/composition-api';
-import { useAdyenDirectPayment, useUiNotification } from '~/composables';
+import { useUiNotification } from '~/composables';
 import { SfLoader } from '@storefront-ui/vue';
-import { usePayment } from '@vue-storefront/odoo';
+import { usePayment, useAdyenDirectPayment } from '@vue-storefront/odoo';
 import '@adyen/adyen-web/dist/adyen.css';
 export default {
   name: 'AdyenDirectPaymentProvider',
@@ -53,7 +53,7 @@ export default {
       transaction
     } = useAdyenDirectPayment(props.provider.id, props.cart?.order?.id);
 
-    onMounted(async() => {
+    onMounted(async () => {
       const AdyenCheckout = require('@adyen/adyen-web');
 
       loading.value = true;
@@ -70,11 +70,17 @@ export default {
           enabled: false
         },
         onPaymentCompleted: (result, component) => {
-          router.push({name: 'paymentResponse'});
+          router.push({ name: 'paymentResponse' });
         },
         onError: (error, component) => {
-          if (error.errorText !== 'error was cleared' && error.errorText !== 'incomplete field') {
-            send({ message: error?.message || error?.errorI18n || error?.errorText, type: 'danger' });
+          if (
+            error.errorText !== 'error was cleared' &&
+            error.errorText !== 'incomplete field'
+          ) {
+            send({
+              message: error?.message || error?.errorI18n || error?.errorText,
+              type: 'danger'
+            });
           }
 
           emit('paymentLoading', false);
@@ -95,7 +101,7 @@ export default {
           emit('isPaymentReady', false);
         },
 
-        onSubmit: async(state, dropin) => {
+        onSubmit: async (state, dropin) => {
           emit('isPaymentReady', false);
           emit('paymentLoading', true);
           const response = await adyenMakeDirectPayment({
@@ -112,24 +118,27 @@ export default {
             return;
           }
 
-          const data = await getPaymentConfirmation({ customQuery: { paymentConfirmation: 'greenConfirmationPayment' } });
-          const paymentSuccess = data?.order?.lastTransaction?.state === 'Authorized' || data.order?.lastTransaction?.state === 'Confirmed';
+          const data = await getPaymentConfirmation({
+            customQuery: { paymentConfirmation: 'greenConfirmationPayment' }
+          });
+          const paymentSuccess =
+            data?.order?.lastTransaction?.state === 'Authorized' ||
+            data.order?.lastTransaction?.state === 'Confirmed';
 
           emit('paymentLoading', false);
           if (paymentSuccess) {
-            router.push({name: 'successPaymentResponse'});
+            router.push({ name: 'successPaymentResponse' });
             return;
           }
 
-          router.push({name: 'failedPaymentResponse'});
+          router.push({ name: 'failedPaymentResponse' });
         }
       };
 
       const checkout = new AdyenCheckout(configuration);
 
-      adyenDropin.value = checkout.create(
-        'dropin', {
-
+      adyenDropin.value = checkout
+        .create('dropin', {
           openFirstPaymentMethod: true,
           openFirstStoredPaymentMethod: false,
           showStoredPaymentMethods: false,
@@ -143,8 +152,8 @@ export default {
             }
             emit('isPaymentReady', false);
           }
-        }
-      ).mount('#dropin-container');
+        })
+        .mount('#dropin-container');
 
       loading.value = false;
 

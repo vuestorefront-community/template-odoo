@@ -127,6 +127,7 @@
             @paymentLoading="paymentLoading = arguments[0]"
             @isPaymentReady="isPaymentReady = arguments[0]"
             @providerPaymentHandler="providerPaymentHandler = arguments[0]"
+            :cart="cart"
             :provider="selectedProvider"
             :is="getComponentProviderByName(selectedProvider.name)"
           />
@@ -214,6 +215,8 @@ export default {
       import('~/components/Checkout/VsfPaymentProvider'),
     AdyenPaymentProvider: () =>
       import('~/components/Checkout/AdyenPaymentProvider'),
+    AdyenDirectPaymentProvider: () =>
+      import('~/components/Checkout/AdyenDirectPaymentProvider'),
     AdyenExternalPaymentProvider: () =>
       import('~/components/Checkout/AdyenExternalPaymentProvider'),
     WireTransferPaymentProvider: () =>
@@ -287,7 +290,8 @@ export default {
       providerListHasMoreThanOne,
       providerPaymentHandler,
       getComponentProviderByName: th.getComponentProviderByName,
-      paymentLoading
+      paymentLoading,
+      cart
     };
   }
 };
