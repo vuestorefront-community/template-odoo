@@ -27,7 +27,7 @@
               <SfListItem v-for="(category, key) in categories" :key="key">
                 <SfMenuItem
                   :label="category.label"
-                  :link="uiHelper.getCatLinkForSearch(category)"
+                  :link="localePath(uiHelper.getCatLinkForSearch(category))"
                   icon="chevron_right"
                 >
                 </SfMenuItem>
@@ -139,10 +139,10 @@
             loading="lazy"
           />
           <p class="before-results__paragraph">
-            {{ $t('You haven’t searched for items yet') }}
+            {{ $t('You haven\'t searched for items yet') }}
           </p>
           <p class="before-results__paragraph">
-            {{ $t('Let’s start now – we’ll help you') }}
+            {{ $t('Let\'s start now - we\'ll help you') }}
           </p>
           <SfButton
             class="before-results__button color-secondary smartphone-only"

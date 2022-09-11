@@ -4,14 +4,14 @@
       <SfBar
         class="sf-modal__bar smartphone-only"
         :close="true"
-        :title="isLogin ? 'Log in' : 'Sign in'"
+        :title="isLogin ? $t('Log in') : $t('Sign in')"
         @click:close="toggleLoginModal"
       />
     </template>
     <transition name="sf-fade" mode="out-in">
       <div v-if="isLogin">
         <div v-show="isForgottenPassword">
-          <p class="sign-title">Reset your password.</p>
+          <p class="sign-title">{{ $t('Reset your password') }}.</p>
           <p class="reset-pass-text">
             {{
               $t(
@@ -21,7 +21,7 @@
           </p>
         </div>
         <div v-show="!isForgottenPassword">
-          <p class="sign-title">Log into your account!</p>
+          <p class="sign-title">{{ $t('Log into your account') }}</p>
           <p class="reset-pass-text">
             {{
               $t(
@@ -46,7 +46,7 @@
                 :valid="!errors[0]"
                 :errorMessage="errors[0]"
                 name="email"
-                label="Your email addres"
+                :label="$t('Your email address')"
                 class="form__element"
               />
             </ValidationProvider>
@@ -60,7 +60,7 @@
                   name="password"
                   :icon="{ icon: 'show_password' }"
                   type:icon="text"
-                  label="Your password"
+                  :label="$t('Your password')"
                   @click:icon="
                     {
                       showPassword = !showPassword;
@@ -75,7 +75,7 @@
                   data-cy="login-checkbox-remember-me"
                   v-model="rememberMe"
                   name="remember-me"
-                  label="Remember me"
+                  :label="$t('Remember me')"
                   class="form__element checkbox"
                 />
                 <SfButton
@@ -85,7 +85,7 @@
                 >
                   {{
                     isForgottenPassword
-                      ? $t('log in into your account?')
+                      ? $t('log in into your account')
                       : $t('I forgot my password?')
                   }}
                 </SfButton>
@@ -103,7 +103,7 @@
                   {{
                     isForgottenPassword
                       ? $t('Reset password')
-                      : $t('log in into your account?')
+                      : $t('log in into your account')
                   }}
                 </div>
               </SfLoader>
@@ -114,14 +114,14 @@
               @click="displayChoosedTrue(() => (isCreateAccount = true))"
             >
               <div>
-                {{ $t('create new account') }}
+                {{ $t('Create new account') }}
               </div>
             </SfButton>
           </form>
         </ValidationObserver>
 
         <div class="bottom" v-show="!isForgottenPassword">
-          <p class="bottom-enjoy">Enjoy these perks with your free account!</p>
+          <p class="bottom-enjoy">{{ $t('Enjoy these perks with your free account') }}!</p>
           <div class="block lg:flex justify-around">
             <div class="flex additional-account">
               <SfIcon
@@ -130,7 +130,7 @@
                 viewBox="0 0 12 12"
                 :coverage="1"
               />
-              <p>Faster checkout</p>
+              <p>{{ $t('Faster checkout') }}</p>
             </div>
             <div class="flex additional-account">
               <SfIcon
@@ -139,7 +139,7 @@
                 viewBox="0 0 12 12"
                 :coverage="1"
               />
-              <p>Manage your wishlist</p>
+              <p>{{ $t('Manage your wishlist') }}</p>
             </div>
           </div>
         </div>
@@ -152,7 +152,7 @@
             autocomplete="off"
           >
             <div>
-              <p class="sign-title">Create your new account!</p>
+              <p class="sign-title">{{ $t('Create your new account') }}!</p>
               <p class="reset-pass-text">
                 {{
                   $t(
@@ -168,7 +168,7 @@
                 :valid="!errors[0]"
                 :errorMessage="errors[0]"
                 name="name"
-                label="Your name"
+                :label="$t('Your name')"
                 class="form__element"
               />
             </ValidationProvider>
@@ -179,7 +179,7 @@
                 :valid="!errors[0]"
                 :errorMessage="errors[0]"
                 name="Your email address"
-                label="Your email"
+                :label="$t('Your email address')"
                 class="form__element"
               />
             </ValidationProvider>
@@ -191,7 +191,7 @@
                 :valid="!errors[0]"
                 :errorMessage="errors[0]"
                 name="password"
-                label="Password"
+                :label="$t('Your password')"
                 :icon="{ icon: 'show_password' }"
                 @click:icon="
                   {
@@ -215,9 +215,9 @@
                   class="form__element"
                 />
                 <p>
-                  I declare that I have read and agree to the
-                  <span>Privacy Policy</span> and
-                  <span>Terms of Use.</span>
+                  {{ $t('I declare that I have read and agree to the') }}
+                  <span>{{ $t('Privacy Policy') }}</span> {{ $t('and') }}
+                  <span>{{ $t('Terms of Use.') }}</span>
                 </p>
               </div>
             </ValidationProvider>
@@ -244,7 +244,7 @@
           </form>
         </ValidationObserver>
         <div class="bottom">
-          <p class="bottom-enjoy">Enjoy these perks with your free account!</p>
+          <p class="bottom-enjoy">{{ $t('Enjoy these perks with your free account') }}!</p>
           <div class="block lg:flex justify-around">
             <div class="flex additional-account">
               <SfIcon
@@ -253,7 +253,7 @@
                 viewBox="0 0 12 12"
                 :coverage="1"
               />
-              <p>Faster checkout</p>
+              <p>{{ $t('Faster checkout') }}</p>
             </div>
             <div class="flex additional-account">
               <SfIcon
@@ -262,7 +262,7 @@
                 viewBox="0 0 12 12"
                 :coverage="1"
               />
-              <p>Manage your wishlist</p>
+              <p>{{ $t('Manage your wishlist') }}</p>
             </div>
           </div>
         </div>
@@ -377,7 +377,7 @@ export default {
           type: 'success'
         });
       }
-      
+
     };
 
     const handlePasswordRecovery = async () =>

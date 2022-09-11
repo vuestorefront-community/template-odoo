@@ -9,7 +9,7 @@
       <div class="form">
         <SfCheckbox
           :selected="sameAsShipping"
-          label="Copy address data from shipping"
+          :label="$t('Copy address data from shipping')"
           name="copyShippingAddress"
           class="form__element"
           @change="handleCheckSameAddress"
@@ -22,7 +22,7 @@
         >
           <SfInput
             v-model="form.name"
-            label="First name"
+            :label="$t('First name')"
             name="firstName"
             class="form__element"
             required
@@ -38,7 +38,7 @@
         >
           <SfInput
             v-model="form.street"
-            label="Street name"
+            :label="$t('Street name')"
             name="streetName"
             class="form__element"
             required
@@ -54,7 +54,7 @@
         >
           <SfInput
             v-model="form.city"
-            label="City"
+            :label="$t('City')"
             name="city"
             class="form__element form__element--half"
             required
@@ -70,7 +70,7 @@
         >
           <SfInput
             v-model="form.zip"
-            label="Zip-code"
+            :label="$t('Zip-code')"
             name="zipCode"
             class="form__element form__element--half form__element--half-even"
             required
@@ -86,9 +86,12 @@
         >
           <SfSelect
             v-model="form.country.id"
-            label="Country"
+            :label="$t('Country')"
             name="country"
-            class="form__element form__element--half form__select sf-select--underlined"
+            class="
+              form__element form__element--half form__select
+              sf-select--underlined
+            "
             required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
@@ -111,9 +114,13 @@
         >
           <SfSelect
             v-model="form.state.id"
-            label="State/Province"
+            :label="$t('State/Province')"
             name="state"
-            class="form__element form__element--half form__select sf-select--underlined form__element--half-even"
+            class="
+              form__element form__element--half form__select
+              sf-select--underlined
+              form__element--half-even
+            "
             :class="[
               countryStates && countryStates.length ? 'visible' : 'invisible',
             ]"
@@ -140,7 +147,7 @@
         >
           <SfInput
             v-model="form.phone"
-            label="Phone number"
+            :label="$t('Phone number')"
             name="phone"
             class="form__element form__element--half"
             required
@@ -199,10 +206,9 @@ export default {
   setup(props, { root }) {
     const { cart } = useCart();
     const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
-    if (totalItems.value === 0) root.$router.push('/cart');
+    if (totalItems.value === 0) root.$router.push(root.localePath('/cart'));
 
-    const { search, searchCountryStates, countries, countryStates } =
-      useCountrySearch();
+    const { search, searchCountryStates, countries, countryStates } = useCountrySearch();
     const { load: loadBillingAddress, billing, save, error } = useBilling();
 
     const { use } = useShippingAsBillingAddress();
@@ -233,11 +239,17 @@ export default {
     };
 
     const handleFormSubmit = async () => {
-      await save({ billingDetails: form.value });
+      await save({
+        params: {
+          ...form.value,
+          stateId: parseInt(form.value.state.id),
+          countryId: parseInt(form.value?.country?.id)
+        }
+      });
       isFormSubmitted.value = true;
 
       if (!error.save) {
-        root.$router.push('/checkout/payment');
+        root.$router.push(root.localePath('/checkout/payment'));
       }
     };
 
@@ -267,7 +279,7 @@ export default {
     watch(
       () => totalItems.value,
       () => {
-        if (totalItems.value === 0) root.$router.push('/cart');
+        if (totalItems.value === 0) root.$router.push(root.localePath('/cart'));
       }
     );
 

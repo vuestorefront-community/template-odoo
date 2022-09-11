@@ -7,15 +7,6 @@ import theme from './themeConfig';
 
 const isDev = process.env.NODE_ENV !== 'production';
 
-const localesMap = {
-  'en-EN': 'en',
-  'de-DE': 'de',
-  'da-DK': 'da',
-  'sv-SV': 'sv'
-};
-
-const localeIndex = localesMap[process.env.NODE_LOCALE];
-
 export default {
   server: {
     port: 3000,
@@ -23,7 +14,7 @@ export default {
   },
   components: [
     '~/components/',
-    '~/components/Core/Atoms',
+    '~/components/Core/Atoms'
   ],
   css: ['@/assets/styles.scss'],
   head: {
@@ -233,29 +224,37 @@ export default {
   },
   i18n: {
     baseUrl: process.env.SITE_URL,
-    strategy: 'no_prefix',
+    strategy: 'prefix_and_default',
     currency: 'USD',
     country: 'US',
     countries: [
       { name: 'US', label: 'United States' },
-      { name: 'DE', label: 'Germany' }
+      { name: 'DE', label: 'Germany' },
+      { name: 'RU', label: 'Russian' }
     ],
     currencies: [
       { name: 'EUR', label: 'Euro' },
-      { name: 'USD', label: 'Dollar' }
+      { name: 'USD', label: 'Dollar' },
+      { name: 'RUB', label: 'Rubble' }
     ],
     locales: [
       {
         code: 'en',
         label: 'English',
-        file: 'en.js',
+        file: 'en.json',
         iso: 'en'
       },
       {
         code: 'de',
         label: 'German',
-        file: 'de.js',
+        file: 'de.json',
         iso: 'de'
+      },
+      {
+        code: 'ru',
+        label: 'Russian',
+        file: 'ru.json',
+        iso: 'ru'
       }
     ],
     defaultLocale: 'en',
@@ -276,6 +275,13 @@ export default {
           currency: {
             style: 'currency',
             currency: 'EUR',
+            currencyDisplay: 'symbol'
+          }
+        },
+        ru: {
+          currency: {
+            style: 'currency',
+            currency: 'RUB',
             currencyDisplay: 'symbol'
           }
         }

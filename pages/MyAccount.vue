@@ -1,22 +1,22 @@
 <template>
   <div id="my-account" class="my-account">
     <SfContentPages
-      title="My Account"
+      :title="$t('My Account')"
       :active="activePage"
       class="my-account"
       @click:change="changeActivePage"
     >
       <SfContentCategory title="Personal Details">
-        <SfContentPage title="My profile" data-testid="my-profile">
+        <SfContentPage :title="$t('My profile')" data-testid="my-profile">
           <ProfileUpdateForm />
         </SfContentPage>
 
-        <SfContentPage title="Update Password" data-testid="update-password">
+        <SfContentPage :title="$t('Update Password')" data-testid="update-password">
           <PasswordResetForm />
         </SfContentPage>
 
         <SfContentPage
-          title="Shipping & Payment Details"
+          :title="$t('Shipping & Payment Details')"
           data-testid="shipping-details"
         >
           <SfTabs
@@ -25,7 +25,7 @@
             class="tab-orphan"
             data-testid="shipping-details-tabs"
           >
-            <SfTab title="Edit Address" v-if="state === 'edit'">
+            <SfTab :title="$t('Edit Address')" v-if="state === 'edit'">
               <ShippingAddressForm
                 @cancel="handleCancelEditing"
                 @save="handleSaveAddress"
@@ -34,7 +34,7 @@
               ></ShippingAddressForm>
             </SfTab>
 
-            <SfTab title="Shipping Addresses" v-if="state === 'list'">
+            <SfTab :title="$t('Shipping Addresses')" v-if="state === 'list'">
               <MyAccountShippingList
                 :addresses="shipping"
                 @change="handleChangeAddress"
@@ -52,18 +52,18 @@
           </SfTabs>
         </SfContentPage>
 
-        <SfContentPage title="Newsletter">
+        <SfContentPage :title="$t('Newsletter')">
           <MyAccountNewsletterForm />
         </SfContentPage>
       </SfContentCategory>
 
-      <SfContentCategory title="Order details">
-        <SfContentPage title="Order history">
+      <SfContentCategory :title="$t('Order details')">
+        <SfContentPage :title="$t('Order history')">
           <OrderHistory />
         </SfContentPage>
       </SfContentCategory>
 
-      <SfContentPage title="Log out" />
+      <SfContentPage :title="$t('Log out')" />
     </SfContentPages>
   </div>
 </template>
@@ -151,13 +151,13 @@ export default defineComponent({
     };
 
     const changeActivePage = async (title) => {
-      if (title === 'Log out') {
+      if (title === root.$t('Log out')) {
         send({
           message: 'You are logged out. We hope you come back soon mate!',
           type: 'info',
         });
 
-        root.$router.push('/');
+        root.$router.push(root.localePath('/'));
         await logout();
 
         return;

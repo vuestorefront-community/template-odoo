@@ -18,7 +18,7 @@
       class="heading sf-heading--no-underline"
     />
     <div class="actions">
-      <SfButton link="/" class="sf-button--full-width actions__button">
+      <SfButton :link="localePath('/')" class="sf-button--full-width actions__button">
         Return home
       </SfButton>
       <SfButton

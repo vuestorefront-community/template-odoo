@@ -8,14 +8,14 @@
       <div v-if="totalItems" class="detailed-cart__aside">
         <SfOrderSummary
           :products="products"
-          orderTitle="Totals"
+          :orderTitle="$t('Totals')"
           :total-items="totalItems"
           class="oderSummary"
         >
           <template #summary>
             <div v-for="item in summary" :key="item.name" class="mb-3 px-7">
               <SfProperty
-                :name="item.name"
+                :name="$t(item.name)"
                 class="
                   sf-property--full-width sf-property--large
                   my-cart__total-price
@@ -32,6 +32,12 @@
                   >
                     ${{ item.value.value.subtotal }}</span
                   >
+                  <span
+                    class="card__text"
+                    v-else-if="item.name === 'Shipping'"
+                  >
+                    {{ $t(item.value) }}</span
+                  >
                   <span class="card__text" v-else> {{ item.value }}</span>
                 </template>
               </SfProperty>
@@ -43,7 +49,7 @@
             <div class="mb-5 px-7">
               <SfProperty class="sf-property--full-width sf-property--large">
                 <template #name>
-                  <span class="card__text">Total Price:</span>
+                  <span class="card__text">{{ $t('Total Price') }}:</span>
                 </template>
                 <template #value>
                   <span class="card__text"> ${{ totals.total }}</span>
@@ -54,7 +60,7 @@
           <template #promo>
             <div>
               <div>
-                <nuxt-link to="/checkout/shipping">
+                <nuxt-link :to="localePath('/checkout/shipping')">
                   <SfButton class="color-primary custom__width">{{
                     $t('GO TO CHECKOUT')
                   }}</SfButton>
@@ -74,7 +80,7 @@
                   </div>
                   <div>
                     <SfButton class="sf-button--text">
-                      Send my basket to email</SfButton
+                      {{ $t('Send my basket to email') }}</SfButton
                     >
                   </div>
                 </div>
@@ -82,13 +88,10 @@
 
               <div class="custom__con">
                 <div class="bottom__text">
-                  Helpful information: <br />
-                  <span class="text-primary">•</span> Questions? Chat with us or
-                  call 1.888.282.6060. <br />
-                  <span class="text-primary">•</span> Shipping internationally?
-                  Choose your destination & currency. <br />
-                  <span class="text-primary">•</span> Shipping methods &
-                  charges. <br />
+                  {{ $t('Helpful information') }}: <br />
+                  <span class="text-primary">•</span> {{ $t('Questions? Chat with us or call 1.888.282.6060.') }} <br />
+                  <span class="text-primary">•</span> {{ $t('Shipping internationally? Choose your destination & currency.') }}<br />
+                  <span class="text-primary">•</span> {{ $t('Shipping methods & charges.') }} <br />
                 </div>
               </div>
             </div>
@@ -128,7 +131,7 @@
                     <SfButton
                       class="sf-button--text custom__text"
                       @click="removeItem({ product })"
-                      >Remove from cart</SfButton
+                      >{{ $t('Remove from cart') }}</SfButton
                     >
                   </span>
                 </template>
@@ -136,20 +139,19 @@
                 <template #actions>
                   <div class="actions desktop-only">
                     <SfButton class="sf-button--text actions__button"
-                      >Edit</SfButton
+                      >{{ $t('Edit') }}</SfButton
                     >
                     <SfButton class="sf-button--text actions__button"
-                      >Save for later</SfButton
+                      >{{ $t('Save for later') }}</SfButton
                     >
                     <SfButton class="sf-button--text actions__button"
-                      >Add to compare</SfButton
+                      >{{ $t('Add to compare') }}</SfButton
                     >
                     <SfButton class="sf-button--text actions__button"
-                      >Add message or gift wrap</SfButton
+                      >{{ $t('Add message or gift wrap') }}</SfButton
                     >
                     <span class="actions__description">
-                      Usually arrives in 5-13 business days. A shipping timeline
-                      specific to your destination can be viewed in Checkout.
+                      {{ $t('Usually arrives in 5-13 business days. A shipping timeline specific to your destination can be viewed in Checkout.') }}
                     </span>
                   </div>
                 </template>
@@ -165,14 +167,13 @@
               :height="200"
             />
             <SfHeading
-              title="Your cart is empty"
+              :title="$t('Your cart is empty')"
               :level="2"
-              description="Looks like you haven’t added any items to the cart yet. Start
-                shopping to fill it in."
+              :description="$t('Looks like you haven\'t added any items to the cart yet. Start shopping to fill it in.')"
             />
             <SfButton
               class="sf-button--full-width color-primary empty-cart__button"
-              >Start shopping</SfButton
+              >{{ $t('Start shopping') }}</SfButton
             >
           </div>
         </transition>
@@ -207,7 +208,7 @@ export default {
     SfProperty,
     SfOrderSummary
   },
-  setup() {
+  setup(_, {root}) {
     // simple test submodule 3
     const { isAuthenticated } = useUser();
     const { cart, removeItem, updateItemQty } = useCart();
@@ -228,19 +229,18 @@ export default {
         name: 'Sub Total',
         value: totals
       },
-
       {
-        name: 'Shipping:',
+        name: 'Shipping',
         value: 'Free'
       }
     ]);
     const breadcrumbs = [
       {
-        text: 'Home',
+        text: root.$t('Home'),
         link: '/'
       },
       {
-        text: 'Cart',
+        text: root.$t('Cart'),
         link: '#'
       }
     ];

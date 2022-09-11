@@ -1,10 +1,36 @@
+require('dotenv').config();
 const odooBaseUrl = process.env.BACKEND_BASE_URL || process.env.BASE_URL;
 const graphqlBaseUrl = `${odooBaseUrl}graphql/vsf`;
 const consola = require('consola');
 const chalk = require('chalk');
 const axios = require('axios');
 const fsExtra = require('fs-extra');
-const queries = require('../helpers/buildQueries');
+const products = `
+query {
+  products (pageSize: 150000) {
+    products {
+      id
+      slug
+    }
+  }
+}
+`;
+
+const categories = `
+query {
+  categories (pageSize: 10000) {
+    categories {
+      id
+      name
+      slug
+      parent {
+        id
+        slug
+      }
+    }
+  }
+}
+`;
 
 const headers = { headers: {
   'Content-Type': 'application/json',
@@ -12,11 +38,11 @@ const headers = { headers: {
 }};
 
 const fetchProducts = async () => {
-  return await axios.post(graphqlBaseUrl, { query: `${queries.products}` }, headers);
+  return await axios.post(graphqlBaseUrl, { query: `${products}` }, headers);
 };
 
 const fetchCategories = async () => {
-  return await axios.post(graphqlBaseUrl, { query: `${queries.categories}` }, headers);
+  return await axios.post(graphqlBaseUrl, { query: `${categories}` }, headers);
 };
 
 const removeLastItemFromArray = (array) => {
@@ -28,7 +54,11 @@ const removeLastItemFromArray = (array) => {
   return [...new Set(splited)];
 };
 
-export default async () => {
+module.exports = async () => {
+  if (!odooBaseUrl) {
+    consola.error(chalk.bold('ODOO'), ' - You need create a .env or set BACKEND_BASE_URL || BASE_URL ');
+    return;
+  }
   consola.info(chalk.bold('ODOO'), ' - Started fetch (product|categories) to build custom routes...');
 
   const { data } = await fetchProducts();

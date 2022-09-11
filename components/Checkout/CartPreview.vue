@@ -3,18 +3,18 @@
     <div class="highlighted">
       <SfHeading
         :level="3"
-        title="Order summary"
+        :title="$t('Order summary')"
         class="sf-heading--left sf-heading--no-underline title"
       />
     </div>
     <div class="highlighted">
       <SfProperty
-        name="Products"
+        :name="$t('Products')"
         :value="totalItems"
         class="sf-property--full-width sf-property--large property"
       />
       <SfProperty
-        name="Subtotal"
+        :name="$t('Sub Total')"
         :value="$n(totals.subtotal, 'currency')"
         :class="[
           'sf-property--full-width',
@@ -39,12 +39,12 @@
         "
       />
       <SfProperty
-        name="Shipping"
+        :name="$t('Shipping')"
         :value="$n(shippingMethodPrice, 'currency')"
         class="sf-property--full-width sf-property--large property"
       />
       <SfProperty
-        name="Total"
+        :name="$t('Total Price')"
         :value="$n(totals.total, 'currency')"
         class="sf-property--full-width sf-property--large property-total"
       />
@@ -98,7 +98,7 @@ export default {
     SfInput,
     SfCircleIcon
   },
-  setup () {
+  setup (_, {root}) {
     const { cart, removeItem, updateItemQty, applyCoupon } = useCart();
     const listIsHidden = ref(false);
     const promoCode = ref('');
@@ -125,19 +125,18 @@ export default {
       applyCoupon,
       characteristics: [
         {
-          title: 'Safety',
-          description: 'It carefully packaged with a personal touch',
+          title: root.$t('Safety'),
+          description: root.$t('It carefully packaged with a personal touch'),
           icon: 'safety'
         },
         {
-          title: 'Easy shipping',
-          description:
-            'You’ll receive dispatch confirmation and an arrival date',
+          title: root.$t('Easy shipping'),
+          description: root.$t('You\'ll receive dispatch confirmation and an arrival date'),
           icon: 'shipping'
         },
         {
-          title: 'Changed your mind?',
-          description: 'Rest assured, we offer free returns within 30 days',
+          title: root.$t('Changed your mind?'),
+          description: root.$t('Rest assured, we offer free returns within 30 days'),
           icon: 'return'
         }
       ]

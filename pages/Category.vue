@@ -90,7 +90,7 @@
               :show-add-to-cart-button="true"
               :isInWishlist="isInWishlist({ product })"
               :isAddedToCart="isInCart({ product })"
-              :link="productGetters.getSlug(product)"
+              :link="localePath(productGetters.getSlug(product))"
               class="products__product-card"
               @click:wishlist="
                 isInWishlist({ product })
@@ -142,13 +142,7 @@
                 addItemToCart({ product, quantity: product.qty })
               "
               v-model="products[i].qty"
-              :link="
-                localePath(
-                  `/p/${productGetters.getId(product)}/${productGetters.getSlug(
-                    product
-                  )}`
-                )
-              "
+              :link="localePath(productGetters.getSlug(product))"
             >
               <template #configuration>
                 <SfProperty
@@ -175,7 +169,7 @@
             <SfPagination
               v-if="!loading"
               data-cy="category-pagination"
-              class="products__pagination desktop-only"
+              class="products__pagination"
               v-show="pagination.totalPages > 1"
               :current="pagination.currentPage"
               :total="pagination.totalPages"
@@ -257,7 +251,8 @@ import {
   ref,
   computed,
   onMounted,
-  defineComponent
+  defineComponent,
+  useRoute
 } from '@nuxtjs/composition-api';
 import {
   useCart,
@@ -287,7 +282,9 @@ export default defineComponent({
       isInWishlist
     } = useWishlist();
     const { result, search, loading } = useFacet();
-    const { params } = root.$router.history.current;
+
+    const route = useRoute();
+    const { params, path } = route.value;
 
     const products = computed(() => facetGetters.getProducts(result.value));
     const categoryTree = computed(() =>
@@ -319,14 +316,17 @@ export default defineComponent({
       return category || categoryFromParent || {};
     });
 
-    const breadcrumbs = computed(() =>
-      facetGetters.getBreadcrumbs({
+    const breadcrumbs = computed(() => {
+      const breadcrumbs = facetGetters.getBreadcrumbs({
         input: {
           params,
           currentRootCategory: currentRootCategory.value
         }
-      })
-    );
+      });
+      if (breadcrumbs.length > 0 && breadcrumbs[0].text === 'Home')
+        breadcrumbs[0].text = root.$t('Home');
+      return breadcrumbs;
+    });
 
     onSSR(async () => {
       const params = {
@@ -385,6 +385,18 @@ export default defineComponent({
     SfLoader,
     LazyHydrate,
     SfImage
+  },
+  head: {
+    script: [
+      {
+        type: 'application/ld+json',
+        json: {
+          '@context': 'https://schema.org',
+          '@type': 'Category',
+          name: 'Category Page'
+        }
+      }
+    ]
   }
 });
 </script>

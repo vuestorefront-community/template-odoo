@@ -12,9 +12,18 @@ const useUiHelpers = (): any => {
   const route = useRoute();
   const router = useRouter();
   const { params, query, path } = route.value;
+  const localePrefixes = ['/en', '/de', '/ru'];
+
+  const pathToSlug = () : string => {
+    for (const localePrefix of localePrefixes) {
+      if (path.startsWith(localePrefix)) {
+        return path.replace(localePrefix, '');
+      }
+    }
+    return path;
+  };
 
   const getFacetsFromURL = () : ParamsFromUrl => {
-
     let filters: string[] = [];
     if (query) {
       Object.keys(query).forEach((filterKey) => {
@@ -30,14 +39,13 @@ const useUiHelpers = (): any => {
 
     const pageSize = 10;
     query.itemsPerPage ? parseInt(query.itemsPerPage) : 10;
-    const sort = '1' as any;
-    query?.sort?.split(',') || [];
+    const sort = query?.sort?.split(',') || [];
     const page = query?.page || 1;
 
     return {
       fetchCategory: true,
       categoryParams: {
-        slug: path === '/' ? null : path
+        slug: path === '/' ? null : pathToSlug()
       },
       productParams: {
         pageSize,
@@ -48,7 +56,7 @@ const useUiHelpers = (): any => {
           minPrice: Number(price?.[0]) || null,
           maxPrice: Number(price?.[1]) || null,
           attributeValueId: filters,
-          categorySlug: path === '/' ? null : path
+          categorySlug: path === '/' ? null : pathToSlug()
         }
       }
     };
@@ -120,13 +128,17 @@ const useUiHelpers = (): any => {
     return false;
   };
 
-  const getComponentProviderByName = (name: string): string => {
-    if (!name) throw new Error('Provider without name');
+  const getComponentProviderByName = (provider: string): string => {
+    if (!provider) throw new Error('Provider without provider');
 
-    const upperName = name.toLocaleUpperCase();
+    const upperName = provider.toLocaleUpperCase();
 
-    if (upperName.includes('ADYEN')) {
+    if (upperName === 'ADYEN_OG') {
       return 'AdyenExternalPaymentProvider';
+    }
+
+    if (upperName === 'ADYEN') {
+      return 'AdyenDirectPaymentProvider';
     }
 
     if (upperName.includes('WIRE')) {
@@ -148,7 +160,8 @@ const useUiHelpers = (): any => {
     isFacetPrice,
     isFacetCheckbox,
     facetsFromUrlToFilter,
-    getComponentProviderByName
+    getComponentProviderByName,
+    pathToSlug
   };
 };
 

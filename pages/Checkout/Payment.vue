@@ -2,7 +2,7 @@
   <div>
     <SfHeading
       :level="3"
-      title="Payment"
+      :title="$t('Payment')"
       class="sf-heading--left sf-heading--no-underline title"
     />
     <SfTable class="sf-table--bordered table desktop-only">
@@ -16,7 +16,7 @@
           class="table__header"
           :class="{ table__description: tableHeader === 'Description' }"
         >
-          {{ tableHeader }}
+          {{ $t(tableHeader) }}
         </SfTableHeader>
       </SfTableHeading>
       <SfTableRow
@@ -28,7 +28,14 @@
           <SfImage
             :width="256"
             :height="176"
-            :src="$image(cartGetters.getItemImage(product), 256, 176, cartGetters.getItemImageFilename(product))"
+            :src="
+              $image(
+                cartGetters.getItemImage(product),
+                256,
+                176,
+                cartGetters.getItemImageFilename(product)
+              )
+            "
             :alt="cartGetters.getItemName(product)"
           />
         </SfTableData>
@@ -67,11 +74,11 @@
       <div class="summary__group">
         <div class="summary__total">
           <SfProperty
-            name="Subtotal"
+            :name="$t('Sub Total')"
             :value="
               $n(
                 totals.special > 0 ? totals.special : totals.subtotal,
-                'currency',
+                'currency'
               )
             "
             class="sf-property--full-width property"
@@ -81,21 +88,24 @@
         <SfDivider />
 
         <SfProperty
-          name="Total price"
+          :name="$t('Total Price')"
           :value="$n(totals.total, 'currency')"
-          class="sf-property--full-width sf-property--large summary__property-total"
+          class="
+            sf-property--full-width sf-property--large
+            summary__property-total
+          "
         />
 
         <SfHeading
           :level="3"
-          title="Choose payment provider"
+          :title="$t('Choose payment provider')"
           class="sf-heading--left sf-heading--no-underline title"
         />
 
         <SfRadio
           v-for="provider in providerList"
           :key="provider.id"
-          :label="provider.name"
+          :label="$t(provider.name)"
           :value="String(provider.id)"
           :selected="String(selectedProvider.id)"
           name="shippingMethod"
@@ -114,8 +124,10 @@
         <abstract-payment-observer v-if="selectedProvider.name">
           <component
             class="py-8"
+            @paymentLoading="paymentLoading = arguments[0]"
             @isPaymentReady="isPaymentReady = arguments[0]"
             @providerPaymentHandler="providerPaymentHandler = arguments[0]"
+            :cart="cart"
             :provider="selectedProvider"
             :is="getComponentProviderByName(selectedProvider.name)"
           />
@@ -139,7 +151,7 @@
           <SfButton
             type="button"
             class="sf-button color-secondary summary__back-button"
-            @click="$router.push('/checkout/billing')"
+            @click="$router.push(localePath('/checkout/billing'))"
           >
             {{ $t('Go back') }}
           </SfButton>
@@ -203,6 +215,8 @@ export default {
       import('~/components/Checkout/VsfPaymentProvider'),
     AdyenPaymentProvider: () =>
       import('~/components/Checkout/AdyenPaymentProvider'),
+    AdyenDirectPaymentProvider: () =>
+      import('~/components/Checkout/AdyenDirectPaymentProvider'),
     AdyenExternalPaymentProvider: () =>
       import('~/components/Checkout/AdyenExternalPaymentProvider'),
     WireTransferPaymentProvider: () =>
@@ -213,12 +227,14 @@ export default {
   setup(props, context) {
     const { cart, load, setCart } = useCart();
     const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
-    if (totalItems.value === 0) context.root.$router.push('/cart');
+    if (totalItems.value === 0)
+      context.root.$router.push(context.root.localePath('/cart'));
 
     const { providerList, getPaymentProviderList } = usePayment();
     const { order, make, loading } = useMakeOrder();
     const th = useUiHelpers();
 
+    const paymentLoading = ref(false);
     const isPaymentReady = ref(false);
     const terms = ref(false);
     const selectedProvider = ref({});
@@ -248,7 +264,8 @@ export default {
     watch(
       () => totalItems.value,
       () => {
-        if (totalItems.value === 0) context.root.$router.push('/cart');
+        if (totalItems.value === 0)
+          context.root.$router.push(context.root.localePath('/cart'));
       }
     );
 
@@ -272,7 +289,9 @@ export default {
       selectedProvider,
       providerListHasMoreThanOne,
       providerPaymentHandler,
-      getComponentProviderByName: th.getComponentProviderByName
+      getComponentProviderByName: th.getComponentProviderByName,
+      paymentLoading,
+      cart
     };
   }
 };
