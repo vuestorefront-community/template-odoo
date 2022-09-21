@@ -258,10 +258,7 @@ export default {
     onMounted(async () => {
       await loadBillingAddress();
       await search();
-      if (billing) {
-        form.value = billing.value;
-      }
-      formRef.value.validate({ silent: true });
+      handleCheckSameAddress()  
     });
 
     watch(
