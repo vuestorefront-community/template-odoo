@@ -133,31 +133,20 @@
                 productGetters.getPrice(product).special &&
                 $n(productGetters.getPrice(product).special, 'currency')
               "
-              :max-rating="5"
-              :score-rating="3"
               :isInWishlist="isInWishlist({ product })"
               class="products__product-card-horizontal"
               @click:wishlist="addItemToWishlist({ product })"
               @click:add-to-cart="
-                addItemToCart({ product, quantity: product.qty })
+                addItemToCart({ product, quantity: 1 })
               "
               v-model="products[i].qty"
               :link="localePath(productGetters.getSlug(product))"
             >
-              <template #configuration>
-                <SfProperty
-                  class="desktop-only"
-                  name="Size"
-                  value="XS"
-                  style="margin: 0 0 1rem 0"
-                />
-                <SfProperty class="desktop-only" name="Color" value="white" />
-              </template>
               <template #actions>
                 <SfButton
                   class="sf-button--text desktop-only"
                   style="margin: 0 0 1rem auto; display: block"
-                  @click="() => {}"
+                  @click="addItemToWishlist({ product })"
                 >
                   {{ $t('Save for later') }}
                 </SfButton>
@@ -259,7 +248,7 @@ import {
   useWishlist,
   productGetters,
   useFacet,
-  facetGetters
+  facetGetters  
 } from '@vue-storefront/odoo';
 import { useCache, CacheTagPrefix } from '@vue-storefront/cache';
 import { useUiHelpers, useUiState } from '~/composables';
