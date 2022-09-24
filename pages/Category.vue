@@ -184,7 +184,7 @@
             <span class="products__show-on-page__label">{{
               $t('Show on page')
             }}</span>
-            <LazyHydrate on-interaction>
+            
               <SfSelect
                 :value="pagination.itemsPerPage.toString()"
                 class="products__items-per-page"
@@ -199,7 +199,7 @@
                   {{ option }}
                 </SfSelectOption>
               </SfSelect>
-            </LazyHydrate>
+            
           </div>
         </div>
         <div v-else key="no-results" class="before-results">
@@ -284,7 +284,7 @@ export default defineComponent({
     const { result, search, loading } = useFacet();
 
     const route = useRoute();
-    const { params, path } = route.value;
+    const { params, query } = route.value;
 
     const products = computed(() => facetGetters.getProducts(result.value));
     const categoryTree = computed(() =>
@@ -330,6 +330,7 @@ export default defineComponent({
 
     onSSR(async () => {
       const params = {
+        pageSize: query.itemsPerPage || 12,
         ...th.getFacetsFromURL()
       };
 
