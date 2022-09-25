@@ -137,7 +137,7 @@
               class="products__product-card-horizontal"
               @click:wishlist="addItemToWishlist({ product })"
               @click:add-to-cart="
-                addItemToCart({ product, quantity: 1 })
+                addItemToCart({ product, quantity: products[i].qty || 1 })
               "
               v-model="products[i].qty"
               :link="localePath(productGetters.getSlug(product))"
