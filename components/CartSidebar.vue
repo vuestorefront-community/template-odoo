@@ -36,8 +36,9 @@
                   $n(cartGetters.getItemPrice(product).regular, 'currency')
                 "
                 :special-price="
+                  cartGetters.getItemPrice(product).regular !== cartGetters.getItemPrice(product).special ?
                   cartGetters.getItemPrice(product).special &&
-                  $n(cartGetters.getItemPrice(product).special, 'currency')
+                  $n(cartGetters.getItemPrice(product).special, 'currency') : ''
                 "
                 :stock="99999"
                 :qty="cartGetters.getItemQty(product)"
