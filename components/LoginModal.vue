@@ -80,7 +80,7 @@
                 />
                 <SfButton
                   data-cy="login-btn_forgot-password"
-                  class="sf-button--text color-primary"
+                  class="sf-button--text"
                   @click="isForgottenPassword = !isForgottenPassword"
                 >
                   {{
