@@ -138,21 +138,26 @@
 
                 <template #actions>
                   <div class="actions desktop-only">
-                    <SfButton class="sf-button--text actions__button"
-                      >{{ $t('Edit') }}</SfButton
-                    >
-                    <SfButton class="sf-button--text actions__button"
+                    <SfButton class="sf-button--text actions__button custom__margin"
                       >{{ $t('Save for later') }}</SfButton
-                    >
-                    <SfButton class="sf-button--text actions__button"
-                      >{{ $t('Add to compare') }}</SfButton
-                    >
-                    <SfButton class="sf-button--text actions__button"
-                      >{{ $t('Add message or gift wrap') }}</SfButton
                     >
                     <span class="actions__description">
                       {{ $t('Usually arrives in 5-13 business days. A shipping timeline specific to your destination can be viewed in Checkout.') }}
                     </span>
+                  </div>
+                </template>
+
+              <template #configuration>
+                  <div class="collected-product__properties">
+                    <SfProperty
+                      v-for="(attribute, key) in cartGetters.getItemAttributes(
+                        product,
+                        ['color', 'size']
+                      )"
+                      :key="key"
+                      :name="key"
+                      :value="attribute"
+                    />
                   </div>
                 </template>
               </SfCollectedProduct>
@@ -471,5 +476,8 @@ hr {
   &__property {
     font-size: var(--font-size-xl);
   }
+}
+.custom__margin{
+  margin-top: 5px !important;
 }
 </style>
