@@ -3,16 +3,16 @@
 
 
 "@adyen/adyen-web@^5.23.1":
-  version "5.25.0"
-  resolved "http://10.52.140.102:8081/repository/npm-fab-agrupado-internet-ccarj/@adyen/adyen-web/-/adyen-web-5.25.0.tgz#2eaaae3e5b7dc64f2e8890c589418676de444251"
-  integrity sha512-hhplLPWftmouWKhl+2jlcj+8TUxDDG8qozZzLPX9XlmJvTVxUy/bjQhnkIJOAAfiSlUmC4AK1/YSSx3ogJSUKA==
+  version "5.27.0"
+  resolved "https://registry.yarnpkg.com/@adyen/adyen-web/-/adyen-web-5.27.0.tgz#7ebcb99ffe5205536d68063047997b74c4a9e21e"
+  integrity sha512-WpJiWY+iMPEpr4/0XYbnvIQG8nDbsJkg/yavYKx3A9jz9UnQqbXvkpco6MbCCNrD8FaAvU4xzquJey1N1pV4jA==
   dependencies:
     "@babel/runtime" "^7.15.4"
-    "@babel/runtime-corejs3" "^7.16.3"
+    "@babel/runtime-corejs3" "^7.19.1"
     "@types/applepayjs" "^3.0.4"
     "@types/googlepay" "^0.6.2"
     classnames "^2.3.1"
-    core-js-pure "^3.18.1"
+    core-js-pure "^3.25.3"
     preact "^10.5.13"
 
 "@ampproject/remapping@^2.1.0":
@@ -1140,9 +1140,9 @@
     "@babel/types" "^7.4.4"
     esutils "^2.0.2"
 
-"@babel/runtime-corejs3@^7.16.3":
+"@babel/runtime-corejs3@^7.19.1":
   version "7.19.1"
-  resolved "http://10.52.140.102:8081/repository/npm-fab-agrupado-internet-ccarj/@babel/runtime-corejs3/-/runtime-corejs3-7.19.1.tgz#f0cbbe7edda7c4109cd253bb1dee99aba4594ad9"
+  resolved "https://registry.yarnpkg.com/@babel/runtime-corejs3/-/runtime-corejs3-7.19.1.tgz#f0cbbe7edda7c4109cd253bb1dee99aba4594ad9"
   integrity sha512-j2vJGnkopRzH+ykJ8h68wrHnEUmtK//E723jjixiAl/PPf6FhqY/vYRcMVlNydRKQjQsTsYEjpx+DZMIvnGk/g==
   dependencies:
     core-js-pure "^3.25.1"
@@ -2102,7 +2102,7 @@
 
 "@types/applepayjs@^3.0.4":
   version "3.0.4"
-  resolved "http://10.52.140.102:8081/repository/npm-fab-agrupado-internet-ccarj/@types/applepayjs/-/applepayjs-3.0.4.tgz#9806a4b3ccd73dcf169c61a34be7a39f91d77540"
+  resolved "https://registry.yarnpkg.com/@types/applepayjs/-/applepayjs-3.0.4.tgz#9806a4b3ccd73dcf169c61a34be7a39f91d77540"
   integrity sha512-RqaVZWy1Kj4e1PoUoOI8uA+4UuuLpicQFxfU9Y/xWJFZFT6mFB4PiiY911iDxFk7pdvaj5HKH7VsWRisRca1Rg==
 
 "@types/autoprefixer@9.7.2":
@@ -2251,7 +2251,7 @@
 
 "@types/googlepay@^0.6.2":
   version "0.6.4"
-  resolved "http://10.52.140.102:8081/repository/npm-fab-agrupado-internet-ccarj/@types/googlepay/-/googlepay-0.6.4.tgz#e0b06ae1f12496c4fa43e52d35e76411dbbee135"
+  resolved "https://registry.yarnpkg.com/@types/googlepay/-/googlepay-0.6.4.tgz#e0b06ae1f12496c4fa43e52d35e76411dbbee135"
   integrity sha512-PTt/UCllzl8z5HmhymPpSj6uENZvVKZvCBYdDVmbBVJnLStitxtWrterAOQZkKGlqVdzxNXYeif5hOAMNMS5mw==
 
 "@types/html-minifier-terser@^5.0.0":
@@ -2637,7 +2637,7 @@
 
 "@vue-storefront/odoo-api@1.4.0":
   version "1.4.0"
-  resolved "http://10.52.140.102:8081/repository/npm-fab-agrupado-internet-ccarj/@vue-storefront/odoo-api/-/odoo-api-1.4.0.tgz#674695de42c75c977260cf2ed3612a6d939278d9"
+  resolved "https://registry.yarnpkg.com/@vue-storefront/odoo-api/-/odoo-api-1.4.0.tgz#674695de42c75c977260cf2ed3612a6d939278d9"
   integrity sha512-mwkfjxcYRKeX0MJc5c2JpXYu0G9Ej73TdiGrMQDoLlmUmV9Y4FY4CJeYOAuHPvnxBPfzg2YuEUzXgf8cYkcxCw==
   dependencies:
     "@vue-storefront/core" "2.5.6"
@@ -2652,7 +2652,7 @@
 
 "@vue-storefront/odoo@1.4.0":
   version "1.4.0"
-  resolved "http://10.52.140.102:8081/repository/npm-fab-agrupado-internet-ccarj/@vue-storefront/odoo/-/odoo-1.4.0.tgz#0b27c40c90e3870a26119bfbe873079a9e7846d0"
+  resolved "https://registry.yarnpkg.com/@vue-storefront/odoo/-/odoo-1.4.0.tgz#0b27c40c90e3870a26119bfbe873079a9e7846d0"
   integrity sha512-9aso7UMFqms0qutmGybrEdJxNOGVGHhxG00LLKnB2B4DpxUEHzuDldvIrpzQWowd6YREKxL2uufIMoek/h6TWA==
   dependencies:
     "@nuxtjs/composition-api" "0.31.0"
@@ -4822,7 +4822,7 @@ class-utils@^0.3.5:
 
 classnames@^2.3.1:
   version "2.3.2"
-  resolved "http://10.52.140.102:8081/repository/npm-fab-agrupado-internet-ccarj/classnames/-/classnames-2.3.2.tgz#351d813bf0137fcc6a76a16b88208d2560a0d924"
+  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.2.tgz#351d813bf0137fcc6a76a16b88208d2560a0d924"
   integrity sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==
 
 clean-css@^4.2.1, clean-css@^4.2.3:
@@ -5299,10 +5299,10 @@ core-js-compat@^3.12.1, core-js-compat@^3.20.2, core-js-compat@^3.21.0:
     browserslist "^4.19.1"
     semver "7.0.0"
 
-core-js-pure@^3.18.1, core-js-pure@^3.25.1:
-  version "3.25.3"
-  resolved "http://10.52.140.102:8081/repository/npm-fab-agrupado-internet-ccarj/core-js-pure/-/core-js-pure-3.25.3.tgz#66ac5bfa5754b47fdfd14f3841c5ed21c46db608"
-  integrity sha512-T/7qvgv70MEvRkZ8p6BasLZmOVYKzOaWNBEHAU8FmveCJkl4nko2quqPQOmy6AJIp5MBanhz9no3A94NoRb0XA==
+core-js-pure@^3.25.1, core-js-pure@^3.25.3:
+  version "3.25.4"
+  resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.25.4.tgz#e8642cef4f4246a4e7c15280f5e3926118fff84b"
+  integrity sha512-qRbgm0ADrsNTU66UcW47YMJjXm+ShhUP2gkoEoAShT2BHO3cb5gGqLtmWpjnM6Wx9h5hMSF4uZ+jEV/8+4KCsw==
 
 core-js@^2.4.0, core-js@^2.5.0, core-js@^2.6.5:
   version "2.6.12"
@@ -11005,7 +11005,7 @@ postcss@^8.4.13:
 
 preact@^10.5.13:
   version "10.11.0"
-  resolved "http://10.52.140.102:8081/repository/npm-fab-agrupado-internet-ccarj/preact/-/preact-10.11.0.tgz#26af45a0613f4e17a197cc39d7a1ea23e09b2532"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-10.11.0.tgz#26af45a0613f4e17a197cc39d7a1ea23e09b2532"
   integrity sha512-Fk6+vB2kb6mSJfDgODq0YDhMfl0HNtK5+Uc9QqECO4nlyPAQwCI+BKyWO//idA7ikV7o+0Fm6LQmNuQi1wXI1w==
 
 prebuild-install@^7.0.0:
