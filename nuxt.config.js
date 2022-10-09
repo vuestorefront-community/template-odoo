@@ -141,7 +141,6 @@ export default {
     'nuxt-precompress',
     '@nuxt/image',
     '@vue-storefront/middleware/nuxt',
-    'nuxt-i18n',
     'cookie-universal-nuxt',
     'vue-scrollto/nuxt',
     ['@vue-storefront/cache/nuxt', {
@@ -165,6 +164,7 @@ export default {
         }
       ]
     }],
+    'nuxt-i18n',
     // google tag manager
     '@nuxtjs/gtm',
     // sitemap generator
@@ -261,6 +261,7 @@ export default {
     lazy: true,
     seo: true,
     langDir: 'lang/',
+    detectBrowserLanguage: false,
     vueI18n: {
       fallbackLocale: 'en',
       numberFormats: {
