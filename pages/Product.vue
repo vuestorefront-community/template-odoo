@@ -40,25 +40,8 @@
                 $n(productGetters.getPrice(product).special, 'currency') : ''
               "
           />
-          <div>
-            <div class="product__rating">
-              <SfRating :score="averageRating" :max="5" />
-              <a v-if="!!totalReviews" href="#" class="product__count">
-                ({{ totalReviews }})
-              </a>
-            </div>
-            <SfButton data-cy="product-btn_read-all" class="sf-button--text">{{
-              $t('Read all reviews')
-            }}</SfButton>
-          </div>
         </div>
         <div>
-          <SfButton
-            data-cy="product-btn_size-guide"
-            class="sf-button--text desktop-only product__guide"
-          >
-            {{ $t('Size guide') }}
-          </SfButton>
 
           <div v-if="options.select">
             <SfSelect
@@ -134,21 +117,7 @@
                 {{ description }}
               </p>
             </SfTab>
-            <SfTab :title="$t('Read reviews')" data-cy="product-tab_reviews">
-              <SfReview
-                v-for="review in reviews"
-                :key="reviewGetters.getReviewId(review)"
-                :author="reviewGetters.getReviewAuthor(review)"
-                :date="reviewGetters.getReviewDate(review)"
-                :message="reviewGetters.getReviewMessage(review)"
-                :max-rating="5"
-                :rating="reviewGetters.getReviewRating(review)"
-                :char-limit="250"
-                read-more-text="Read more"
-                hide-full-text="Read less"
-                class="product__review"
-              />
-            </SfTab>
+            
             <SfTab
               :title="$t('Additional Information')"
               data-cy="product-tab_additional"
@@ -175,14 +144,6 @@
         </LazyHydrate>
       </div>
     </div>
-
-    <LazyHydrate when-visible>
-      <RelatedProducts
-        :products="relatedProducts"
-        :loading="relatedLoading"
-        :title="$t('Match it with')"
-      />
-    </LazyHydrate>
 
     <LazyHydrate when-visible>
       <InstagramFeed />

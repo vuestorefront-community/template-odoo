@@ -134,31 +134,20 @@
                 productGetters.getPrice(product).special &&
                 $n(productGetters.getPrice(product).special, 'currency')
               "
-              :max-rating="5"
-              :score-rating="3"
               :isInWishlist="isInWishlist({ product })"
               class="products__product-card-horizontal"
               @click:wishlist="addItemToWishlist({ product })"
               @click:add-to-cart="
-                addItemToCart({ product, quantity: product.qty })
+                addItemToCart({ product, quantity: products[i].qty || 1 })
               "
               v-model="products[i].qty"
               :link="localePath(productGetters.getSlug(product))"
             >
-              <template #configuration>
-                <SfProperty
-                  class="desktop-only"
-                  name="Size"
-                  value="XS"
-                  style="margin: 0 0 1rem 0"
-                />
-                <SfProperty class="desktop-only" name="Color" value="white" />
-              </template>
               <template #actions>
                 <SfButton
                   class="sf-button--text desktop-only"
                   style="margin: 0 0 1rem auto; display: block"
-                  @click="() => {}"
+                  @click="addItemToWishlist({ product })"
                 >
                   {{ $t('Save for later') }}
                 </SfButton>
@@ -185,7 +174,7 @@
             <span class="products__show-on-page__label">{{
               $t('Show on page')
             }}</span>
-            <LazyHydrate on-interaction>
+            
               <SfSelect
                 :value="pagination.itemsPerPage.toString()"
                 class="products__items-per-page"
@@ -200,7 +189,7 @@
                   {{ option }}
                 </SfSelectOption>
               </SfSelect>
-            </LazyHydrate>
+            
           </div>
         </div>
         <div v-else key="no-results" class="before-results">
@@ -260,7 +249,7 @@ import {
   useWishlist,
   productGetters,
   useFacet,
-  facetGetters
+  facetGetters  
 } from '@vue-storefront/odoo';
 import { useCache, CacheTagPrefix } from '@vue-storefront/cache';
 import { useUiHelpers, useUiState } from '~/composables';
@@ -285,7 +274,7 @@ export default defineComponent({
     const { result, search, loading } = useFacet();
 
     const route = useRoute();
-    const { params, path } = route.value;
+    const { params, query } = route.value;
 
     const products = computed(() => facetGetters.getProducts(result.value));
     const categoryTree = computed(() =>
@@ -331,6 +320,7 @@ export default defineComponent({
 
     onSSR(async () => {
       const params = {
+        pageSize: query.itemsPerPage || 12,
         ...th.getFacetsFromURL()
       };
 
