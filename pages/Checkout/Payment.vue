@@ -62,8 +62,9 @@
           <SfPrice
             :regular="$n(cartGetters.getItemPrice(product).regular, 'currency')"
             :special="
+              cartGetters.getItemPrice(product).regular !== cartGetters.getItemPrice(product).special ?
               cartGetters.getItemPrice(product).special &&
-              $n(cartGetters.getItemPrice(product).special, 'currency')
+              $n(cartGetters.getItemPrice(product).special, 'currency') : ''
             "
             class="product-price"
           />
