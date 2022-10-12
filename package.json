@@ -16,7 +16,9 @@
     "update:update": "ncu -u",
     "update:routes": "node hooks/execute.js routes",
     "update:redirects": "node hooks/execute redirects",
-    "test": "jest"
+    "test": "jest",
+    "lhci:mobile": "lhci autorun",
+    "lhci:desktop": "lhci autorun --collect.settings.preset=desktop"
   },
   "dependencies": {
     "@adyen/adyen-web": "^5.23.1",
@@ -51,6 +53,7 @@
     "vue-scrollto": "^2.17.1"
   },
   "devDependencies": {
+    "@lhci/cli": "^0.9.0",
     "@nuxt/typescript-build": "latest",
     "@vue/test-utils": "^1.0.0-beta.27",
     "autoprefixer": "^10.2.6",
