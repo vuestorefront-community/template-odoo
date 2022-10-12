@@ -180,7 +180,7 @@ import {
   SfRadio,
   SfCheckbox
 } from '@storefront-ui/vue';
-import { ref, onMounted, watch, computed } from '@vue/composition-api';
+import { ref, onMounted, watch, computed } from '@nuxtjs/composition-api';
 import { onSSR } from '@vue-storefront/core';
 import {
   useBilling,

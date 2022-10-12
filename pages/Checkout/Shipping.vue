@@ -188,7 +188,7 @@
 
 <script>
 import { SfHeading, SfInput, SfButton, SfSelect } from '@storefront-ui/vue';
-import { ref, watch, onMounted, computed } from '@vue/composition-api';
+import { ref, watch, onMounted, computed } from '@nuxtjs/composition-api';
 import {
   useCountrySearch,
   useUser,

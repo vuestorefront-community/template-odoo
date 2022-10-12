@@ -117,7 +117,7 @@
 
 <script>
 import { SfTabs, SfTable, SfButton, SfProperty } from '@storefront-ui/vue';
-import { computed, ref } from '@vue/composition-api';
+import { computed, ref } from '@nuxtjs/composition-api';
 import {
   useUserOrder,
   orderGetters,
