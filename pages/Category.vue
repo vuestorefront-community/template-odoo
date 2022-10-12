@@ -82,7 +82,7 @@
                 $n(productGetters.getPrice(product).regular, 'currency')
               "
               :special-price="
-              productGetters.getPrice(product).regular !== productGetters.getPrice(product).special ?
+                productGetters.getPrice(product).regular !== productGetters.getPrice(product).special ?
                 productGetters.getPrice(product).special &&
                 $n(productGetters.getPrice(product).special, 'currency') : ''
               "
@@ -131,8 +131,9 @@
                 $n(productGetters.getPrice(product).regular, 'currency')
               "
               :special-price="
+                productGetters.getPrice(product).regular !== productGetters.getPrice(product).special ?
                 productGetters.getPrice(product).special &&
-                $n(productGetters.getPrice(product).special, 'currency')
+                $n(productGetters.getPrice(product).special, 'currency') : ''
               "
               :isInWishlist="isInWishlist({ product })"
               class="products__product-card-horizontal"
