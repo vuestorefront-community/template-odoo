@@ -398,7 +398,7 @@ export default {
           name: 'description',
           content: this.product?.description
         },
-        { hid: 'twitter-site', name: 'twitter:site', content: '@greenmind' },
+        { hid: 'twitter-site', name: 'twitter:site', content: '' },
         {
           hid: 'twitter-type',
           name: 'twitter:card',
