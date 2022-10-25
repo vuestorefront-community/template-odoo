@@ -177,7 +177,6 @@
       />
       <SfButton
         type="submit"
-        :disabled="!form.selectedMethodShipping || invalid"
         class="sf-button--full-width mt-4"
       >
         {{ $t('Continue to billing') }}

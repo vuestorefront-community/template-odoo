@@ -161,7 +161,6 @@
           <SfButton
             class="form__action-button"
             type="submit"
-            :disabled="invalid"
           >
             {{ $t('Continue to payment') }}
           </SfButton>
