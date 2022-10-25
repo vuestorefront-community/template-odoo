@@ -106,7 +106,7 @@
             :stock="stock"
             :disabled="loading || !allOptionsSelected"
             class="product__add-to-cart"
-            @click="handleAddToCart()"
+            @click="handleAddToCart(), toggleCartSidebar()"
           />
         </div>
 
@@ -297,8 +297,6 @@ export default {
       };
 
       await addItem(params);
-
-      toggleCartSidebar();
     };
 
     const allOptionsSelected = computed(() => {
