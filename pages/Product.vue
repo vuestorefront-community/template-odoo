@@ -228,7 +228,6 @@ export default {
       await addItemToWishlist({
         product
       })
-      console.log(product, "from product")
     }
     const { searchRealProduct, productVariants, realProduct, elementNames } =
       useProductVariant(query);
