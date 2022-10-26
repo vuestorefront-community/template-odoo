@@ -223,15 +223,13 @@ export default {
       search,
       loading: productloading
     } = useProduct(`products-${path}`);
+    const { addItem: addItemToWishlist } = useWishlist();
     const addToWishList = async (product) => {
       await addItemToWishlist({
         product
       })
       console.log(product, "from product")
     }
-    const {
-      addItem: addItemToWishlist
-    } = useWishlist();
     const { searchRealProduct, productVariants, realProduct, elementNames } =
       useProductVariant(query);
     const { products: relatedProducts, loading: relatedLoading } =
