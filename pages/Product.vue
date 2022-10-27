@@ -109,6 +109,13 @@
             class="product__add-to-cart"
             @click="handleAddToCart(qty), toggleCartSidebar()"
           />
+
+          <SfButton 
+            class="sf-button--text desktop-only product__save"
+            @click="addToWishList(product)">
+            {{ $t('Save for later') }}
+          </SfButton>
+
         </div>
 
         <LazyHydrate when-idle>
@@ -190,7 +197,8 @@ import {
   useReview,
   useProductVariant,
   reviewGetters,
-  facetGetters
+  facetGetters,
+  useWishlist
 } from '@vue-storefront/odoo';
 
 import { onSSR } from '@vue-storefront/core';
@@ -216,6 +224,12 @@ export default {
       search,
       loading: productloading
     } = useProduct(`products-${path}`);
+    const { addItem: addItemToWishlist } = useWishlist();
+    const addToWishList = async (product) => {
+      await addItemToWishlist({
+        product
+      })
+    }
     const { searchRealProduct, productVariants, realProduct, elementNames } =
       useProductVariant(query);
     const { products: relatedProducts, loading: relatedLoading } =
@@ -350,7 +364,8 @@ export default {
       productVariants,
       productGallery,
       toggleCartSidebar,
-      handleAddToCart
+      handleAddToCart,
+      addToWishList
     };
   },
   components: {
