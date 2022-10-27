@@ -48,7 +48,7 @@
                   $n(wishlistGetters.getItemPrice(product).special, 'currency') : ''
                 "
                 :stock="99999"
-                :link="localePath(getLocalPathFromWishListItem(product))"
+                :link="localePath(productGetters.getSlug(product.product))"
                 :image-width="180"
                 :image-height="200"
                 @click:remove="removeItem({ product })"
