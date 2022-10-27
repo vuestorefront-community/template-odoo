@@ -103,10 +103,11 @@
 
           <SfAddToCart
             data-cy="product-cart_add"
+            v-model="qty"
             :stock="stock"
             :disabled="loading || !allOptionsSelected"
             class="product__add-to-cart"
-            @click="handleAddToCart(), toggleCartSidebar()"
+            @click="handleAddToCart(qty), toggleCartSidebar()"
           />
         </div>
 
@@ -290,10 +291,10 @@ export default {
       });
     };
 
-    const handleAddToCart = async () => {
+    const handleAddToCart = async (qty) => {
       const params = {
         product: product.value,
-        quantity: 1
+        quantity: qty
       };
 
       await addItem(params);
