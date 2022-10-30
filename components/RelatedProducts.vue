@@ -68,7 +68,7 @@ import {
   wishlistGetters,
   useCart
 } from '@vue-storefront/odoo';
-import { computed } from '@vue/composition-api';
+import { computed } from '@nuxtjs/composition-api';
 import { addBasePath } from '@vue-storefront/core';
 
 export default {

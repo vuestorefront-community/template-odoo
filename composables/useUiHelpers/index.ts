@@ -31,8 +31,6 @@ const useUiHelpers = (): any => {
           filters.push(Number(query[filterKey]));
         }
       });
-
-      filters = filters.map((filter) => filter.split(',')).flat();
     }
 
     const price = query?.price?.split('-');

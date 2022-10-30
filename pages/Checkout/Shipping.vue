@@ -177,7 +177,6 @@
       />
       <SfButton
         type="submit"
-        :disabled="!form.selectedMethodShipping || invalid"
         class="sf-button--full-width mt-4"
       >
         {{ $t('Continue to billing') }}
@@ -188,7 +187,7 @@
 
 <script>
 import { SfHeading, SfInput, SfButton, SfSelect } from '@storefront-ui/vue';
-import { ref, watch, onMounted, computed } from '@vue/composition-api';
+import { ref, watch, onMounted, computed } from '@nuxtjs/composition-api';
 import {
   useCountrySearch,
   useUser,

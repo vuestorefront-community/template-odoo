@@ -82,7 +82,7 @@
                 $n(productGetters.getPrice(product).regular, 'currency')
               "
               :special-price="
-              productGetters.getPrice(product).regular !== productGetters.getPrice(product).special ?
+                productGetters.getPrice(product).regular !== productGetters.getPrice(product).special ?
                 productGetters.getPrice(product).special &&
                 $n(productGetters.getPrice(product).special, 'currency') : ''
               "
@@ -98,7 +98,7 @@
                   ? removeItemFromWishList({ product: { product } })
                   : addItemToWishlist({ product })
               "
-              @click:add-to-cart="addItemToCart({ product, quantity: 1 })"
+              @click:add-to-cart="addItemToCart({ product, quantity: 1 }), toggleCartSidebar()"
             />
           </transition-group>
           <transition-group
@@ -131,14 +131,15 @@
                 $n(productGetters.getPrice(product).regular, 'currency')
               "
               :special-price="
+                productGetters.getPrice(product).regular !== productGetters.getPrice(product).special ?
                 productGetters.getPrice(product).special &&
-                $n(productGetters.getPrice(product).special, 'currency')
+                $n(productGetters.getPrice(product).special, 'currency') : ''
               "
               :isInWishlist="isInWishlist({ product })"
               class="products__product-card-horizontal"
               @click:wishlist="addItemToWishlist({ product })"
               @click:add-to-cart="
-                addItemToCart({ product, quantity: products[i].qty || 1 })
+                addItemToCart({ product, quantity: products[i].qty || 1 }), toggleCartSidebar()
               "
               v-model="products[i].qty"
               :link="localePath(productGetters.getSlug(product))"

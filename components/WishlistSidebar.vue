@@ -43,18 +43,19 @@
                   $n(wishlistGetters.getItemPrice(product).regular, 'currency')
                 "
                 :special-price="
+                  wishlistGetters.getItemPrice(product).regular !== wishlistGetters.getItemPrice(product).special ?
                   wishlistGetters.getItemPrice(product).special &&
-                  $n(wishlistGetters.getItemPrice(product).special, 'currency')
+                  $n(wishlistGetters.getItemPrice(product).special, 'currency') : ''
                 "
                 :stock="99999"
-                :link="localePath(getLocalPathFromWishListItem(product))"
+                :link="localePath(productGetters.getSlug(product.product))"
                 :image-width="180"
                 :image-height="200"
                 @click:remove="removeItem({ product })"
                 class="collected-product"
               >
                 <template #configuration>
-                  <div class="collected-product__properties">
+                  <div class="collected-product__properties hidden">
                     <SfProperty
                       v-for="(
                         attribute, key
@@ -69,6 +70,14 @@
                   </div>
                 </template>
                 <template #input="{}">&nbsp;</template>
+                <template #actions>
+                <SfButton
+                  class="sf-button--text desktop-only hidden"
+                  @click="addItemToWishlist({ product })"
+                >
+                  {{ $t('Save for later') }}
+                </SfButton>
+              </template>
               </SfCollectedProduct>
             </transition-group>
           </div>

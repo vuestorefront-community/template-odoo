@@ -271,7 +271,7 @@
   </SfModal>
 </template>
 <script>
-import { ref, watch } from '@vue/composition-api';
+import { ref, watch } from '@nuxtjs/composition-api';
 import { useUiNotification } from '~/composables';
 
 import {

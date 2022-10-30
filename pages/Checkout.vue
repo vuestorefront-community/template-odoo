@@ -25,7 +25,7 @@
 <script>
 import { SfSteps, SfButton } from '@storefront-ui/vue';
 import CartPreview from '~/components/Checkout/CartPreview';
-import { computed } from '@vue/composition-api';
+import { computed, useRoute, useRouter } from '@nuxtjs/composition-api';
 const STEPS = {
   shipping: 'Shipping',
   billing: 'Billing',
@@ -39,8 +39,10 @@ export default {
     CartPreview
   },
   setup(props, context) {
+    const route = useRoute();
+    const router = useRouter();
     const currentStep = computed(() =>
-      context.root.$route.path.split('/').pop()
+      route.value.path.split('/').pop()
     );
     const currentStepIndex = computed(() =>
       Object.keys(STEPS).findIndex((s) => s === currentStep.value)
@@ -49,7 +51,7 @@ export default {
     const handleStepClick = (stepIndex) => {
       const key = Object.keys(STEPS)[stepIndex];
       if (stepIndex <= currentStepIndex.value) {
-        context.root.$router.push(context.root.localePath(`/checkout/${key}`));
+        router.push(`/checkout/${key}`);
       }
     };
     return {

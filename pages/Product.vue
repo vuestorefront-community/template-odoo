@@ -103,11 +103,19 @@
 
           <SfAddToCart
             data-cy="product-cart_add"
+            v-model="qty"
             :stock="stock"
             :disabled="loading || !allOptionsSelected"
             class="product__add-to-cart"
-            @click="handleAddToCart()"
+            @click="handleAddToCart(qty), toggleCartSidebar()"
           />
+
+          <SfButton 
+            class="sf-button--text desktop-only product__save"
+            @click="addToWishList(product)">
+            {{ $t('Save for later') }}
+          </SfButton>
+
         </div>
 
         <LazyHydrate when-idle>
@@ -189,7 +197,8 @@ import {
   useReview,
   useProductVariant,
   reviewGetters,
-  facetGetters
+  facetGetters,
+  useWishlist
 } from '@vue-storefront/odoo';
 
 import { onSSR } from '@vue-storefront/core';
@@ -215,6 +224,12 @@ export default {
       search,
       loading: productloading
     } = useProduct(`products-${path}`);
+    const { addItem: addItemToWishlist } = useWishlist();
+    const addToWishList = async (product) => {
+      await addItemToWishlist({
+        product
+      })
+    }
     const { searchRealProduct, productVariants, realProduct, elementNames } =
       useProductVariant(query);
     const { products: relatedProducts, loading: relatedLoading } =
@@ -290,15 +305,13 @@ export default {
       });
     };
 
-    const handleAddToCart = async () => {
+    const handleAddToCart = async (qty) => {
       const params = {
         product: product.value,
-        quantity: 1
+        quantity: qty
       };
 
       await addItem(params);
-
-      toggleCartSidebar();
     };
 
     const allOptionsSelected = computed(() => {
@@ -351,7 +364,8 @@ export default {
       productVariants,
       productGallery,
       toggleCartSidebar,
-      handleAddToCart
+      handleAddToCart,
+      addToWishList
     };
   },
   components: {
@@ -398,7 +412,7 @@ export default {
           name: 'description',
           content: this.product?.description
         },
-        { hid: 'twitter-site', name: 'twitter:site', content: '@greenmind' },
+        { hid: 'twitter-site', name: 'twitter:site', content: '' },
         {
           hid: 'twitter-type',
           name: 'twitter:card',

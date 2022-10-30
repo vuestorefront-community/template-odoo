@@ -84,7 +84,7 @@ import {
   SfInput,
   SfCircleIcon
 } from '@storefront-ui/vue';
-import { computed, ref } from '@vue/composition-api';
+import { computed, ref } from '@nuxtjs/composition-api';
 import { useCart, checkoutGetters, cartGetters } from '@vue-storefront/odoo';
 
 export default {
