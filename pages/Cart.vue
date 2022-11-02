@@ -32,10 +32,7 @@
                   >
                     ${{ item.value.value.subtotal }}</span
                   >
-                  <span
-                    class="card__text"
-                    v-else-if="item.name === 'Shipping'"
-                  >
+                  <span class="card__text" v-else-if="item.name === 'Shipping'">
                     {{ $t(item.value) }}</span
                   >
                   <span class="card__text" v-else> {{ item.value }}</span>
@@ -49,7 +46,7 @@
             <div class="mb-5 px-7">
               <SfProperty class="sf-property--full-width sf-property--large">
                 <template #name>
-                  <span class="card__text">{{ $t('Total Price') }}:</span>
+                  <span class="card__text">{{ $t("Total Price") }}:</span>
                 </template>
                 <template #value>
                   <span class="card__text"> ${{ totals.total }}</span>
@@ -62,7 +59,7 @@
               <div>
                 <nuxt-link :to="localePath('/checkout/shipping')">
                   <SfButton class="color-primary custom__width">{{
-                    $t('GO TO CHECKOUT')
+                    $t("GO TO CHECKOUT")
                   }}</SfButton>
                 </nuxt-link>
               </div>
@@ -70,7 +67,7 @@
                 <SfButton
                   class="color-black custom__width"
                   @click="$router.go(-1)"
-                  >{{ $t('GO BACK SHOPPING') }}</SfButton
+                  >{{ $t("GO BACK SHOPPING") }}</SfButton
                 >
               </div>
               <div class="mb-3">
@@ -80,7 +77,7 @@
                   </div>
                   <div>
                     <SfButton class="sf-button--text">
-                      {{ $t('Send my basket to email') }}</SfButton
+                      {{ $t("Send my basket to email") }}</SfButton
                     >
                   </div>
                 </div>
@@ -88,10 +85,18 @@
 
               <div class="custom__con">
                 <div class="bottom__text">
-                  {{ $t('Helpful information') }}: <br />
-                  <span class="text-primary">•</span> {{ $t('Questions? Chat with us or call 1.888.282.6060.') }} <br />
-                  <span class="text-primary">•</span> {{ $t('Shipping internationally? Choose your destination & currency.') }}<br />
-                  <span class="text-primary">•</span> {{ $t('Shipping methods & charges.') }} <br />
+                  {{ $t("Helpful information") }}: <br />
+                  <span class="text-primary">•</span>
+                  {{ $t("Questions? Chat with us or call 1.888.282.6060.") }}
+                  <br />
+                  <span class="text-primary">•</span>
+                  {{
+                    $t(
+                      "Shipping internationally? Choose your destination & currency."
+                    )
+                  }}<br />
+                  <span class="text-primary">•</span>
+                  {{ $t("Shipping methods & charges.") }} <br />
                 </div>
               </div>
             </div>
@@ -131,23 +136,31 @@
                     <SfButton
                       class="sf-button--text custom__text"
                       @click="removeItem({ product })"
-                      >{{ $t('Remove from cart') }}</SfButton
+                      >{{ $t("Remove from cart") }}</SfButton
                     >
                   </span>
                 </template>
 
                 <template #actions>
                   <div class="actions desktop-only">
-                    <SfButton class="sf-button--text actions__button custom__margin"
-                      >{{ $t('Save for later') }}</SfButton
+                    <SfButton
+                      @click="
+                        addProductToWishList({ product: product.product })
+                      "
+                      class="sf-button--text actions__button custom__margin"
+                      >{{ $t("Save for later") }}</SfButton
                     >
                     <span class="actions__description">
-                      {{ $t('Usually arrives in 5-13 business days. A shipping timeline specific to your destination can be viewed in Checkout.') }}
+                      {{
+                        $t(
+                          "Usually arrives in 5-13 business days. A shipping timeline specific to your destination can be viewed in Checkout."
+                        )
+                      }}
                     </span>
                   </div>
                 </template>
 
-              <template #configuration>
+                <template #configuration>
                   <div class="collected-product__properties">
                     <SfProperty
                       v-for="(attribute, key) in cartGetters.getItemAttributes(
@@ -174,11 +187,15 @@
             <SfHeading
               :title="$t('Your cart is empty')"
               :level="2"
-              :description="$t('Looks like you haven\'t added any items to the cart yet. Start shopping to fill it in.')"
+              :description="
+                $t(
+                  'Looks like you haven\'t added any items to the cart yet. Start shopping to fill it in.'
+                )
+              "
             />
             <SfButton
               class="sf-button--full-width color-primary empty-cart__button"
-              >{{ $t('Start shopping') }}</SfButton
+              >{{ $t("Start shopping") }}</SfButton
             >
           </div>
         </transition>
@@ -194,16 +211,21 @@ import {
   SfProperty,
   SfHeading,
   SfBreadcrumbs,
-  SfOrderSummary
-} from '@storefront-ui/vue';
-import { ref } from '@nuxtjs/composition-api';
-import { computed } from '@nuxtjs/composition-api';
-import { useCart, useUser, cartGetters } from '@vue-storefront/odoo';
-import { useUiState } from '~/composables';
-import { onSSR } from '@vue-storefront/core';
+  SfOrderSummary,
+} from "@storefront-ui/vue";
+import { ref } from "@nuxtjs/composition-api";
+import { computed } from "@nuxtjs/composition-api";
+import {
+  useCart,
+  useUser,
+  cartGetters,
+  useWishlist,
+} from "@vue-storefront/odoo";
+import { useUiState } from "~/composables";
+import { onSSR } from "@vue-storefront/core";
 
 export default {
-  name: 'DetailedCart',
+  name: "DetailedCart",
   components: {
     SfCollectedProduct,
     SfBreadcrumbs,
@@ -211,9 +233,9 @@ export default {
     SfButton,
     SfHeading,
     SfProperty,
-    SfOrderSummary
+    SfOrderSummary,
   },
-  setup(_, {root}) {
+  setup(_, { root }) {
     // simple test submodule 3
     const { isAuthenticated } = useUser();
     const { cart, removeItem, updateItemQty } = useCart();
@@ -222,32 +244,40 @@ export default {
     const products = computed(() => cartGetters.getItems(cart.value));
     const totals = computed(() => cartGetters.getTotals(cart.value));
     const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
+    const { addItem: addItemToWishlist } = useWishlist();
+
+    const addProductToWishList = (product) => {
+      addItemToWishlist({
+        product: { ...product.product, firstVariant: product.product.id },
+      });
+    };
+
     onSSR(async () => {
       // await loadCart();
     });
     const summary = ref([
       {
-        name: 'Products',
-        value: totalItems
+        name: "Products",
+        value: totalItems,
       },
       {
-        name: 'Sub Total',
-        value: totals
+        name: "Sub Total",
+        value: totals,
       },
       {
-        name: 'Shipping',
-        value: 'Free'
-      }
+        name: "Shipping",
+        value: "Free",
+      },
     ]);
     const breadcrumbs = [
       {
-        text: root.$t('Home'),
-        link: '/'
+        text: root.$t("Home"),
+        link: "/",
       },
       {
-        text: root.$t('Cart'),
-        link: '#'
-      }
+        text: root.$t("Cart"),
+        link: "#",
+      },
     ];
 
     return {
@@ -261,13 +291,14 @@ export default {
       totals,
       totalItems,
       summary,
-      cartGetters
+      cartGetters,
+      addProductToWishList,
     };
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
-@import '~@storefront-ui/vue/styles';
+@import "~@storefront-ui/vue/styles";
 #detailed-cart {
   box-sizing: border-box;
   @include for-desktop {
@@ -468,7 +499,7 @@ hr {
 </style>
 
 <style lang="scss">
-@import '~@storefront-ui/vue/styles';
+@import "~@storefront-ui/vue/styles";
 .oderSummary .sf-order-summary {
   &__heading {
     padding-left: 30px;
@@ -477,7 +508,7 @@ hr {
     font-size: var(--font-size-xl);
   }
 }
-.custom__margin{
+.custom__margin {
   margin-top: 5px !important;
 }
 </style>
