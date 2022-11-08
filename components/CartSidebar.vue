@@ -36,9 +36,11 @@
                   $n(cartGetters.getItemPrice(product).regular, 'currency')
                 "
                 :special-price="
-                  cartGetters.getItemPrice(product).regular !== cartGetters.getItemPrice(product).special ?
-                  cartGetters.getItemPrice(product).special &&
-                  $n(cartGetters.getItemPrice(product).special, 'currency') : ''
+                  cartGetters.getItemPrice(product).regular !==
+                  cartGetters.getItemPrice(product).special
+                    ? cartGetters.getItemPrice(product).special &&
+                      $n(cartGetters.getItemPrice(product).special, 'currency')
+                    : ''
                 "
                 :stock="99999"
                 :qty="cartGetters.getItemQty(product)"
@@ -58,6 +60,14 @@
                       :value="attribute"
                     />
                   </div>
+                </template>
+                <template #actions>
+                  <SfButton
+                    class="sf-button--text desktop-only"
+                    @click="addProductToWishList({ product: product.product })"
+                  >
+                    {{ $t("Save for later") }}
+                  </SfButton>
                 </template>
               </SfCollectedProduct>
             </transition-group>
@@ -100,7 +110,7 @@
               <SfButton
                 class="sf-button--full-width color-primary mb-4"
                 @click="toggleCartSidebar"
-                >{{ $t('GO TO CHECKOUT') }}</SfButton
+                >{{ $t("GO TO CHECKOUT") }}</SfButton
               >
             </nuxt-link>
             <nuxt-link :to="localePath('/cart')">
@@ -108,7 +118,7 @@
                 class="sf-button--full-width color-secondary"
                 @click="toggleCartSidebar"
               >
-                {{ $t('SEE CART DETAILS') }}
+                {{ $t("SEE CART DETAILS") }}
               </SfButton>
             </nuxt-link>
           </div>
@@ -116,7 +126,7 @@
             <SfButton
               class="sf-button--full-width color-primary"
               @click="toggleCartSidebar"
-              >{{ $t('Go back shopping') }}</SfButton
+              >{{ $t("Go back shopping") }}</SfButton
             >
           </div>
         </transition>
@@ -133,15 +143,20 @@ import {
   SfProperty,
   SfPrice,
   SfCollectedProduct,
-  SfImage
-} from '@storefront-ui/vue';
-import { computed } from '@nuxtjs/composition-api';
-import { useCart, useUser, cartGetters } from '@vue-storefront/odoo';
-import { useUiState } from '~/composables';
-import { onSSR } from '@vue-storefront/core';
+  SfImage,
+} from "@storefront-ui/vue";
+import { computed } from "@nuxtjs/composition-api";
+import {
+  useCart,
+  useUser,
+  cartGetters,
+  useWishlist,
+} from "@vue-storefront/odoo";
+import { useUiState } from "~/composables";
+import { onSSR } from "@vue-storefront/core";
 
 export default {
-  name: 'Cart',
+  name: "Cart",
   components: {
     SfSidebar,
     SfButton,
@@ -150,7 +165,7 @@ export default {
     SfProperty,
     SfPrice,
     SfCollectedProduct,
-    SfImage
+    SfImage,
   },
   setup() {
     const { isCartSidebarOpen, toggleCartSidebar } = useUiState();
@@ -159,10 +174,16 @@ export default {
     const products = computed(() => cartGetters.getItems(cart.value));
     const totals = computed(() => cartGetters.getTotals(cart.value));
     const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
-
+    const { addItem: addItemToWishlist } = useWishlist();
     onSSR(async () => {
       // await loadCart();
     });
+
+    const addProductToWishList = (product) => {
+      addItemToWishlist({
+        product: { ...product.product, firstVariant: product.product.id },
+      });
+    };
 
     return {
       isAuthenticated,
@@ -173,9 +194,10 @@ export default {
       toggleCartSidebar,
       totals,
       totalItems,
-      cartGetters
+      cartGetters,
+      addProductToWishList,
     };
-  }
+  },
 };
 </script>
 
