@@ -24,7 +24,6 @@
             :label="$t('First name')"
             name="firstName"
             class="form__element"
-            required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           />
@@ -40,7 +39,6 @@
             :label="$t('Street name')"
             name="streetName"
             class="form__element"
-            required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           />
@@ -57,7 +55,6 @@
             :label="$t('City')"
             name="city"
             class="form__element form__element--half"
-            required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           />
@@ -73,7 +70,6 @@
             :label="$t('Zip-code')"
             name="zipCode"
             class="form__element form__element--half form__element--half-even"
-            required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           />
@@ -88,11 +84,7 @@
             v-model="form.country.id"
             :label="$t('Country')"
             name="country"
-            class="
-              form__element form__element--half form__select
-              sf-select--underlined
-            "
-            required
+            class="form__element form__element--half sf-select--underlined"
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           >
@@ -124,7 +116,6 @@
             :class="[
               countryStates && countryStates.length ? 'visible' : 'invisible',
             ]"
-            required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           >
@@ -149,7 +140,6 @@
             :label="$t('Phone number')"
             name="phone"
             class="form__element form__element--half"
-            required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           />
@@ -161,7 +151,7 @@
         type="button"
         @click.native="handleAddNewAddressBtnClick"
       >
-        {{ $t('Add new address') }}
+        {{ $t("Add new address") }}
       </SfButton>
 
       <SfHeading
@@ -176,18 +166,19 @@
         @selectedMethod="handleSelectedMethodShipping"
       />
       <SfButton
+        @click="formFieldAutoFocusSet"
         type="submit"
         class="sf-button--full-width mt-4"
       >
-        {{ $t('Continue to billing') }}
+        {{ $t("Continue to billing") }}
       </SfButton>
     </form>
   </ValidationObserver>
 </template>
 
 <script>
-import { SfHeading, SfInput, SfButton, SfSelect } from '@storefront-ui/vue';
-import { ref, watch, onMounted, computed } from '@nuxtjs/composition-api';
+import { SfHeading, SfInput, SfButton, SfSelect } from "@storefront-ui/vue";
+import { ref, watch, onMounted, computed } from "@nuxtjs/composition-api";
 import {
   useCountrySearch,
   useUser,
@@ -195,12 +186,12 @@ import {
   useShipping,
   useCart,
   cartGetters,
-  useUserShipping
-} from '@vue-storefront/odoo';
-import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
+  useUserShipping,
+} from "@vue-storefront/odoo";
+import { ValidationProvider, ValidationObserver, extend } from "vee-validate";
 
 export default {
-  name: 'Shipping',
+  name: "Shipping",
   components: {
     SfHeading,
     SfInput,
@@ -209,14 +200,14 @@ export default {
     ValidationProvider,
     ValidationObserver,
     UserShippingAddresses: () =>
-      import('~/components/Checkout/UserShippingAddresses.vue'),
+      import("~/components/Checkout/UserShippingAddresses.vue"),
     VsfShippingProvider: () =>
-      import('~/components/Checkout/VsfShippingProvider')
+      import("~/components/Checkout/VsfShippingProvider"),
   },
   setup(props, { root, emit }) {
     const isFormSubmitted = ref(false);
     const formRef = ref(false);
-    const currentAddressId = ref('');
+    const currentAddressId = ref("");
     const defaultShippingAddress = ref(false);
     const isShippingDetailsStepCompleted = ref(false);
     const canAddNewAddress = ref(true);
@@ -232,14 +223,14 @@ export default {
       useCountrySearch();
 
     const form = ref({
-      name: '',
-      street: '',
-      city: '',
-      state: { id: '' },
-      country: { id: '' },
-      zip: '',
+      name: "",
+      street: "",
+      city: "",
+      state: { id: "" },
+      country: { id: "" },
+      zip: "",
       phone: null,
-      selectedMethodShipping: null
+      selectedMethodShipping: null,
     });
 
     const handleFormSubmit = async () => {
@@ -247,16 +238,39 @@ export default {
         params: {
           ...form.value,
           stateId: parseInt(form.value.state.id),
-          countryId: parseInt(form.value?.country?.id)
-        }
+          countryId: parseInt(form.value?.country?.id),
+        },
       });
       isFormSubmitted.value = true;
 
-      if (root.$router.history.current.path !== '/my-account/shipping-details')
-        root.$router.push(root.localePath('/checkout/billing'));
-      else root.$router.push(root.localePath('/my-account/shipping-details'));
+      if (root.$router.history.current.path !== "/my-account/shipping-details")
+        root.$router.push(root.localePath("/checkout/billing"));
+      else root.$router.push(root.localePath("/my-account/shipping-details"));
 
-      emit('finish', true);
+      emit("finish", true);
+    };
+
+    const formFieldAutoFocusSet = () => {
+      formRef.value.validate().then((isValid) => {
+        setTimeout(() => {
+          const errors = formRef.value.errors;
+          const errorFields = [];
+          for (const [key, value] of Object.entries(errors)) {
+            if (value[0]) {
+              errorFields.push(key);
+            }
+          }
+          const [first] = errorFields;
+          if (!isValid) {
+            const el = document.querySelector(`input[name=${first}]`);
+            if (el) {
+              el.focus();
+            } else {
+              document.querySelector(`select[name=${first}]`).focus();
+            }
+          }
+        }, 100);
+      });
     };
 
     const hasSavedShippingAddress = computed(() => {
@@ -269,7 +283,7 @@ export default {
     });
 
     const handleAddNewAddressBtnClick = () => {
-      currentAddressId.value = '';
+      currentAddressId.value = "";
       form.value = {};
       canAddNewAddress.value = true;
       isShippingDetailsStepCompleted.value = false;
@@ -297,7 +311,7 @@ export default {
       async () => {
         await searchCountryStates(form.value?.country?.id);
         if (!countryStates.value || countryStates.value.length === 0) {
-          form.value.state.id = '0';
+          form.value.state.id = "0";
         } else {
           form.value.state.id = String(countryStates.value?.[0].id);
         }
@@ -306,7 +320,7 @@ export default {
     watch(
       () => totalItems.value,
       () => {
-        if (totalItems.value === 0) root.$router.push(root.localePath('/cart'));
+        if (totalItems.value === 0) root.$router.push(root.localePath("/cart"));
       }
     );
 
@@ -326,9 +340,10 @@ export default {
       form,
       countries,
       countryStates,
-      handleFormSubmit
+      handleFormSubmit,
+      formFieldAutoFocusSet,
     };
-  }
+  },
 };
 </script>
 
