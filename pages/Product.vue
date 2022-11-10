@@ -35,14 +35,15 @@
           <SfPrice
             :regular="$n(productGetters.getPrice(product).regular, 'currency')"
             :special-price="
-              productGetters.getPrice(product).regular !== productGetters.getPrice(product).special ?
-                productGetters.getPrice(product).special &&
-                $n(productGetters.getPrice(product).special, 'currency') : ''
-              "
+              productGetters.getPrice(product).regular !==
+              productGetters.getPrice(product).special
+                ? productGetters.getPrice(product).special &&
+                  $n(productGetters.getPrice(product).special, 'currency')
+                : ''
+            "
           />
         </div>
         <div>
-
           <div v-if="options.select">
             <SfSelect
               v-for="(select, selectKey) in options.select"
@@ -110,12 +111,12 @@
             @click="handleAddToCart(qty), toggleCartSidebar()"
           />
 
-          <SfButton 
+          <SfButton
             class="sf-button--text desktop-only product__save"
-            @click="addToWishList(product)">
+            @click="addToWishList(product)"
+          >
             {{ $t('Save for later') }}
           </SfButton>
-
         </div>
 
         <LazyHydrate when-idle>
@@ -125,7 +126,7 @@
                 {{ description }}
               </p>
             </SfTab>
-            
+
             <SfTab
               :title="$t('Additional Information')"
               data-cy="product-tab_additional"
@@ -228,8 +229,8 @@ export default {
     const addToWishList = async (product) => {
       await addItemToWishlist({
         product
-      })
-    }
+      });
+    };
     const { searchRealProduct, productVariants, realProduct, elementNames } =
       useProductVariant(query);
     const { products: relatedProducts, loading: relatedLoading } =
@@ -288,13 +289,17 @@ export default {
     onSSR(async () => {
       await search({
         slug: th.pathToSlug(),
-        customQuery: { getProductTemplate: 'customGetProduct' }
+        cacheKey: `API-P${root.$route.path}`,
+        customQuery: {
+          getProductTemplate: 'customGetProduct'
+        }
       });
 
       await searchRealProduct({
         productTemplateId: products.value.id,
         combinationIds: Object.values(root.$route.query)
       });
+
       addTags([{ prefix: CacheTagPrefix.Product, value: id }]);
     });
 

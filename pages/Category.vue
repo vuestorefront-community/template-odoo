@@ -82,9 +82,11 @@
                 $n(productGetters.getPrice(product).regular, 'currency')
               "
               :special-price="
-                productGetters.getPrice(product).regular !== productGetters.getPrice(product).special ?
-                productGetters.getPrice(product).special &&
-                $n(productGetters.getPrice(product).special, 'currency') : ''
+                productGetters.getPrice(product).regular !==
+                productGetters.getPrice(product).special
+                  ? productGetters.getPrice(product).special &&
+                    $n(productGetters.getPrice(product).special, 'currency')
+                  : ''
               "
               :max-rating="5"
               :score-rating="productGetters.getAverageRating(product)"
@@ -98,7 +100,9 @@
                   ? removeItemFromWishList({ product: { product } })
                   : addItemToWishlist({ product })
               "
-              @click:add-to-cart="addItemToCart({ product, quantity: 1 }), toggleCartSidebar()"
+              @click:add-to-cart="
+                addItemToCart({ product, quantity: 1 }), toggleCartSidebar()
+              "
             />
           </transition-group>
           <transition-group
@@ -131,15 +135,18 @@
                 $n(productGetters.getPrice(product).regular, 'currency')
               "
               :special-price="
-                productGetters.getPrice(product).regular !== productGetters.getPrice(product).special ?
-                productGetters.getPrice(product).special &&
-                $n(productGetters.getPrice(product).special, 'currency') : ''
+                productGetters.getPrice(product).regular !==
+                productGetters.getPrice(product).special
+                  ? productGetters.getPrice(product).special &&
+                    $n(productGetters.getPrice(product).special, 'currency')
+                  : ''
               "
               :isInWishlist="isInWishlist({ product })"
               class="products__product-card-horizontal"
               @click:wishlist="addItemToWishlist({ product })"
               @click:add-to-cart="
-                addItemToCart({ product, quantity: products[i].qty || 1 }), toggleCartSidebar()
+                addItemToCart({ product, quantity: products[i].qty || 1 }),
+                  toggleCartSidebar()
               "
               v-model="products[i].qty"
               :link="localePath(productGetters.getSlug(product))"
@@ -175,22 +182,21 @@
             <span class="products__show-on-page__label">{{
               $t('Show on page')
             }}</span>
-            
-              <SfSelect
-                :value="pagination.itemsPerPage.toString()"
-                class="products__items-per-page"
-                @input="th.changeItemsPerPage"
+
+            <SfSelect
+              :value="pagination.itemsPerPage.toString()"
+              class="products__items-per-page"
+              @input="th.changeItemsPerPage"
+            >
+              <SfSelectOption
+                v-for="option in pagination.pageOptions"
+                :key="option"
+                :value="option"
+                class="products__items-per-page__option"
               >
-                <SfSelectOption
-                  v-for="option in pagination.pageOptions"
-                  :key="option"
-                  :value="option"
-                  class="products__items-per-page__option"
-                >
-                  {{ option }}
-                </SfSelectOption>
-              </SfSelect>
-            
+                {{ option }}
+              </SfSelectOption>
+            </SfSelect>
           </div>
         </div>
         <div v-else key="no-results" class="before-results">
@@ -250,7 +256,7 @@ import {
   useWishlist,
   productGetters,
   useFacet,
-  facetGetters  
+  facetGetters
 } from '@vue-storefront/odoo';
 import { useCache, CacheTagPrefix } from '@vue-storefront/cache';
 import { useUiHelpers, useUiState } from '~/composables';

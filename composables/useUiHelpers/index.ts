@@ -24,7 +24,7 @@ const useUiHelpers = (): any => {
   };
 
   const getFacetsFromURL = () : ParamsFromUrl => {
-    let filters: string[] = [];
+    const filters: string[] = [];
     if (query) {
       Object.keys(query).forEach((filterKey) => {
         if (![...queryParamsNotFilters, 'price'].includes(filterKey)) {
@@ -42,11 +42,13 @@ const useUiHelpers = (): any => {
     return {
       fetchCategory: true,
       categoryParams: {
-        slug: path === '/' ? null : pathToSlug()
+        slug: path === '/' ? null : pathToSlug(),
+        cacheKey: `API-C${route.value.path}`
       },
       productParams: {
         pageSize,
         currentPage: page,
+        cacheKey: `API-P${route.value.path}`,
         search: '',
         sort: { [sort[0]]: sort[1] },
         filter: {
