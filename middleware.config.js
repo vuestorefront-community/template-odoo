@@ -6,10 +6,9 @@ import Redis from 'redis-tag-cache';
 const extendApiMethods = require('./custom-api/api');
 const customQueries = require('./custom-api/customQueries');
 process.redisTagClient = new Redis({
-  host: process.env.REDIS_HOST || '127.0.0.1',
-  port: process.env.REDIS_PORT || 6379,
-  password: process.env.REDIS_PASSWORD || '',
-  db: ''
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT,
+  password: process.env.REDIS_PASSWORD
 });
 
 module.exports = {

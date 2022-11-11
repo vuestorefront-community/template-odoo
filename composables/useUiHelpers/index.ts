@@ -5,6 +5,7 @@
 
 import { useRoute, useRouter } from '@nuxtjs/composition-api';
 import { Category } from '@vue-storefront/odoo-api/server';
+import hash from 'object-hash';
 
 const queryParamsNotFilters = ['page', 'sort', 'itemsPerPage'];
 
@@ -39,6 +40,13 @@ const useUiHelpers = (): any => {
     const sort = query?.sort?.split(',') || [];
     const page = query?.page || 1;
 
+    const productFilters = {
+      minPrice: Number(price?.[0]) || null,
+      maxPrice: Number(price?.[1]) || null,
+      attributeValueId: filters,
+      categorySlug: path === '/' ? null : pathToSlug()
+    };
+
     return {
       fetchCategory: true,
       categoryParams: {
@@ -48,15 +56,10 @@ const useUiHelpers = (): any => {
       productParams: {
         pageSize,
         currentPage: page,
-        cacheKey: `API-P${route.value.path}`,
+        cacheKey: `API-P${hash(productFilters, { algorithm: 'md5' })}`,
         search: '',
         sort: { [sort[0]]: sort[1] },
-        filter: {
-          minPrice: Number(price?.[0]) || null,
-          maxPrice: Number(price?.[1]) || null,
-          attributeValueId: filters,
-          categorySlug: path === '/' ? null : pathToSlug()
-        }
+        filter: productFilters
       }
     };
   };
