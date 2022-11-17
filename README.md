@@ -40,8 +40,6 @@ yarn build
 yarn build:local
 ```
 
-
-
 or use docker-compose
 
 ```bash
@@ -49,6 +47,10 @@ docker-compose up --build -d
 # you might need to
 docker-compose restart odoo nginx
 ```
+
+## middleware.config.js
+
+redisClient will enable/disable cache redis on API level (different from SSR cache)
 
 
 
