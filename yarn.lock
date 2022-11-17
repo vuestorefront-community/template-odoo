@@ -2693,10 +2693,10 @@
     lodash "^4.17.15"
     nuxt-purgecss "^1.0.0"
 
-"@vue-storefront/odoo-api@1.4.3-rc.3":
-  version "1.4.3-rc.3"
-  resolved "https://registry.yarnpkg.com/@vue-storefront/odoo-api/-/odoo-api-1.4.3-rc.3.tgz#765ab333f413848464c11c472693a405e9470af0"
-  integrity sha512-L8VqYZmJ5MIYKCMjaSe/PASPgpx3T8aRnL4nOWD8GJ79ucj16tscjVLgpFTZhq8ctOfhKfOgG/bgJ/RVe0fkIg==
+"@vue-storefront/odoo-api@1.4.3-rc.7":
+  version "1.4.3-rc.7"
+  resolved "https://registry.yarnpkg.com/@vue-storefront/odoo-api/-/odoo-api-1.4.3-rc.7.tgz#4b6bd17173c0e6d29930548dfc7a8d3b94a41cdb"
+  integrity sha512-NcBJbaf0YI7Q8ngTPdIBX2TpFS+Fw0CHv+Wn62c4B5JOBlZSzKo7A64ytcAB+LcmF2w1e4racmNd9nzCYmKBAQ==
   dependencies:
     "@vue-storefront/core" "2.5.6"
     apollo-cache-inmemory "^1.6.6"
@@ -2707,15 +2707,16 @@
     graphql "^15.5.0"
     graphql-tag "^2.12.4"
     isomorphic-fetch "^3.0.0"
+    redis-tag-cache "^1.2.1"
 
-"@vue-storefront/odoo@1.4.3-rc.3":
-  version "1.4.3-rc.3"
-  resolved "https://registry.yarnpkg.com/@vue-storefront/odoo/-/odoo-1.4.3-rc.3.tgz#b78035ff9eb871fa3a9c2235e920baa978b46e7a"
-  integrity sha512-1/aOMIZCd01+tTNPo6cZFus/9YvQTkRYs6VahzGKzgkyaBmMmcI175AGf94moC3u8EK80QENiokY6CTypfsMGQ==
+"@vue-storefront/odoo@1.4.3-rc.7":
+  version "1.4.3-rc.7"
+  resolved "https://registry.yarnpkg.com/@vue-storefront/odoo/-/odoo-1.4.3-rc.7.tgz#5cad1d24798febd7c2572d06ebfab4c8e80d3e6a"
+  integrity sha512-LkTmIwZL57N2e1Suw5V59Dbt9jXEUP+KWyOMPObVLhyythtBt30J8v9Lgw1lsN3XvO2OtG9cQbyZKO1KdGqshw==
   dependencies:
     "@nuxtjs/composition-api" "0.31.0"
     "@vue-storefront/core" "2.5.6"
-    "@vue-storefront/odoo-api" "1.4.3-rc.3"
+    "@vue-storefront/odoo-api" "1.4.3-rc.7"
     winston "^3.8.2"
 
 "@vue-storefront/redis-cache@^1.0.1":
@@ -10285,6 +10286,11 @@ object-hash@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/object-hash/-/object-hash-2.2.0.tgz#5ad518581eefc443bd763472b8ff2e9c2c0d54a5"
   integrity sha512-gScRMn0bS5fH+IuwyIFgnh9zBdo4DV+6GhygmWM9HyNJSgS0hScp1f5vjtm7oIIOiT9trXrShAkLFSc2IqKNgw==
+
+object-hash@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/object-hash/-/object-hash-3.0.0.tgz#73f97f753e7baffc0e2cc9d6e079079744ac82e9"
+  integrity sha512-RSn9F68PjH9HqtltsSnqYC1XXoWe9Bju5+213R98cNGttag9q9yAOTzdbsqvIa7aNm5WffBZFpWYr2aWrklWAw==
 
 object-inspect@^1.11.0, object-inspect@^1.9.0:
   version "1.12.0"
