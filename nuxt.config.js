@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import webpack from 'webpack';
 import { getRoutes } from './routes';
-import checkWinstonHook from '@vue-storefront/odoo/src/nuxtHooks/checkWinstonHook';
+import { checkWinstonHook } from '@vue-storefront/odoo';
 import getAppRoutes from './sitemap';
 import redirects from './customRoutes/redirects.json';
 import theme from './themeConfig';
@@ -9,7 +9,6 @@ import { format, transports } from 'winston';
 const { combine, timestamp, label, prettyPrint } = format;
 
 const isDev = process.env.NODE_ENV !== 'production';
-
 export default {
   server: {
     port: 3000,
