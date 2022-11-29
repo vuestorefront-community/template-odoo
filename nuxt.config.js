@@ -118,6 +118,7 @@ export default {
   buildModules: [
     // to core
     '@nuxtjs/composition-api/module',
+    '@unlighthouse/nuxt',
     '@nuxtjs/pwa',
     '@nuxt/image',
     '@nuxtjs/device',
