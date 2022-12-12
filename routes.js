@@ -51,6 +51,11 @@ export function getRoutes(themeDir = __dirname) {
       ]
     },
     {
+      path: '/payment-fail',
+      name: 'payment-fail',
+      component: path.resolve(themeDir, 'pages/Checkout/FailedPaymentResponse.vue')
+    },
+    {
       name: 'my-profile',
       path: '/my-account',
       component: path.resolve(themeDir, 'pages/MyAccount.vue')
