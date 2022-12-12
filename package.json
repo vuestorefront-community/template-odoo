@@ -21,7 +21,7 @@
     "lhci:desktop": "lhci autorun --collect.settings.preset=desktop"
   },
   "dependencies": {
-    "@adyen/adyen-web": "^5.23.1",
+    "@adyen/adyen-web": "4.7.3",
     "@nuxt/image": "^0.6.1",
     "@nuxt/types": "latest",
     "@nuxtjs/amp": "^0.5.4",

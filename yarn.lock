@@ -2,17 +2,15 @@
 # yarn lockfile v1
 
 
-"@adyen/adyen-web@^5.23.1":
-  version "5.27.0"
-  resolved "https://registry.yarnpkg.com/@adyen/adyen-web/-/adyen-web-5.27.0.tgz#7ebcb99ffe5205536d68063047997b74c4a9e21e"
-  integrity sha512-WpJiWY+iMPEpr4/0XYbnvIQG8nDbsJkg/yavYKx3A9jz9UnQqbXvkpco6MbCCNrD8FaAvU4xzquJey1N1pV4jA==
+"@adyen/adyen-web@4.7.3":
+  version "4.7.3"
+  resolved "https://registry.yarnpkg.com/@adyen/adyen-web/-/adyen-web-4.7.3.tgz#bbb56dea272f9afc5b11677068ac893096c6c115"
+  integrity sha512-PScBuaIxFlVPOs50z5Yu2tknTQUJzPCboXzVHaFLpJzQrohgOkkCXjvbPgUif5qdvWz8Pj/Jbu4G6fDr/DOB8Q==
   dependencies:
-    "@babel/runtime" "^7.15.4"
-    "@babel/runtime-corejs3" "^7.19.1"
-    "@types/applepayjs" "^3.0.4"
+    "@types/applepayjs" "^3.0.2"
     "@types/googlepay" "^0.6.2"
     classnames "^2.3.1"
-    core-js-pure "^3.25.3"
+    core-js "^3.14.0"
     preact "^10.5.13"
 
 "@ampproject/remapping@^2.1.0":
@@ -1243,14 +1241,6 @@
     "@babel/types" "^7.4.4"
     esutils "^2.0.2"
 
-"@babel/runtime-corejs3@^7.19.1":
-  version "7.19.1"
-  resolved "https://registry.yarnpkg.com/@babel/runtime-corejs3/-/runtime-corejs3-7.19.1.tgz#f0cbbe7edda7c4109cd253bb1dee99aba4594ad9"
-  integrity sha512-j2vJGnkopRzH+ykJ8h68wrHnEUmtK//E723jjixiAl/PPf6FhqY/vYRcMVlNydRKQjQsTsYEjpx+DZMIvnGk/g==
-  dependencies:
-    core-js-pure "^3.25.1"
-    regenerator-runtime "^0.13.4"
-
 "@babel/runtime@^7.14.0", "@babel/runtime@^7.15.4", "@babel/runtime@^7.8.4":
   version "7.16.7"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.16.7.tgz#03ff99f64106588c9c403c6ecb8c3bafbbdff1fa"
@@ -2453,7 +2443,7 @@
   dependencies:
     anymatch "*"
 
-"@types/applepayjs@^3.0.4":
+"@types/applepayjs@^3.0.2":
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/@types/applepayjs/-/applepayjs-3.0.4.tgz#9806a4b3ccd73dcf169c61a34be7a39f91d77540"
   integrity sha512-RqaVZWy1Kj4e1PoUoOI8uA+4UuuLpicQFxfU9Y/xWJFZFT6mFB4PiiY911iDxFk7pdvaj5HKH7VsWRisRca1Rg==
@@ -3151,10 +3141,10 @@
     lodash "^4.17.15"
     nuxt-purgecss "^1.0.0"
 
-"@vue-storefront/odoo-api@1.4.3-rc.7":
-  version "1.4.3-rc.7"
-  resolved "https://registry.yarnpkg.com/@vue-storefront/odoo-api/-/odoo-api-1.4.3-rc.7.tgz#4b6bd17173c0e6d29930548dfc7a8d3b94a41cdb"
-  integrity sha512-NcBJbaf0YI7Q8ngTPdIBX2TpFS+Fw0CHv+Wn62c4B5JOBlZSzKo7A64ytcAB+LcmF2w1e4racmNd9nzCYmKBAQ==
+"@vue-storefront/odoo-api@1.4.3-rc.12":
+  version "1.4.3-rc.12"
+  resolved "https://registry.yarnpkg.com/@vue-storefront/odoo-api/-/odoo-api-1.4.3-rc.12.tgz#ec2d6e6822dabc9aff76f5d23f0d45e655634aef"
+  integrity sha512-hs+0grh9Vye4bCfk1HUuw7wbU7aVk4Q84L3a1guGu3gv/hoAnZ5T8jP13sR6lXhLNvJ7WGgih9Fve5mey7uMEg==
   dependencies:
     "@vue-storefront/core" "2.5.6"
     apollo-cache-inmemory "^1.6.6"
@@ -3167,14 +3157,14 @@
     isomorphic-fetch "^3.0.0"
     redis-tag-cache "^1.2.1"
 
-"@vue-storefront/odoo@1.4.3-rc.7":
-  version "1.4.3-rc.7"
-  resolved "https://registry.yarnpkg.com/@vue-storefront/odoo/-/odoo-1.4.3-rc.7.tgz#5cad1d24798febd7c2572d06ebfab4c8e80d3e6a"
-  integrity sha512-LkTmIwZL57N2e1Suw5V59Dbt9jXEUP+KWyOMPObVLhyythtBt30J8v9Lgw1lsN3XvO2OtG9cQbyZKO1KdGqshw==
+"@vue-storefront/odoo@1.4.3-rc.12":
+  version "1.4.3-rc.12"
+  resolved "https://registry.yarnpkg.com/@vue-storefront/odoo/-/odoo-1.4.3-rc.12.tgz#5e4065150cf2da7120e4fc33afd5ddcce7b90443"
+  integrity sha512-ypN+V1ojABrHJ4v9WeDRrfjBLh/cyk0LKhqzbrVCKQ6e4kJTEo5m5Lb30Z1drOe4yT3mMRpPUsV6h6RlM0d76Q==
   dependencies:
     "@nuxtjs/composition-api" "0.31.0"
     "@vue-storefront/core" "2.5.6"
-    "@vue-storefront/odoo-api" "1.4.3-rc.7"
+    "@vue-storefront/odoo-api" "1.4.3-rc.12"
     winston "^3.8.2"
 
 "@vue-storefront/redis-cache@^1.0.1":
@@ -6180,15 +6170,15 @@ core-js-compat@^3.12.1, core-js-compat@^3.20.2, core-js-compat@^3.21.0:
     browserslist "^4.19.1"
     semver "7.0.0"
 
-core-js-pure@^3.25.1, core-js-pure@^3.25.3:
-  version "3.25.4"
-  resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.25.4.tgz#e8642cef4f4246a4e7c15280f5e3926118fff84b"
-  integrity sha512-qRbgm0ADrsNTU66UcW47YMJjXm+ShhUP2gkoEoAShT2BHO3cb5gGqLtmWpjnM6Wx9h5hMSF4uZ+jEV/8+4KCsw==
-
 core-js@^2.4.0, core-js@^2.5.0, core-js@^2.6.5:
   version "2.6.12"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.12.tgz#d9333dfa7b065e347cc5682219d6f690859cc2ec"
   integrity sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==
+
+core-js@^3.14.0:
+  version "3.26.1"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.26.1.tgz#7a9816dabd9ee846c1c0fe0e8fcad68f3709134e"
+  integrity sha512-21491RRQVzUn0GGM9Z1Jrpr6PNPxPi+Za8OM9q4tksTSnlbXXGKK1nXNg/QvwFYettXvSX6zWKCtHHfjN4puyA==
 
 core-js@^3.22.3:
   version "3.24.1"
