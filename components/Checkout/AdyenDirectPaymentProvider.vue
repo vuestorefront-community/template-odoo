@@ -127,7 +127,7 @@ export default {
 
           emit('paymentLoading', false);
           if (paymentSuccess) {
-            router.push({ name: 'thank-you' });
+            router.push('/checkout/thank-you');
             return;
           }
 

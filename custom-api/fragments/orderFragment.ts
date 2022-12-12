@@ -45,6 +45,9 @@ const query = `
         amount
         paymentReference
       }
+      acquirer
+      state
+      amount
     }
     orderLines {
       id
