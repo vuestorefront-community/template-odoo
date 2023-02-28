@@ -110,6 +110,9 @@ export default {
   device: {
     refreshOnResize: true
   },
+  serverMiddleware: [
+    '~/serverMiddleware/body-parser.js',
+  ],
   loading: { color: '#fff' },
   plugins: [
     '~/plugins/getImage.ts',
@@ -171,7 +174,7 @@ export default {
       enabled: (process.env.REDIS_ENABLED === 'true') || false,
       invalidation: {
         endpoint: '/cache-invalidate',
-        key: '0ead60c3-d118-40be-9519-d531462ddc60',
+        key: process.env.INVALIDATION_KEY,
         handlers: [
           '@vue-storefront/cache/defaultHandler'
         ]
