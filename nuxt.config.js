@@ -111,7 +111,7 @@ export default {
     refreshOnResize: true
   },
   serverMiddleware: [
-    '~/serverMiddleware/body-parser.js',
+    '~/serverMiddleware/body-parser.js'
   ],
   loading: { color: '#fff' },
   plugins: [
@@ -170,6 +170,9 @@ export default {
     '@vue-storefront/middleware/nuxt',
     'cookie-universal-nuxt',
     'vue-scrollto/nuxt',
+    ['@vue-storefront/http-cache/nuxt', {
+      default: 'max-age=360'
+    }],
     ['@vue-storefront/cache/nuxt', {
       enabled: (process.env.REDIS_ENABLED === 'true') || false,
       invalidation: {
