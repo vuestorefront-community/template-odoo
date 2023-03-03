@@ -5,6 +5,7 @@
 
 import { useRoute, useRouter } from '@nuxtjs/composition-api';
 import { Category } from '@vue-storefront/odoo-api/server';
+import hash from 'object-hash';
 
 const queryParamsNotFilters = ['page', 'sort', 'itemsPerPage'];
 
@@ -24,40 +25,41 @@ const useUiHelpers = (): any => {
   };
 
   const getFacetsFromURL = () : ParamsFromUrl => {
-    let filters: string[] = [];
+    const filters: string[] = [];
     if (query) {
       Object.keys(query).forEach((filterKey) => {
         if (![...queryParamsNotFilters, 'price'].includes(filterKey)) {
           filters.push(Number(query[filterKey]));
         }
       });
-
-      filters = filters.map((filter) => filter.split(',')).flat();
     }
 
     const price = query?.price?.split('-');
 
-    const pageSize = 10;
-    query.itemsPerPage ? parseInt(query.itemsPerPage) : 10;
+    const pageSize = query.itemsPerPage ? parseInt(query.itemsPerPage) : 10;
     const sort = query?.sort?.split(',') || [];
     const page = query?.page || 1;
+
+    const productFilters = {
+      minPrice: Number(price?.[0]) || null,
+      maxPrice: Number(price?.[1]) || null,
+      attributeValueId: filters,
+      categorySlug: path === '/' ? null : pathToSlug()
+    };
 
     return {
       fetchCategory: true,
       categoryParams: {
-        slug: path === '/' ? null : pathToSlug()
+        slug: path === '/' ? null : pathToSlug(),
+        cacheKey: `API-C${route.value.path}`
       },
       productParams: {
         pageSize,
         currentPage: page,
+        cacheKey: `API-P${hash(productFilters, { algorithm: 'md5' })}`,
         search: '',
         sort: { [sort[0]]: sort[1] },
-        filter: {
-          minPrice: Number(price?.[0]) || null,
-          maxPrice: Number(price?.[1]) || null,
-          attributeValueId: filters,
-          categorySlug: path === '/' ? null : pathToSlug()
-        }
+        filter: productFilters
       }
     };
   };

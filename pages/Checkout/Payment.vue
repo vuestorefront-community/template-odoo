@@ -62,8 +62,9 @@
           <SfPrice
             :regular="$n(cartGetters.getItemPrice(product).regular, 'currency')"
             :special="
+              cartGetters.getItemPrice(product).regular !== cartGetters.getItemPrice(product).special ?
               cartGetters.getItemPrice(product).special &&
-              $n(cartGetters.getItemPrice(product).special, 'currency')
+              $n(cartGetters.getItemPrice(product).special, 'currency') : ''
             "
             class="product-price"
           />
@@ -171,29 +172,16 @@
 
 <script>
 import {
-  SfHeading,
-  SfTable,
-  SfCheckbox,
-  SfButton,
-  SfDivider,
-  SfImage,
-  SfIcon,
-  SfPrice,
-  SfProperty,
-  SfAccordion,
-  SfLink,
-  SfRadio
+SfAccordion, SfButton, SfCheckbox, SfDivider, SfHeading, SfIcon, SfImage, SfLink, SfPrice,
+SfProperty, SfRadio, SfTable
 } from '@storefront-ui/vue';
 import { onSSR } from '@vue-storefront/core';
 import { useUiHelpers } from '~/composables';
 
-import { ref, computed, watch } from '@nuxtjs/composition-api';
+import { computed, ref, watch, useRoute, useRouter } from '@nuxtjs/composition-api';
 import {
-  useMakeOrder,
-  useCart,
-  cartGetters,
-  orderGetters,
-  usePayment
+cartGetters,
+orderGetters, useCart, useMakeOrder, usePayment
 } from '@vue-storefront/odoo';
 
 export default {
@@ -225,10 +213,12 @@ export default {
       import('~/components/Checkout/AbstractPaymentObserver')
   },
   setup(props, context) {
+    const route = useRoute();
+    const router = useRouter();
     const { cart, load, setCart } = useCart();
     const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
     if (totalItems.value === 0)
-      context.root.$router.push(context.root.localePath('/cart'));
+      router.push('/cart');
 
     const { providerList, getPaymentProviderList } = usePayment();
     const { order, make, loading } = useMakeOrder();
@@ -257,7 +247,7 @@ export default {
         name: 'thank-you',
         query: { order: orderGetters.getId(order.value) }
       };
-      context.root.$router.push(context.root.localePath(thankYouPath));
+      router.push(thankYouPath);
       setCart(null);
     };
 
@@ -265,7 +255,7 @@ export default {
       () => totalItems.value,
       () => {
         if (totalItems.value === 0)
-          context.root.$router.push(context.root.localePath('/cart'));
+          router.push('/cart');         
       }
     );
 

@@ -119,7 +119,7 @@ export default {
           }
 
           const data = await getPaymentConfirmation({
-            customQuery: { paymentConfirmation: 'greenConfirmationPayment' }
+            customQuery: { paymentConfirmation: 'confirmationPayment' }
           });
           const paymentSuccess =
             data?.order?.lastTransaction?.state === 'Authorized' ||
@@ -127,11 +127,11 @@ export default {
 
           emit('paymentLoading', false);
           if (paymentSuccess) {
-            router.push({ name: 'successPaymentResponse' });
+            router.push('/checkout/thank-you');
             return;
           }
 
-          router.push({ name: 'failedPaymentResponse' });
+          router.push('/payment-fail');
         }
       };
 

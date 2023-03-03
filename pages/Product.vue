@@ -34,31 +34,16 @@
         <div class="product__price-and-rating">
           <SfPrice
             :regular="$n(productGetters.getPrice(product).regular, 'currency')"
-            :special="
-              productGetters.getPrice(product).special &&
-              $n(productGetters.getPrice(product).special, 'currency')
+            :special-price="
+              productGetters.getPrice(product).regular !==
+              productGetters.getPrice(product).special
+                ? productGetters.getPrice(product).special &&
+                  $n(productGetters.getPrice(product).special, 'currency')
+                : ''
             "
           />
-          <div>
-            <div class="product__rating">
-              <SfRating :score="averageRating" :max="5" />
-              <a v-if="!!totalReviews" href="#" class="product__count">
-                ({{ totalReviews }})
-              </a>
-            </div>
-            <SfButton data-cy="product-btn_read-all" class="sf-button--text">{{
-              $t('Read all reviews')
-            }}</SfButton>
-          </div>
         </div>
         <div>
-          <SfButton
-            data-cy="product-btn_size-guide"
-            class="sf-button--text desktop-only product__guide"
-          >
-            {{ $t('Size guide') }}
-          </SfButton>
-
           <div v-if="options.select">
             <SfSelect
               v-for="(select, selectKey) in options.select"
@@ -119,11 +104,19 @@
 
           <SfAddToCart
             data-cy="product-cart_add"
+            v-model="qty"
             :stock="stock"
             :disabled="loading || !allOptionsSelected"
             class="product__add-to-cart"
-            @click="handleAddToCart()"
+            @click="handleAddToCart(qty), toggleCartSidebar()"
           />
+
+          <SfButton
+            class="sf-button--text desktop-only product__save"
+            @click="addToWishList(product)"
+          >
+            {{ $t('Save for later') }}
+          </SfButton>
         </div>
 
         <LazyHydrate when-idle>
@@ -133,21 +126,7 @@
                 {{ description }}
               </p>
             </SfTab>
-            <SfTab :title="$t('Read reviews')" data-cy="product-tab_reviews">
-              <SfReview
-                v-for="review in reviews"
-                :key="reviewGetters.getReviewId(review)"
-                :author="reviewGetters.getReviewAuthor(review)"
-                :date="reviewGetters.getReviewDate(review)"
-                :message="reviewGetters.getReviewMessage(review)"
-                :max-rating="5"
-                :rating="reviewGetters.getReviewRating(review)"
-                :char-limit="250"
-                read-more-text="Read more"
-                hide-full-text="Read less"
-                class="product__review"
-              />
-            </SfTab>
+
             <SfTab
               :title="$t('Additional Information')"
               data-cy="product-tab_additional"
@@ -174,14 +153,6 @@
         </LazyHydrate>
       </div>
     </div>
-
-    <LazyHydrate when-visible>
-      <RelatedProducts
-        :products="relatedProducts"
-        :loading="relatedLoading"
-        :title="$t('Match it with')"
-      />
-    </LazyHydrate>
 
     <LazyHydrate when-visible>
       <InstagramFeed />
@@ -227,7 +198,8 @@ import {
   useReview,
   useProductVariant,
   reviewGetters,
-  facetGetters
+  facetGetters,
+  useWishlist
 } from '@vue-storefront/odoo';
 
 import { onSSR } from '@vue-storefront/core';
@@ -253,6 +225,12 @@ export default {
       search,
       loading: productloading
     } = useProduct(`products-${path}`);
+    const { addItem: addItemToWishlist } = useWishlist();
+    const addToWishList = async (product) => {
+      await addItemToWishlist({
+        product
+      });
+    };
     const { searchRealProduct, productVariants, realProduct, elementNames } =
       useProductVariant(query);
     const { products: relatedProducts, loading: relatedLoading } =
@@ -311,13 +289,17 @@ export default {
     onSSR(async () => {
       await search({
         slug: th.pathToSlug(),
-        customQuery: { getProductTemplate: 'customGetProduct' }
+        cacheKey: `API-P${root.$route.path}`,
+        customQuery: {
+          getProductTemplate: 'customGetProduct'
+        }
       });
 
       await searchRealProduct({
         productTemplateId: products.value.id,
         combinationIds: Object.values(root.$route.query)
       });
+
       addTags([{ prefix: CacheTagPrefix.Product, value: id }]);
     });
 
@@ -328,15 +310,13 @@ export default {
       });
     };
 
-    const handleAddToCart = async () => {
+    const handleAddToCart = async (qty) => {
       const params = {
         product: product.value,
-        quantity: 1
+        quantity: qty
       };
 
       await addItem(params);
-
-      toggleCartSidebar();
     };
 
     const allOptionsSelected = computed(() => {
@@ -389,7 +369,8 @@ export default {
       productVariants,
       productGallery,
       toggleCartSidebar,
-      handleAddToCart
+      handleAddToCart,
+      addToWishList
     };
   },
   components: {

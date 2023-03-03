@@ -82,8 +82,11 @@
                 $n(productGetters.getPrice(product).regular, 'currency')
               "
               :special-price="
-                productGetters.getPrice(product).special &&
-                $n(productGetters.getPrice(product).special, 'currency')
+                productGetters.getPrice(product).regular !==
+                productGetters.getPrice(product).special
+                  ? productGetters.getPrice(product).special &&
+                    $n(productGetters.getPrice(product).special, 'currency')
+                  : ''
               "
               :max-rating="5"
               :score-rating="productGetters.getAverageRating(product)"
@@ -97,7 +100,9 @@
                   ? removeItemFromWishList({ product: { product } })
                   : addItemToWishlist({ product })
               "
-              @click:add-to-cart="addItemToCart({ product, quantity: 1 })"
+              @click:add-to-cart="
+                addItemToCart({ product, quantity: 1 }), toggleCartSidebar()
+              "
             />
           </transition-group>
           <transition-group
@@ -130,34 +135,27 @@
                 $n(productGetters.getPrice(product).regular, 'currency')
               "
               :special-price="
-                productGetters.getPrice(product).special &&
-                $n(productGetters.getPrice(product).special, 'currency')
+                productGetters.getPrice(product).regular !==
+                productGetters.getPrice(product).special
+                  ? productGetters.getPrice(product).special &&
+                    $n(productGetters.getPrice(product).special, 'currency')
+                  : ''
               "
-              :max-rating="5"
-              :score-rating="3"
               :isInWishlist="isInWishlist({ product })"
               class="products__product-card-horizontal"
               @click:wishlist="addItemToWishlist({ product })"
               @click:add-to-cart="
-                addItemToCart({ product, quantity: product.qty })
+                addItemToCart({ product, quantity: products[i].qty || 1 }),
+                  toggleCartSidebar()
               "
               v-model="products[i].qty"
               :link="localePath(productGetters.getSlug(product))"
             >
-              <template #configuration>
-                <SfProperty
-                  class="desktop-only"
-                  name="Size"
-                  value="XS"
-                  style="margin: 0 0 1rem 0"
-                />
-                <SfProperty class="desktop-only" name="Color" value="white" />
-              </template>
               <template #actions>
                 <SfButton
                   class="sf-button--text desktop-only"
                   style="margin: 0 0 1rem auto; display: block"
-                  @click="() => {}"
+                  @click="addItemToWishlist({ product })"
                 >
                   {{ $t('Save for later') }}
                 </SfButton>
@@ -184,22 +182,21 @@
             <span class="products__show-on-page__label">{{
               $t('Show on page')
             }}</span>
-            <LazyHydrate on-interaction>
-              <SfSelect
-                :value="pagination.itemsPerPage.toString()"
-                class="products__items-per-page"
-                @input="th.changeItemsPerPage"
+
+            <SfSelect
+              :value="pagination.itemsPerPage.toString()"
+              class="products__items-per-page"
+              @input="th.changeItemsPerPage"
+            >
+              <SfSelectOption
+                v-for="option in pagination.pageOptions"
+                :key="option"
+                :value="option"
+                class="products__items-per-page__option"
               >
-                <SfSelectOption
-                  v-for="option in pagination.pageOptions"
-                  :key="option"
-                  :value="option"
-                  class="products__items-per-page__option"
-                >
-                  {{ option }}
-                </SfSelectOption>
-              </SfSelect>
-            </LazyHydrate>
+                {{ option }}
+              </SfSelectOption>
+            </SfSelect>
           </div>
         </div>
         <div v-else key="no-results" class="before-results">
@@ -284,7 +281,7 @@ export default defineComponent({
     const { result, search, loading } = useFacet();
 
     const route = useRoute();
-    const { params, path } = route.value;
+    const { params, query } = route.value;
 
     const products = computed(() => facetGetters.getProducts(result.value));
     const categoryTree = computed(() =>
@@ -330,6 +327,7 @@ export default defineComponent({
 
     onSSR(async () => {
       const params = {
+        pageSize: query.itemsPerPage || 12,
         ...th.getFacetsFromURL()
       };
 

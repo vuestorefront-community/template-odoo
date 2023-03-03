@@ -27,7 +27,7 @@
 
       <div class="navbar__sort desktop-only">
         <span class="navbar__label">{{ $t('Sort by') }}:</span>
-        <LazyHydrate on-interaction>
+        <LazyHydrate when-idle>
           <SfSelect
             :value="sortBy.selected"
             :placeholder="$t('Select sorting')"
@@ -88,7 +88,7 @@
 <script >
 import { computed, useRoute } from '@nuxtjs/composition-api';
 import { facetGetters } from '@vue-storefront/odoo';
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from '@nuxtjs/composition-api';
 import { useUiState, useUiHelpers } from '~/composables';
 import { SfButton, SfIcon, SfSelect, SfHeading } from '@storefront-ui/vue';
 import LazyHydrate from 'vue-lazy-hydration';

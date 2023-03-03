@@ -1,22 +1,45 @@
 /* eslint-disable camelcase */
 import webpack from 'webpack';
 import { getRoutes } from './routes';
+import { checkWinstonHook } from '@vue-storefront/odoo';
 import getAppRoutes from './sitemap';
 import redirects from './customRoutes/redirects.json';
 import theme from './themeConfig';
+import { format, transports } from 'winston';
+const { combine, timestamp, label, prettyPrint } = format;
 
 const isDev = process.env.NODE_ENV !== 'production';
-
 export default {
   server: {
     port: 3000,
     host: '0.0.0.0'
+  },
+  hooks: {
+    build: {
+      before() {
+        checkWinstonHook();
+      }
+    }
   },
   components: [
     '~/components/',
     '~/components/Core/Atoms'
   ],
   css: ['@/assets/styles.scss'],
+  winstonLog: {
+    useDefaultLogger: false,
+    skipRequestMiddlewareHandler: true,
+    skipErrorMiddlewareHandler: true,
+    loggerOptions: {
+      format: combine(
+        timestamp(),
+        prettyPrint()
+      ),
+      transports: [
+        new transports.Console()
+      ]
+    }
+  },
   head: {
     title: 'Vue Storefront',
     meta: [
@@ -87,6 +110,9 @@ export default {
   device: {
     refreshOnResize: true
   },
+  serverMiddleware: [
+    '~/serverMiddleware/body-parser.js'
+  ],
   loading: { color: '#fff' },
   plugins: [
     '~/plugins/getImage.ts',
@@ -95,6 +121,7 @@ export default {
   buildModules: [
     // to core
     '@nuxtjs/composition-api/module',
+    // '@unlighthouse/nuxt',
     '@nuxtjs/pwa',
     '@nuxt/image',
     '@nuxtjs/device',
@@ -141,14 +168,16 @@ export default {
     'nuxt-precompress',
     '@nuxt/image',
     '@vue-storefront/middleware/nuxt',
-    'nuxt-i18n',
     'cookie-universal-nuxt',
     'vue-scrollto/nuxt',
+    ['@vue-storefront/http-cache/nuxt', {
+      default: 'max-age=360'
+    }],
     ['@vue-storefront/cache/nuxt', {
       enabled: (process.env.REDIS_ENABLED === 'true') || false,
       invalidation: {
         endpoint: '/cache-invalidate',
-        key: '0ead60c3-d118-40be-9519-d531462ddc60',
+        key: process.env.INVALIDATION_KEY,
         handlers: [
           '@vue-storefront/cache/defaultHandler'
         ]
@@ -165,12 +194,11 @@ export default {
         }
       ]
     }],
-    // google tag manager
+    'nuxt-i18n',
     '@nuxtjs/gtm',
-    // sitemap generator
     '@nuxtjs/sitemap',
-    // redirect
-    '@nuxtjs/redirect-module'
+    '@nuxtjs/redirect-module',
+    'nuxt-winston-log'
   ],
 
   // google tag manager
@@ -261,6 +289,7 @@ export default {
     lazy: true,
     seo: true,
     langDir: 'lang/',
+    detectBrowserLanguage: false,
     vueI18n: {
       fallbackLocale: 'en',
       numberFormats: {

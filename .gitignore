@@ -6,7 +6,7 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
+.unlighthouse
 # Runtime data
 pids
 *.pid
@@ -25,6 +25,7 @@ coverage
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
 
+.lighthouseci
 # Bower dependency directory (https://bower.io/)
 bower_components
 

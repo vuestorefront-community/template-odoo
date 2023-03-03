@@ -80,7 +80,7 @@
                 />
                 <SfButton
                   data-cy="login-btn_forgot-password"
-                  class="sf-button--text color-primary"
+                  class="sf-button--text"
                   @click="isForgottenPassword = !isForgottenPassword"
                 >
                   {{
@@ -271,7 +271,7 @@
   </SfModal>
 </template>
 <script>
-import { ref, watch } from '@vue/composition-api';
+import { ref, watch } from '@nuxtjs/composition-api';
 import { useUiNotification } from '~/composables';
 
 import {
