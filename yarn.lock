@@ -2404,18 +2404,18 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-4.6.0.tgz#3c7c9c46e678feefe7a2e5bb609d3dbd665ffb3f"
   integrity sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==
 
-"@storefront-ui/shared@0.13.3":
-  version "0.13.3"
-  resolved "https://registry.yarnpkg.com/@storefront-ui/shared/-/shared-0.13.3.tgz#2350d75649764dce90d8546af8ba18f2d7786ed2"
-  integrity sha512-lCfUEb5Cv7fvzNOKfFClwRj+ARTJukWDJyz6d8NIDzM0hEWImpNiy5Z32EFa0XZz22SFoMaUHhDyPSzhusTmag==
+"@storefront-ui/shared@0.13.5":
+  version "0.13.5"
+  resolved "https://registry.yarnpkg.com/@storefront-ui/shared/-/shared-0.13.5.tgz#2e376671c401c88581422beabf9e1b268a7cde9c"
+  integrity sha512-Y27gFIxIvsPcU/vnIgLbbi+OZioWErSqvMLho0rFiqkIcpMcK7x98PkaSfN3bHPKWkSf1QsgY8OOdsnlyxuK2Q==
 
-"@storefront-ui/vue@0.13.3":
-  version "0.13.3"
-  resolved "https://registry.yarnpkg.com/@storefront-ui/vue/-/vue-0.13.3.tgz#bd3219636c40cb4a5602e110cfb322e15ab03264"
-  integrity sha512-3iYiIL+760Atqt3v5iC2w8ger4QsUeATn/EQrWsID16ZAqC4bry8oph3aT7U3qsWDzZ+wIipSX7Opd3yRdpBOg==
+"@storefront-ui/vue@0.13.6":
+  version "0.13.6"
+  resolved "https://registry.yarnpkg.com/@storefront-ui/vue/-/vue-0.13.6.tgz#a21256f0ed32fd67c5cd40666b962489584c9f9e"
+  integrity sha512-aobEpbxis8EYbZT+rMZfEmW2B6FJ/a7A2X7X7nDlI99ADn2t4FHWsEmRkpG9qlPSiawMn1ISC1nzrCngQoyiLw==
   dependencies:
     "@glidejs/glide" "^3.3.0"
-    "@storefront-ui/shared" "0.13.3"
+    "@storefront-ui/shared" "0.13.5"
     body-scroll-lock "^3.0.1"
     cloudinary-build-url "^0.1.1"
     core-js "^3.6.5"
