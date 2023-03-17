@@ -262,7 +262,7 @@ export default {
       }
 
       const addresses = userShippingGetters.getAddresses(shipping.value);
-      return Boolean(addresses?.length);
+      return Boolean(Object.keys(addresses).length);
     });
 
     const handleAddNewAddressBtnClick = () => {
