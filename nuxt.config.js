@@ -160,6 +160,7 @@ export default {
   ],
   publicRuntimeConfig: {
     theme,
+    middlewareUrl: process.env.NODE_API_BASE_URL,
     baseURL: process.env.BASE_URL,
     siteURL: process.env.SITE_URL
   },
