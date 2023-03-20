@@ -143,20 +143,20 @@ import {
   SfProperty,
   SfPrice,
   SfCollectedProduct,
-  SfImage,
-} from "@storefront-ui/vue";
-import { computed } from "@nuxtjs/composition-api";
+  SfImage
+} from '@storefront-ui/vue';
+import { computed } from '@nuxtjs/composition-api';
 import {
   useCart,
   useUser,
   cartGetters,
-  useWishlist,
-} from "@vue-storefront/odoo";
-import { useUiState } from "~/composables";
-import { onSSR } from "@vue-storefront/core";
+  useWishlist
+} from '@vue-storefront/odoo';
+import { useUiState } from '~/composables';
+import { onSSR } from '@vue-storefront/core';
 
 export default {
-  name: "Cart",
+  name: 'Cart',
   components: {
     SfSidebar,
     SfButton,
@@ -165,7 +165,7 @@ export default {
     SfProperty,
     SfPrice,
     SfCollectedProduct,
-    SfImage,
+    SfImage
   },
   setup() {
     const { isCartSidebarOpen, toggleCartSidebar } = useUiState();
@@ -181,7 +181,7 @@ export default {
 
     const addProductToWishList = (product) => {
       addItemToWishlist({
-        product: { ...product.product, firstVariant: product.product.id },
+        product: { ...product.product, firstVariant: product.product.id }
       });
     };
 
@@ -195,9 +195,9 @@ export default {
       totals,
       totalItems,
       cartGetters,
-      addProductToWishList,
+      addProductToWishList
     };
-  },
+  }
 };
 </script>
 

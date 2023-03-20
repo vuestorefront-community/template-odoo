@@ -38,7 +38,6 @@ export default {
     const router = useRouter();
     const dropinDivElement = ref(null);
     const loading = ref(false);
-    const loadingMakePayment = ref(false);
     const { send } = useUiNotification();
     const { getPaymentConfirmation } = usePayment('');
 
@@ -46,7 +45,6 @@ export default {
       openAdyenTransaction,
       getAdyenAcquirerInfo,
       getAdyenPaymentMethods,
-      getAdyenPaymentDetails,
       paymentMethods,
       acquirerInfo,
       adyenMakeDirectPayment,
@@ -54,6 +52,7 @@ export default {
     } = useAdyenDirectPayment(props.provider.id, props.cart?.order?.id);
 
     onMounted(async () => {
+      // eslint-disable-next-line global-require
       const AdyenCheckout = require('@adyen/adyen-web');
 
       loading.value = true;

@@ -172,15 +172,13 @@
 <script>
 import { SfInput, SfButton, SfSelect, SfCheckbox } from '@storefront-ui/vue';
 import { useCountrySearch, useShipping } from '@vue-storefront/odoo';
-import { Address } from '@vue-storefront/odoo-api';
 import { useUiNotification } from '~/composables';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import {
   reactive,
   watch,
   defineComponent,
-  onMounted,
-  PropType
+  onMounted
 } from '@nuxtjs/composition-api';
 export default defineComponent({
   name: 'AddressForm',

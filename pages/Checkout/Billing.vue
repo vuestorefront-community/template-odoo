@@ -257,7 +257,7 @@ export default {
     onMounted(async () => {
       await loadBillingAddress();
       await search();
-      handleCheckSameAddress()  
+      handleCheckSameAddress();
     });
 
     watch(
