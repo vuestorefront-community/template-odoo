@@ -11,7 +11,10 @@
           <ProfileUpdateForm />
         </SfContentPage>
 
-        <SfContentPage :title="$t('Update Password')" data-testid="update-password">
+        <SfContentPage
+          :title="$t('Update Password')"
+          data-testid="update-password"
+        >
           <PasswordResetForm />
         </SfContentPage>
 
@@ -75,7 +78,7 @@ import {
   SfMyNewsletter,
   SfOrderHistory,
   SfContentPages,
-  SfTabs,
+  SfTabs
 } from '@storefront-ui/vue';
 import { ref, computed, defineComponent } from '@nuxtjs/composition-api';
 import { useUser, useUserShipping } from '@vue-storefront/odoo';
@@ -98,7 +101,7 @@ export default defineComponent({
     ProfileUpdateForm,
     PasswordResetForm,
     OrderHistory,
-    ShippingAddressForm,
+    ShippingAddressForm
   },
   setup(props, { root }) {
     const activePage = ref('My profile');
@@ -124,7 +127,7 @@ export default defineComponent({
       password: '',
       city: '',
       shipping: shipping?.value,
-      orders: [],
+      orders: []
     }));
 
     const handleCancelEditing = () => {
@@ -139,7 +142,7 @@ export default defineComponent({
     const handleSaveAddress = async () => {
       send({
         message: 'Succefully saved!',
-        type: 'success',
+        type: 'success'
       });
       handleCancelEditing();
       await load();
@@ -154,7 +157,7 @@ export default defineComponent({
       if (title === root.$t('Log out')) {
         send({
           message: 'You are logged out. We hope you come back soon mate!',
-          type: 'info',
+          type: 'info'
         });
 
         root.$router.push(root.localePath('/'));
@@ -179,9 +182,9 @@ export default defineComponent({
       shipping,
       changeActivePage,
       addressToUpdate,
-      state,
+      state
     };
-  },
+  }
 });
 </script>
 

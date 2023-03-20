@@ -284,7 +284,7 @@ import {
   SfAlert,
   SfBar
 } from '@storefront-ui/vue';
-import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
+import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { useUser, usePassword } from '@vue-storefront/odoo';
 import { useUiState } from '~/composables';
 
@@ -365,13 +365,13 @@ export default {
 
     const handleRegister = async () => handleForm(register, form.value)();
 
-     const handleLogin = async () => {
+    const handleLogin = async () => {
       await handleForm(login, {
         username: form.value.email,
         password: form.value.password
       })();
 
-      if(!error.value.login) {
+      if (!error.value.login) {
         send({
           message: 'You are logged in. Welcome!',
           type: 'success'
