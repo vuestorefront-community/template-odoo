@@ -287,10 +287,11 @@ export default {
       if (shipping.value) {
         if (shipping.value.name === 'Public user') {
           shipping.value.name = '';
+          return;
         }
-        const { name, street, city, state, country, zip, phone } =
-          shipping.value;
-        const elemnt = {
+        const { name, street, city, state, country, zip, phone, id } = shipping.value;
+        const element = {
+          id,
           name,
           street,
           city,
@@ -300,7 +301,7 @@ export default {
           phone,
           selectedMethodShipping: null
         };
-        form.value = elemnt;
+        form.value = element;
       }
     };
     onMounted(async () => {

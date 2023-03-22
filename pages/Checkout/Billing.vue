@@ -252,12 +252,27 @@ export default {
       }
     };
 
-    onSSR(async () => {});
+    const loadPreviousData = () => {
+      if (billing.value.name === 'Public user') {
+        return;
+      }
+
+      const { name, street, city, state, country, zip, phone, id } = billing.value;
+      form.value.id = id;
+      form.value.name = name;
+      form.value.street = street;
+      form.value.city = city;
+      form.value.state = state.id !== 'undefined' ? state : { id: '' },
+      form.value.country = country.id !== 'undefined' ? country : { id: '' },
+      form.value.zip = zip;
+      form.value.phone = phone;
+      form.value.selectedMethodShipping = id;
+    };
 
     onMounted(async () => {
       await loadBillingAddress();
       await search();
-      handleCheckSameAddress();
+      loadPreviousData();
     });
 
     watch(
