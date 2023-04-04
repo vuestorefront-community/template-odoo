@@ -161,7 +161,7 @@
         type="button"
         @click.native="handleAddNewAddressBtnClick"
       >
-        {{ $t('Add new address') }}
+        {{ $t("Add new address") }}
       </SfButton>
 
       <SfHeading
@@ -175,11 +175,8 @@
         @submit="$router.push(localePath('/checkout/billing'))"
         @selectedMethod="handleSelectedMethodShipping"
       />
-      <SfButton
-        type="submit"
-        class="sf-button--full-width mt-4"
-      >
-        {{ $t('Continue to billing') }}
+      <SfButton type="submit" class="sf-button--full-width mt-4">
+        {{ $t("Continue to billing") }}
       </SfButton>
     </form>
   </ValidationObserver>
@@ -286,9 +283,31 @@ export default {
       form.value.selectedMethodShipping = method;
     };
 
+    const setPreviousShippingData = () => {
+      if (shipping.value) {
+        if (shipping.value.name === 'Public user') {
+          shipping.value.name = '';
+          return;
+        }
+        const { name, street, city, state, country, zip, phone, id } = shipping.value;
+        const element = {
+          id,
+          name,
+          street,
+          city,
+          state: state.id !== 'undefined' ? state : { id: '' },
+          country: country.id !== 'undefined' ? country : { id: '' },
+          zip,
+          phone,
+          selectedMethodShipping: null
+        };
+        form.value = element;
+      }
+    };
     onMounted(async () => {
       await search();
       await loadShipping();
+      setPreviousShippingData();
       formRef.value.validate({ silent: true });
     });
 

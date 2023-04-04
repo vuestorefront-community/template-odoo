@@ -77,7 +77,7 @@ export default defineComponent({
     SfInput,
     SfModal,
     ValidationProvider,
-    ValidationObserver,
+    ValidationObserver
   },
   emits: ['submit'],
   setup(_, { root }) {
@@ -90,7 +90,7 @@ export default defineComponent({
 
     const resetForm = () => ({
       name: userGetters.getFirstName(user.value) || '',
-      email: userGetters.getEmailAddress(user.value) || '',
+      email: userGetters.getEmailAddress(user.value) || ''
     });
     const form = ref(resetForm());
 
@@ -101,8 +101,8 @@ export default defineComponent({
           user: {
             ...user,
             name: form.value.name,
-            email: form.value.email,
-          },
+            email: form.value.email
+          }
         });
 
         form.value = resetForm();
@@ -110,7 +110,7 @@ export default defineComponent({
         currentPassword.value = '';
         send({
           message: root.$t('Successfull update!'),
-          type: 'success',
+          type: 'success'
         });
       } catch (e) {
         form.value = resetForm();
@@ -129,9 +129,9 @@ export default defineComponent({
       user,
       requirePassword,
       currentPassword,
-      form,
+      form
     };
-  },
+  }
 });
 </script>
 <style lang="scss" scoped>

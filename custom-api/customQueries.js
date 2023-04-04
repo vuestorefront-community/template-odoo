@@ -13,6 +13,16 @@ module.exports = {
       }
     `
   }),
+  confirmationPayment: ({ variables }) => ({
+    variables,
+    query: gql`
+      query { 
+        paymentConfirmation {
+          ${orderFragment}
+        }
+      }
+    `
+  }),
 
   customLogin: ({ variables }) => ({
     variables,

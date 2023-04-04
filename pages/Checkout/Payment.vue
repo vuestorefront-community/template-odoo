@@ -172,16 +172,16 @@
 
 <script>
 import {
-SfAccordion, SfButton, SfCheckbox, SfDivider, SfHeading, SfIcon, SfImage, SfLink, SfPrice,
-SfProperty, SfRadio, SfTable
+  SfAccordion, SfButton, SfCheckbox, SfDivider, SfHeading, SfIcon, SfImage, SfLink, SfPrice,
+  SfProperty, SfRadio, SfTable
 } from '@storefront-ui/vue';
 import { onSSR } from '@vue-storefront/core';
 import { useUiHelpers } from '~/composables';
 
 import { computed, ref, watch, useRoute, useRouter } from '@nuxtjs/composition-api';
 import {
-cartGetters,
-orderGetters, useCart, useMakeOrder, usePayment
+  cartGetters,
+  orderGetters, useCart, useMakeOrder, usePayment
 } from '@vue-storefront/odoo';
 
 export default {
@@ -213,7 +213,6 @@ export default {
       import('~/components/Checkout/AbstractPaymentObserver')
   },
   setup(props, context) {
-    const route = useRoute();
     const router = useRouter();
     const { cart, load, setCart } = useCart();
     const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
@@ -255,7 +254,7 @@ export default {
       () => totalItems.value,
       () => {
         if (totalItems.value === 0)
-          router.push('/cart');         
+          router.push('/cart');
       }
     );
 

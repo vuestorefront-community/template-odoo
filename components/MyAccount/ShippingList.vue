@@ -57,13 +57,13 @@ import { useUiNotification } from '~/composables';
 export default defineComponent({
   components: {
     SfIcon,
-    SfLoader,
+    SfLoader
   },
   props: {
     addresses: {
       type: Array as PropType<Address[]>,
-      default: [],
-    },
+      default: []
+    }
   },
   setup({}, { emit }) {
     const { deleteAddress, loading } = useUserShipping();
@@ -71,12 +71,12 @@ export default defineComponent({
 
     const handleDeleteAddress = async (shipping: Address) => {
       await deleteAddress({
-        address: { id: shipping.id },
+        address: { id: shipping.id }
       });
 
       send({
         message: 'Successfully deleted!',
-        type: 'info',
+        type: 'info'
       });
     };
 
@@ -87,9 +87,9 @@ export default defineComponent({
     return {
       handleChangeAddress,
       handleDeleteAddress,
-      loading,
+      loading
     };
-  },
+  }
 });
 </script>
 <style scoped lang="scss">

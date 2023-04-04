@@ -27,7 +27,7 @@
 
       <div class="navbar__sort desktop-only">
         <span class="navbar__label">{{ $t('Sort by') }}:</span>
-        <LazyHydrate on-interaction>
+        <LazyHydrate when-idle>
           <SfSelect
             :value="sortBy.selected"
             :placeholder="$t('Select sorting')"

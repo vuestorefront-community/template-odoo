@@ -38,7 +38,6 @@ export default {
     const router = useRouter();
     const dropinDivElement = ref(null);
     const loading = ref(false);
-    const loadingMakePayment = ref(false);
     const { send } = useUiNotification();
     const { getPaymentConfirmation } = usePayment('');
 
@@ -46,7 +45,6 @@ export default {
       openAdyenTransaction,
       getAdyenAcquirerInfo,
       getAdyenPaymentMethods,
-      getAdyenPaymentDetails,
       paymentMethods,
       acquirerInfo,
       adyenMakeDirectPayment,
@@ -54,6 +52,7 @@ export default {
     } = useAdyenDirectPayment(props.provider.id, props.cart?.order?.id);
 
     onMounted(async () => {
+      // eslint-disable-next-line global-require
       const AdyenCheckout = require('@adyen/adyen-web');
 
       loading.value = true;
@@ -119,7 +118,7 @@ export default {
           }
 
           const data = await getPaymentConfirmation({
-            customQuery: { paymentConfirmation: 'greenConfirmationPayment' }
+            customQuery: { paymentConfirmation: 'confirmationPayment' }
           });
           const paymentSuccess =
             data?.order?.lastTransaction?.state === 'Authorized' ||
@@ -127,11 +126,11 @@ export default {
 
           emit('paymentLoading', false);
           if (paymentSuccess) {
-            router.push({ name: 'successPaymentResponse' });
+            router.push('/checkout/thank-you');
             return;
           }
 
-          router.push({ name: 'failedPaymentResponse' });
+          router.push('/payment-fail');
         }
       };
 
