@@ -211,21 +211,21 @@ import {
   SfProperty,
   SfHeading,
   SfBreadcrumbs,
-  SfOrderSummary,
-} from "@storefront-ui/vue";
-import { ref } from "@nuxtjs/composition-api";
-import { computed } from "@nuxtjs/composition-api";
+  SfOrderSummary
+} from '@storefront-ui/vue';
+import { ref } from '@nuxtjs/composition-api';
+import { computed } from '@nuxtjs/composition-api';
 import {
   useCart,
   useUser,
   cartGetters,
-  useWishlist,
-} from "@vue-storefront/odoo";
-import { useUiState } from "~/composables";
-import { onSSR } from "@vue-storefront/core";
+  useWishlist
+} from '@vue-storefront/odoo';
+import { useUiState } from '~/composables';
+import { onSSR } from '@vue-storefront/core';
 
 export default {
-  name: "DetailedCart",
+  name: 'DetailedCart',
   components: {
     SfCollectedProduct,
     SfBreadcrumbs,
@@ -233,7 +233,7 @@ export default {
     SfButton,
     SfHeading,
     SfProperty,
-    SfOrderSummary,
+    SfOrderSummary
   },
   setup(_, { root }) {
     // simple test submodule 3
@@ -248,7 +248,7 @@ export default {
 
     const addProductToWishList = (product) => {
       addItemToWishlist({
-        product: { ...product.product, firstVariant: product.product.id },
+        product: { ...product.product, firstVariant: product.product.id }
       });
     };
 
@@ -257,27 +257,27 @@ export default {
     });
     const summary = ref([
       {
-        name: "Products",
-        value: totalItems,
+        name: 'Products',
+        value: totalItems
       },
       {
-        name: "Sub Total",
-        value: totals,
+        name: 'Sub Total',
+        value: totals
       },
       {
-        name: "Shipping",
-        value: "Free",
-      },
+        name: 'Shipping',
+        value: 'Free'
+      }
     ]);
     const breadcrumbs = [
       {
-        text: root.$t("Home"),
-        link: "/",
+        text: root.$t('Home'),
+        link: '/'
       },
       {
-        text: root.$t("Cart"),
-        link: "#",
-      },
+        text: root.$t('Cart'),
+        link: '#'
+      }
     ];
 
     return {
@@ -292,9 +292,9 @@ export default {
       totalItems,
       summary,
       cartGetters,
-      addProductToWishList,
+      addProductToWishList
     };
-  },
+  }
 };
 </script>
 <style lang="scss" scoped>

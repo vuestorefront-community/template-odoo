@@ -10,10 +10,6 @@ const { combine, timestamp, label, prettyPrint } = format;
 
 const isDev = process.env.NODE_ENV !== 'production';
 export default {
-  server: {
-    port: 3000,
-    host: '0.0.0.0'
-  },
   hooks: {
     build: {
       before() {
@@ -110,6 +106,9 @@ export default {
   device: {
     refreshOnResize: true
   },
+  serverMiddleware: [
+    '~/serverMiddleware/body-parser.js'
+  ],
   loading: { color: '#fff' },
   plugins: [
     '~/plugins/getImage.ts',
@@ -118,6 +117,7 @@ export default {
   buildModules: [
     // to core
     '@nuxtjs/composition-api/module',
+    // '@unlighthouse/nuxt',
     '@nuxtjs/pwa',
     '@nuxt/image',
     '@nuxtjs/device',
@@ -156,6 +156,7 @@ export default {
   ],
   publicRuntimeConfig: {
     theme,
+    middlewareUrl: process.env.NODE_API_BASE_URL,
     baseURL: process.env.BASE_URL,
     siteURL: process.env.SITE_URL
   },
@@ -166,11 +167,14 @@ export default {
     '@vue-storefront/middleware/nuxt',
     'cookie-universal-nuxt',
     'vue-scrollto/nuxt',
+    ['@vue-storefront/http-cache/nuxt', {
+      default: 'max-age=360'
+    }],
     ['@vue-storefront/cache/nuxt', {
       enabled: (process.env.REDIS_ENABLED === 'true') || false,
       invalidation: {
         endpoint: '/cache-invalidate',
-        key: '0ead60c3-d118-40be-9519-d531462ddc60',
+        key: process.env.INVALIDATION_KEY,
         handlers: [
           '@vue-storefront/cache/defaultHandler'
         ]

@@ -16,47 +16,47 @@ import {
   defineComponent,
   PropType,
   ComputedRef,
-  computed,
+  computed
 } from '@nuxtjs/composition-api';
 import {
   ButtonColor,
   ButtonShape,
   ButtonSize,
-  ButtonType,
+  ButtonType
 } from '@vue-storefront/odoo-api';
 export default defineComponent({
   components: {
-    SfButton,
+    SfButton
   },
   props: {
     disabled: {
       type: Boolean,
-      default: false,
+      default: false
     },
     loading: {
       type: Boolean,
-      default: false,
+      default: false
     },
     link: {
       type: [String, Object],
-      default: null,
+      default: null
     },
     styleType: {
       type: String as PropType<ButtonType>,
-      default: ButtonType.Primary,
+      default: ButtonType.Primary
     },
     shape: {
       type: String as PropType<ButtonShape>,
-      default: ButtonShape.Round,
+      default: ButtonShape.Round
     },
     size: {
       type: String as PropType<ButtonSize>,
-      default: ButtonSize.Small,
+      default: ButtonSize.Small
     },
     color: {
       type: String as PropType<ButtonColor>,
-      default: ButtonColor.Green,
-    },
+      default: ButtonColor.Green
+    }
   },
   emits: ['click'],
   setup(props) {
@@ -107,9 +107,9 @@ export default defineComponent({
     );
 
     return {
-      classes,
+      classes
     };
-  },
+  }
 });
 </script>
 

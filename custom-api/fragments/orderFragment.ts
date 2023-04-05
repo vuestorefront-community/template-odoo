@@ -39,6 +39,16 @@ const query = `
       quantity
       priceTotal
     }
+    lastTransaction{
+      payment{
+        name
+        amount
+        paymentReference
+      }
+      acquirer
+      state
+      amount
+    }
     orderLines {
       id
       name
@@ -48,37 +58,7 @@ const query = `
       quantity
       priceTotal
     }
-    customerId {
-      id
-      firstName
-      lastName
-      phone
-      email
-    }
-    remoteCustomerId {
-      id
-      firstName
-      lastName
-      phone
-      email
-    }
-    receivingAgentId {
-      id
-      name
-      county {
-        id
-        name
-      }
-      town {
-        id
-        name
-      }
-      village {
-        id
-        name
-      }
-    }
-    partnerInvoice {
+     partnerInvoice {
       id
       name
       street
@@ -106,8 +86,6 @@ const query = `
       name
       price
     }
-    rcComments
-    raComments
   }
 `;
 

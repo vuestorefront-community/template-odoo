@@ -300,9 +300,31 @@ export default {
       form.value.selectedMethodShipping = method;
     };
 
+    const setPreviousShippingData = () => {
+      if (shipping.value) {
+        if (shipping.value.name === 'Public user') {
+          shipping.value.name = '';
+          return;
+        }
+        const { name, street, city, state, country, zip, phone, id } = shipping.value;
+        const element = {
+          id,
+          name,
+          street,
+          city,
+          state: state.id !== 'undefined' ? state : { id: '' },
+          country: country.id !== 'undefined' ? country : { id: '' },
+          zip,
+          phone,
+          selectedMethodShipping: null
+        };
+        form.value = element;
+      }
+    };
     onMounted(async () => {
       await search();
       await loadShipping();
+      setPreviousShippingData();
       formRef.value.validate({ silent: true });
     });
 
