@@ -186,7 +186,7 @@ import {
   useShipping,
   useCart,
   cartGetters,
-  useUserShipping,
+  useUserShipping
 } from '@vue-storefront/odoo';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
 
@@ -202,7 +202,7 @@ export default {
     UserShippingAddresses: () =>
       import('~/components/Checkout/UserShippingAddresses.vue'),
     VsfShippingProvider: () =>
-      import('~/components/Checkout/VsfShippingProvider'),
+      import('~/components/Checkout/VsfShippingProvider')
   },
   setup(props, { root, emit }) {
     const isFormSubmitted = ref(false);
@@ -230,7 +230,7 @@ export default {
       country: { id: '' },
       zip: '',
       phone: null,
-      selectedMethodShipping: null,
+      selectedMethodShipping: null
     });
 
     const handleFormSubmit = async () => {
