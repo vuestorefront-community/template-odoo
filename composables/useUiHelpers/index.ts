@@ -29,7 +29,11 @@ const useUiHelpers = (): any => {
     if (query) {
       Object.keys(query).forEach((filterKey) => {
         if (![...queryParamsNotFilters, 'price'].includes(filterKey)) {
-          filters.push(Number(query[filterKey].slice(0, 2)));
+          if(query[filterKey].includes(',')){
+            filters.push(Number(query[filterKey]));
+          }else{
+            filters.push(Number(query[filterKey].slice(0, 2)));
+          }
         }
       });
     }
