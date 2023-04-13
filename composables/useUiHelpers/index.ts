@@ -106,7 +106,17 @@ const useUiHelpers = (): any => {
       formatedFilters[element.filterName] = element.id;
     });
 
-    router.push({ query: formatedFilters });
+    let allQuery = {};
+    if (filters.length > 0) {
+      allQuery = { ...query, ...formatedFilters };
+    } else {
+      allQuery = { ...formatedFilters };
+      if (query.itemsPerPage) {
+        allQuery = { itemsPerPage: query.itemsPerPage };
+      }
+    }
+
+    router.push({ query: allQuery });
   };
 
   const changeItemsPerPage = (itemsPerPage) => {
