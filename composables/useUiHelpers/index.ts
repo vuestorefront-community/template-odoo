@@ -29,7 +29,7 @@ const useUiHelpers = (): any => {
     if (query) {
       Object.keys(query).forEach((filterKey) => {
         if (![...queryParamsNotFilters, 'price'].includes(filterKey)) {
-          filters.push(Number(query[filterKey]));
+          filters.push(Number(query[filterKey].slice(0, 2)));
         }
       });
     }
@@ -86,8 +86,8 @@ const useUiHelpers = (): any => {
       valueList.forEach((value) => {
         const item = {
           filterName: label,
-          label: value,
-          id: value
+          label: `${value.slice(0, 2)}`,
+          id: `${value.slice(0, 2)}`
         };
         formatedFilters.push(item);
       });
@@ -100,10 +100,10 @@ const useUiHelpers = (): any => {
     const formatedFilters = {};
     filters.forEach((element) => {
       if (formatedFilters[element.filterName]) {
-        formatedFilters[element.filterName] += `,${element.id}`;
+        formatedFilters[element.filterName] += `,${element.id}-${element.label}`;
         return;
       }
-      formatedFilters[element.filterName] = element.id;
+      formatedFilters[element.filterName] = `${element.id}-${element.label}`;
     });
 
     router.push({ query: formatedFilters });
