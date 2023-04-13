@@ -104,10 +104,10 @@ const useUiHelpers = (): any => {
     const formatedFilters = {};
     filters.forEach((element) => {
       if (formatedFilters[element.filterName]) {
-        formatedFilters[element.filterName] += `,${element.id}`;
+        formatedFilters[element.filterName] += `,${element.id}-${element.label}`;
         return;
       }
-      formatedFilters[element.filterName] = element.id;
+      formatedFilters[element.filterName] = `${element.id}-${element.label}`;
     });
 
     let allQuery = {};
