@@ -164,7 +164,7 @@ const useUiHelpers = (): any => {
 
     let allQuery = {};
     if (filters.length > 0) {
-      allQuery = { ...formatedFilters };
+      allQuery = { ...query, ...formatedFilters };
     } else {
       allQuery = { ...formatedFilters };
       if (query.itemsPerPage) {
@@ -173,9 +173,6 @@ const useUiHelpers = (): any => {
     }
 
     router.push({ query: allQuery });
-  };
-  const clearAllFilters = () => {
-    router.push({ query: {} });
   };
 
   const changeItemsPerPage = (itemsPerPage) => {
