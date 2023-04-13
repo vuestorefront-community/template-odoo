@@ -104,13 +104,23 @@ const useUiHelpers = (): any => {
     const formatedFilters = {};
     filters.forEach((element) => {
       if (formatedFilters[element.filterName]) {
-        formatedFilters[element.filterName] += `,${element.id}-${element.label}`;
+        formatedFilters[element.filterName] += `,${element.id}`;
         return;
       }
-      formatedFilters[element.filterName] = `${element.id}-${element.label}`;
+      formatedFilters[element.filterName] = element.id;
     });
 
-    router.push({ query: formatedFilters });
+    let allQuery = {};
+    if (filters.length > 0) {
+      allQuery = { ...query, ...formatedFilters };
+    } else {
+      allQuery = { ...formatedFilters };
+      if (query.itemsPerPage) {
+        allQuery = { itemsPerPage: query.itemsPerPage };
+      }
+    }
+
+    router.push({ query: allQuery });
   };
 
   const changeItemsPerPage = (itemsPerPage) => {
