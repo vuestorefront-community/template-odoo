@@ -24,8 +24,6 @@ const useUiHelpers = (): any => {
     return path;
   };
 
-
-
   const getAttributeValues = (filterKey, value) => {
     const { result } = useFacet();
     const facets = [
@@ -37,16 +35,16 @@ const useUiHelpers = (): any => {
       ...facetGetters.getGrouped(result?.value, ['color', 'size'])
     ];
     const attribute = facets?.find(item => {
-      return item.label == filterKey
-    })
-    let option = {}
+      return item.label == filterKey;
+    });
+    let option = {};
     if (attribute) {
       option = attribute?.options.find(item => {
-        return Number(item.value) === Number(value.slice(0,2))
-      })
+        return Number(item.value) === Number(value.slice(0, 2));
+      });
     }
     return option;
-  }
+  };
 
   const getFacetsFromURL = (): ParamsFromUrl => {
     const filters: string[] = [];
@@ -55,9 +53,9 @@ const useUiHelpers = (): any => {
         if (![...queryParamsNotFilters, 'price'].includes(filterKey)) {
           if (query[filterKey].includes(',')) {
             query[filterKey]?.split(',').forEach(label => {
-              const getProperAttribute = getAttributeValues(filterKey, label?.split('-')[0])
+              const getProperAttribute = getAttributeValues(filterKey, label?.split('-')[0]);
               filters.push(getProperAttribute?.id);
-            })
+            });
           } else {
             const label = query[filterKey]?.split(',')[0];
             const getProperAttribute = getAttributeValues(filterKey, label);
@@ -85,7 +83,7 @@ const useUiHelpers = (): any => {
       price,
       page,
       sort
-    }
+    };
 
     return {
       fetchCategory: true,
@@ -124,7 +122,7 @@ const useUiHelpers = (): any => {
       const valueList = query[label].split(',');
 
       valueList.forEach((value) => {
-        if(label === 'price') {
+        if (label === 'price') {
           const item = {
             filterName: label,
             label: `${value.slice(0, 2)}`,
@@ -132,7 +130,7 @@ const useUiHelpers = (): any => {
           };
           formatedFilters.push(item);
         } else {
-          const newVal = value?.split('-')
+          const newVal = value?.split('-');
           const item = {
             filterName: label,
             label: `${newVal[1] ?? newVal[0]}`,
@@ -149,7 +147,7 @@ const useUiHelpers = (): any => {
   const changeFilters = (filters) => {
     const formatedFilters = {};
     filters.forEach((element) => {
-      if(element.filterName == "Size") {
+      if (element.filterName == 'Size') {
         if (formatedFilters[element.filterName]) {
           formatedFilters[element.filterName] += `,${element.id}-${element.label}`;
           return;
@@ -173,8 +171,6 @@ const useUiHelpers = (): any => {
         allQuery = { itemsPerPage: query.itemsPerPage };
       }
     }
-
-    delete allQuery.page
 
     router.push({ query: allQuery });
   };
