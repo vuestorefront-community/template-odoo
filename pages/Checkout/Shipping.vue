@@ -24,7 +24,6 @@
             :label="$t('First name')"
             name="firstName"
             class="form__element"
-            required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           />
@@ -40,7 +39,6 @@
             :label="$t('Street name')"
             name="streetName"
             class="form__element"
-            required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           />
@@ -57,7 +55,6 @@
             :label="$t('City')"
             name="city"
             class="form__element form__element--half"
-            required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           />
@@ -73,7 +70,6 @@
             :label="$t('Zip-code')"
             name="zipCode"
             class="form__element form__element--half form__element--half-even"
-            required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           />
@@ -88,11 +84,7 @@
             v-model="form.country.id"
             :label="$t('Country')"
             name="country"
-            class="
-              form__element form__element--half form__select
-              sf-select--underlined
-            "
-            required
+            class="form__element form__element--half sf-select--underlined"
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           >
@@ -124,7 +116,6 @@
             :class="[
               countryStates && countryStates.length ? 'visible' : 'invisible',
             ]"
-            required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           >
@@ -149,7 +140,6 @@
             :label="$t('Phone number')"
             name="phone"
             class="form__element form__element--half"
-            required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           />
@@ -175,7 +165,11 @@
         @submit="$router.push(localePath('/checkout/billing'))"
         @selectedMethod="handleSelectedMethodShipping"
       />
-      <SfButton type="submit" class="sf-button--full-width mt-4">
+      <SfButton
+        @click="formFieldAutoFocusSet"
+        type="submit"
+        class="sf-button--full-width mt-4"
+      >
         {{ $t("Continue to billing") }}
       </SfButton>
     </form>
@@ -253,7 +247,30 @@ export default {
         root.$router.push(root.localePath('/checkout/billing'));
       else root.$router.push(root.localePath('/my-account/shipping-details'));
 
-      emit('finish', true);
+      emit("finish", true);
+    };
+
+    const formFieldAutoFocusSet = () => {
+      formRef.value.validate().then((isValid) => {
+        setTimeout(() => {
+          const errors = formRef.value.errors;
+          const errorFields = [];
+          for (const [key, value] of Object.entries(errors)) {
+            if (value[0]) {
+              errorFields.push(key);
+            }
+          }
+          const [first] = errorFields;
+          if (!isValid) {
+            const el = document.querySelector(`input[name=${first}]`);
+            if (el) {
+              el.focus();
+            } else {
+              document.querySelector(`select[name=${first}]`).focus();
+            }
+          }
+        }, 100);
+      });
     };
 
     const hasSavedShippingAddress = computed(() => {
@@ -345,7 +362,8 @@ export default {
       form,
       countries,
       countryStates,
-      handleFormSubmit
+      handleFormSubmit,
+      formFieldAutoFocusSet,
     };
   }
 };
