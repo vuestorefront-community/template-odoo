@@ -2316,6 +2316,34 @@
     mustache "^2.3.0"
     stack-trace "0.0.10"
 
+"@odoogap/odoo-api@1.5.2-rc.3", "@vue-storefront/odoo-api@npm:@odoogap/odoo-api@^1.5.2-rc.3":
+  version "1.5.2-rc.3"
+  resolved "https://registry.yarnpkg.com/@odoogap/odoo-api/-/odoo-api-1.5.2-rc.3.tgz#e1dc95a68b7da6756cd074b15aa2447c5cb5f1bc"
+  integrity sha512-O7sZBI+bof354ftxfUMRiz8XoOUu4JmIKgWi4VSZrM56XzGnTmyFZ8YTTXc5osDNMrh6jGW3B5dq7klmPxccfQ==
+  dependencies:
+    "@vue-storefront/core" "2.7.5"
+    apollo-cache-inmemory "^1.6.6"
+    apollo-client "^2.6.10"
+    apollo-link "^1.2.14"
+    apollo-link-error "^1.1.13"
+    apollo-link-http "^1.5.17"
+    graphql "^15.5.0"
+    graphql-tag "^2.12.4"
+    ioredis "^5.2.4"
+    isomorphic-fetch "^3.0.0"
+    redis-tag-cache "^1.2.1"
+    request-ip "^3.3.0"
+
+"@odoogap/odoo@1.5.2-rc.3", "@vue-storefront/odoo@npm:@odoogap/odoo@^1.5.2-rc.3":
+  version "1.5.2-rc.3"
+  resolved "https://registry.yarnpkg.com/@odoogap/odoo/-/odoo-1.5.2-rc.3.tgz#e8f27e20403add6c0be4e47f44fb50048a89cc04"
+  integrity sha512-vg40KOOIucgi+gffQIt3spXTNodrYYXbnra68LmQcZZqJjFxpJd9N8YYUBQyaVV+zbPan/+qt3YkbwyWnkTtBw==
+  dependencies:
+    "@nuxtjs/composition-api" "0.31.0"
+    "@odoogap/odoo-api" "1.5.2-rc.3"
+    "@vue-storefront/core" "2.7.5"
+    winston "^3.8.2"
+
 "@polka/url@^1.0.0-next.20":
   version "1.0.0-next.21"
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.21.tgz#5de5a2385a35309427f6011992b544514d559aa1"
@@ -3084,25 +3112,14 @@
     regenerator-runtime "^0.13.9"
     systemjs "^6.12.1"
 
-"@vue-storefront/cache@^2.5.4":
+"@vue-storefront/cache@^2.7.5":
   version "2.7.5"
   resolved "https://registry.yarnpkg.com/@vue-storefront/cache/-/cache-2.7.5.tgz#8dcbea5eb871e946d296ec057b7f5fdfc83bf944"
   integrity sha512-pibNOdaMRIsmGBhGNXwPbLbQGYhuXCSOX40uL3gqzl48Z8X5075465GPN0Ja6gv/ou6S0EHS2VObGltYj3zRNA==
   dependencies:
     "@vue-storefront/core" "~2.7.5"
 
-"@vue-storefront/core@2.5.6":
-  version "2.5.6"
-  resolved "https://registry.yarnpkg.com/@vue-storefront/core/-/core-2.5.6.tgz#dfbfce48487a9a4a6b34576fb23d625ed0ebfada"
-  integrity sha512-+nJHlcUdn0hJs0lD4AdxGZzLj3GrI9wXvPw1SFR4i2q0cJDiaCyoX/13e7BuRbJOuI8Cnoe/oK+O9VWZXrvXOQ==
-  dependencies:
-    axios "0.21.1"
-    express "^4.17.1"
-    is-https "^3.0.2"
-    lodash-es "^4.17.15"
-    vue "^2.6.11"
-
-"@vue-storefront/core@~2.7.5":
+"@vue-storefront/core@2.7.5", "@vue-storefront/core@~2.7.5":
   version "2.7.5"
   resolved "https://registry.yarnpkg.com/@vue-storefront/core/-/core-2.7.5.tgz#69b629d1c540f52e39220de18fb6e836552ea240"
   integrity sha512-mtUXY5FtFEUKUDcaOWGvOuYpPzT9nMvbJ1Z8CjcT48y4bEEnaq6doiAsMFGXGvUFJzOXqXiN3jpRZ3q9QRAsyA==
@@ -3112,30 +3129,37 @@
     lodash-es "^4.17.15"
     vue "^2.6.11"
 
-"@vue-storefront/middleware@2.5.4":
-  version "2.5.4"
-  resolved "https://registry.yarnpkg.com/@vue-storefront/middleware/-/middleware-2.5.4.tgz#d4a953d7aa88f65ca2710c235370a14d1ba57a50"
-  integrity sha512-6tBY5PkzL3fZgAo4fS89fPmSOUaU8ahgSaLFrK8h7aj67vOYPnmv/EHl1HP6MyottmmJpxZdSDEmvwNd6QtQgg==
+"@vue-storefront/http-cache@^2.7.5":
+  version "2.7.5"
+  resolved "https://registry.yarnpkg.com/@vue-storefront/http-cache/-/http-cache-2.7.5.tgz#bc8dadeeea6de519f05761f4bdb86d7ae1f491ea"
+  integrity sha512-sfmnYyFnS2KfsNw267IzbphPQafyl01+/aHVl2oiFftahTH+l4WRVTgALzXkp1rsgjLqlVctahkrYA6YQzWOGQ==
+
+"@vue-storefront/middleware@2.7.5":
+  version "2.7.5"
+  resolved "https://registry.yarnpkg.com/@vue-storefront/middleware/-/middleware-2.7.5.tgz#b4654a7a08264973347153daa3d11345d35233bb"
+  integrity sha512-K79iuf8vLF5XbW65Ycx46jahTpIaI4Nim+Yl3guT+k8it3U3OQsjbI0K0ExALPOGDxwpIMxbQzKlCa3ACvF0+w==
   dependencies:
+    "@vue-storefront/core" "~2.7.5"
     consola "2.15.3"
     cookie-parser "^1.4.5"
     cors "^2.8.5"
     express "^4.17.1"
+    helmet "^5.0.2"
 
-"@vue-storefront/nuxt-theme@2.5.4":
-  version "2.5.4"
-  resolved "https://registry.yarnpkg.com/@vue-storefront/nuxt-theme/-/nuxt-theme-2.5.4.tgz#7a8172836929afaf23825054d954414cf46cb859"
-  integrity sha512-X+y9eQ+2RSgx3nHUKMKiYUVP+016gxR9CgjD19DIM7Mezy6P6oos7Qbpkjm7yBObfHLl8bo1q8VSmxyVgntRaA==
+"@vue-storefront/nuxt-theme@2.7.5":
+  version "2.7.5"
+  resolved "https://registry.yarnpkg.com/@vue-storefront/nuxt-theme/-/nuxt-theme-2.7.5.tgz#be4671a6692e0db50d24950ca61fe3e1316fb1dc"
+  integrity sha512-6R3qpWlezBA9n5unRMvBk7BVjCLETCxEuTEXYtxGRuSqoJKm7jrAVwxVJ/UiJTrz7G/Wuxh20EX+MecgLRqWyQ==
   dependencies:
     ejs "^3.0.2"
     lodash.debounce "^4.0.8"
     lodash.merge "^4.6.2"
     vue-lazy-hydration "^2.0.0-beta.4"
 
-"@vue-storefront/nuxt@2.5.4":
-  version "2.5.4"
-  resolved "https://registry.yarnpkg.com/@vue-storefront/nuxt/-/nuxt-2.5.4.tgz#29d8fc368e66c7e46aed164654a92942208cc08b"
-  integrity sha512-qIbPlO2v/XmgRy6TqhtnDm4EtWbZt7/dIMfYJGhjH9/zdl4YymEymhpKSAt91zdlhALJq3maiSAOdLKi1XxH0w==
+"@vue-storefront/nuxt@2.7.5":
+  version "2.7.5"
+  resolved "https://registry.yarnpkg.com/@vue-storefront/nuxt/-/nuxt-2.7.5.tgz#bb79f17aa8cb7233bf460e827362c16dfc0e3cb3"
+  integrity sha512-I0hoxPy5Re2honlvETQsrgSlyy7zdfpOmkqZ/ME6cH4rpfRN317B+5ijqVQzY9j+K64AKyoHqhg0Os0yjypWIA==
   dependencies:
     "@nuxt/typescript-build" "^2.0.0"
     "@nuxtjs/composition-api" "^0.29.3"
@@ -3145,34 +3169,6 @@
     consola "^2.10.1"
     lodash "^4.17.15"
     nuxt-purgecss "^1.0.0"
-
-"@vue-storefront/odoo-api@1.4.3-rc.18":
-  version "1.4.3-rc.18"
-  resolved "https://registry.yarnpkg.com/@vue-storefront/odoo-api/-/odoo-api-1.4.3-rc.18.tgz#2fbeef4cfdc8405c0247a692a4f55292b98ebb3a"
-  integrity sha512-Xb9lKDBeZrZNhfg6X5uXQ43ZUzK94EflAHi4g2eQMkO2A+sGNxGyOVP4VdSdG8rUOt6ZG9JhrcXwZRT3hgdtiQ==
-  dependencies:
-    "@vue-storefront/core" "2.5.6"
-    apollo-cache-inmemory "^1.6.6"
-    apollo-client "^2.6.10"
-    apollo-link "^1.2.14"
-    apollo-link-error "^1.1.13"
-    apollo-link-http "^1.5.17"
-    graphql "^15.5.0"
-    graphql-tag "^2.12.4"
-    ioredis "^5.2.4"
-    isomorphic-fetch "^3.0.0"
-    redis-tag-cache "^1.2.1"
-    request-ip "^3.3.0"
-
-"@vue-storefront/odoo@1.4.3-rc.18":
-  version "1.4.3-rc.18"
-  resolved "https://registry.yarnpkg.com/@vue-storefront/odoo/-/odoo-1.4.3-rc.18.tgz#8a296db7cf45d4d64145546a0ebf0f31cdb930b0"
-  integrity sha512-gyoCV4FFnm5LNHiiwfX2pG6FvL+VIa892GJ27n6bFkELVwTF6NJLCaYyMts9DmoBGAnXtHkvaIWusCFxtu9t4Q==
-  dependencies:
-    "@nuxtjs/composition-api" "0.31.0"
-    "@vue-storefront/core" "2.5.6"
-    "@vue-storefront/odoo-api" "1.4.3-rc.18"
-    winston "^3.8.2"
 
 "@vue-storefront/redis-cache@^1.0.1":
   version "1.0.1"
@@ -4091,13 +4087,6 @@ axios-retry@^3.1.9:
   dependencies:
     "@babel/runtime" "^7.15.4"
     is-retry-allowed "^2.2.0"
-
-axios@0.21.1:
-  version "0.21.1"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.1.tgz#22563481962f4d6bde9a76d516ef0e5d3c09b2b8"
-  integrity sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==
-  dependencies:
-    follow-redirects "^1.10.0"
 
 axios@0.22.0:
   version "0.22.0"
@@ -8107,7 +8096,7 @@ fn.name@1.x.x:
   resolved "https://registry.yarnpkg.com/fn.name/-/fn.name-1.1.0.tgz#26cad8017967aea8731bc42961d04a3d5988accc"
   integrity sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==
 
-follow-redirects@^1.0.0, follow-redirects@^1.10.0, follow-redirects@^1.14.0:
+follow-redirects@^1.0.0, follow-redirects@^1.14.0:
   version "1.14.7"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.7.tgz#2004c02eb9436eee9a21446a6477debf17e81685"
   integrity sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ==
@@ -8759,6 +8748,11 @@ he@1.2.0, he@^1.1.0, he@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
+
+helmet@^5.0.2:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/helmet/-/helmet-5.1.1.tgz#609823c5c2e78aea62dd9afc8f544ca409da5e85"
+  integrity sha512-/yX0oVZBggA9cLJh8aw3PPCfedBnbd7J2aowjzsaWwZh7/UFY0nccn/aHAggIgWUFfnykX8GKd3a1pSbrmlcVQ==
 
 hex-color-regex@^1.1.0:
   version "1.1.0"
@@ -9526,11 +9520,6 @@ is-https@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/is-https/-/is-https-2.0.2.tgz#7009d303c72580f15897d5c063d6b6bc1f838fef"
   integrity sha512-UfUCKVQH/6PQRCh5Qk9vNu4feLZiFmV/gr8DjbtJD0IrCRIDTA6E+d/AVFGPulI5tqK5W45fYbn1Nir1O99rFw==
-
-is-https@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/is-https/-/is-https-3.0.2.tgz#4d24e002e47edd3f1b07f14bc722433354ccba49"
-  integrity sha512-jFgAKhbNF7J+lTMJxbq5z9bf1V9f8rXn9mP5RSY2GUEW5M0nOiVhVC9dNra96hQDjGpNzskIzusUnXwngqmhAA==
 
 is-https@^4.0.0:
   version "4.0.0"
