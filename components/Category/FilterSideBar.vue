@@ -172,7 +172,7 @@ export default defineComponent({
 
     const isFilterSelected = (facet, option) => {
       return selectedFilters.value.some(
-        (filter) => String(filter.id) === String(option.label)
+        (filter) => String(filter.id) === String(option.value)
       );
     };
 
