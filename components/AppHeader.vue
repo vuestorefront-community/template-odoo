@@ -41,7 +41,7 @@
           </SfButton>
           <SfButton
             class="sf-button--pure sf-header__action"
-            @click="toggleWishlistSidebar"
+            @click="handleWishlistSideBarClick"
           >
             <SfIcon
               class="sf-header__icon"
@@ -51,7 +51,7 @@
           </SfButton>
           <SfButton
             class="sf-button--pure sf-header__action"
-            @click="toggleCartSidebar"
+            @click="handleCartSideBarClick"
           >
             <SfIcon class="sf-header__icon" icon="empty_cart" size="1.25rem" />
 
@@ -171,7 +171,7 @@ export default {
 
     const cartTotalItems = computed(() => {
       const count = cartGetters.getTotalItems(cart.value);
-      return count ? count.toString() : null;
+      return count ? count.toString() : root.$cookies.get('cart-size');
     });
     const accountIcon = computed(() =>
       isAuthenticated.value ? 'profile_fill' : 'profile'
@@ -227,6 +227,16 @@ export default {
       toggleLoginModal();
     };
 
+    const handleCartSideBarClick = async () => {
+      await loadCart();
+      toggleCartSidebar();
+    };
+
+    const handleWishlistSideBarClick = async () => {
+      await loadWishlist();
+      toggleWishlistSidebar();
+    };
+
     const filteredTopCategories = computed(() =>
       topCategories.value?.filter(
         (cat) => cat.name === 'WOMEN' || cat.name === 'MEN'
@@ -251,15 +261,13 @@ export default {
         searchTopCategoryApi({
           filter: { parent: true }
         }),
-        loadUser(),
-        loadWishlist(),
-        loadCart()
+        loadUser()
       ]);
     });
 
     return {
       wishlistHasItens: computed(
-        () => wishlist.value?.wishlistItems.length > 0
+        () => (wishlist.value?.wishlistItems.length > 0) || (root.$cookies.get('wishlist-size') > 0)
       ),
       filteredTopCategories,
       accountIcon,
@@ -269,8 +277,8 @@ export default {
       isSearchOpen,
       searchBarRef,
       handleAccountClick,
-      toggleCartSidebar,
-      toggleWishlistSidebar,
+      handleCartSideBarClick,
+      handleWishlistSideBarClick,
       changeSearchTerm,
       formatedResult,
       term,
