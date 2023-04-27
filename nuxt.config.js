@@ -98,7 +98,6 @@ export default {
       cleanupOutdatedCaches: true,
       preCaching: [
         '/error/error.svg',
-        '/icons/*',
         '/favicon.ico'
       ]
     }
