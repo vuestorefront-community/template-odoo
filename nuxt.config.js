@@ -155,6 +155,9 @@ export default {
   ],
   publicRuntimeConfig: {
     theme,
+    middlewareUrl: process.env.NODE_ENV === 'production'
+      ? `${process.env.BASE_URL}/api/}` 
+      : 'http://localhost:3000/api/',
     baseURL: process.env.BASE_URL,
     siteURL: process.env.SITE_URL
   },

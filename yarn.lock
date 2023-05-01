@@ -2316,34 +2316,6 @@
     mustache "^2.3.0"
     stack-trace "0.0.10"
 
-"@odoogap/odoo-api@1.5.2-rc.3", "@vue-storefront/odoo-api@npm:@odoogap/odoo-api@^1.5.2-rc.3":
-  version "1.5.2-rc.3"
-  resolved "https://registry.yarnpkg.com/@odoogap/odoo-api/-/odoo-api-1.5.2-rc.3.tgz#e1dc95a68b7da6756cd074b15aa2447c5cb5f1bc"
-  integrity sha512-O7sZBI+bof354ftxfUMRiz8XoOUu4JmIKgWi4VSZrM56XzGnTmyFZ8YTTXc5osDNMrh6jGW3B5dq7klmPxccfQ==
-  dependencies:
-    "@vue-storefront/core" "2.7.5"
-    apollo-cache-inmemory "^1.6.6"
-    apollo-client "^2.6.10"
-    apollo-link "^1.2.14"
-    apollo-link-error "^1.1.13"
-    apollo-link-http "^1.5.17"
-    graphql "^15.5.0"
-    graphql-tag "^2.12.4"
-    ioredis "^5.2.4"
-    isomorphic-fetch "^3.0.0"
-    redis-tag-cache "^1.2.1"
-    request-ip "^3.3.0"
-
-"@odoogap/odoo@1.5.2-rc.3", "@vue-storefront/odoo@npm:@odoogap/odoo@^1.5.2-rc.3":
-  version "1.5.2-rc.3"
-  resolved "https://registry.yarnpkg.com/@odoogap/odoo/-/odoo-1.5.2-rc.3.tgz#e8f27e20403add6c0be4e47f44fb50048a89cc04"
-  integrity sha512-vg40KOOIucgi+gffQIt3spXTNodrYYXbnra68LmQcZZqJjFxpJd9N8YYUBQyaVV+zbPan/+qt3YkbwyWnkTtBw==
-  dependencies:
-    "@nuxtjs/composition-api" "0.31.0"
-    "@odoogap/odoo-api" "1.5.2-rc.3"
-    "@vue-storefront/core" "2.7.5"
-    winston "^3.8.2"
-
 "@polka/url@^1.0.0-next.20":
   version "1.0.0-next.21"
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.21.tgz#5de5a2385a35309427f6011992b544514d559aa1"
@@ -3169,6 +3141,34 @@
     consola "^2.10.1"
     lodash "^4.17.15"
     nuxt-purgecss "^1.0.0"
+
+"@vue-storefront/odoo-api@1.5.2-rc.3":
+  version "1.5.2-rc.3"
+  resolved "https://registry.yarnpkg.com/@vue-storefront/odoo-api/-/odoo-api-1.5.2-rc.3.tgz#e730dd7b9825eb98caa1a3921c41713bbb85ca92"
+  integrity sha512-/9awQu4vbzaAEBWXSSlYqSYA/UkL55XUDbktW5rXy4eWzeA3YRKTzW/rXfEEtxw5NUmXhTiCE1m27mTVfBu3MQ==
+  dependencies:
+    "@vue-storefront/core" "2.7.5"
+    apollo-cache-inmemory "^1.6.6"
+    apollo-client "^2.6.10"
+    apollo-link "^1.2.14"
+    apollo-link-error "^1.1.13"
+    apollo-link-http "^1.5.17"
+    graphql "^15.5.0"
+    graphql-tag "^2.12.4"
+    ioredis "^5.2.4"
+    isomorphic-fetch "^3.0.0"
+    redis-tag-cache "^1.2.1"
+    request-ip "^3.3.0"
+
+"@vue-storefront/odoo@1.5.2-rc.3":
+  version "1.5.2-rc.3"
+  resolved "https://registry.yarnpkg.com/@vue-storefront/odoo/-/odoo-1.5.2-rc.3.tgz#c99cc71f968fc90276580640e9026a363dbd5c43"
+  integrity sha512-PP4GQ0i/p4ENrrkCmyG0lkAveOSOK8kb/qhxqKAGTIl3fCA0nbgrlOQK/ezhx6mgUtBKZcZezJAckcp5EUSS7w==
+  dependencies:
+    "@nuxtjs/composition-api" "0.31.0"
+    "@vue-storefront/core" "2.7.5"
+    "@vue-storefront/odoo-api" "1.5.2-rc.3"
+    winston "^3.8.2"
 
 "@vue-storefront/redis-cache@^1.0.1":
   version "1.0.1"
