@@ -155,7 +155,6 @@ export default {
   ],
   publicRuntimeConfig: {
     theme,
-    middlewareUrl: `${process.env.SITE_URL}api/`,
     baseURL: process.env.BASE_URL,
     siteURL: process.env.SITE_URL
   },
