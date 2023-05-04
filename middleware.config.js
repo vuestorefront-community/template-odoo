@@ -1,5 +1,5 @@
 const https = require('https');
-const isDev = process.env.NODE_ENV !== 'production';
+const odooRequestIsHttps = process.env.BASE_URL?.toLowerCase()?.includes('https')
 
 const odooBaseUrl = process.env.BACKEND_BASE_URL || process.env.BASE_URL;
 const graphqlBaseUrl = `${odooBaseUrl}graphql/vsf`;
@@ -8,11 +8,11 @@ const baseDomain = process.env.SITE_URL?.replace('https://', '')?.slice(0, -1) |
 const extendApiMethods = require('./custom-api/api');
 const customQueries = require('./custom-api/customQueries');
 
-const fetchOptions = isDev ? {} : {
+const fetchOptions = odooRequestIsHttps ? {
   agent: new https.Agent({
     rejectUnauthorized: false
   })
-};
+} : {};
 
 module.exports = {
   integrations: {
