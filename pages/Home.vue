@@ -135,6 +135,8 @@ import { useUiState } from '../composables';
 import { useNewsLetter } from '@vue-storefront/odoo';
 import { addBasePath } from '@vue-storefront/core';
 import { useUiNotification } from '~/composables';
+import { onSSR } from '@vue-storefront/core';
+import { useCache, CacheTagPrefix } from '@vue-storefront/cache';
 
 export default {
   name: 'Home',
@@ -159,6 +161,7 @@ export default {
     const { sendSubscription, loading } = useNewsLetter();
     const { toggleNewsletterModal } = useUiState();
     const { send } = useUiNotification();
+    const { addTags } = useCache();
 
     const products = ref([
       {
@@ -305,6 +308,15 @@ export default {
     const toggleWishlist = (index) => {
       products.value[index].isInWishlist = !products.value[index].isInWishlist;
     };
+
+    onSSR(async () => {
+      addTags([
+        {
+          prefix: CacheTagPrefix.View,
+          value: '-HOME'
+        }
+      ]);
+    });
 
     return {
       toggleWishlist,

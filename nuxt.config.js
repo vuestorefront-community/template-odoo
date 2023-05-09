@@ -9,6 +9,7 @@ import { format, transports } from 'winston';
 const { combine, timestamp, label, prettyPrint } = format;
 
 const isDev = process.env.NODE_ENV !== 'production';
+
 export default {
   hooks: {
     build: {
@@ -64,18 +65,15 @@ export default {
   },
   googleFonts: {
     families: {
-      Roboto: true,
-      Montserrat: {
-        wght: [100, 200, 300, 400, 500, 600, 700, 800, 900]
-      },
-      Lato: {
-        wght: [100, 300, 400, 700, 900]
-      },
       Raleway: {
-        wght: [100, 200, 300, 400, 500, 600, 700, 800, 900]
+        wght: [300, 400, 500, 600, 700]
       }
     },
-    download: false
+    download: false,
+    prefetch: true,
+    preconnect: true,
+    preload: true,
+    display: 'swap'
   },
   pwa: {
     meta: {
@@ -160,6 +158,7 @@ export default {
     siteURL: process.env.SITE_URL
   },
   modules: [
+    'nuxt-speedkit',
     '@nuxtjs/pwa',
     'nuxt-precompress',
     '@nuxt/image',
@@ -170,7 +169,7 @@ export default {
       default: 'max-age=360'
     }],
     ['@vue-storefront/cache/nuxt', {
-      enabled: (process.env.REDIS_ENABLED === 'true') || false,
+      enabled: process.env.REDIS_ENABLED === 'true',
       invalidation: {
         endpoint: '/cache-invalidate',
         key: process.env.INVALIDATION_KEY,
@@ -196,12 +195,17 @@ export default {
     '@nuxtjs/redirect-module',
     'nuxt-winston-log'
   ],
-
+  speedkit: {
+    detection: {
+      performance: true,
+      browserSupport: true
+    }
+  },
   // google tag manager
   gtm: {
     id: process.env.GOOGLE_TAG_MANAGER_ID,
     enabled: !isDev,
-    pageTracking: true,
+    pageTracking: !isDev,
     pageViewEventName: 'PageView',
     debug: process.env.NODE_ENV !== 'production'
   },
@@ -345,6 +349,9 @@ export default {
     ]
   },
   build: {
+    extractCSS: true,
+    optimizeCSS: true,
+    parallel: true,
     babel: {
       plugins: [
         ['@babel/plugin-proposal-private-property-in-object', { loose: true }]
