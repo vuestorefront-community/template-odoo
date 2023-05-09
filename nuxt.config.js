@@ -349,9 +349,9 @@ export default {
     ]
   },
   build: {
-    extractCSS: true,
-    optimizeCSS: true,
-    parallel: true,
+    extractCSS: !isDev,
+    optimizeCSS: !isDev,
+    parallel: !isDev,
     babel: {
       plugins: [
         ['@babel/plugin-proposal-private-property-in-object', { loose: true }]

@@ -323,10 +323,22 @@ export default {
       toggleNewsletterModal,
       onSubscribe,
       addBasePath,
+      firstBannerUrl: addBasePath('/homepage/bannerH.webp'),
       banners,
       heroes,
       products,
       loading
+    };
+  },
+  head () {
+    return {
+      link: [
+        {
+          rel: 'preload',
+          as: 'style',
+          href: this.firstBannerUrl
+        }
+      ]
     };
   }
 };
