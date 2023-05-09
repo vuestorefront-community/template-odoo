@@ -56,8 +56,10 @@
     "redis-tag-cache": "^1.2.1",
     "vee-validate": "^3.2.3",
     "vue-scrollto": "^2.17.1"
+    
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "7.21.0",
     "@lhci/cli": "^0.9.0",
     "@nuxt/typescript-build": "latest",
     "@vue/test-utils": "^1.0.0-beta.27",
@@ -70,5 +72,8 @@
     "tailwindcss": "^2.1.4",
     "vue-cli-plugin-tailwind": "~2.0.6",
     "vue-jest": "^4.0.0-0"
+  },
+  "resolutions": {
+    "postcss-preset-env": "^7.0.0"
   }
 }
