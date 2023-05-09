@@ -76,7 +76,7 @@
                   productGetters.getImageFilename(product)
                 )
               "
-              :nuxtImgConfig="{ fit: 'cover' }"
+              :nuxtImgConfig="{ fit: 'cover', preload: true }"
               image-tag="nuxt-img"
               :regular-price="
                 $n(productGetters.getPrice(product).regular, 'currency')
