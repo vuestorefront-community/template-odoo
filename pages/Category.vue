@@ -76,7 +76,7 @@
                   productGetters.getImageFilename(product)
                 )
               "
-              :nuxtImgConfig="{ fit: 'cover', preload: true }"
+              :nuxtImgConfig="{ loading: 'eager', fit: 'cover', preload: true }"
               image-tag="nuxt-img"
               :regular-price="
                 $n(productGetters.getPrice(product).regular, 'currency')
@@ -103,7 +103,25 @@
               @click:add-to-cart="
                 addItemToCart({ product, quantity: 1 }), toggleCartSidebar()
               "
-            />
+            >
+              <template #image>
+                <SfImage
+                  class="sf-product-card__image"
+                  :src="$image(
+                    productGetters.getCoverImage(product),
+                    216,
+                    288,
+                    productGetters.getImageFilename(product)
+                  )"
+                  :alt="productGetters.getName(product)"
+                  loading="eager"
+                  :width="216"
+                  :height="288"
+                  image-tag="nuxt-img"
+                  :nuxt-img-config="{ fit: 'cover', preload: true }"
+                />
+              </template>
+            </SfProductCard>
           </transition-group>
           <transition-group
             v-else
