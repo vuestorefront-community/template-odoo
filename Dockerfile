@@ -1,31 +1,25 @@
-FROM node:14 as vsf-pre
+FROM node:14-alpine3.17
 
 WORKDIR /app
 
 COPY . /app
 
-RUN apt-get install -y --no-install-recommends git \
-  && yarn install \
+RUN yarn install \
   --prefer-offline \
   --frozen-lockfile \
   --non-interactive \
   --production=false
 
+COPY . .
+
+ENV NODE_ENV=production
+
 RUN yarn build
 
-RUN rm -rf node_modules && \
-  NODE_ENV=development yarn install \
-  --prefer-offline \
-  --pure-lockfile \
-  --non-interactive \
-  --production=false
+EXPOSE 3000
 
-FROM node:14 as vsf2
+ENV NUXT_HOST=0.0.0.0
+ENV NUXT_PORT=3000
 
-WORKDIR /app
 
-COPY --from=vsf-pre /app  .
-
-ENV HOST 0.0.0.0
-
-CMD [ "yarn", "start" ]
+CMD [ "npm", "start" ]

@@ -1,6 +1,6 @@
 {
   "name": "@vue-storefront/odoo-theme",
-  "version": "1.4.0",
+  "version": "1.5.1",
   "private": true,
   "scripts": {
     "build": "cross-var nuxt build -m --dotenv $VSF_RC",
@@ -42,7 +42,7 @@
     "@vue-storefront/middleware": "2.7.5",
     "@vue-storefront/nuxt": "2.7.5",
     "@vue-storefront/nuxt-theme": "2.7.5",
-    "@vue-storefront/odoo": "1.5.1",
+    "@vue-storefront/odoo": "1.5.2-rc.4",
     "@vue-storefront/redis-cache": "^1.0.1",
     "cookie-universal-nuxt": "^2.1.3",
     "core-js": "^2.6.5",
@@ -51,6 +51,7 @@
     "nuxt": "^2.15.8",
     "nuxt-i18n": "^6.5.0",
     "nuxt-precompress": "^0.5.9",
+    "nuxt-speedkit": "^2.2.0",
     "nuxt-winston-log": "^1.2.0",
     "object-hash": "^3.0.0",
     "redis-tag-cache": "^1.2.1",
@@ -58,6 +59,7 @@
     "vue-scrollto": "^2.17.1"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "7.21.0",
     "@lhci/cli": "^0.9.0",
     "@nuxt/typescript-build": "latest",
     "@vue/test-utils": "^1.0.0-beta.27",
@@ -70,5 +72,8 @@
     "tailwindcss": "^2.1.4",
     "vue-cli-plugin-tailwind": "~2.0.6",
     "vue-jest": "^4.0.0-0"
+  },
+  "resolutions": {
+    "postcss-preset-env": "^7.0.0"
   }
 }

@@ -28,6 +28,8 @@ const useCart = () : any => {
 
       setCart(data.cart);
       error.value.load = null;
+      context.$odoo.config.app.$cookies.set('cart-size', cart?.value?.order?.orderLines?.length || 0);
+
     } catch (err) {
       error.value.load = err;
       Logger.error('useCart-load-error', err);
@@ -49,6 +51,8 @@ const useCart = () : any => {
       throwErrors(errors);
 
       setCart(data.cartUpdateItem);
+      context.$odoo.config.app.$cookies.set('cart-size', cart?.value?.order?.orderLines?.length || 0);
+
       error.value.cartUpdateItem = null;
     } catch (err) {
       error.value.cartUpdateItem = err;

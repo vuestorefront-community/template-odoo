@@ -202,7 +202,7 @@ export default defineComponent({
       const alreadySelectedIndex = selectedFilters.value.findIndex(
         (filter) => String(filter.id) === String(option.value)
       );
-
+      
       if (alreadySelectedIndex === -1) {
         selectedFilters.value.push({
           filterName: facet.label,
