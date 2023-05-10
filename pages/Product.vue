@@ -219,7 +219,7 @@ export default {
     const th = useUiHelpers();
     const { id } = root.$route.params;
     const { path } = useRoute().value;
-
+    
     const { query } = root.$route;
     const { size, color } = root.$route.query;
     const configuration = reactive({ size, color });

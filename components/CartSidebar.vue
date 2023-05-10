@@ -185,6 +185,7 @@ import {
   useWishlist
 } from '@vue-storefront/odoo';
 import { useUiState, useUiNotification } from '~/composables';
+import { onSSR } from '@vue-storefront/core';
 
 export default {
   name: 'CartSidebar',

@@ -91,6 +91,7 @@
                 isInWishlist({ product })
                   ? removeItemFromWishList({ product: { product } })
                   : addProductToWishList(product)
+                  : addProductToWishList(product)
               "
               @click:add-to-cart="
                 handleAddItemToCart(product), toggleCartSidebar()
