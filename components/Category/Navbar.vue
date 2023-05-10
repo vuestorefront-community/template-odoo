@@ -216,7 +216,7 @@ export default defineComponent({
     }
   }
   &__select {
-    --select-width: 220px;
+    --select-width: 180px;
     --select-padding: 0;
     --select-height: auto;
     --select-selected-padding: 0 var(--spacer-lg) 0 var(--spacer-2xs);
