@@ -10,14 +10,14 @@
     <div id="layout">
       <nuxt :key="$route.fullPath" />
 
-      <MobileMenuSidebar />
+      <MobileMenuSidebar :critical="false"/>
       <LazyHydrate when-visible>
         <BottomNavigation />
       </LazyHydrate>
-      <CartSidebar />
-      <WishlistSidebar />
-      <LoginModal />
-      <Notification />
+      <CartSidebar :critical="false"/>
+      <WishlistSidebar :critical="false"/>
+      <LoginModal :critical="false"/>
+      <Notification :critical="false"/>
     </div>
     <LazyHydrate when-visible>
       <AppFooter />
