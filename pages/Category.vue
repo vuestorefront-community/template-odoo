@@ -280,10 +280,30 @@ import { useCache, CacheTagPrefix } from '@vue-storefront/cache';
 import { useUiHelpers, useUiState } from '~/composables';
 import { onSSR } from '@vue-storefront/core';
 import LazyHydrate from 'vue-lazy-hydration';
+import speedkitHydrate from 'nuxt-speedkit/hydrate';
 
 export default defineComponent({
   name: 'Category',
   transition: 'fade',
+  components: {
+    CategoryNavbar: speedkitHydrate(() => import('@/components/Category/Navbar')),
+    CategoryFilterSideBar: speedkitHydrate(() => import('@/components/Category/FilterSideBar')),
+    SfSelect,
+    SfProperty,
+    SfButton,
+    SfList,
+    SfProductCard,
+    SfProductCardHorizontal,
+    SfPagination,
+    SfMenuItem,
+    SfHeading,
+    SfAccordion,
+    SfBreadcrumbs,
+    SfCheckbox,
+    SfLoader,
+    LazyHydrate,
+    SfImage
+  },
   setup(props, { root }) {
     const th = useUiHelpers();
     const generic = ref('');
@@ -384,23 +404,6 @@ export default defineComponent({
       result,
       currentCategoryNameForAccordion
     };
-  },
-  components: {
-    SfSelect,
-    SfProperty,
-    SfButton,
-    SfList,
-    SfProductCard,
-    SfProductCardHorizontal,
-    SfPagination,
-    SfMenuItem,
-    SfHeading,
-    SfAccordion,
-    SfBreadcrumbs,
-    SfCheckbox,
-    SfLoader,
-    LazyHydrate,
-    SfImage
   },
   head: {
     script: [

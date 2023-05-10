@@ -298,7 +298,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "~@storefront-ui/vue/styles";
 #detailed-cart {
   box-sizing: border-box;
   @include for-desktop {
@@ -498,17 +497,3 @@ hr {
 }
 </style>
 
-<style lang="scss">
-@import "~@storefront-ui/vue/styles";
-.oderSummary .sf-order-summary {
-  &__heading {
-    padding-left: 30px;
-  }
-  &__property {
-    font-size: var(--font-size-xl);
-  }
-}
-.custom__margin {
-  margin-top: 5px !important;
-}
-</style>

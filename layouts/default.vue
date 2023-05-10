@@ -26,29 +26,23 @@
 </template>
 
 <script>
-import AppHeader from '~/components/AppHeader.vue';
-import BottomNavigation from '~/components/BottomNavigation.vue';
-import AppFooter from '~/components/AppFooter.vue';
-import TopBar from '~/components/TopBar.vue';
-import CartSidebar from '~/components/CartSidebar.vue';
-import WishlistSidebar from '~/components/WishlistSidebar.vue';
-import LoginModal from '~/components/LoginModal.vue';
 import LazyHydrate from 'vue-lazy-hydration';
-import Notification from '~/components/Notification';
+import speedkitHydrate from 'nuxt-speedkit/hydrate';
 
 export default {
   name: 'DefaultLayout',
 
   components: {
     LazyHydrate,
-    TopBar,
-    AppHeader,
-    BottomNavigation,
-    AppFooter,
-    CartSidebar,
-    WishlistSidebar,
-    LoginModal,
-    Notification
+    MobileMenuSidebar: speedkitHydrate(() => import('@/components/MobileMenuSidebar')),
+    TopBar: speedkitHydrate(() => import('@/components/TopBar')),
+    AppHeader: speedkitHydrate(() => import('@/components/AppHeader')),
+    AppFooter: speedkitHydrate(() => import('@/components/AppFooter')),
+    CartSidebar: speedkitHydrate(() => import('@/components/CartSidebar')),
+    WishlistSidebar: speedkitHydrate(() => import('@/components/WishlistSidebar')),
+    LoginModal: speedkitHydrate(() => import('@/components/LoginModal')),
+    Notification: speedkitHydrate(() => import('@/components/Notification')),
+    BottomNavigation: speedkitHydrate(() => import('@/components/BottomNavigation')),
   }
 };
 </script>
