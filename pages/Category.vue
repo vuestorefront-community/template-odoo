@@ -98,7 +98,7 @@
               @click:wishlist="
                 isInWishlist({ product })
                   ? removeItemFromWishList({ product: { product } })
-                  : addItemToWishlist({ product })
+                  : addProductToWishList(product)
               "
               @click:add-to-cart="
                 addItemToCart({ product, quantity: 1 }), toggleCartSidebar()
@@ -161,7 +161,7 @@
               "
               :isInWishlist="isInWishlist({ product })"
               class="products__product-card-horizontal"
-              @click:wishlist="addItemToWishlist({ product })"
+              @click:wishlist="addProductToWishList(product)"
               @click:add-to-cart="
                 addItemToCart({ product, quantity: products[i].qty || 1 }),
                   toggleCartSidebar()
@@ -173,7 +173,7 @@
                 <SfButton
                   class="sf-button--text desktop-only"
                   style="margin: 0 0 1rem auto; display: block"
-                  @click="addItemToWishlist({ product })"
+                  @click="addProductToWishList(product)"
                 >
                   {{ $t('Save for later') }}
                 </SfButton>
@@ -277,7 +277,7 @@ import {
   facetGetters
 } from '@vue-storefront/odoo';
 import { useCache, CacheTagPrefix } from '@vue-storefront/cache';
-import { useUiHelpers, useUiState } from '~/composables';
+import { useUiHelpers, useUiState, useUiNotification } from '~/composables';
 import { onSSR } from '@vue-storefront/core';
 import LazyHydrate from 'vue-lazy-hydration';
 import speedkitHydrate from 'nuxt-speedkit/hydrate';
@@ -317,7 +317,7 @@ export default defineComponent({
       isInWishlist
     } = useWishlist();
     const { result, search, loading } = useFacet();
-
+    const { send } = useUiNotification();
     const route = useRoute();
     const { params, query } = route.value;
 
@@ -325,6 +325,11 @@ export default defineComponent({
     const categoryTree = computed(() =>
       facetGetters.getCategoryTree(result.value)
     );
+
+    const addProductToWishList = (product) => {
+      addItemToWishlist({ product })
+      send({ message: "Product added to wishlist", type: 'info' });
+    };
 
     const pagination = computed(() => facetGetters.getPagination(result.value));
     const showProducts = computed(
@@ -395,6 +400,7 @@ export default defineComponent({
       productGetters,
       pagination,
       breadcrumbs,
+      addProductToWishList,
       addItemToWishlist,
       removeItemFromWishList,
       addItemToCart,
