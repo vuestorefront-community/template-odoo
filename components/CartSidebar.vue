@@ -173,18 +173,15 @@ export default {
     const { isAuthenticated } = useUser();
     const products = computed(() => cartGetters.getItems(cart.value));
     const totals = computed(() => cartGetters.getTotals(cart.value));
-    const cartItems = computed(() => {
-      return cartGetters.getItems(cart.value).map((item) => {
-        return item.quantity
-      })
-    })
     const totalItems = computed(() => {
-      let array = cartItems.value
-      let sum = 0
-      array.forEach((num) => {
-        sum += num;
-      })
-      return sum
+      return cartGetters.getItems(cart.value).map((item) => {
+        return item.quantity;
+        // let sum = 0
+        // item.quantity.map((i) => {
+        //    sum +=i
+        // })
+        // return sum
+      });
     });
     const { addItem: addItemToWishlist } = useWishlist();
     const { send } = useUiNotification();
@@ -196,7 +193,7 @@ export default {
       addItemToWishlist({
         product: { ...product.product, firstVariant: product.product.id }
       });
-      send({ message: "Product added to wishlist", type: 'info' });
+      send({ message: 'Product added to wishlist', type: 'info' });
     };
 
     return {
