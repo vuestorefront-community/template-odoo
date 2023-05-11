@@ -173,7 +173,16 @@ export default {
     const { isAuthenticated } = useUser();
     const products = computed(() => cartGetters.getItems(cart.value));
     const totals = computed(() => cartGetters.getTotals(cart.value));
-    const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
+    const totalItems = computed(() => {
+      return cartGetters.getItems(cart.value).map((item) => {
+        return item.quantity
+        // let sum = 0
+        // item.quantity.map((i) => {
+        //    sum +=i
+        // })
+        // return sum
+      });
+    });
     const { addItem: addItemToWishlist } = useWishlist();
     onSSR(async () => {
       // await loadCart();
