@@ -270,7 +270,7 @@ export default {
         label: 'English',
         file: 'en.json',
         iso: 'en'
-      }
+      },
       // {
       //   code: 'de',
       //   label: 'German',
