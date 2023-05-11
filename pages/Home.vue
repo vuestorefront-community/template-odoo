@@ -171,13 +171,13 @@ export default {
     const heroes = [
       {
         title: 'Colorful summer dresses are already in store',
-        subtitle: 'SUMMER COLLECTION 2019',
+        subtitle: 'SUMMER COLLECTION',
         background: '#eceff1',
         image: addBasePath('/homepage/bannerH.webp')
       },
       {
         title: 'Colorful summer dresses are already in store',
-        subtitle: 'SUMMER COLLECTION 2019',
+        subtitle: 'SUMMER COLLECTION',
         background: '#efebe9',
         image: addBasePath('/homepage/bannerA.webp'),
         className:
@@ -185,7 +185,7 @@ export default {
       },
       {
         title: 'Colorful summer dresses are already in store',
-        subtitle: 'SUMMER COLLECTION 2019',
+        subtitle: 'SUMMER COLLECTION',
         background: '#fce4ec',
         image: addBasePath('/homepage/bannerB.webp')
       }
