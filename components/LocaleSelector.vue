@@ -18,22 +18,12 @@
     >
       <SfList>
         <SfListItem v-for="lang in availableLocales" :key="lang.code">
-          <a :href="switchLocalePath(lang.code)" @click="$i18n.setLocale(lang.code)">
             <SfCharacteristic class="language">
               <template #title>
-                <span>{{ lang.label }}</span>
               </template>
               <template #icon>
-                <SfImage
-                  :src="addBasePath(`/icons/langs/${lang.code}.webp`)"
-                  :width="20"
-                  :height="20"
-                  alt="Flag"
-                  class="language__flag"
-                />
               </template>
             </SfCharacteristic>
-          </a>
         </SfListItem>
       </SfList>
     </SfBottomModal>
