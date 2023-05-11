@@ -16,7 +16,7 @@
       title="Choose language"
       @click:close="isLangModalOpen = !isLangModalOpen"
     >
-      <!-- <SfList>
+      <SfList>
         <SfListItem v-for="lang in availableLocales" :key="lang.code">
           <a :href="switchLocalePath(lang.code)" @click="$i18n.setLocale(lang.code)">
             <SfCharacteristic class="language">
@@ -35,7 +35,7 @@
             </SfCharacteristic>
           </a>
         </SfListItem>
-      </SfList> -->
+      </SfList>
     </SfBottomModal>
   </div>
 </template>
