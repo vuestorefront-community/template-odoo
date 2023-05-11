@@ -69,15 +69,6 @@
                     />
                   </div>
                 </template>
-                <template #input="{}">&nbsp;</template>
-                <template #actions>
-                <SfButton
-                  class="sf-button--text desktop-only hidden"
-                  @click="addItemToWishlist({ product })"
-                >
-                  {{ $t('Save for later') }}
-                </SfButton>
-              </template>
               </SfCollectedProduct>
             </transition-group>
           </div>

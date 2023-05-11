@@ -206,7 +206,7 @@ import { onSSR } from '@vue-storefront/core';
 import { useRoute } from '@nuxtjs/composition-api';
 import MobileStoreBanner from '~/components/MobileStoreBanner.vue';
 import LazyHydrate from 'vue-lazy-hydration';
-import { useUiHelpers, useUiState } from '~/composables';
+import { useUiHelpers, useUiState, useUiNotification } from '~/composables';
 
 export default {
   name: 'Product',
@@ -216,7 +216,7 @@ export default {
     const th = useUiHelpers();
     const { id } = root.$route.params;
     const { path } = useRoute().value;
-
+    
     const { query } = root.$route;
     const { size, color } = root.$route.query;
     const configuration = reactive({ size, color });
@@ -225,11 +225,13 @@ export default {
       search,
       loading: productloading
     } = useProduct(`products-${path}`);
+    const { send } = useUiNotification();
     const { addItem: addItemToWishlist } = useWishlist();
     const addToWishList = async (product) => {
       await addItemToWishlist({
         product
       });
+      send({ message: "Product added to wishlist", type: 'info' });
     };
     const { searchRealProduct, productVariants, realProduct, elementNames } =
       useProductVariant(query);
