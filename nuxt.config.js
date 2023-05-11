@@ -272,18 +272,18 @@ export default {
         file: 'en.json',
         iso: 'en'
       },
-      {
-        code: 'de',
-        label: 'German',
-        file: 'de.json',
-        iso: 'de'
-      },
-      {
-        code: 'ru',
-        label: 'Russian',
-        file: 'ru.json',
-        iso: 'ru'
-      }
+      // {
+      //   code: 'de',
+      //   label: 'German',
+      //   file: 'de.json',
+      //   iso: 'de'
+      // },
+      // {
+      //   code: 'ru',
+      //   label: 'Russian',
+      //   file: 'ru.json',
+      //   iso: 'ru'
+      // }
     ],
     defaultLocale: 'en',
     lazy: true,
