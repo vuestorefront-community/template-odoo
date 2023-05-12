@@ -1,6 +1,9 @@
 import { useCart as baseUseCart } from '@vue-storefront/odoo';
 import { sharedRef, useVSFContext, Logger } from '@vue-storefront/core';
 import { computed } from '@nuxtjs/composition-api';
+const resolvePath = (object, path, defaultValue) => path
+  .split('.')
+  .reduce((o, p) => o ? o[p] : defaultValue, object);
 
 const throwErrors = (errors: Array<{ message?: string }>) => {
   if (errors) {
@@ -29,7 +32,9 @@ const useCart = () : any => {
 
       setCart(data.cart);
       error.value.load = null;
-      context.$odoo.config.app.$cookies.set('cart-size', cart?.value?.order?.[cookieIndex]?.length || 0);
+
+      const cookieIndex = context?.$odoo?.config?.app?.$config?.cart?.cookieIndex || 'orderLines.length';
+      context.$odoo.config.app.$cookies.set('cart-size', resolvePath(cart?.value?.order, cookieIndex, 0) || 0);
 
     } catch (err) {
       error.value.load = err;
@@ -52,7 +57,8 @@ const useCart = () : any => {
       throwErrors(errors);
 
       setCart(data.cartUpdateItem);
-      context.$odoo.config.app.$cookies.set('cart-size', cart?.value?.order?.[cookieIndex]?.length || 0);
+      const cookieIndex = context?.$odoo?.config?.app?.$config?.cart?.cookieIndex || 'orderLines.length';
+      context.$odoo.config.app.$cookies.set('cart-size', resolvePath(cart?.value?.order, cookieIndex, 0) || 0);
 
       error.value.cartUpdateItem = null;
     } catch (err) {
