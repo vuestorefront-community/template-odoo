@@ -105,21 +105,23 @@
               "
             >
               <template #image>
-                <SfImage
-                  class="sf-product-card__image"
-                  :src="$image(
-                    productGetters.getCoverImage(product),
-                    216,
-                    288,
-                    productGetters.getImageFilename(product)
-                  )"
-                  :alt="productGetters.getName(product)"
-                  loading="eager"
-                  :width="216"
-                  :height="288"
-                  image-tag="nuxt-img"
-                  :nuxt-img-config="{ fit: 'cover', preload: true }"
-                />
+                <nuxt-link :to="localePath(productGetters.getSlug(product))">
+                  <SfImage
+                    class="sf-product-card__image"
+                    :src="$image(
+                      productGetters.getCoverImage(product),
+                      216,
+                      288,
+                      productGetters.getImageFilename(product)
+                    )"
+                    :alt="productGetters.getName(product)"
+                    loading="eager"
+                    :width="216"
+                    :height="288"
+                    image-tag="nuxt-img"
+                    :nuxt-img-config="{ fit: 'cover', preload: true }"
+                  />
+                </nuxt-link>
               </template>
             </SfProductCard>
           </transition-group>
