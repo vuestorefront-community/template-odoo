@@ -226,7 +226,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .footer {
   margin-bottom: 3.75rem;
   @include for-desktop {

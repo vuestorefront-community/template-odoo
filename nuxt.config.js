@@ -19,7 +19,6 @@ export default {
     }
   },
   components: [
-    '~/components/',
     '~/components/Core/Atoms'
   ],
   css: ['@/assets/styles.scss'],
@@ -362,7 +361,7 @@ export default {
         'postcss-custom-properties': false
       }
     },
-    transpile: ['vee-validate/dist/rules'],
+    transpile: ['vee-validate/dist/rules', /^@storefront-ui/],
     extend(config, ctx) {
       if (ctx.isDev) {
         config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map';

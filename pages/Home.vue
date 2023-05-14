@@ -32,59 +32,6 @@
     </LazyHydrate>
 
     <LazyHydrate when-visible>
-      <div class="similar-products">
-        <SfHeading title="Match with it" :level="2" />
-        <nuxt-link :to="localePath('/c/women')" class="smartphone-only">
-          {{ $t('See all') }}
-        </nuxt-link>
-      </div>
-    </LazyHydrate>
-
-    <LazyHydrate when-visible>
-      <SfCarousel
-        class="carousel"
-        :settings="{ peek: 16, breakpoints: { 1023: { peek: 0, perView: 2 } } }"
-      >
-        <template #prev="{ go }">
-          <SfArrow
-            aria-label="prev"
-            class="sf-arrow--left sf-arrow--long"
-            @click="go('prev')"
-          />
-        </template>
-        <template #next="{ go }">
-          <SfArrow
-            aria-label="next"
-            class="sf-arrow--right sf-arrow--long"
-            @click="go('next')"
-          />
-        </template>
-        <SfCarouselItem
-          class="carousel__item"
-          v-for="(product, i) in products"
-          :key="i"
-        >
-          <SfProductCard
-            :title="product.title"
-            :image="product.image"
-            :imageWidth="216"
-            :imageHeight="288"
-            :nuxtImgConfig="{ fit: 'cover' }"
-            image-tag="nuxt-img"
-            :regular-price="product.price.regular"
-            :max-rating="product.rating.max"
-            :score-rating="product.rating.score"
-            :show-add-to-cart-button="true"
-            :is-on-wishlist="product.isInWishlist"
-            :link="localePath({ name: 'home' })"
-            class="carousel__item__product"
-            @click:wishlist="toggleWishlist(i)"
-          />
-        </SfCarouselItem>
-      </SfCarousel>
-    </LazyHydrate>
-
-    <LazyHydrate when-visible>
       <SfCallToAction
         title="Subscribe to Newsletters"
         button-text="Subscribe"
@@ -224,13 +171,13 @@ export default {
     const heroes = [
       {
         title: 'Colorful summer dresses are already in store',
-        subtitle: 'SUMMER COLLECTION 2019',
+        subtitle: 'SUMMER COLLECTION',
         background: '#eceff1',
         image: addBasePath('/homepage/bannerH.webp')
       },
       {
         title: 'Colorful summer dresses are already in store',
-        subtitle: 'SUMMER COLLECTION 2019',
+        subtitle: 'SUMMER COLLECTION',
         background: '#efebe9',
         image: addBasePath('/homepage/bannerA.webp'),
         className:
@@ -238,7 +185,7 @@ export default {
       },
       {
         title: 'Colorful summer dresses are already in store',
-        subtitle: 'SUMMER COLLECTION 2019',
+        subtitle: 'SUMMER COLLECTION',
         background: '#fce4ec',
         image: addBasePath('/homepage/bannerB.webp')
       }

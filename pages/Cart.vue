@@ -221,7 +221,7 @@ import {
   cartGetters,
   useWishlist
 } from '@vue-storefront/odoo';
-import { useUiState } from '~/composables';
+import { useUiState, useUiNotification } from '~/composables';
 import { onSSR } from '@vue-storefront/core';
 
 export default {
@@ -244,12 +244,14 @@ export default {
     const products = computed(() => cartGetters.getItems(cart.value));
     const totals = computed(() => cartGetters.getTotals(cart.value));
     const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
+    const { send } = useUiNotification();
     const { addItem: addItemToWishlist } = useWishlist();
 
     const addProductToWishList = (product) => {
       addItemToWishlist({
         product: { ...product.product, firstVariant: product.product.id }
       });
+      send({ message: "Product added to wishlist", type: 'info' });
     };
 
     onSSR(async () => {
@@ -298,7 +300,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "~@storefront-ui/vue/styles";
 #detailed-cart {
   box-sizing: border-box;
   @include for-desktop {
@@ -498,17 +499,3 @@ hr {
 }
 </style>
 
-<style lang="scss">
-@import "~@storefront-ui/vue/styles";
-.oderSummary .sf-order-summary {
-  &__heading {
-    padding-left: 30px;
-  }
-  &__property {
-    font-size: var(--font-size-xl);
-  }
-}
-.custom__margin {
-  margin-top: 5px !important;
-}
-</style>

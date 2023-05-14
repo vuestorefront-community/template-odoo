@@ -75,7 +75,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
   .billing__addresses {
     display: grid;
     grid-template-columns: 1fr 1fr;
