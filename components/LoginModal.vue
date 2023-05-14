@@ -212,21 +212,15 @@
             <ValidationProvider
               :rules="{ required: { allowFalse: false } }"
               v-slot="{ errors }"
+              class="flex items-center gap-2 mb-6"
             >
-              <div class="term-declare">
                 <SfCheckbox
                   v-model="createAccount"
                   :valid="!errors[0]"
                   :errorMessage="errors[0]"
+                  :label="$t('I agree with Privacy Policy and Terms of use.')"
                   name="create-account"
-                  class="form__element"
                 />
-                <p>
-                  {{ $t('I declare that I have read and agree to the') }}
-                  <span>{{ $t('Privacy Policy') }}</span> {{ $t('and') }}
-                  <span>{{ $t('Terms of Use.') }}</span>
-                </p>
-              </div>
             </ValidationProvider>
 
             <SfButton
@@ -416,17 +410,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.term-declare {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  p {
-    font-weight: 400;
-    span {
-      color: blue;
-    }
-  }
-}
 .sf-modal__bar {
   font-size: 16px;
   font-weight: 500;
