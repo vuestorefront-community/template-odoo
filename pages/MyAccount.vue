@@ -91,6 +91,7 @@ import ShippingAddressForm from '~/components/MyAccount/ShippingAddressForm.vue'
 
 export default defineComponent({
   name: 'MyAccount',
+  middleware: 'auth',
   components: {
     SfContentPages,
     SfMyProfile,
