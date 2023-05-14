@@ -175,12 +175,13 @@ export default {
     const totals = computed(() => cartGetters.getTotals(cart.value));
     const totalItems = computed(() => {
       return cartGetters.getItems(cart.value).map((item) => {
-        return item.quantity
-        // let sum = 0
-        // item.quantity.map((i) => {
-        //    sum +=i
-        // })
-        // return sum
+        // return item.quantity
+        let sum = 0
+        item.quantity.forEach((i) => {
+          console.log(i)
+           sum +=i
+        })
+        return sum
       });
     });
     const { addItem: addItemToWishlist } = useWishlist();
