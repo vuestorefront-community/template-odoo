@@ -46,7 +46,6 @@
 
         <ValidationProvider
           name="city"
-          rules="required|min:2"
           v-slot="{ errors }"
           slim
         >
