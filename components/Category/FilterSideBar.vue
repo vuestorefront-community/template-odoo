@@ -185,6 +185,7 @@ export default defineComponent({
   },
   setup(props) {
     const selectedFilters = ref([]);
+    const selectedValue = ref();
     const price = ref([]);
     const config = reactive({
       start: [40, 700],
@@ -235,7 +236,6 @@ export default defineComponent({
 
       if (selectedValue) {
         selectedValue.id = newValue;
-        console.log(selectedValue, 'selectedValue.id')
         return;
       }
 
@@ -279,7 +279,6 @@ export default defineComponent({
       );
       
       if (selectedValue) {
-        console.log(selectedValue,'selectedValue')
         const splitedPriceFromUrl = selectedValue?.id?.split('-');
 
         price.value = [splitedPriceFromUrl];
@@ -289,6 +288,7 @@ export default defineComponent({
 
     onMounted(() => {
       selectedFilters.value = facetsFromUrlToFilter();
+      console.log(selectedFilters.value,'selectedFilters.value')
       setPrice();
     });
 
