@@ -142,7 +142,6 @@ export default defineComponent({
   },
   setup(props) {
     const selectedFilters = ref([]);
-    const selectedValue = ref();
     const price = ref([]);
     const config = reactive({
       start: [40, 700],
