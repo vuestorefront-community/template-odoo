@@ -85,8 +85,7 @@
             :label="$t('Country')"
             name="country"
             class="
-              form__element form__select
-              sf-select--underlined common_form_style
+              form__element sf-select--underlined common_form_style
             "
             :valid="!errors[0]"
             :errorMessage="errors[0]"
@@ -112,8 +111,7 @@
             :label="$t('State/Province')"
             name="state"
             class="
-              form__element form__select
-              sf-select--underlined
+              form__element sf-select--underlined
               common_form_style
             "
             :class="[
@@ -330,9 +328,10 @@ export default {
       () => form.value?.country?.id,
       async () => {
         await searchCountryStates(form.value?.country?.id);
+        console.log(countryStates.value,'countryStates.value')
         if (!countryStates.value || countryStates.value.length === 0) {
           form.value.state.id = null;
-        } 
+        }
       }
     );
 
