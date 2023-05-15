@@ -103,11 +103,19 @@ const useUiHelpers = (): any => {
   const changeFilters = (filters) => {
     const formatedFilters = {};
     filters.forEach((element) => {
-      if (formatedFilters[element.filterName]) {
-        formatedFilters[element.filterName] += `,${element.id}-${element.label}`;
-        return;
+      if(element.filterName == "Size") {
+        if (formatedFilters[element.filterName]) {
+          formatedFilters[element.filterName] += `,${element.id}-${element.label}`;
+          return;
+        }
+        formatedFilters[element.filterName] = `${element.id}-${element.label}`;
+      } else {
+        if (formatedFilters[element.filterName]) {
+          formatedFilters[element.filterName] += `,${element.id}`;
+          return;
+        }
+        formatedFilters[element.filterName] = `${element.id}`;
       }
-      formatedFilters[element.filterName] = `${element.id}-${element.label}`;
     });
 
     let allQuery = {};
