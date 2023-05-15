@@ -88,12 +88,21 @@ const useUiHelpers = (): any => {
       const valueList = query[label].split(',');
 
       valueList.forEach((value) => {
-        const item = {
-          filterName: label,
-          label: `${value.slice(0, 2)}`,
-          id: `${value.slice(0, 2)}`
-        };
-        formatedFilters.push(item);
+        if(label === 'price') {
+          const item = {
+            filterName: label,
+            label: `${value.slice(0, 2)}`,
+            id: value
+          };
+          formatedFilters.push(item);
+        } else {
+          const item = {
+            filterName: label,
+            label: `${value.slice(0, 2)}`,
+            id: `${value.slice(0, 2)}`
+          };
+          formatedFilters.push(item);
+        }  
       });
     });
 
