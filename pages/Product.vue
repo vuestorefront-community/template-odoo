@@ -5,18 +5,22 @@
       :breadcrumbs="breadcrumbs"
     />
     <div class="product">
-      <LazyHydrate when-idle>
-        <SfGallery
-          :images="productGallery"
-          :imageWidth="422"
-          :imageHeight="644"
-          class="product__gallery"
-          :nuxtImgConfig="{ fit: 'cover' }"
-          :thumb-nuxt-img-config="{ fit: 'cover' }"
-          image-tag="nuxt-img"
-          thumb-image-tag="nuxt-img"
-        />
-      </LazyHydrate>
+          <div v-if="productloading" class="h-[444px] grid grid-cols-2 gap-x-4">
+          <SfSkeleton class="col-span-1" type="image" />
+          <SfSkeleton class="col-span-1" type="image" />
+          <SfSkeleton class="col-span-1" type="image" />
+          <SfSkeleton class="col-span-1" type="image" />
+        </div>
+        <LazyHydrate v-else when-idle>
+          <SfGallery
+            :images="productGallery"
+            :imageWidth="422"
+            :imageHeight="644"
+            class="product__gallery"
+            :nuxtImgConfig="{ fit: 'cover' }"
+            image-tag="nuxt-img"
+          />
+        </LazyHydrate>
       <div class="product__info">
         <div class="product__header">
           <SfHeading
@@ -172,6 +176,7 @@ import {
   SfSelect,
   SfAddToCart,
   SfTabs,
+  SfSkeleton,
   SfGallery,
   SfRadio,
   SfIcon,
@@ -386,6 +391,7 @@ export default {
     SfSelect,
     SfAddToCart,
     SfTabs,
+    SfSkeleton,
     SfGallery,
     SfIcon,
     SfImage,
