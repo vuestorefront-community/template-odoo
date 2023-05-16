@@ -60,6 +60,8 @@
             tag="div"
             class="products__grid"
           >
+            <SfSkeleton type="image" />
+           
             <SfProductCard
               data-cy="category-product-card"
               v-for="(product, i) in products"
@@ -252,6 +254,7 @@ import {
   SfButton,
   SfList,
   SfMenuItem,
+  SfSkeleton,
   SfProductCard,
   SfHeading,
   SfProductCardHorizontal,
@@ -294,6 +297,7 @@ export default defineComponent({
     SfProperty,
     SfButton,
     SfList,
+    SfSkeleton,
     SfProductCard,
     SfProductCardHorizontal,
     SfPagination,
