@@ -10,7 +10,7 @@
     <div class="highlighted">
       <SfProperty
         :name="$t('Products')"
-        :value="totalItems()"
+        :value="totalItems"
         class="sf-property--full-width sf-property--large property"
       />
       <SfProperty
@@ -112,14 +112,14 @@ export default {
         return item.quantity
       })
     })
-    const totalItems = () => {
+    const totalItems = computed(() => {
       let array = cartItems.value
       let sum = 0
       array.forEach((num) => {
         sum += num;
       })
       return sum
-    };
+    });
 
     return {
       shippingMethodPrice,
