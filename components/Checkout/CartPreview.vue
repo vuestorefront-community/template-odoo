@@ -10,7 +10,7 @@
     <div class="highlighted">
       <SfProperty
         :name="$t('Products')"
-        :value="totalItems()"
+        :value="totalItems"
         class="sf-property--full-width sf-property--large property"
       />
       <SfProperty
