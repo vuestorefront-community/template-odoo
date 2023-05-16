@@ -240,7 +240,6 @@ export default defineComponent({
 
     onMounted(() => {
       selectedFilters.value = facetsFromUrlToFilter();
-      console.log(selectedFilters.value,'selectedFilters.value')
       setPrice();
     });
 
