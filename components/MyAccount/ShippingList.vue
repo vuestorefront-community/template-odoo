@@ -62,7 +62,7 @@ export default defineComponent({
   props: {
     addresses: {
       type: Array as PropType<Address[]>,
-      default: {}
+      default: []
     }
   },
   setup({}, { emit }) {
