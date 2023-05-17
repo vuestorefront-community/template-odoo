@@ -6,7 +6,6 @@
     />
     <div class="product">        
          <div class="col-span-5">
-          <LazyHydrate when-idle>
            <div class="grid grid-cols-4 grid-rows-4 gap-x-4" v-if="productIsLoading || !showSkeleton">
             <template>
              <SfSkeleton class="col-span-1 row-span-1 h-40 w-full" type="image" />
@@ -15,17 +14,17 @@
              <SfSkeleton class="col-span-3 row-span-3 w-full h-full" type="image" />
             </template>    
            </div>
-          <SfGallery
-            v-else 
+          <LazyHydrate v-else>
+           <SfGallery            
             :images="productGallery"
             :imageWidth="422"
             :imageHeight="644"
             class="product__gallery"
             :nuxtImgConfig="{ fit: 'cover' }"
             image-tag="nuxt-img"
-          />
-        </LazyHydrate>
-         </div>
+           />
+         </LazyHydrate>
+        </div>
       <div class="product__info col-span-7">
         <div class="product__header">
           <SfHeading
