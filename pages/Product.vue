@@ -4,15 +4,19 @@
       class="breadcrumbs desktop-only"
       :breadcrumbs="breadcrumbs"
     />
-    <div class="product">
-          <div v-if="productloading" class="h-[444px] grid grid-cols-2 gap-x-4">
-          <SfSkeleton class="col-span-1" type="image" />
-          <SfSkeleton class="col-span-1" type="image" />
-          <SfSkeleton class="col-span-1" type="image" />
-          <SfSkeleton class="col-span-1" type="image" />
-        </div>
-        <LazyHydrate v-else when-idle>
+    <div class="product">        
+         <div class="col-span-5">
+          <LazyHydrate when-idle>
+           <div class="grid grid-cols-4 grid-rows-4 gap-x-4" v-if="productIsLoading || !showSkeleton">
+            <template>
+             <SfSkeleton class="col-span-1 row-span-1 h-40 w-full" type="image" />
+            </template>
+            <template>
+             <SfSkeleton class="col-span-3 row-span-3 w-full h-full" type="image" />
+            </template>    
+           </div>
           <SfGallery
+            v-else 
             :images="productGallery"
             :imageWidth="422"
             :imageHeight="644"
@@ -21,7 +25,8 @@
             image-tag="nuxt-img"
           />
         </LazyHydrate>
-      <div class="product__info">
+         </div>
+      <div class="product__info col-span-7">
         <div class="product__header">
           <SfHeading
             :title="productGetters.getName(product)"
@@ -208,7 +213,7 @@ import {
 } from '@vue-storefront/odoo';
 
 import { onSSR } from '@vue-storefront/core';
-import { useRoute } from '@nuxtjs/composition-api';
+import { useRoute, onMounted } from '@nuxtjs/composition-api';
 import MobileStoreBanner from '~/components/MobileStoreBanner.vue';
 import LazyHydrate from 'vue-lazy-hydration';
 import { useUiHelpers, useUiState, useUiNotification } from '~/composables';
@@ -228,7 +233,7 @@ export default {
     const {
       products,
       search,
-      loading: productloading
+      loading: productIsLoading
     } = useProduct(`products-${path}`);
     const { send } = useUiNotification();
     const { addItem: addItemToWishlist } = useWishlist();
@@ -293,6 +298,12 @@ export default {
       }))
     );
 
+    const showSkeleton = ref(false)
+
+    onMounted(() => {
+      showSkeleton.value = true
+    })
+
     onSSR(async () => {
       await search({
         slug: th.pathToSlug(),
@@ -345,7 +356,7 @@ export default {
 
     return {
       th,
-      productloading,
+      productIsLoading,
       breadcrumbs,
       allOptionsSelected,
       checkSelected,
@@ -377,7 +388,8 @@ export default {
       productGallery,
       toggleCartSidebar,
       handleAddToCart,
-      addToWishList
+      addToWishList,
+      showSkeleton
     };
   },
   components: {
