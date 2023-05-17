@@ -6,12 +6,12 @@
     />
     <div class="product">        
          <div class="col-span-5">
-           <div class="grid grid-cols-4 grid-rows-4 gap-x-4" v-if="productIsLoading || !showSkeleton">
+           <div class="grid grid-cols-1 grid-rows-1 lg:grid-cols-4 lg:grid-rows-4 gap-x-4" v-if="productIsLoading || !showSkeleton">
             <template>
-             <SfSkeleton class="col-span-1 row-span-1 h-40 w-full" type="image" />
+             <SfSkeleton class="col-span-1 row-span-1 h-[70vh] lg:h-40 w-full" type="image" />
             </template>
             <template>
-             <SfSkeleton class="col-span-3 row-span-3 w-full h-full" type="image" />
+             <SfSkeleton class="hidden lg:block lg:col-span-3 lg:row-span-3 w-full h-full" type="image" />
             </template>    
            </div>
           <LazyHydrate v-else>
