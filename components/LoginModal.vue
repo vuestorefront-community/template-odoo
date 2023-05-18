@@ -367,6 +367,8 @@ export default {
     const handleRegister = async () => {
       await handleForm(register, form.value)()
       await logout()
+      displayChoosedTrue(() => (isLogin.value = true))
+      toggleLoginModal();
     };
 
     const handleLogin = async () => {
