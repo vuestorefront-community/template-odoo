@@ -1,7 +1,7 @@
 <template>
   <ValidationObserver v-slot="{ invalid }">
     <form class="form" @submit.prevent="submitForm()">
-      <h1>{{ $t('My profile') }}</h1>
+      <h1 class="mb-8">{{ $t('My profile') }}</h1>
 
       <div class="form__horizontal">
         <ValidationProvider
