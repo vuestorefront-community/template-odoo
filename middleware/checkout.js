@@ -1,8 +1,14 @@
 const canEnterShipping = (cart) => cart?.order.orderLines?.length > 0 || false;
 
-const canEnterBiling = (cart) => canEnterShipping(cart) && cart?.order.partnerShipping.id;
+const canEnterBiling = (cart) => {
+  const checkShippingAddress = cart?.order.partnerShipping
+  return canEnterShipping(cart) && checkShippingAddress.id && checkShippingAddress.street && checkShippingAddress.country
+};
 
-const canEnterPayment = (cart) => canEnterShipping(cart) && canEnterBiling(cart) && cart?.order.partnerInvoice.id;
+const canEnterPayment = (cart) => {
+const checkInvoiceAddress = cart?.order.partnerInvoice
+  return canEnterShipping(cart) && canEnterBiling(cart) && checkInvoiceAddress.id && checkInvoiceAddress.street && checkInvoiceAddress.country;
+} 
 
 export default async ({ app, $vsf, redirect }) => {
   const currentPath = app.context.route.fullPath.split('/checkout/')[1];
@@ -11,7 +17,6 @@ export default async ({ app, $vsf, redirect }) => {
 
   const { data }  = await $vsf.$odoo.api.cartLoad();
   const { cart } = data
-  
   if (!cart) return;
 
   switch (currentPath) {
