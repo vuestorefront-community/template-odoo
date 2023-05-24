@@ -7,7 +7,6 @@
       </LazyHydrate>
     </div>
     <div class="navbar__main">
-      <LazyHydrate on-interaction>
         <SfButton
           class="sf-button--text navbar__filters-button"
           data-cy="category-btn_filters"
@@ -23,7 +22,6 @@
           />
           {{ $t('Filters') }}
         </SfButton>
-      </LazyHydrate>
 
       <div class="navbar__sort desktop-only">
         <span class="navbar__label">{{ $t('Sort by') }}:</span>
@@ -33,6 +31,7 @@
             :placeholder="$t('Select sorting')"
             data-cy="category-select_sortBy"
             class="navbar__select"
+            value=""
             @input="changeSorting"
           >
             <SfSelectOption
