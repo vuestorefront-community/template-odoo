@@ -44,7 +44,7 @@
     </SfFooterColumn>
 
     <SfFooterColumn title="Language" class="desktop-only">
-      <LocaleSelector />
+      <LocaleSelector class="py-3.5" />
     </SfFooterColumn>
 
     <SfFooterColumn class="desktop-only">
