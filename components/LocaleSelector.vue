@@ -1,8 +1,7 @@
 <template>
   <div class="container">
     <SfButton
-      class="container__lang container__lang--selected"
-      @click="isLangModalOpen = !isLangModalOpen"
+      class="container__lang container__lang--selected cursor-auto"
     >
       <SfImage
         :height="20"
