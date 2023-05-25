@@ -30,15 +30,16 @@
     </SfFooterColumn>
     <SfFooterColumn title="Social" class="desktop-only">
       <div class="footer__socials">
-        <SfImage
-          class="footer__social-image"
-          v-for="item in social"
-          :key="item"
-          :src="addBasePath('/icons/' + item + '.svg')"
-          :alt="item"
-          :width="32"
-          :height="32"
-        />
+        <nuxt-link v-for="item in social" to="/" target="_blank" >
+          <SfImage
+            class="footer__social-image"          
+            :key="item"
+            :src="addBasePath('/icons/' + item + '.svg')"
+            :alt="item"
+            :width="32"
+            :height="32"
+          />
+        </nuxt-link>
       </div>
     </SfFooterColumn>
 
