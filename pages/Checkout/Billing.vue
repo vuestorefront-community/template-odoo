@@ -291,13 +291,6 @@ export default {
       }
     );
 
-    // watch(
-    //   () => totalItems.value,
-    //   () => {
-    //     if (totalItems.value === 0) root.$router.push(root.localePath('/cart'));
-    //   }
-    // );
-
     return {
       error,
       formRef,

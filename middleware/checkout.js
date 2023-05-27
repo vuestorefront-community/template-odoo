@@ -22,17 +22,17 @@ export default async ({ app, $vsf, redirect }) => {
   switch (currentPath) {
     case 'shipping':
       if (!canEnterShipping(cart)) {
-        redirect('/');
+        redirect('/cart');
       }
       break;
     case 'billing':
       if (!canEnterBiling(cart)) {
-        redirect('/');
+        redirect('/cart');
       }
       break;
     case 'payment':
       if (!canEnterPayment(cart)) {
-        redirect('/');
+        redirect('/cart');
       }
       break;
   }
