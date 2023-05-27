@@ -167,21 +167,31 @@ export default {
     const { toggleCartSidebar, toggleWishlistSidebar, toggleLoginModal } =
       useUiState();
 
-<<<<<<< HEAD
     const { load: loadUser, isAuthenticated: isLoggedIn } = useUser();
     const { cart, load: loadCart, totalItemsInCartWithQuantity } = useCartRedis();
-=======
-    const { load: loadUser } = useUser();
-    const { load: loadCart, cart } = useCart();
->>>>>>> 489a68a (Update vsf/odoo version)
     const { load: loadWishlist, wishlist } = useWishlist();
     const { search: searchProductApi, result } = useFacet('AppHeader:Search');
     const { categories: topCategories, search: searchTopCategoryApi } =
       useCategories('AppHeader:TopCategories');
+<<<<<<< HEAD
 
     const TotalWishlistItems = computed(() => {
       const count = wishlistGetters.getTotalItems(wishlist.value);
       return count ? count.toString() : root.$cookies.get('wishlist-size');
+=======
+    const cartItems = computed(() => {
+      return cartGetters.getItems(cart.value).map((item) => {
+        return item.quantity
+      })
+    })
+    const cartTotalItems = computed(() => {
+      let array = cartItems.value
+      let sum = 0
+      array.forEach((num) => {
+        sum += num;
+      })
+      return sum
+>>>>>>> 6c0a36e (16024)
     });
 
     const isAuthenticated = computed(() => {
@@ -248,22 +258,10 @@ export default {
       return searchBarRef.value.$el.children[0].focus();
     };
 
-<<<<<<< HEAD
     const handleAccountClick = async () => {
       if (isAuthenticated.value) {
         root.$cookies.remove('odoo-user');
         await loadUser();
-=======
-    const isAuthenticated = computed(() => root.$cookies.get('odoo-user'));
-
-    // TODO: https://github.com/DivanteLtd/vue-storefront/issues/4927
-    const handleAccountClick = async () => {
-      if (isAuthenticated.value) {
-        root.$cookies.remove('odoo-user');
-        setTimeout(async () => {
-          await loadUser();
-        }, 300);
->>>>>>> 489a68a (Update vsf/odoo version)
         return root.$router.push(root.localePath('/my-account'));
       }
 
@@ -301,13 +299,10 @@ export default {
 
     onSSR(async () => {
       await searchTopCategoryApi({filter: { parent: true }});
-<<<<<<< HEAD
     });
 
     onMounted(async () => {
       await loadCart();
-=======
->>>>>>> 489a68a (Update vsf/odoo version)
     });
 
     return {
