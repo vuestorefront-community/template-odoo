@@ -269,6 +269,10 @@ export default {
       form.value.selectedMethodShipping = id;
     };
 
+    onSSR(async () => {
+      await loadCart();
+    });
+
     onMounted(async () => {
       await loadCart();
       await loadBillingAddress();
