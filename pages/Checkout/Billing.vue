@@ -180,7 +180,6 @@ import {
   SfCheckbox
 } from '@storefront-ui/vue';
 import { ref, onMounted, watch, computed } from '@nuxtjs/composition-api';
-import { onSSR } from '@vue-storefront/core';
 import {
   useBilling,
   useCountrySearch,
@@ -267,11 +266,8 @@ export default {
       form.value.selectedMethodShipping = id;
     };
 
-    onSSR(async () => {
-      await loadCart();
-    });
-
     onMounted(async () => {
+      await loadCart();
       await loadBillingAddress();
       await search();
       await loadPreviousData();

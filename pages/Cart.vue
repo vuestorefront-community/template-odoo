@@ -222,7 +222,6 @@ import {
   useWishlist
 } from '@vue-storefront/odoo';
 import { useUiState, useUiNotification } from '~/composables';
-import { onSSR } from '@vue-storefront/core';
 
 export default {
   name: 'DetailedCart',
@@ -253,10 +252,10 @@ export default {
       });
       send({ message: "Product added to wishlist", type: 'info' });
     };
-
-    onSSR(async () => {
+    onMounted(async () => {
       await loadCart();
     });
+
     const summary = ref([
       {
         name: 'Products',
