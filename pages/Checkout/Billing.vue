@@ -203,9 +203,7 @@ export default {
     ValidationObserver
   },
   setup(props, { root }) {
-    const { cart, load: loadCart } = useCart();
-    const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
-    if (totalItems.value === 0) root.$router.push(root.localePath('/cart'));
+    const { load: loadCart } = useCart();
 
     const { search, searchCountryStates, countries, countryStates } = useCountrySearch();
     const { load: loadBillingAddress, billing, save, error } = useBilling();
