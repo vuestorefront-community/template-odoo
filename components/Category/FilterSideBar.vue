@@ -192,8 +192,8 @@ export default defineComponent({
       }
 
       selectedFilters.value.push({
-        label: 'Price',
         filterName: 'price',
+        label: 'Price',
         id: newValue
       });
     };
@@ -229,7 +229,7 @@ export default defineComponent({
       const selectedValue = selectedFilters.value.find(
         (item) => item?.filterName === 'price'
       );
-
+      
       if (selectedValue) {
         const splitedPriceFromUrl = selectedValue?.id?.split('-');
 

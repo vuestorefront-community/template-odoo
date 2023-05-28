@@ -88,12 +88,21 @@ const useUiHelpers = (): any => {
       const valueList = query[label].split(',');
 
       valueList.forEach((value) => {
-        const item = {
-          filterName: label,
-          label: `${value.slice(0, 2)}`,
-          id: `${value.slice(0, 2)}`
-        };
-        formatedFilters.push(item);
+        if(label === 'price') {
+          const item = {
+            filterName: label,
+            label: `${value.slice(0, 2)}`,
+            id: value
+          };
+          formatedFilters.push(item);
+        } else {
+          const item = {
+            filterName: label,
+            label: `${value.slice(0, 2)}`,
+            id: `${value.slice(0, 2)}`
+          };
+          formatedFilters.push(item);
+        }  
       });
     });
 
@@ -103,11 +112,19 @@ const useUiHelpers = (): any => {
   const changeFilters = (filters) => {
     const formatedFilters = {};
     filters.forEach((element) => {
-      if (formatedFilters[element.filterName]) {
-        formatedFilters[element.filterName] += `,${element.id}-${element.label}`;
-        return;
+      if(element.filterName == "Size") {
+        if (formatedFilters[element.filterName]) {
+          formatedFilters[element.filterName] += `,${element.id}-${element.label}`;
+          return;
+        }
+        formatedFilters[element.filterName] = `${element.id}-${element.label}`;
+      } else {
+        if (formatedFilters[element.filterName]) {
+          formatedFilters[element.filterName] += `,${element.id}`;
+          return;
+        }
+        formatedFilters[element.filterName] = `${element.id}`;
       }
-      formatedFilters[element.filterName] = `${element.id}-${element.label}`;
     });
 
     let allQuery = {};
