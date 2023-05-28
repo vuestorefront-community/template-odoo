@@ -5,7 +5,6 @@
       :key="method.id"
       :label="method.name"
       :value="method.id"
-      :description="method.name"
       :selected="selectedMethod"
       name="shippingMethod"
       class="form__radio shipping"
