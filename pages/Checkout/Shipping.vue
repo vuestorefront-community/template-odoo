@@ -178,6 +178,7 @@
 
 <script>
 import { SfHeading, SfInput, SfButton, SfSelect } from '@storefront-ui/vue';
+import { onSSR } from '@vue-storefront/core';
 import { ref, watch, onMounted, computed } from '@nuxtjs/composition-api';
 import {
   useCountrySearch,
@@ -300,7 +301,7 @@ export default {
       form.value.selectedMethodShipping = method;
     };
 
-    const setPreviousShippingData = () => {
+    const setPreviousShippingData = async() => {
       if (shipping.value) {
         if (shipping.value.name === 'Public user') {
           shipping.value.name = '';
@@ -324,7 +325,7 @@ export default {
     onMounted(async () => {
       await search();
       await loadShipping();
-      setPreviousShippingData();
+      await setPreviousShippingData();
       formRef.value.validate({ silent: true });
     });
 

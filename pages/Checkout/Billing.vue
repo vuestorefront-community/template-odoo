@@ -203,7 +203,7 @@ export default {
     ValidationObserver
   },
   setup(props, { root }) {
-    const { cart } = useCart();
+    const { cart, load: loadCart } = useCart();
     const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
     if (totalItems.value === 0) root.$router.push(root.localePath('/cart'));
 
@@ -252,7 +252,7 @@ export default {
       }
     };
 
-    const loadPreviousData = () => {
+    const loadPreviousData = async() => {
       if (billing.value.name === 'Public user') {
         return;
       }
@@ -269,10 +269,14 @@ export default {
       form.value.selectedMethodShipping = id;
     };
 
+    onSSR(async () => {
+      await loadCart();
+    });
+
     onMounted(async () => {
       await loadBillingAddress();
       await search();
-      loadPreviousData();
+      await loadPreviousData();
     });
 
     watch(
