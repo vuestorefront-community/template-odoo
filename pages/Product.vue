@@ -4,20 +4,28 @@
       class="breadcrumbs desktop-only"
       :breadcrumbs="breadcrumbs"
     />
-    <div class="product">
-      <LazyHydrate when-idle>
-        <SfGallery
-          :images="productGallery"
-          :imageWidth="422"
-          :imageHeight="644"
-          class="product__gallery"
-          :nuxtImgConfig="{ fit: 'cover' }"
-          :thumb-nuxt-img-config="{ fit: 'cover' }"
-          image-tag="nuxt-img"
-          thumb-image-tag="nuxt-img"
-        />
-      </LazyHydrate>
-      <div class="product__info">
+    <div class="product">        
+         <div class="col-span-5">
+           <div class="grid grid-cols-1 grid-rows-1 lg:grid-cols-4 lg:grid-rows-4 gap-x-4" v-if="productIsLoading || !showSkeleton">
+            <template>
+             <SfSkeleton class="col-span-1 row-span-1 h-[70vh] lg:h-40 w-full" type="image" />
+            </template>
+            <template>
+             <SfSkeleton class="hidden lg:block lg:col-span-3 lg:row-span-3 w-full h-full" type="image" />
+            </template>    
+           </div>
+          <LazyHydrate v-else>
+           <SfGallery            
+            :images="productGallery"
+            :imageWidth="422"
+            :imageHeight="644"
+            class="product__gallery"
+            :nuxtImgConfig="{ fit: 'cover' }"
+            image-tag="nuxt-img"
+           />
+         </LazyHydrate>
+        </div>
+      <div class="product__info col-span-7">
         <div class="product__header">
           <SfHeading
             :title="productGetters.getName(product)"
@@ -172,6 +180,7 @@ import {
   SfSelect,
   SfAddToCart,
   SfTabs,
+  SfSkeleton,
   SfGallery,
   SfRadio,
   SfIcon,
@@ -203,7 +212,7 @@ import {
 } from '@vue-storefront/odoo';
 
 import { onSSR } from '@vue-storefront/core';
-import { useRoute } from '@nuxtjs/composition-api';
+import { useRoute, onMounted } from '@nuxtjs/composition-api';
 import MobileStoreBanner from '~/components/MobileStoreBanner.vue';
 import LazyHydrate from 'vue-lazy-hydration';
 import { useUiHelpers, useUiState, useUiNotification } from '~/composables';
@@ -223,7 +232,7 @@ export default {
     const {
       products,
       search,
-      loading: productloading
+      loading: productIsLoading
     } = useProduct(`products-${path}`);
     const { send } = useUiNotification();
     const { addItem: addItemToWishlist } = useWishlist();
@@ -288,6 +297,12 @@ export default {
       }))
     );
 
+    const showSkeleton = ref(false)
+
+    onMounted(() => {
+      showSkeleton.value = true
+    })
+
     onSSR(async () => {
       await search({
         slug: th.pathToSlug(),
@@ -340,7 +355,7 @@ export default {
 
     return {
       th,
-      productloading,
+      productIsLoading,
       breadcrumbs,
       allOptionsSelected,
       checkSelected,
@@ -372,7 +387,8 @@ export default {
       productGallery,
       toggleCartSidebar,
       handleAddToCart,
-      addToWishList
+      addToWishList,
+      showSkeleton
     };
   },
   components: {
@@ -386,6 +402,7 @@ export default {
     SfSelect,
     SfAddToCart,
     SfTabs,
+    SfSkeleton,
     SfGallery,
     SfIcon,
     SfImage,
