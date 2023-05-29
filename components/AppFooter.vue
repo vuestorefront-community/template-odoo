@@ -30,15 +30,16 @@
     </SfFooterColumn>
     <SfFooterColumn title="Social" class="desktop-only">
       <div class="footer__socials">
-        <SfImage
-          class="footer__social-image"
-          v-for="item in social"
-          :key="item"
-          :src="addBasePath('/icons/' + item + '.svg')"
-          :alt="item"
-          :width="32"
-          :height="32"
-        />
+        <nuxt-link v-for="item in social" :to="item.url" target="_blank" >
+          <SfImage
+            class="footer__social-image"          
+            :key="item.id"
+            :src="addBasePath('/icons/' + item.brand + '.svg')"
+            :alt="item.brand"
+            :width="32"
+            :height="32"
+          />
+        </nuxt-link>
       </div>
     </SfFooterColumn>
 
@@ -218,7 +219,33 @@ export default {
       departments: ['Women fashion', 'Men fashion', 'Kidswear', 'Home'],
       help: ['Customer service', 'Size guide', 'Contact us'],
       paymentsDelivery: ['Purchase terms', 'Guarantee'],
-      social: ['facebook', 'pinterest', 'google', 'twitter', 'youtube'],
+      social: [
+        {
+          id:1,
+          brand: 'facebook',
+          url: '/'
+        },
+        {
+          id:2,
+          brand: 'pinterest',
+          url: '/'
+        },
+        {
+          id:3,
+          brand: 'google',
+          url: '/'
+        },
+        {
+          id:4,
+          brand: 'twitter',
+          url: '/'
+        },
+        {
+          id:5,
+          brand: 'youtube',
+          url: '/'
+        },
+      ],
       isMobile: false,
       desktopMin: 1024
     };
