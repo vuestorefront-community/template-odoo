@@ -60,7 +60,7 @@ const useUiHelpers = (): any => {
       productParams: {
         pageSize,
         currentPage: page,
-        cacheKey: `API-P${hash(productFilters, { algorithm: 'md5' })}`,
+        cacheKey: `API-P${hash({ ...productFilters, page }, { algorithm: 'md5' })}`,
         search: '',
         sort: { [sort[0]]: sort[1] },
         filter: productFilters
