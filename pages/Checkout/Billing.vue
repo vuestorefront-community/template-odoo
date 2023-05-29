@@ -159,7 +159,7 @@
       <div class="form">
         <div class="form__action">
           <SfButton
-            class="form__action-button"
+            class="sf-button--full-width mt-4"
             type="submit"
           >
             {{ $t('Continue to payment') }}
