@@ -189,7 +189,6 @@ import {
   useUserShipping
 } from '@vue-storefront/odoo';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
-
 export default {
   name: 'Shipping',
   components: {
@@ -211,11 +210,9 @@ export default {
     const defaultShippingAddress = ref(false);
     const isShippingDetailsStepCompleted = ref(false);
     const canAddNewAddress = ref(true);
-    const { cart } = useCart();
+    const { load: loadCart } = useCart();
 
-    const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
-
-    const { load: loadShipping, shipping, save } = useShipping();
+    const { load: loadShippingAddress, shipping, save } = useShipping();
 
     const { isAuthenticated } = useUser();
 
@@ -300,31 +297,29 @@ export default {
       form.value.selectedMethodShipping = method;
     };
 
-    const setPreviousShippingData = () => {
+    const setPreviousShippingData = async() => {
       if (shipping.value) {
         if (shipping.value.name === 'Public user') {
-          shipping.value.name = '';
           return;
         }
         const { name, street, city, state, country, zip, phone, id } = shipping.value;
-        const element = {
-          id,
-          name,
-          street,
-          city,
-          state: state.id !== 'undefined' ? state : { id: '' },
-          country: country.id !== 'undefined' ? country : { id: '' },
-          zip,
-          phone,
-          selectedMethodShipping: null
-        };
-        form.value = element;
+        form.value.id = id;
+        form.value.name = name;
+        form.value.street = street;
+        form.value.city = city;
+        form.value.state = state.id !== 'undefined' ? state : { id: '' },
+        form.value.country = country.id !== 'undefined' ? country : { id: '' },
+        form.value.zip = zip;
+        form.value.phone = phone;
+        form.value.selectedMethodShipping = null;
       }
     };
+
     onMounted(async () => {
+      await loadCart();
       await search();
-      await loadShipping();
-      setPreviousShippingData();
+      await loadShippingAddress();
+      await setPreviousShippingData();
       formRef.value.validate({ silent: true });
     });
 
@@ -337,12 +332,6 @@ export default {
         } else {
           form.value.state.id = String(countryStates.value?.[0].id);
         }
-      }
-    );
-    watch(
-      () => totalItems.value,
-      () => {
-        if (totalItems.value === 0) root.$router.push(root.localePath('/cart'));
       }
     );
 

@@ -214,7 +214,7 @@ import {
   SfOrderSummary
 } from '@storefront-ui/vue';
 import { ref } from '@nuxtjs/composition-api';
-import { computed } from '@nuxtjs/composition-api';
+import { computed, onMounted } from '@nuxtjs/composition-api';
 import {
   useCart,
   useUser,
@@ -222,7 +222,6 @@ import {
   useWishlist
 } from '@vue-storefront/odoo';
 import { useUiState, useUiNotification } from '~/composables';
-import { onSSR } from '@vue-storefront/core';
 
 export default {
   name: 'DetailedCart',
@@ -238,7 +237,7 @@ export default {
   setup(_, { root }) {
     // simple test submodule 3
     const { isAuthenticated } = useUser();
-    const { cart, removeItem, updateItemQty } = useCart();
+    const { cart, load: loadCart, removeItem, updateItemQty } = useCart();
     const { isCartSidebarOpen, toggleCartSidebar } = useUiState();
 
     const products = computed(() => cartGetters.getItems(cart.value));
@@ -253,10 +252,10 @@ export default {
       });
       send({ message: "Product added to wishlist", type: 'info' });
     };
-
-    onSSR(async () => {
-      // await loadCart();
+    onMounted(async () => {
+      await loadCart();
     });
+
     const summary = ref([
       {
         name: 'Products',

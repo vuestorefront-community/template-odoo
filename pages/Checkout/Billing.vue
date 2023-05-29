@@ -180,7 +180,6 @@ import {
   SfCheckbox
 } from '@storefront-ui/vue';
 import { ref, onMounted, watch, computed } from '@nuxtjs/composition-api';
-import { onSSR } from '@vue-storefront/core';
 import {
   useBilling,
   useCountrySearch,
@@ -203,9 +202,7 @@ export default {
     ValidationObserver
   },
   setup(props, { root }) {
-    const { cart } = useCart();
-    const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
-    if (totalItems.value === 0) root.$router.push(root.localePath('/cart'));
+    const { load: loadCart } = useCart();
 
     const { search, searchCountryStates, countries, countryStates } = useCountrySearch();
     const { load: loadBillingAddress, billing, save, error } = useBilling();
@@ -252,7 +249,7 @@ export default {
       }
     };
 
-    const loadPreviousData = () => {
+    const loadPreviousData = async() => {
       if (billing.value.name === 'Public user') {
         return;
       }
@@ -270,9 +267,10 @@ export default {
     };
 
     onMounted(async () => {
+      await loadCart();
       await loadBillingAddress();
       await search();
-      loadPreviousData();
+      await loadPreviousData();
     });
 
     watch(
@@ -284,13 +282,6 @@ export default {
         } else {
           form.value.state.id = String(countryStates.value?.[0]?.id);
         }
-      }
-    );
-
-    watch(
-      () => totalItems.value,
-      () => {
-        if (totalItems.value === 0) root.$router.push(root.localePath('/cart'));
       }
     );
 
