@@ -31,7 +31,6 @@
             :placeholder="$t('Select sorting')"
             data-cy="category-select_sortBy"
             class="navbar__select"
-            value=""
             @input="changeSorting"
           >
             <SfSelectOption
