@@ -64,7 +64,7 @@
                 placeholder="Type your email address"
                 style="
                   width: 242px;
-                  max-height: 46px;
+                  height: 46px;
                   font-size: 16px;
                   color: #43464e;
                   background-color: #f1f2f3;
