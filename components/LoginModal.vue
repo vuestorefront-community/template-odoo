@@ -30,7 +30,9 @@
             }}
           </p>
         </div>
-        <ValidationObserver v-slot="{ handleSubmit }" key="log-in">
+        <ValidationObserver v-slot="{ handleSubmit }" 
+         key="log-in"
+         >
           <form
             class="form"
             @submit.prevent="
@@ -39,7 +41,10 @@
               )
             "
           >
-            <ValidationProvider rules="required|email" v-slot="{ errors }">
+            <ValidationProvider rules="required|email" 
+             v-slot="{ errors }"
+             class="form__element common_form_style mb-3"
+             >
               <SfInput
                 data-cy="login-input_email"
                 v-model="form.email"
@@ -51,7 +56,9 @@
               />
             </ValidationProvider>
             <template v-if="!isForgottenPassword">
-              <ValidationProvider rules="required" v-slot="{ errors }">
+              <ValidationProvider rules="required"
+               class="form__element common_form_style mb-3" 
+               v-slot="{ errors }">
                 <SfInput
                   data-cy="login-input_password"
                   v-model="form.password"
@@ -161,7 +168,8 @@
                 }}
               </p>
             </div>
-            <ValidationProvider rules="required" v-slot="{ errors }">
+            <ValidationProvider rules="required" v-slot="{ errors }" 
+              class="form__element common_form_style mb-3">
               <SfInput
                 data-cy="login-input_name"
                 v-model="form.name"
@@ -169,10 +177,10 @@
                 :errorMessage="errors[0]"
                 name="name"
                 :label="$t('Your name')"
-                class="form__element"
               />
             </ValidationProvider>
-            <ValidationProvider rules="required|email" v-slot="{ errors }">
+            <ValidationProvider rules="required|email" v-slot="{ errors }" 
+             class="form__element common_form_style mb-3">
               <SfInput
                 data-cy="login-input_email"
                 v-model="form.email"
@@ -180,11 +188,11 @@
                 :errorMessage="errors[0]"
                 name="Your email address"
                 :label="$t('Your email address')"
-                class="form__element"
               />
             </ValidationProvider>
 
-            <ValidationProvider rules="required" v-slot="{ errors }">
+            <ValidationProvider rules="required" v-slot="{ errors }"
+             class="form__element common_form_style mb-3">
               <SfInput
                 data-cy="login-input_password"
                 v-model="form.password"
@@ -199,7 +207,6 @@
                   }
                 "
                 :type="showPassword ? 'text' : 'password'"
-                class="form__element"
               />
             </ValidationProvider>
             <ValidationProvider
@@ -411,11 +418,10 @@ export default {
 <style lang="scss" scoped>
 .term-declare {
   display: flex;
-  margin-bottom: 24px;
+  align-items: center;
+  justify-content: space-between;
   p {
     font-weight: 400;
-    margin-top: -5px;
-    margin-left: 5px;
     span {
       color: blue;
     }
@@ -488,9 +494,6 @@ export default {
   margin: 0 0 var(--spacer-xl) 0;
   font: var(--font-weight--light) var(--font-size--base) / 1.6
     var(--font-family--secondary);
-  & > * {
-    margin: 0 0 0 var(--spacer-xs);
-  }
 }
 
 .bottom {
