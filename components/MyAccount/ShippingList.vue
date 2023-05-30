@@ -61,7 +61,7 @@ export default defineComponent({
   },
   props: {
     addresses: {
-      type: Object as PropType<Address[]>,
+      type: Array as PropType<Address[]>,
       default: {}
     }
   },

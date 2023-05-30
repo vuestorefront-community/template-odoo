@@ -315,7 +315,7 @@ export default {
 
     const createAccount = ref(false);
     const rememberMe = ref(false);
-    const { register, login, loading, error, user } = useUser();
+    const { register, login, logout, loading, error, user } = useUser();
     const {
       sendResetPassword,
       errors: errorPassword,
@@ -364,7 +364,10 @@ export default {
       isLogin.value = true;
     };
 
-    const handleRegister = async () => handleForm(register, form.value)();
+    const handleRegister = async () => {
+      await handleForm(register, form.value)()
+      await logout()
+    };
 
     const handleLogin = async () => {
       await handleForm(login, {

@@ -20,7 +20,7 @@
           class="navbar__filters-icon"
           data-cy="category-icon_"
         />
-        {{ $t('Filters') }}
+          {{ $t('Filters') }}
       </SfButton>
 
       <div class="navbar__sort desktop-only">
