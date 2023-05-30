@@ -91,8 +91,8 @@
         <div v-else class="empty-wishlist" key="empty-wishlist">
           <div class="empty-wishlist__banner">
             <SfImage
-              :width="256"
-              :height="176"
+              :width="240"
+              :height="165"
               src="/icons/empty-cart.svg"
               alt="Empty bag"
               class="empty-wishlist__icon"
