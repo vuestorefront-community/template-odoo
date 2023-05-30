@@ -186,7 +186,7 @@ export default {
     });
 
     const accountIcon = computed(() =>
-      isAuthenticated.value ? 'profile_fill' : 'profile',
+      isAuthenticated.value ? 'profile_fill' : 'profile'
     );
 
     const removeSearchResults = () => {
