@@ -38,7 +38,7 @@
             </SfTab>
 
             <SfTab :title="$t('Shipping Addresses')" v-if="state === 'list'">
-              <MyAccountShippingList
+              <ShippingList
                 :addresses="shipping"
                 @change="handleChangeAddress"
                 key="shipping-list"
@@ -56,7 +56,7 @@
         </SfContentPage>
 
         <SfContentPage :title="$t('Newsletter')">
-          <MyAccountNewsletterForm />
+          <NewsletterForm />
         </SfContentPage>
       </SfContentCategory>
 
@@ -88,9 +88,12 @@ import ProfileUpdateForm from '~/components/MyAccount/ProfileUpdateForm.vue';
 import PasswordResetForm from '~/components/MyAccount/PasswordResetForm.vue';
 import OrderHistory from '~/components/MyAccount/OrderHistory.vue';
 import ShippingAddressForm from '~/components/MyAccount/ShippingAddressForm.vue';
+import ShippingList from '~/components/MyAccount/ShippingList.vue';
+import NewsletterForm from '~/components/MyAccount/NewsletterForm.vue';
 
 export default defineComponent({
   name: 'MyAccount',
+  middleware: 'auth',
   components: {
     SfContentPages,
     SfMyProfile,
@@ -101,7 +104,9 @@ export default defineComponent({
     ProfileUpdateForm,
     PasswordResetForm,
     OrderHistory,
-    ShippingAddressForm
+    ShippingAddressForm,
+    ShippingList,
+    NewsletterForm
   },
   setup(props, { root }) {
     const activePage = ref('My profile');

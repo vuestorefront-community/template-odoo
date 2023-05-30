@@ -30,7 +30,9 @@
             }}
           </p>
         </div>
-        <ValidationObserver v-slot="{ handleSubmit }" key="log-in">
+        <ValidationObserver v-slot="{ handleSubmit }" 
+         key="log-in"
+         >
           <form
             class="form"
             @submit.prevent="
@@ -39,7 +41,10 @@
               )
             "
           >
-            <ValidationProvider rules="required|email" v-slot="{ errors }">
+            <ValidationProvider rules="required|email" 
+             v-slot="{ errors }"
+             class="form__element common_form_style mb-3"
+             >
               <SfInput
                 data-cy="login-input_email"
                 v-model="form.email"
@@ -51,7 +56,9 @@
               />
             </ValidationProvider>
             <template v-if="!isForgottenPassword">
-              <ValidationProvider rules="required" v-slot="{ errors }">
+              <ValidationProvider rules="required"
+               class="form__element common_form_style mb-3" 
+               v-slot="{ errors }">
                 <SfInput
                   data-cy="login-input_password"
                   v-model="form.password"
@@ -161,7 +168,8 @@
                 }}
               </p>
             </div>
-            <ValidationProvider rules="required" v-slot="{ errors }">
+            <ValidationProvider rules="required" v-slot="{ errors }" 
+              class="form__element common_form_style mb-3">
               <SfInput
                 data-cy="login-input_name"
                 v-model="form.name"
@@ -169,10 +177,10 @@
                 :errorMessage="errors[0]"
                 name="name"
                 :label="$t('Your name')"
-                class="form__element"
               />
             </ValidationProvider>
-            <ValidationProvider rules="required|email" v-slot="{ errors }">
+            <ValidationProvider rules="required|email" v-slot="{ errors }" 
+             class="form__element common_form_style mb-3">
               <SfInput
                 data-cy="login-input_email"
                 v-model="form.email"
@@ -180,11 +188,11 @@
                 :errorMessage="errors[0]"
                 name="Your email address"
                 :label="$t('Your email address')"
-                class="form__element"
               />
             </ValidationProvider>
 
-            <ValidationProvider rules="required" v-slot="{ errors }">
+            <ValidationProvider rules="required" v-slot="{ errors }"
+             class="form__element common_form_style mb-3">
               <SfInput
                 data-cy="login-input_password"
                 v-model="form.password"
@@ -199,27 +207,20 @@
                   }
                 "
                 :type="showPassword ? 'text' : 'password'"
-                class="form__element"
               />
             </ValidationProvider>
             <ValidationProvider
               :rules="{ required: { allowFalse: false } }"
               v-slot="{ errors }"
+              class="flex items-center gap-2 mb-6"
             >
-              <div class="term-declare">
                 <SfCheckbox
                   v-model="createAccount"
                   :valid="!errors[0]"
                   :errorMessage="errors[0]"
+                  :label="$t('I agree with Privacy Policy and Terms of use.')"
                   name="create-account"
-                  class="form__element"
                 />
-                <p>
-                  {{ $t('I declare that I have read and agree to the') }}
-                  <span>{{ $t('Privacy Policy') }}</span> {{ $t('and') }}
-                  <span>{{ $t('Terms of Use.') }}</span>
-                </p>
-              </div>
             </ValidationProvider>
 
             <SfButton
@@ -314,7 +315,7 @@ export default {
 
     const createAccount = ref(false);
     const rememberMe = ref(false);
-    const { register, login, loading, error, user } = useUser();
+    const { register, login, logout, loading, error, user } = useUser();
     const {
       sendResetPassword,
       errors: errorPassword,
@@ -363,7 +364,12 @@ export default {
       isLogin.value = true;
     };
 
-    const handleRegister = async () => handleForm(register, form.value)();
+    const handleRegister = async () => {
+      await handleForm(register, form.value)()
+      await logout()
+      displayChoosedTrue(() => (isLogin.value = true))
+      toggleLoginModal();
+    };
 
     const handleLogin = async () => {
       await handleForm(login, {
@@ -409,18 +415,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.term-declare {
-  display: flex;
-  margin-bottom: 24px;
-  p {
-    font-weight: 400;
-    margin-top: -5px;
-    margin-left: 5px;
-    span {
-      color: blue;
-    }
-  }
-}
 .sf-modal__bar {
   font-size: 16px;
   font-weight: 500;
@@ -488,9 +482,6 @@ export default {
   margin: 0 0 var(--spacer-xl) 0;
   font: var(--font-weight--light) var(--font-size--base) / 1.6
     var(--font-family--secondary);
-  & > * {
-    margin: 0 0 0 var(--spacer-xs);
-  }
 }
 
 .bottom {

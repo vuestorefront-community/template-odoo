@@ -5,7 +5,7 @@
     class="w-full"
   >
     <form @submit.prevent="handleSubmit(submitForm)">
-      <div class="flex justify-between">
+      
         <ValidationProvider
           v-slot="{ errors }"
           name="firstName"
@@ -13,7 +13,7 @@
           slim
         >
           <SfInput
-            class="w-full"
+            class="form__element common_form_style"
             v-model="form.name"
             :label="$t('First name')"
             name="firstName"
@@ -22,9 +22,9 @@
             :error-message="errors[0]"
           />
         </ValidationProvider>
-      </div>
+      
 
-      <div class="flex flex-row gap-3">
+      
         <ValidationProvider
           v-slot="{ errors }"
           name="streetName"
@@ -32,7 +32,7 @@
           slim
         >
           <SfInput
-            class="w-full"
+            class="form__element common_form_style"
             v-model="form.street"
             :label="$t('Street name')"
             name="streetName"
@@ -51,15 +51,15 @@
             v-model="form.city"
             :label="$t('City')"
             name="city"
-            class="w-full"
+            class="form__element common_form_style"
             required
             :valid="!errors[0]"
             :error-message="errors[0]"
           />
         </ValidationProvider>
-      </div>
+     
 
-      <div class="flex flex-row gap-3">
+      
         <ValidationProvider
           v-slot="{ errors }"
           name="zipCode"
@@ -70,7 +70,7 @@
             v-model="form.zip"
             :label="$t('Zip-code')"
             name="zipCode"
-            class="form__element w-full"
+            class="form__element common_form_style"
             :class="{
               'basis-1/3': countryStates.length > 0,
               'basis-1/2': countryStates.length === 0,
@@ -81,7 +81,7 @@
           />
         </ValidationProvider>
         <ValidationProvider
-          class="basis-1/3"
+          class="basis-1"
           v-slot="{ errors }"
           name="country"
           rules="required"
@@ -91,12 +91,8 @@
             v-model="form.country.id"
             :label="$t('Country')"
             name="country"
-            class="form__select sf-select--underlined w-full"
+            class="form__element sf-select--underlined common_form_style"
             required
-            :class="{
-              'basis-1/3': countryStates.length > 0,
-              'basis-1/2': countryStates.length === 0,
-            }"
             :valid="!errors[0]"
             :error-message="errors[0]"
           >
@@ -121,7 +117,7 @@
             v-model="form.state.id"
             :label="$t('State/Province')"
             name="state"
-            class="form__select sf-select--underlined w-full basis-1/3"
+            class="form__element sf-select--underlined common_form_style"
             required
             :valid="!errors[0]"
             :error-message="errors[0]"
@@ -135,7 +131,7 @@
             </SfSelectOption>
           </SfSelect>
         </ValidationProvider>
-      </div>
+     
       <ValidationProvider
         v-slot="{ errors }"
         name="phone"
@@ -146,7 +142,7 @@
           v-model="form.phone"
           :label="$t('Phone number')"
           name="phone"
-          class="form__element form__element--half"
+          class="form__element common_form_style"
           required
           :valid="!errors[0]"
           :error-message="errors[0]"
@@ -260,13 +256,3 @@ export default defineComponent({
   }
 });
 </script>
-
-<style lang='scss' scoped>
-.flex {
-  margin-bottom: 7%;
-}
-
-::v-deep .sf-select {
-  padding: 42px 0 0 0;
-}
-</style>
