@@ -250,6 +250,7 @@
 </template>
 
 <script >
+import CategoryFilterSideBar from "@/components/Category/FilterSideBar.vue"
 import {
   SfButton,
   SfList,
@@ -292,7 +293,7 @@ export default defineComponent({
   transition: 'fade',
   components: {
     CategoryNavbar: speedkitHydrate(() => import('@/components/Category/Navbar')),
-    CategoryFilterSideBar: speedkitHydrate(() => import('@/components/Category/FilterSideBar')),
+    CategoryFilterSideBar,
     SfSelect,
     SfProperty,
     SfButton,
