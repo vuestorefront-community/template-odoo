@@ -3,7 +3,7 @@
     <SfHeading
       :level="3"
       :title="$t('Shipping Details')"
-      class="sf-heading--left sf-heading--no-underline title"
+      class="sf-heading--left sf-heading--no-underline title mt-10 mb-5"
     />
     <form @submit.prevent="handleSubmit(handleFormSubmit)">
       <UserShippingAddresses
@@ -122,10 +122,10 @@
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           >
-            <SfSelectOption
+           <SfSelectOption
               v-for="countryStateOption in countryStates"
-              :key="countryStateOption && countryStateOption.id"
-              :value="countryStateOption && countryStateOption.id"
+              :key="countryStateOption.id"
+              :value="countryStateOption.id"
             >
               {{ countryStateOption.name }}
             </SfSelectOption>
@@ -226,8 +226,8 @@ export default {
       name: '',
       street: '',
       city: '',
-      state: { id: '' },
-      country: { id: '' },
+      state: { id: ' ' },
+      country: { id: ' ' },
       zip: '',
       phone: null,
       selectedMethodShipping: null
@@ -331,10 +331,8 @@ export default {
       async () => {
         await searchCountryStates(form.value?.country?.id);
         if (!countryStates.value || countryStates.value.length === 0) {
-          form.value.state.id = '0';
-        } else {
-          form.value.state.id = String(countryStates.value?.[0].id);
-        }
+          form.value.state.id = null;
+        } 
       }
     );
 

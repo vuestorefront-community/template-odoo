@@ -3,7 +3,7 @@
     <SfHeading
       :level="3"
       :title="$t('Billing')"
-      class="sf-heading--left sf-heading--no-underline title"
+      class="sf-heading--left sf-heading--no-underline title mt-10 mb-6"
     />
     <form @submit.prevent="handleSubmit(handleFormSubmit)">
       <div class="form">
