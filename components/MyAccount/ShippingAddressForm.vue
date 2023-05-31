@@ -154,11 +154,11 @@
           :disabled="invalid || loading"
           :loading="loading"
         >
-          {{ $t(isNew ? 'Add the address' : 'Update the address') }}
+          {{ $t(isNew ? "Add the address" : "Update the address") }}
         </OdooButton>
 
         <SfButton @click="$emit('cancel')" class="color-light sf-button">
-          {{ $t('Cancel') }}
+          {{ $t("Cancel") }}
         </SfButton>
       </div>
     </form>
