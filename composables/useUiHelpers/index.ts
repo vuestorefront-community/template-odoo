@@ -50,6 +50,11 @@ const useUiHelpers = (): any => {
       attributeValueId: filters,
       categorySlug: path === '/' ? null : pathToSlug()
     };
+    const filtersForHash = {
+      ...productFilters,
+      page,
+      sort
+    }
 
     return {
       fetchCategory: true,
@@ -60,7 +65,7 @@ const useUiHelpers = (): any => {
       productParams: {
         pageSize,
         currentPage: page,
-        cacheKey: `API-P${hash({ ...productFilters, page }, { algorithm: 'md5' })}`,
+        cacheKey: `API-P${hash(filtersForHash, { algorithm: 'md5' })}`,
         search: '',
         sort: { [sort[0]]: sort[1] },
         filter: productFilters
