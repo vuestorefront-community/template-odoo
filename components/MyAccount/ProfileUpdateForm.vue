@@ -40,7 +40,7 @@
         @close="requirePassword = false"
       >
         {{
-          $t("Please type your current password to change your email address.")
+          $t('Please type your current password to change your email address.')
         }}
         <SfInput
           v-model="currentPassword"
@@ -53,11 +53,11 @@
           @keypress.enter="submitForm()"
         />
         <OdooButton type="submit" :disabled="invalid" :loading="loading">
-          {{ $t("Update personal data") }}
+          {{ $t('Update personal data') }}
         </OdooButton>
       </SfModal>
       <OdooButton type="submit" :disabled="invalid" :loading="loading">
-        {{ $t("Update personal data") }}
+        {{ $t('Update personal data') }}
       </OdooButton>
     </form>
   </ValidationObserver>
