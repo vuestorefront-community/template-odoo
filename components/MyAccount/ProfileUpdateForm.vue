@@ -3,26 +3,24 @@
     <form class="form" @submit.prevent="submitForm()">
       <h1 class="mb-8">{{ $t('My profile') }}</h1>
 
-      <div class="form__horizontal">
-        <ValidationProvider
-          v-slot="{ errors }"
-          rules="required|min:2"
-          class="form__element"
-        >
-          <SfInput
-            v-model="form.name"
-            name="name"
-            :label="$t('Name')"
-            required
-            :valid="!errors[0]"
-            :error-message="errors[0]"
-          />
-        </ValidationProvider>
-      </div>
+      <ValidationProvider
+        v-slot="{ errors }"
+        rules="required|min:2"
+        class="form__element common_form_style"
+      >
+        <SfInput
+          v-model="form.name"
+          name="name"
+          :label="$t('Name')"
+          required
+          :valid="!errors[0]"
+          :error-message="errors[0]"
+        />
+      </ValidationProvider>
       <ValidationProvider
         v-slot="{ errors }"
         rules="required|email"
-        class="form__element"
+        class="form__element common_form_style"
       >
         <SfInput
           v-model="form.email"

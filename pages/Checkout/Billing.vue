@@ -3,7 +3,7 @@
     <SfHeading
       :level="3"
       :title="$t('Billing')"
-      class="sf-heading--left sf-heading--no-underline title"
+      class="sf-heading--left sf-heading--no-underline title mt-10 mb-6"
     />
     <form @submit.prevent="handleSubmit(handleFormSubmit)">
       <div class="form">
@@ -24,7 +24,7 @@
             v-model="form.name"
             :label="$t('First name')"
             name="firstName"
-            class="form__element"
+            class="form__element common_form_style"
             required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
@@ -40,7 +40,7 @@
             v-model="form.street"
             :label="$t('Street name')"
             name="streetName"
-            class="form__element"
+            class="form__element common_form_style"
             required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
@@ -56,7 +56,7 @@
             v-model="form.city"
             :label="$t('City')"
             name="city"
-            class="form__element form__element--half"
+            class="form__element form__element--half common_form_style"
             required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
@@ -72,7 +72,7 @@
             v-model="form.zip"
             :label="$t('Zip-code')"
             name="zipCode"
-            class="form__element form__element--half form__element--half-even"
+            class="form__element form__element--half form__element--half-even common_form_style"
             required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
@@ -89,8 +89,8 @@
             :label="$t('Country')"
             name="country"
             class="
-              form__element form__element--half form__select
-              sf-select--underlined
+              form__element form__select
+              sf-select--underlined common_form_style
             "
             required
             :valid="!errors[0]"
@@ -117,12 +117,12 @@
             :label="$t('State/Province')"
             name="state"
             class="
-              form__element form__element--half form__select
+              form__element form__select
               sf-select--underlined
-              form__element--half-even
+              common_form_style
             "
             :class="[
-              countryStates && countryStates.length ? 'visible' : 'invisible',
+              countryStates && countryStates.length ? 'd-block' : 'hidden',
             ]"
             required
             @change="validate"
@@ -149,7 +149,7 @@
             v-model="form.phone"
             :label="$t('Phone number')"
             name="phone"
-            class="form__element form__element--half"
+            class="form__element common_form_style"
             required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
@@ -278,7 +278,7 @@ export default {
       async () => {
         await searchCountryStates(form?.value?.country?.id || null);
         if (!countryStates.value || countryStates.value.length === 0) {
-          form.value.state.id = '1';
+          form.value.state.id = null;
         } else {
           form.value.state.id = String(countryStates.value?.[0]?.id);
         }
@@ -298,79 +298,10 @@ export default {
   }
 };
 </script>
+
 <style lang="scss" scoped>
 .title {
   margin: var(--spacer-xl) 0 var(--spacer-base) 0;
   --heading-title-font-weight: var(--font-weight--bold);
-}
-.form {
-  &__select {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    --select-option-font-size: var(--font-size--lg);
-    ::v-deep .sf-select__dropdown {
-      font-size: var(--font-size--lg);
-      margin: 0;
-      color: var(--c-text);
-      font-family: var(--font-family--secondary);
-      font-weight: var(--font-weight--normal);
-    }
-    ::v-deep .sf-select__label {
-      left: initial;
-    }
-  }
-  @include for-desktop {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  &__element {
-    margin: 0 0 var(--spacer-xl) 0;
-    @include for-desktop {
-      flex: 0 0 100%;
-    }
-    &--half {
-      @include for-desktop {
-        flex: 1 1 50%;
-      }
-      &-even {
-        @include for-desktop {
-          padding: 0 0 0 var(--spacer-xl);
-        }
-      }
-    }
-  }
-  &__group {
-    display: flex;
-    align-items: center;
-  }
-  &__action {
-    @include for-desktop {
-      flex: 0 0 100%;
-      display: flex;
-    }
-  }
-  &__action-button {
-    width: 100%;
-    @include for-desktop {
-      width: 25rem;
-    }
-    &--add-address {
-      width: 100%;
-      margin: 0 0 var(--spacer-sm) 0;
-      @include for-desktop {
-        margin: 0 0 var(--spacer-lg) 0;
-        width: auto;
-      }
-    }
-  }
-  &__back-button {
-    width: 100%;
-    margin: var(--spacer-sm) 0 var(--spacer-xl);
-    &:hover {
-      color: white;
-    }
-  }
 }
 </style>

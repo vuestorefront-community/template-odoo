@@ -3,7 +3,7 @@
     <SfHeading
       :level="3"
       :title="$t('Shipping Details')"
-      class="sf-heading--left sf-heading--no-underline title"
+      class="sf-heading--left sf-heading--no-underline title mt-10 mb-5"
     />
     <form @submit.prevent="handleSubmit(handleFormSubmit)">
       <UserShippingAddresses
@@ -23,7 +23,7 @@
             v-model="form.name"
             :label="$t('First name')"
             name="firstName"
-            class="form__element"
+            class="form__element common_form_style"
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           />
@@ -38,7 +38,7 @@
             v-model="form.street"
             :label="$t('Street name')"
             name="streetName"
-            class="form__element"
+            class="form__element common_form_style"
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           />
@@ -54,7 +54,7 @@
             v-model="form.city"
             :label="$t('City')"
             name="city"
-            class="form__element form__element--half"
+            class="form__element form__element--half common_form_style"
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           />
@@ -69,7 +69,7 @@
             v-model="form.zip"
             :label="$t('Zip-code')"
             name="zipCode"
-            class="form__element form__element--half form__element--half-even"
+            class="form__element form__element--half form__element--half-even common_form_style"
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           />
@@ -84,7 +84,9 @@
             v-model="form.country.id"
             :label="$t('Country')"
             name="country"
-            class="form__element form__element--half sf-select--underlined"
+            class="
+              form__element sf-select--underlined common_form_style
+            "
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           >
@@ -109,20 +111,19 @@
             :label="$t('State/Province')"
             name="state"
             class="
-              form__element form__element--half form__select
-              sf-select--underlined
-              form__element--half-even
+              form__element sf-select--underlined
+              common_form_style
             "
             :class="[
-              countryStates && countryStates.length ? 'visible' : 'invisible',
+              countryStates && countryStates.length ? 'd-block' : 'hidden',
             ]"
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           >
-            <SfSelectOption
+           <SfSelectOption
               v-for="countryStateOption in countryStates"
-              :key="countryStateOption && countryStateOption.id"
-              :value="countryStateOption && countryStateOption.id"
+              :key="countryStateOption.id"
+              :value="countryStateOption.id"
             >
               {{ countryStateOption.name }}
             </SfSelectOption>
@@ -139,7 +140,7 @@
             v-model="form.phone"
             :label="$t('Phone number')"
             name="phone"
-            class="form__element form__element--half"
+            class="form__element common_form_style"
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           />
@@ -223,8 +224,8 @@ export default {
       name: '',
       street: '',
       city: '',
-      state: { id: '' },
-      country: { id: '' },
+      state: { id: ' ' },
+      country: { id: ' ' },
       zip: '',
       phone: null,
       selectedMethodShipping: null
@@ -307,8 +308,8 @@ export default {
         form.value.name = name;
         form.value.street = street;
         form.value.city = city;
-        form.value.state = state.id !== 'undefined' ? state : { id: '' },
-        form.value.country = country.id !== 'undefined' ? country : { id: '' },
+        form.value.state = state.id !== 'undefined' ? state : { id: ' ' },
+        form.value.country = country.id !== 'undefined' ? country : { id: ' ' },
         form.value.zip = zip;
         form.value.phone = phone;
         form.value.selectedMethodShipping = null;
@@ -328,9 +329,9 @@ export default {
       async () => {
         await searchCountryStates(form.value?.country?.id);
         if (!countryStates.value || countryStates.value.length === 0) {
-          form.value.state.id = '0';
+          form.value.state.id = null;
         } else {
-          form.value.state.id = String(countryStates.value?.[0].id);
+          form.value.state.id = ' ';
         }
       }
     );
@@ -358,89 +359,3 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.form {
-  --button-width: 100%;
-  &__select {
-    display: flex;
-    align-items: center;
-    --select-option-font-size: var(--font-size--lg);
-    ::v-deep .sf-select__dropdown {
-      font-size: var(--font-size--lg);
-      margin: 0;
-      color: var(--c-text);
-      font-family: var(--font-family--secondary);
-      font-weight: var(--font-weight--normal);
-    }
-    ::v-deep .sf-select__label {
-      left: initial;
-    }
-  }
-  @include for-desktop {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    --button-width: auto;
-  }
-  &__element {
-    margin: 0 0 var(--spacer-xl) 0;
-    @include for-desktop {
-      flex: 0 0 100%;
-    }
-    &--half {
-      @include for-desktop {
-        flex: 1 1 50%;
-      }
-      &-even {
-        @include for-desktop {
-          padding: 0 0 0 var(--spacer-xl);
-        }
-      }
-    }
-  }
-  &__action {
-    @include for-desktop {
-      flex: 0 0 100%;
-      display: flex;
-    }
-  }
-  &__action-button {
-    &--secondary {
-      @include for-desktop {
-        order: -1;
-        text-align: left;
-      }
-    }
-    &--add-address {
-      width: 100%;
-      margin: 0;
-      @include for-desktop {
-        margin: 0 0 var(--spacer-lg) 0;
-        width: auto;
-      }
-    }
-  }
-  &__back-button {
-    margin: var(--spacer-xl) 0 var(--spacer-sm);
-    &:hover {
-      color: var(--c-white);
-    }
-    @include for-desktop {
-      margin: 0 var(--spacer-xl) 0 0;
-    }
-  }
-}
-.shipping {
-  &__label {
-    display: flex;
-    justify-content: space-between;
-  }
-  &__description {
-    --radio-description-margin: 0;
-    --radio-description-font-size: var(--font-xs);
-  }
-}
-.title {
-  margin: var(--spacer-xl) 0 var(--spacer-base) 0;
-}
-</style>

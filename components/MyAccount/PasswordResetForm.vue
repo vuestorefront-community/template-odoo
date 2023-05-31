@@ -6,7 +6,7 @@
       <ValidationProvider
         v-slot="{ errors }"
         rules="required"
-        class="form__element"
+        class="form__element common_form_style"
       >
         <SfInput
           v-model="form.currentPassword"
@@ -18,45 +18,43 @@
           :error-message="errors[0]"
         />
       </ValidationProvider>
-      <div class="form__horizontal">
-        <ValidationProvider
-          v-slot="{ errors }"
-          rules="required"
-          vid="password"
-          class="form__element"
-        >
-          <SfInput
-            v-model="form.newPassword"
-            type="password"
-            name="newPassword"
-            :label="$t('New Password')"
-            required
-            :valid="!errors[0]"
-            :error-message="errors[0]"
-          />
-        </ValidationProvider>
-        <ValidationProvider
-          v-slot="{ errors }"
-          rules="required|confirmed:password"
-          class="form__element"
-        >
-          <SfInput
-            v-model="form.repeatPassword"
-            type="password"
-            name="repeatPassword"
-            :label="$t('Repeat Password')"
-            required
-            :valid="!errors[0]"
-            :error-message="errors[0]"
-          />
-        </ValidationProvider>
-      </div>
+      <ValidationProvider
+        v-slot="{ errors }"
+        rules="required"
+        vid="password"
+        class="form__element common_form_style"
+      >
+        <SfInput
+          v-model="form.newPassword"
+          type="password"
+          name="newPassword"
+          :label="$t('New Password')"
+          required
+          :valid="!errors[0]"
+          :error-message="errors[0]"
+        />
+      </ValidationProvider>
+      <ValidationProvider
+        v-slot="{ errors }"
+        rules="required|confirmed:password"
+        class="form__element common_form_style"
+      >
+        <SfInput
+          v-model="form.repeatPassword"
+          type="password"
+          name="repeatPassword"
+          :label="$t('Repeat Password')"
+          required
+          :valid="!errors[0]"
+          :error-message="errors[0]"
+        />
+      </ValidationProvider>
       <OdooButton
         type="submit"
         :disabled="invalid || loading"
         :loading="loading"
       >
-        {{ $t('Update password') }}
+        {{ $t("Update password") }}
       </OdooButton>
     </form>
   </ValidationObserver>
