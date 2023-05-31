@@ -1,11 +1,7 @@
 <template>
   <ValidationObserver v-slot="{ handleSubmit, invalid }">
     <form class="form" @submit.prevent="handleSubmit(submitForm)">
-<<<<<<< HEAD
       <h1 class="mb-5">{{ $t('Update password') }}</h1>
-=======
-      <h1>{{ $t("Update password") }}</h1>
->>>>>>> b3745c3 (16026)
 
       <ValidationProvider
         v-slot="{ errors }"
