@@ -206,8 +206,8 @@ export default defineComponent({
       name: props.address.name,
       street: props.address.street,
       city: props.address.city,
-      state: { id: String(props.address?.state?.id) },
-      country: { id: String(props.address?.country?.id) },
+      state: { id: String(props.address?.state?.id) || ' ' },
+      country: { id: String(props.address?.country?.id) || ' ' },
       zip: props.address.zip,
       phone: props.address.phone,
       ...(props.isNew ? {} : { id: props.address.id })
