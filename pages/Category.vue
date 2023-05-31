@@ -243,9 +243,7 @@
       </SfLoader>
     </div>
 
-    <LazyHydrate when-idle>
-      <CategoryFilterSideBar :facetsList="result" />
-    </LazyHydrate>
+    <CategoryFilterSideBar :facetsList="result" />
   </div>
 </template>
 
