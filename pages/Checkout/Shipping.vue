@@ -332,7 +332,6 @@ export default {
       () => form.value?.country?.id,
       async () => {
         await searchCountryStates(form.value?.country?.id);
-        console.log(countryStates.value,'countryStates.value')
         if (!countryStates.value || countryStates.value.length === 0) {
           form.value.state.id = null;
         }
