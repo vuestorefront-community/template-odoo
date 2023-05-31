@@ -334,6 +334,8 @@ export default {
         await searchCountryStates(form.value?.country?.id);
         if (!countryStates.value || countryStates.value.length === 0) {
           form.value.state.id = null;
+        } else {
+          form.value.state.id = ' ';
         }
       }
     );
