@@ -308,8 +308,8 @@ export default {
         form.value.name = name;
         form.value.street = street;
         form.value.city = city;
-        form.value.state = state.id !== 'undefined' ? state : { id: '' },
-        form.value.country = country.id !== 'undefined' ? country : { id: '' },
+        form.value.state = state.id !== 'undefined' ? state : { id: ' ' },
+        form.value.country = country.id !== 'undefined' ? country : { id: ' ' },
         form.value.zip = zip;
         form.value.phone = phone;
         form.value.selectedMethodShipping = null;
@@ -330,6 +330,8 @@ export default {
         await searchCountryStates(form.value?.country?.id);
         if (!countryStates.value || countryStates.value.length === 0) {
           form.value.state.id = null;
+        } else {
+          form.value.state.id = ' ';
         }
       }
     );
