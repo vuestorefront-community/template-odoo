@@ -15,7 +15,7 @@ const useUiHelpers = (): any => {
   const { params, query, path } = route.value;
   const localePrefixes = ['/en', '/de', '/ru'];
 
-  const pathToSlug = () : string => {
+  const pathToSlug = (): string => {
     for (const localePrefix of localePrefixes) {
       if (path.startsWith(localePrefix)) {
         return path.replace(localePrefix, '');
