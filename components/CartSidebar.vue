@@ -173,13 +173,10 @@ export default {
     const { isAuthenticated } = useUser();
     const products = computed(() => cartGetters.getItems(cart.value));
     const totals = computed(() => cartGetters.getTotals(cart.value));
-    const cartItems = computed(() => {
-      return cartGetters.getItems(cart.value).map((item) => {
+    const totalItems = computed(() => {
+      let array = cartGetters.getItems(cart.value).map((item) => {
         return item.quantity
       })
-    })
-    const totalItems = computed(() => {
-      let array = cartItems.value
       let sum = 0
       array.forEach((num) => {
         sum += num;
