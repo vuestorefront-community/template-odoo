@@ -7,8 +7,8 @@
   z-index: var(--sidebar-z-index, 2 !important);
 }
 
-.sf-header__search input {
-  padding: 2px 6px 3px 6px;
+.sf-search-bar .sf-input__wrapper input{
+  padding: 2px 6px 3px 6px !important;
 }
 
 .sf-image--placeholder {
