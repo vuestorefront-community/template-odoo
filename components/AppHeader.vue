@@ -45,9 +45,14 @@
           >
             <SfIcon
               class="sf-header__icon"
-              :icon="wishlistHasItens ? 'heart_fill' : 'heart'"
+              icon="heart"
               size="1.25rem"
             />
+            <SfBadge
+              v-if="TotalWishlistItems"
+              class="sf-badge--number cart-badge"
+              >{{ TotalWishlistItems }}</SfBadge
+            >
           </SfButton>
           <SfButton
             class="sf-button--pure sf-header__action"
@@ -129,7 +134,8 @@ import {
   cartGetters,
   categoryGetters,
   useCategories,
-  useFacet
+  useFacet,
+  wishlistGetters
 } from '@vue-storefront/odoo';
 import { clickOutside } from '@storefront-ui/vue/src/utilities/directives/click-outside/click-outside-directive.js';
 import { computed, ref, watch, onMounted } from '@nuxtjs/composition-api';
@@ -168,19 +174,22 @@ export default {
     const { search: searchProductApi, result } = useFacet('AppHeader:Search');
     const { categories: topCategories, search: searchTopCategoryApi } =
       useCategories('AppHeader:TopCategories');
-    const cartItems = computed(() => {
-      return cartGetters.getItems(cart.value).map((item) => {
+
+    const cartTotalItems = computed(() => {
+      let array = cartGetters.getItems(cart.value).map((item) => {
         return item.quantity
       })
-    })
-    const cartTotalItems = computed(() => {
-      let array = cartItems.value
       let sum = 0
       array.forEach((num) => {
         sum += num;
       })
       return sum
     });
+
+    const TotalWishlistItems = computed(() =>
+      wishlistGetters.getTotalItems(wishlist.value)
+    );
+    
     const accountIcon = computed(() =>
       isAuthenticated.value ? 'profile_fill' : 'profile'
     );
@@ -243,12 +252,10 @@ export default {
     };
 
     const handleCartSideBarClick = async () => {
-      await loadCart();
       toggleCartSidebar();
     };
 
     const handleWishlistSideBarClick = async () => {
-      await loadWishlist();
       toggleWishlistSidebar();
     };
 
@@ -271,15 +278,17 @@ export default {
       }
     );
 
+    onMounted(async() => {
+      await loadCart()
+      await loadWishlist();
+    })
 
     onSSR(async () => {
       await searchTopCategoryApi({filter: { parent: true }});
     });
 
     return {
-      wishlistHasItens: computed(
-        () => (wishlist.value?.wishlistItems.length > 0) || (root.$cookies.get('wishlist-size') > 0)
-      ),
+      TotalWishlistItems,
       filteredTopCategories,
       accountIcon,
       closeOrFocusSearchBar,
