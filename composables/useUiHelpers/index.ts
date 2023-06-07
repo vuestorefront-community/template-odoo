@@ -9,7 +9,7 @@ import hash from 'object-hash';
 import { facetGetters, useFacet } from '@vue-storefront/odoo';
 const queryParamsNotFilters = ['page', 'sort', 'itemsPerPage'];
 
-const useUiHelpers = (): any => {
+const useUiHelpers = () : any => {
   const route = useRoute();
   const router = useRouter();
   const { params, query, path } = route.value;
@@ -122,7 +122,7 @@ const useUiHelpers = (): any => {
       const valueList = query[label].split(',');
 
       valueList.forEach((value) => {
-        if (label === 'price') {
+        if(label === 'price') {
           const item = {
             filterName: label,
             label: `${value.slice(0, 2)}`,
