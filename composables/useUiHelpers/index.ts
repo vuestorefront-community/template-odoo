@@ -9,7 +9,7 @@ import hash from 'object-hash';
 import { facetGetters, useFacet } from '@vue-storefront/odoo';
 const queryParamsNotFilters = ['page', 'sort', 'itemsPerPage'];
 
-const useUiHelpers = () : any => {
+const useUiHelpers = (): any => {
   const route = useRoute();
   const router = useRouter();
   const { params, query, path } = route.value;
