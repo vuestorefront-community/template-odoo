@@ -106,12 +106,14 @@
         </div>
       </transition>
       <template #content-bottom>
-        <SfButton
-          @click="toggleWishlistSidebar"
-          class="sf-button--full-width color-secondary"
-        >
-          {{ $t('Start shopping') }}
-        </SfButton>
+        <nuxt-link to="/">
+          <SfButton
+            @click="toggleWishlistSidebar"
+            class="sf-button--full-width color-primary"
+          >
+            {{ $t('Start shopping') }}
+          </SfButton>
+      </nuxt-link>
       </template>
     </SfSidebar>
   </div>
