@@ -172,6 +172,8 @@ const useUiHelpers = (): any => {
       }
     }
 
+    delete allQuery.page
+
     router.push({ query: allQuery });
   };
 
