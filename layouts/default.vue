@@ -28,6 +28,9 @@
 <script>
 import LazyHydrate from 'vue-lazy-hydration';
 import speedkitHydrate from 'nuxt-speedkit/hydrate';
+import CartSidebar from '@/components/CartSidebar.vue';
+import WishlistSidebar from '@/components/WishlistSidebar.vue';
+import LoginModal from '@/components/LoginModal.vue';
 
 export default {
   name: 'DefaultLayout',
@@ -38,11 +41,11 @@ export default {
     TopBar: speedkitHydrate(() => import('@/components/TopBar')),
     AppHeader: speedkitHydrate(() => import('@/components/AppHeader')),
     AppFooter: speedkitHydrate(() => import('@/components/AppFooter')),
-    CartSidebar: speedkitHydrate(() => import('@/components/CartSidebar')),
-    WishlistSidebar: speedkitHydrate(() => import('@/components/WishlistSidebar')),
-    LoginModal: speedkitHydrate(() => import('@/components/LoginModal')),
     Notification: speedkitHydrate(() => import('@/components/Notification')),
     BottomNavigation: speedkitHydrate(() => import('@/components/BottomNavigation')),
+    CartSidebar,
+    WishlistSidebar,
+    LoginModal,
   }
 };
 </script>
