@@ -30,7 +30,7 @@
     </SfFooterColumn>
     <SfFooterColumn title="Social" class="desktop-only">
       <div class="footer__socials">
-        <nuxt-link v-for="item in social" :to="item.url" target="_blank" >
+        <a v-for="item in social" :href="item.url" target="_blank" >
           <SfImage
             class="footer__social-image"          
             :key="item.id"
@@ -39,7 +39,7 @@
             :width="32"
             :height="32"
           />
-        </nuxt-link>
+        </a>
       </div>
     </SfFooterColumn>
 
@@ -223,27 +223,22 @@ export default {
         {
           id:1,
           brand: 'facebook',
-          url: '/'
+          url: 'https://www.facebook.com/'
         },
         {
           id:2,
           brand: 'pinterest',
-          url: '/'
+          url: 'https://www.pinterest.com/'
         },
         {
           id:3,
-          brand: 'google',
-          url: '/'
+          brand: 'twitter',
+          url: 'https://twitter.com/'
         },
         {
           id:4,
-          brand: 'twitter',
-          url: '/'
-        },
-        {
-          id:5,
           brand: 'youtube',
-          url: '/'
+          url: 'https://www.youtube.com/'
         },
       ],
       isMobile: false,
