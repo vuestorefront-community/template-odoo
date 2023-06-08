@@ -123,11 +123,13 @@
             </nuxt-link>
           </div>
           <div v-else>
-            <SfButton
-              class="sf-button--full-width color-primary"
-              @click="toggleCartSidebar"
-              >{{ $t("Go back shopping") }}</SfButton
-            >
+            <nuxt-link to="/">
+              <SfButton
+                class="sf-button--full-width color-primary"
+                @click="toggleCartSidebar"
+                >{{ $t("Go back shopping") }}</SfButton
+              >
+          </nuxt-link>
           </div>
         </transition>
       </template>
