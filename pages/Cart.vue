@@ -193,10 +193,12 @@
                 )
               "
             />
-            <SfButton
+            <nuxt-link to="/">
+              <SfButton
               class="sf-button--full-width color-primary empty-cart__button"
               >{{ $t("Start shopping") }}</SfButton
             >
+            </nuxt-link>
           </div>
         </transition>
       </div>
