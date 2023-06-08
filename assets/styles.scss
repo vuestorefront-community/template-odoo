@@ -15,13 +15,17 @@
   opacity: 0 !important;
 }
 
+.sf-input__icon {
+  margin-right: 4px;
+}
+
 .notifications .sf-notification__message {
   margin-right: 35px;
 }
 
-.common_form_style input {
-  padding: 25px 6px 10px 4px;
-  height: 56px;
+.common_form_style .sf-input__wrapper input {
+  padding: 25px 4px 10px 4px !important;
+  height: 56px !important;
 }
 
 .common_form_style .sf-input__label {
