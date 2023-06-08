@@ -81,6 +81,8 @@ const useUiHelpers = (): any => {
     };
     const filtersForHash = {
       ...productFilters,
+      pageSize,
+      price,
       page,
       sort
     }
@@ -93,7 +95,7 @@ const useUiHelpers = (): any => {
       },
       productParams: {
         pageSize,
-        currentPage: page,
+        currentPage: parseInt(page),
         cacheKey: `API-P${hash(filtersForHash, { algorithm: 'md5' })}`,
         search: '',
         sort: { [sort[0]]: sort[1] },
@@ -171,6 +173,8 @@ const useUiHelpers = (): any => {
         allQuery = { itemsPerPage: query.itemsPerPage };
       }
     }
+
+    delete allQuery.page
 
     router.push({ query: allQuery });
   };
