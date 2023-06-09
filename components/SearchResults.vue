@@ -76,14 +76,14 @@
                   @click="$emit('close')"
                 />
               </div>
-              <div class="sf-button--text">
+              <!-- <div class="sf-button--text">
                 <SfButton
                   class="sf-button--text custom__text"
                   @click="$emit('close')"
                 >
                   {{ $t('See all results') }}
                 </SfButton>
-              </div>
+              </div> -->
             </div>
             <div class="results--mobile smartphone-only">
               <SfProductCard
