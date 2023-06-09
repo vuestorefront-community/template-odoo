@@ -7,8 +7,8 @@
   z-index: var(--sidebar-z-index, 2 !important);
 }
 
-.sf-header__search input {
-  padding: 2px 6px 3px 6px;
+.sf-search-bar .sf-input__wrapper input{
+  padding: 2px 6px 3px 6px !important;
 }
 
 .sf-image--placeholder {
@@ -19,13 +19,14 @@
   margin-right: 35px;
 }
 
-.common_form_style input {
-  padding: 25px 6px 10px 4px;
-  height: 56px;
+.common_form_style .sf-input__wrapper input {
+  padding: 25px 4px 10px 4px !important;
+  height: 56px !important;
 }
 
 .common_form_style .sf-input__label {
   padding-left: 3px;
+  top: 27px;
 }
 
 .common_form_style .sf-select__label {
