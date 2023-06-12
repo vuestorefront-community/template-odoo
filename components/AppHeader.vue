@@ -119,9 +119,9 @@ import {
   SfButton,
   SfOverlay,
   SfBadge,
-  SfHeader
-} from '@storefront-ui/vue';
-import { useUiState } from '~/composables';
+  SfHeader,
+} from "@storefront-ui/vue";
+import { useUiState } from "~/composables";
 import {
   useCart,
   useWishlist,
@@ -129,16 +129,16 @@ import {
   cartGetters,
   categoryGetters,
   useCategories,
-  useFacet
-} from '@vue-storefront/odoo';
-import { clickOutside } from '@storefront-ui/vue/src/utilities/directives/click-outside/click-outside-directive.js';
-import { computed, ref, watch, onMounted } from '@nuxtjs/composition-api';
-import { onSSR } from '@vue-storefront/core';
-import { useUiHelpers } from '~/composables';
-import LocaleSelector from './LocaleSelector';
-import SearchResults from '~/components/SearchResults';
+  useFacet,
+} from "@vue-storefront/odoo";
+import { clickOutside } from "@storefront-ui/vue/src/utilities/directives/click-outside/click-outside-directive.js";
+import { computed, ref, watch, onMounted } from "@nuxtjs/composition-api";
+import { onSSR } from "@vue-storefront/core";
+import { useUiHelpers } from "~/composables";
+import LocaleSelector from "./LocaleSelector";
+import SearchResults from "~/components/SearchResults";
 
-import debounce from 'lodash.debounce';
+import debounce from "lodash.debounce";
 export default {
   components: {
     SfHeader,
@@ -149,7 +149,7 @@ export default {
     LocaleSelector,
     SearchResults,
     SfOverlay,
-    SfBadge
+    SfBadge,
   },
   directives: { clickOutside },
   setup(props, { root }) {
@@ -162,27 +162,33 @@ export default {
     const { toggleCartSidebar, toggleWishlistSidebar, toggleLoginModal } =
       useUiState();
 
-    const { load: loadUser, isAuthenticated } = useUser();
+    const { load: loadUser, isAuthenticated: isLoggedIn } = useUser();
     const { load: loadCart, cart } = useCart();
     const { load: loadWishlist, wishlist } = useWishlist();
-    const { search: searchProductApi, result } = useFacet('AppHeader:Search');
+    const { search: searchProductApi, result } = useFacet("AppHeader:Search");
     const { categories: topCategories, search: searchTopCategoryApi } =
-      useCategories('AppHeader:TopCategories');
+      useCategories("AppHeader:TopCategories");
     const cartItems = computed(() => {
       return cartGetters.getItems(cart.value).map((item) => {
-        return item.quantity
-      })
-    })
+        return item.quantity;
+      });
+    });
     const cartTotalItems = computed(() => {
-      let array = cartItems.value
-      let sum = 0
+      let array = cartItems.value;
+      let sum = 0;
       array.forEach((num) => {
         sum += num;
-      })
-      return sum
+      });
+      return sum;
     });
+    const isAuthenticated = computed(() => {
+      return isLoggedIn.value
+        ? isLoggedIn.value
+        : root.$cookies.get("odoo-user");
+    });
+
     const accountIcon = computed(() =>
-      isAuthenticated.value ? 'profile_fill' : 'profile'
+      isAuthenticated.value ? "profile_fill" : "profile"
     );
 
     const removeSearchResults = () => {
@@ -191,7 +197,7 @@ export default {
 
     const closeSearch = () => {
       if (!isSearchOpen.value) return;
-      term.value = '';
+      term.value = "";
       isSearchOpen.value = false;
     };
 
@@ -207,11 +213,11 @@ export default {
         fetchCategories: true,
         productParams: {
           search: term.value,
-          pageSize: 12
+          pageSize: 12,
         },
         categoryParams: {
-          search: term.value
-        }
+          search: term.value,
+        },
       });
 
       formatedResult.value = {
@@ -219,11 +225,11 @@ export default {
         categories:
           result?.value?.data?.categories
             ?.filter((category) => category.childs === null)
-            ?.map((category) => categoryGetters.getTree(category)) || []
+            ?.map((category) => categoryGetters.getTree(category)) || [],
       };
     }, 100);
     const closeOrFocusSearchBar = () => {
-      term.value = '';
+      term.value = "";
       return searchBarRef.value.$el.children[0].focus();
     };
 
@@ -232,9 +238,9 @@ export default {
     // TODO: https://github.com/DivanteLtd/vue-storefront/issues/4927
     const handleAccountClick = async () => {
       if (isAuthenticated.value) {
-        root.$cookies.remove('odoo-user');
+        root.$cookies.remove("odoo-user");
         await loadUser();
-        return root.$router.push(root.localePath('/my-account'));
+        return root.$router.push(root.localePath("/my-account"));
       }
 
       toggleLoginModal();
@@ -252,7 +258,7 @@ export default {
 
     const filteredTopCategories = computed(() =>
       topCategories.value?.filter(
-        (cat) => cat.name === 'WOMEN' || cat.name === 'MEN'
+        (cat) => cat.name === "WOMEN" || cat.name === "MEN"
       )
     );
 
@@ -269,14 +275,15 @@ export default {
       }
     );
 
-
     onSSR(async () => {
-      await searchTopCategoryApi({filter: { parent: true }});
+      await searchTopCategoryApi({ filter: { parent: true } });
     });
 
     return {
       wishlistHasItens: computed(
-        () => (wishlist.value?.wishlistItems.length > 0) || (root.$cookies.get('wishlist-size') > 0)
+        () =>
+          wishlist.value?.wishlistItems.length > 0 ||
+          root.$cookies.get("wishlist-size") > 0
       ),
       filteredTopCategories,
       accountIcon,
@@ -292,9 +299,9 @@ export default {
       formatedResult,
       term,
       handleSearch,
-      closeSearch
+      closeSearch,
     };
-  }
+  },
 };
 </script>
 
