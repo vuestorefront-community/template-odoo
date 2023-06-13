@@ -4,6 +4,7 @@
       class="breadcrumbs desktop-only"
       :breadcrumbs="breadcrumbs"
     />
+    <SfLoader :loading="loading">
     <div class="detailed-cart">
       <div class="detailed-cart__main">
         <transition name="sf-fade" mode="out-in">
@@ -228,6 +229,7 @@
         </SfOrderSummary>
       </div>
     </div>
+    </SfLoader>
   </div>
 </template>
 <script>
