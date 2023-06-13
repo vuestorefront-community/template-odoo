@@ -35,12 +35,6 @@
           </OdooButton>
         </slot>
       </div>
-      <slot name="notice">
-        <p class="notice">
-          {{ $t('I have read and understand the') }} <a href="#">{{ $t('Privacy') }}</a> {{ $t('and') }}
-          <a href="#">{{ $t('Cookies Policy') }}</a> {{ $t('and agree to receive personalized commercial information from Brand name by email.') }}
-        </p>
-      </slot>
     </SfTab>
   </SfTabs>
 </template>
