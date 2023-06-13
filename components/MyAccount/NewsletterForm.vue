@@ -10,10 +10,10 @@
           {{ $t('Set up newsletter') }}
         </p>
       </slot>
-      <div class="form">
-        <p class="form__title">{{ $t('Sections that interest you') }}</p>
+      <div class="form flex-col xl:flex-row items-start xl:items-center gap-y-5 xl:gap-x-12 mb-10">
+        <p class="form__title m-0">{{ $t('Sections that interest you') }}</p>
         <slot name="form">
-          <div class="form__checkbox-group">
+          <div class="form__checkbox-group m-0">
             <SfCheckbox
               v-for="(mailing, i) in mailingList"
               :key="mailing.id"
