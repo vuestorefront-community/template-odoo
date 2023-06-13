@@ -174,9 +174,13 @@ export default {
     const { categories: topCategories, search: searchTopCategoryApi } =
       useCategories('AppHeader:TopCategories');
 
-    const cartTotalItems = computed(() => {
-      const count = cartGetters.getTotalItems(cart.value)
-      return count ? count.toString() : root.$cookies.get('cart-size');
+      const cartTotalItems = computed(() => {
+      let array = cartItems.value
+      let sum = 0
+      array.forEach((num) => {
+        sum += num;
+      })
+      return sum
     });
 
     const TotalWishlistItems = computed(() => {
@@ -259,12 +263,12 @@ export default {
     };
 
     const handleCartSideBarClick = async () => {
-      await loadCart()
+      await loadCart();
       toggleCartSidebar();
     };
 
     const handleWishlistSideBarClick = async () => {
-      await loadWishlist()
+      await loadWishlist();
       toggleWishlistSidebar();
     };
 

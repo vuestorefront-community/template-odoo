@@ -245,11 +245,12 @@ import {
 import { ref } from '@nuxtjs/composition-api';
 import { computed, onMounted } from '@nuxtjs/composition-api';
 import {
+  useCart,
   useUser,
   cartGetters,
   useWishlist
 } from '@vue-storefront/odoo';
-import { useUiState, useUiNotification, useCart } from '~/composables';
+import { useUiState, useUiNotification } from '~/composables';
 
 export default {
   name: "DetailedCart",
