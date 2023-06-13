@@ -175,7 +175,9 @@ export default {
       useCategories('AppHeader:TopCategories');
 
       const cartTotalItems = computed(() => {
-      let array = cartItems.value
+      let array = cartGetters.getItems(cart.value).map((item) => {
+        return item.quantity
+      })
       let sum = 0
       array.forEach((num) => {
         sum += num;
