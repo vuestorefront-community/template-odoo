@@ -4,6 +4,7 @@
       class="breadcrumbs desktop-only"
       :breadcrumbs="breadcrumbs"
     />
+    <SfLoader :loading="loading">
     <div class="detailed-cart">
       <div v-if="totalItems" class="detailed-cart__aside">
         <SfOrderSummary
@@ -201,6 +202,7 @@
         </transition>
       </div>
     </div>
+    </SfLoader>
   </div>
 </template>
 <script>
@@ -211,7 +213,8 @@ import {
   SfProperty,
   SfHeading,
   SfBreadcrumbs,
-  SfOrderSummary
+  SfOrderSummary,
+  SfLoader
 } from '@storefront-ui/vue';
 import { ref } from '@nuxtjs/composition-api';
 import { computed, onMounted } from '@nuxtjs/composition-api';
@@ -233,7 +236,8 @@ export default {
     SfButton,
     SfHeading,
     SfProperty,
-    SfOrderSummary
+    SfOrderSummary,
+    SfLoader
   },
   setup(_, { root }) {
     // simple test submodule 3
@@ -253,8 +257,13 @@ export default {
       });
       send({ message: 'Product added to wishlist', type: 'info' });
     };
+
+    let loading = ref(true)
     onMounted(async () => {
       await loadCart();
+      if(cart.value.order){
+        loading.value = false        
+      }
     });
 
     const summary = ref([
@@ -283,6 +292,7 @@ export default {
     ];
 
     return {
+      loading,
       isAuthenticated,
       products,
       updateItemQty,
