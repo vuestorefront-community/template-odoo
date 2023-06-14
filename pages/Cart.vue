@@ -267,7 +267,6 @@ export default {
 
     let loading = ref(true)
     onMounted(async () => {
-      console.log(products)
       await loadCart();
       if(cart.value.order){
         loading.value = false        
