@@ -147,7 +147,7 @@ import {
   SfProperty,
   SfImage,
   SfRange,
-  SfAccordion,
+  SfAccordion
 } from '@storefront-ui/vue';
 import { facetGetters } from '@vue-storefront/odoo';
 import {
@@ -155,9 +155,9 @@ import {
   ref,
   onMounted,
   reactive,
-  computed,
-} from "@nuxtjs/composition-api";
-import { useUiState, useUiHelpers } from "~/composables";
+  computed
+} from '@nuxtjs/composition-api';
+import { useUiState, useUiHelpers } from '~/composables';
 
 export default defineComponent({
   components: {
@@ -267,9 +267,9 @@ export default defineComponent({
       {
         id: null,
         label: 'Price',
-        type: 'price',
+        type: 'price'
       },
-      ...facetGetters.getGrouped(props.facetsList, ['color', 'size']),
+      ...facetGetters.getGrouped(props.facetsList, ['color', 'size'])
     ]);
 
     const setPrice = () => {

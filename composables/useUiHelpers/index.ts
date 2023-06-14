@@ -15,7 +15,7 @@ const useUiHelpers = (): any => {
   const { params, query, path } = route.value;
   const localePrefixes = ['/en', '/de', '/ru'];
 
-  const pathToSlug = (): string => {
+  const pathToSlug = () : string => {
     for (const localePrefix of localePrefixes) {
       if (path.startsWith(localePrefix)) {
         return path.replace(localePrefix, '');
@@ -122,7 +122,7 @@ const useUiHelpers = (): any => {
       const valueList = query[label].split(',');
 
       valueList.forEach((value) => {
-        if (label === 'price') {
+        if(label === 'price') {
           const item = {
             filterName: label,
             label: `${value.slice(0, 2)}`,
