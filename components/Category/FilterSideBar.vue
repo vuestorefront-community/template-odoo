@@ -83,12 +83,12 @@
     <template #content-bottom>
       <div class="filters__buttons">
         <SfButton class="sf-button--full-width" @click="applyFilters">{{
-          $t("Done")
+          $t('Done')
         }}</SfButton>
         <SfButton
           class="sf-button--full-width filters__button-clear"
           @click="clearFilters"
-          >{{ $t("Clear all") }}</SfButton
+          >{{ $t('Clear all') }}</SfButton
         >
       </div>
     </template>
@@ -108,8 +108,8 @@ import {
   SfImage,
   SfRange,
   SfAccordion,
-} from "@storefront-ui/vue";
-import { facetGetters } from "@vue-storefront/odoo";
+} from '@storefront-ui/vue';
+import { facetGetters } from '@vue-storefront/odoo';
 import {
   defineComponent,
   ref,
@@ -132,13 +132,13 @@ export default defineComponent({
     SfProperty,
     SfAccordion,
     SfImage,
-    SfRange,
+    SfRange
   },
   props: {
     facetsList: {
       type: Object,
-      default: () => [],
-    },
+      default: () => []
+    }
   },
   setup(props) {
     const selectedFilters = ref([]);
@@ -148,11 +148,11 @@ export default defineComponent({
       range: { min: 20, max: 2000 },
       step: 10,
       connect: true,
-      direction: "ltr",
-      orientation: "horizontal",
-      behaviour: "tap-drag",
+      direction: 'ltr',
+      orientation: 'horizontal',
+      behaviour: 'tap-drag',
       tooltips: true,
-      keyboardSupport: true,
+      keyboardSupport: true
     });
 
     const { changeFilters, isFacetColor, isFacetPrice, facetsFromUrlToFilter } =
@@ -183,7 +183,7 @@ export default defineComponent({
       const newValue = `${values[0]}-${values[1]}`;
       price.value = values;
       const selectedValue = selectedFilters.value.find(
-        (item) => item?.filterName === "price"
+        (item) => item?.filterName === 'price'
       );
 
       if (selectedValue) {
@@ -192,9 +192,9 @@ export default defineComponent({
       }
 
       selectedFilters.value.push({
-        filterName: "price",
-        label: "Price",
-        id: newValue,
+        filterName: 'price',
+        label: 'Price',
+        id: newValue
       });
     };
 
@@ -207,7 +207,7 @@ export default defineComponent({
         selectedFilters.value.push({
           filterName: facet.label,
           label: option.label,
-          id: option.value,
+          id: option.value
         });
 
         return;
@@ -219,19 +219,19 @@ export default defineComponent({
     const facets = computed(() => [
       {
         id: null,
-        label: "Price",
-        type: "price",
+        label: 'Price',
+        type: 'price',
       },
-      ...facetGetters.getGrouped(props.facetsList, ["color", "size"]),
+      ...facetGetters.getGrouped(props.facetsList, ['color', 'size']),
     ]);
 
     const setPrice = () => {
       const selectedValue = selectedFilters.value.find(
-        (item) => item?.filterName === "price"
+        (item) => item?.filterName === 'price'
       );
 
       if (selectedValue) {
-        const splitedPriceFromUrl = selectedValue?.id?.split("-");
+        const splitedPriceFromUrl = selectedValue?.id?.split('-');
 
         price.value = [splitedPriceFromUrl];
         config.start = splitedPriceFromUrl.map((item) => parseInt(item));
@@ -275,7 +275,7 @@ export default defineComponent({
       applyFilters,
       sortByAscendingProductAttributes,
     };
-  },
+  }
 });
 </script>
 <style scoped lang="scss">
