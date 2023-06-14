@@ -124,9 +124,7 @@
                   )
                 "
                 :title="cartGetters.getItemName(product)"
-                :regular-price="
-                  $n(cartGetters.getItemPrice(product).regular, 'currency')
-                "
+                :regular-price="cartGetters.getItemPrice(product).special ? $n(cartGetters.getItemPrice(product).special, 'currency') : $n(cartGetters.getItemPrice(product).regular, 'currency')"
                 :stock="99999"
                 :qty="cartGetters.getItemQty(product)"
                 @input="updateItemQty({ product, quantity: $event })"
@@ -269,6 +267,7 @@ export default {
 
     let loading = ref(true)
     onMounted(async () => {
+      console.log(products)
       await loadCart();
       if(cart.value.order){
         loading.value = false        
