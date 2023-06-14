@@ -251,7 +251,6 @@ export default {
       send({ message: "Product added to wishlist", type: 'info' });
     };
     onMounted(async () => {
-      console.log(products)
       await loadCart();
     });
 
