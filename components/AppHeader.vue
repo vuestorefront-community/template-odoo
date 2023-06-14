@@ -167,7 +167,7 @@ export default {
     const { toggleCartSidebar, toggleWishlistSidebar, toggleLoginModal } =
       useUiState();
 
-    const { load: loadUser, isAuthenticated: isLoggedIn } = useUser();
+    const { load: loadUser, isAuthenticated } = useUser();
     const { load: loadCart, cart } = useCart();
     const { load: loadWishlist, wishlist } = useWishlist();
     const { search: searchProductApi, result } = useFacet('AppHeader:Search');
@@ -191,7 +191,6 @@ export default {
       const count = wishlistGetters.getTotalItems(wishlist.value);
       return count ? count.toString() : root.$cookies.get('wishlist-size');
     });
-
     const accountIcon = computed(() =>
       isAuthenticated.value ? 'profile_fill' : 'profile'
     );
