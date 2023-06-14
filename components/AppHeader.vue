@@ -123,9 +123,9 @@ import {
   SfButton,
   SfOverlay,
   SfBadge,
-  SfHeader,
-} from "@storefront-ui/vue";
-import { useUiState } from "~/composables";
+  SfHeader
+} from '@storefront-ui/vue';
+import { useUiState } from '~/composables';
 import {
   useWishlist,
   useUser,
@@ -143,7 +143,7 @@ import { useUiHelpers } from '~/composables';
 import LocaleSelector from './LocaleSelector';
 import SearchResults from '~/components/SearchResults';
 
-import debounce from "lodash.debounce";
+import debounce from 'lodash.debounce';
 export default {
   components: {
     SfHeader,
@@ -154,7 +154,7 @@ export default {
     LocaleSelector,
     SearchResults,
     SfOverlay,
-    SfBadge,
+    SfBadge
   },
   directives: { clickOutside },
   setup(props, { root }) {
@@ -170,7 +170,7 @@ export default {
     const { load: loadUser, isAuthenticated: isLoggedIn } = useUser();
     const { cart, load: loadCart, totalItemsInCartWithQuantity } = useCartRedis();
     const { load: loadWishlist, wishlist } = useWishlist();
-    const { search: searchProductApi, result } = useFacet("AppHeader:Search");
+    const { search: searchProductApi, result } = useFacet('AppHeader:Search');
     const { categories: topCategories, search: searchTopCategoryApi } =
       useCategories('AppHeader:TopCategories');
 
@@ -186,7 +186,7 @@ export default {
     });
 
     const accountIcon = computed(() =>
-      isAuthenticated.value ? "profile_fill" : "profile"
+      isAuthenticated.value ? 'profile_fill' : 'profile'
     );
 
     const removeSearchResults = () => {
@@ -220,11 +220,11 @@ export default {
         fetchCategories: true,
         productParams: {
           search: term.value,
-          pageSize: 12,
+          pageSize: 12
         },
         categoryParams: {
-          search: term.value,
-        },
+          search: term.value
+        }
       });
 
       formatedResult.value = {
@@ -232,7 +232,7 @@ export default {
         categories:
           result?.value?.data?.categories
             ?.filter((category) => category.childs === null)
-            ?.map((category) => categoryGetters.getTree(category)) || [],
+            ?.map((category) => categoryGetters.getTree(category)) || []
       };
     }, 100);
     const closeOrFocusSearchBar = () => {
@@ -245,9 +245,9 @@ export default {
 
     const handleAccountClick = async () => {
       if (isAuthenticated.value) {
-        root.$cookies.remove("odoo-user");
+        root.$cookies.remove('odoo-user');
         await loadUser();
-        return root.$router.push(root.localePath("/my-account"));
+        return root.$router.push(root.localePath('/my-account'));
       }
 
       toggleLoginModal();
@@ -264,7 +264,7 @@ export default {
 
     const filteredTopCategories = computed(() =>
       topCategories.value?.filter(
-        (cat) => cat.name === "WOMEN" || cat.name === "MEN"
+        (cat) => cat.name === 'WOMEN' || cat.name === 'MEN'
       )
     );
 
@@ -280,6 +280,7 @@ export default {
         }
       }
     );
+
 
     onSSR(async () => {
       await searchTopCategoryApi({filter: { parent: true }});
@@ -308,7 +309,7 @@ export default {
       closeSearch,
       closeSearchDialog
     };
-  },
+  }
 };
 </script>
 
