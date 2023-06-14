@@ -281,6 +281,7 @@ export default {
       }
     );
 
+
     onSSR(async () => {
       await searchTopCategoryApi({filter: { parent: true }});
     });
