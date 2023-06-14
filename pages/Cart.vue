@@ -123,9 +123,7 @@
                   )
                 "
                 :title="cartGetters.getItemName(product)"
-                :regular-price="
-                  $n(cartGetters.getItemPrice(product).regular, 'currency')
-                "
+                :regular-price="cartGetters.getItemPrice(product).special ? $n(cartGetters.getItemPrice(product).special, 'currency') : $n(cartGetters.getItemPrice(product).regular, 'currency')"
                 :stock="99999"
                 :qty="cartGetters.getItemQty(product)"
                 @input="updateItemQty({ product, quantity: $event })"
@@ -253,6 +251,7 @@ export default {
       send({ message: "Product added to wishlist", type: 'info' });
     };
     onMounted(async () => {
+      console.log(products)
       await loadCart();
     });
 
