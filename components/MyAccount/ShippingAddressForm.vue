@@ -123,6 +123,10 @@
             :error-message="errors[0]"
           >
             <SfSelectOption
+              value="" 
+              selected
+            ></SfSelectOption>
+            <SfSelectOption
               v-for="countryStateOption in countryStates"
               :key="countryStateOption.id"
               :value="countryStateOption.id"
