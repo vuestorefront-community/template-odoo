@@ -121,9 +121,7 @@
            <SfSelectOption
               value="" 
               selected
-            >
-              Please select states
-            </SfSelectOption>
+           ></SfSelectOption>
            <SfSelectOption
               v-for="countryStateOption in countryStates"
               :key="countryStateOption.id"
