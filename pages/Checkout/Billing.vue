@@ -99,9 +99,7 @@
            <SfSelectOption
               value="" 
               selected
-            >
-              Please select states
-            </SfSelectOption>
+            ></SfSelectOption>
             <SfSelectOption
               v-for="countryOption in countries"
               :key="countryOption.id"
