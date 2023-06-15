@@ -95,7 +95,13 @@
             required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
-          >
+          > 
+           <SfSelectOption
+              value="" 
+              selected
+            >
+              Please select states
+            </SfSelectOption>
             <SfSelectOption
               v-for="countryOption in countries"
               :key="countryOption.id"
@@ -278,9 +284,7 @@ export default {
       async () => {
         await searchCountryStates(form?.value?.country?.id || null);
         if (!countryStates.value || countryStates.value.length === 0) {
-          form.value.state.id = null;
-        } else {
-          form.value.state.id = String(countryStates.value?.[0]?.id);
+          form.state.id = null;
         }
       }
     );
