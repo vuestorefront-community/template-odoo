@@ -221,8 +221,8 @@ export default {
       name: '',
       street: '',
       city: '',
-      state: { id: null },
-      country: { id: null },
+      state: { id: ' ' },
+      country: { id: ' ' },
       zip: '',
       phone: null
     });
@@ -263,8 +263,8 @@ export default {
       form.value.name = name;
       form.value.street = street;
       form.value.city = city;
-      form.value.state = state.id !== 'undefined' ? state : { id: '' },
-      form.value.country = country.id !== 'undefined' ? country : { id: '' },
+      form.value.state = state.id !== 'undefined' ? state : { id: ' ' },
+      form.value.country = country.id !== 'undefined' ? country : { id: ' ' },
       form.value.zip = zip;
       form.value.phone = phone;
       form.value.selectedMethodShipping = id;
