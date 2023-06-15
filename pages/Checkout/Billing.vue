@@ -95,7 +95,13 @@
             required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
-          >
+          > 
+           <SfSelectOption
+              value="" 
+              selected
+            >
+              Please select states
+            </SfSelectOption>
             <SfSelectOption
               v-for="countryOption in countries"
               :key="countryOption.id"
