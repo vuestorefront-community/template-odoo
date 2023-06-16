@@ -44,13 +44,13 @@
                 key="shipping-list"
               />
 
-              <OdooButton
+              <!-- <OdooButton
                 class="action-button"
                 data-testid="add-new-address"
                 @click="handleAddNewAddress"
               >
                 {{ $t('Add New Address') }}</OdooButton
-              >
+              > -->
             </SfTab>
           </SfTabs>
         </SfContentPage>
