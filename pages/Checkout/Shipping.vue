@@ -90,7 +90,7 @@
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           >
-           <SfSelectOption
+            <SfSelectOption
               v-for="countryOption in countries"
               :key="countryOption && countryOption.id"
               :value="countryOption && countryOption.id"
@@ -118,10 +118,6 @@
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           >
-           <SfSelectOption
-              value="" 
-              selected
-           ></SfSelectOption>
            <SfSelectOption
               v-for="countryStateOption in countryStates"
               :key="countryStateOption.id"
@@ -337,7 +333,7 @@ export default {
       async () => {
         await searchCountryStates(form.value?.country?.id);
         if (!countryStates.value || countryStates.value.length === 0) {
-          form.state.id = null;
+          form.value.state.id = null;
         }
       }
     );
