@@ -95,11 +95,7 @@
             required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
-          > 
-           <SfSelectOption
-              value="" 
-              selected
-            ></SfSelectOption>
+          >
             <SfSelectOption
               v-for="countryOption in countries"
               :key="countryOption.id"
@@ -111,6 +107,7 @@
         </ValidationProvider>
 
         <ValidationProvider
+          v-if="countryStates && countryStates.length !== 0"
           name="state"
           rules="required"
           v-slot="{ errors, validate }"
@@ -125,9 +122,6 @@
               sf-select--underlined
               common_form_style
             "
-            :class="[
-              countryStates && countryStates.length ? 'd-block' : 'hidden',
-            ]"
             required
             @change="validate"
             :valid="!errors[0]"
@@ -221,8 +215,8 @@ export default {
       name: '',
       street: '',
       city: '',
-      state: { id: ' ' },
-      country: { id: ' ' },
+      state: { id: null },
+      country: { id: null },
       zip: '',
       phone: null
     });
@@ -263,8 +257,8 @@ export default {
       form.value.name = name;
       form.value.street = street;
       form.value.city = city;
-      form.value.state = state.id !== 'undefined' ? state : { id: ' ' },
-      form.value.country = country.id !== 'undefined' ? country : { id: ' ' },
+      form.value.state = state.id !== 'undefined' ? state : { id: '' },
+      form.value.country = country.id !== 'undefined' ? country : { id: '' },
       form.value.zip = zip;
       form.value.phone = phone;
       form.value.selectedMethodShipping = id;
@@ -282,7 +276,7 @@ export default {
       async () => {
         await searchCountryStates(form?.value?.country?.id || null);
         if (!countryStates.value || countryStates.value.length === 0) {
-          form.state.id = null;
+          form.value.state.id = null;
         }
       }
     );

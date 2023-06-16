@@ -90,7 +90,7 @@
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           >
-           <SfSelectOption
+            <SfSelectOption
               v-for="countryOption in countries"
               :key="countryOption && countryOption.id"
               :value="countryOption && countryOption.id"
@@ -101,6 +101,7 @@
         </ValidationProvider>
 
         <ValidationProvider
+          v-if="countryStates && countryStates.length !== 0"
           name="state"
           rules="required"
           v-slot="{ errors }"
@@ -114,16 +115,9 @@
               form__element sf-select--underlined
               common_form_style
             "
-            :class="[
-              countryStates && countryStates.length ? 'd-block' : 'hidden',
-            ]"
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           >
-           <SfSelectOption
-              value="" 
-              selected
-           ></SfSelectOption>
            <SfSelectOption
               v-for="countryStateOption in countryStates"
               :key="countryStateOption.id"
@@ -333,7 +327,7 @@ export default {
       async () => {
         await searchCountryStates(form.value?.country?.id);
         if (!countryStates.value || countryStates.value.length === 0) {
-          form.state.id = null;
+          form.value.state.id = null;
         }
       }
     );
