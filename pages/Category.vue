@@ -61,7 +61,7 @@
             class="products__grid"
           >
             <SfSkeleton type="image" />
-           
+
             <SfProductCard
               data-cy="category-product-card"
               v-for="(product, i) in products"
@@ -94,7 +94,7 @@
               :score-rating="productGetters.getAverageRating(product)"
               :show-add-to-cart-button="true"
               :isInWishlist="isInWishlist({ product })"
-              :isAddedToCart="isInCart({ product })"
+              :isAddedToCart="product.firstVarian? isInCart({ product }) : false"
               :link="localePath(productGetters.getSlug(product))"
               class="products__product-card"
               @click:wishlist="
