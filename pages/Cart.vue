@@ -246,7 +246,16 @@ export default {
 
     const products = computed(() => cartGetters.getItems(cart.value));
     const totals = computed(() => cartGetters.getTotals(cart.value));
-    const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
+    const totalItems = computed(() => {
+      let array = cartGetters.getItems(cart.value).map((item) => {
+        return item.quantity
+      })
+      let sum = 0
+      array.forEach((num) => {
+        sum += num;
+      })
+      return sum
+    });
     const { send } = useUiNotification();
     const { addItem: addItemToWishlist } = useWishlist();
 
