@@ -31,7 +31,7 @@
                     class="card__text"
                     v-else-if="item.name === 'Sub Total'"
                   >
-                    ${{ item.value.value.subtotal }}</span
+                    ${{ item.value.value.subtotal.toFixed(2) }}</span
                   >
                   <span class="card__text" v-else-if="item.name === 'Shipping'">
                     {{ $t(item.value) }}</span
@@ -50,7 +50,7 @@
                   <span class="card__text">{{ $t("Total Price") }}:</span>
                 </template>
                 <template #value>
-                  <span class="card__text"> ${{ totals.total }}</span>
+                  <span class="card__text"> ${{ totals.total.toFixed(2) }}</span>
                 </template>
               </SfProperty>
             </div>
