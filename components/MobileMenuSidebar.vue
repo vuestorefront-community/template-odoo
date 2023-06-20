@@ -69,8 +69,7 @@ import {
   computed,
   defineComponent,
   ref,
-  useRouter,
-  onMounted
+  useRouter
 } from '@nuxtjs/composition-api';
 import {
   useUser,
@@ -81,7 +80,6 @@ import {
 } from '@vue-storefront/odoo';
 import { onSSR } from '@vue-storefront/core';
 import { useUiState, useUiHelpers } from '~/composables';
-import { categories } from '~/helpers/buildQueries';
 
 export default defineComponent({
   name: 'Wishlist',
@@ -138,9 +136,6 @@ export default defineComponent({
     };
 
     onSSR(async () => {});
-    onMounted(async () => {
-      console.log(filteredTopCategories.value)
-    });
 
     return {
       currentParentMenu,
