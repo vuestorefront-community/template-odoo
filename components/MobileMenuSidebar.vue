@@ -69,7 +69,8 @@ import {
   computed,
   defineComponent,
   ref,
-  useRouter
+  useRouter,
+  onMounted
 } from '@nuxtjs/composition-api';
 import {
   useUser,
@@ -80,6 +81,7 @@ import {
 } from '@vue-storefront/odoo';
 import { onSSR } from '@vue-storefront/core';
 import { useUiState, useUiHelpers } from '~/composables';
+import { categories } from '~/helpers/buildQueries';
 
 export default defineComponent({
   name: 'Wishlist',
@@ -109,7 +111,11 @@ export default defineComponent({
       facetGetters.getCategoryTree(result.value)
     );
 
-    const filteredTopCategories = computed(() => topCategories.value);
+    const filteredTopCategories = computed(() => {
+      return topCategories.value.filter((item) => {
+        return item.name == "MEN" || item.name == "WOMEN"
+      }) 
+    });
 
     const openChilds = async (menuName) => {
       currentParentMenu.value = menuName;
@@ -132,6 +138,9 @@ export default defineComponent({
     };
 
     onSSR(async () => {});
+    onMounted(async () => {
+      console.log(filteredTopCategories.value)
+    });
 
     return {
       currentParentMenu,
