@@ -62,12 +62,21 @@
       </div>
     </div>
     <SfAccordion class="filters smartphone-only">
-      <div v-for="(facet, i) in facets" :key="i">
+      <div v-for="(facet, i) in facets" :key="i">  
         <SfAccordionItem
           :key="`filter-title-${facet.id}`"
           :header="facet.label"
           class="filters__accordion-item"
         >
+          <template v-if="isFacetPrice(facet)">
+            <SfRange
+             :value="[20, 600]"
+             :disabled="false"
+             :config="config"
+             v-model="price"
+             @change="selectPrice"
+           />
+          </template>
           <SfFilter
             v-for="option in facet.options"
             :key="`${facet.id}-${option.id}`"
