@@ -23,6 +23,10 @@
   margin-right: 35px;
 }
 
+.padding-remover span {
+  padding-right: 0px !important;
+}
+
 .common_form_style .sf-input__wrapper input {
   padding: 25px 4px 10px 4px !important;
   height: 56px !important;
