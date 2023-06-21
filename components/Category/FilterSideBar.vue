@@ -155,14 +155,14 @@ export default defineComponent({
       keyboardSupport: true
     });
 
-    const { changeFilters, isFacetColor, isFacetPrice, facetsFromUrlToFilter } =
+    const { changeFilters,clearAllFilters, isFacetColor, isFacetPrice, facetsFromUrlToFilter } =
       useUiHelpers();
     const { toggleFilterSidebar, isFilterSidebarOpen } = useUiState();
 
     const clearFilters = () => {
       toggleFilterSidebar();
       selectedFilters.value = [];
-      changeFilters(selectedFilters.value);
+      clearAllFilters();
     };
 
     const applyFilters = () => {
