@@ -4,6 +4,7 @@
       class="breadcrumbs desktop-only"
       :breadcrumbs="breadcrumbs"
     />
+    <SfLoader :loading="loading">
     <div class="detailed-cart">
       <div v-if="totalItems" class="detailed-cart__aside">
         <SfOrderSummary
@@ -123,9 +124,7 @@
                   )
                 "
                 :title="cartGetters.getItemName(product)"
-                :regular-price="
-                  $n(cartGetters.getItemPrice(product).regular, 'currency')
-                "
+                :regular-price="cartGetters.getItemPrice(product).special ? $n(cartGetters.getItemPrice(product).special, 'currency') : $n(cartGetters.getItemPrice(product).regular, 'currency')"
                 :stock="99999"
                 :qty="cartGetters.getItemQty(product)"
                 @input="updateItemQty({ product, quantity: $event })"
@@ -201,6 +200,7 @@
         </transition>
       </div>
     </div>
+    </SfLoader>
   </div>
 </template>
 <script>
@@ -211,7 +211,8 @@ import {
   SfProperty,
   SfHeading,
   SfBreadcrumbs,
-  SfOrderSummary
+  SfOrderSummary,
+  SfLoader
 } from '@storefront-ui/vue';
 import { ref } from '@nuxtjs/composition-api';
 import { computed, onMounted } from '@nuxtjs/composition-api';
@@ -232,7 +233,8 @@ export default {
     SfButton,
     SfHeading,
     SfProperty,
-    SfOrderSummary
+    SfOrderSummary,
+    SfLoader
   },
   setup(_, { root }) {
     // simple test submodule 3
@@ -242,18 +244,32 @@ export default {
 
     const products = computed(() => cartGetters.getItems(cart.value));
     const totals = computed(() => cartGetters.getTotals(cart.value));
-    const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
+    const totalItems = computed(() => {
+      let array = cartGetters.getItems(cart.value).map((item) => {
+        return item.quantity
+      })
+      let sum = 0
+      array.forEach((num) => {
+        sum += num;
+      })
+      return sum
+    });
     const { send } = useUiNotification();
     const { addItem: addItemToWishlist } = useWishlist();
 
     const addProductToWishList = (product) => {
       addItemToWishlist({
-        product: { ...product.product, firstVariant: product.product.id }
+        product: { ...product.product, firstVariant: { id: product.product.id }}
       });
       send({ message: "Product added to wishlist", type: 'info' });
     };
+
+    let loading = ref(true)
     onMounted(async () => {
       await loadCart();
+      if(cart.value.order){
+        loading.value = false        
+      }
     });
 
     const summary = ref([
@@ -282,6 +298,7 @@ export default {
     ];
 
     return {
+      loading,
       isAuthenticated,
       products,
       updateItemQty,

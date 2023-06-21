@@ -47,7 +47,7 @@
           </div>
           <div v-else>
             <SfFilter
-              v-for="option in facet.options"
+              v-for="option in sortByAscendingProductAttributes(facet.options)"
               :key="`${facet.id}-${option.value}`"
               :data-cy="`category-filter_${facet.id}_${option.value}`"
               :label="
@@ -69,7 +69,7 @@
           class="filters__accordion-item"
         >
           <SfFilter
-            v-for="option in facet.options"
+            v-for="option in sortByAscendingProductAttributes(facet.options)"
             :key="`${facet.id}-${option.id}`"
             :label="option.label"
             :selected="isFilterSelected(facet, option)"
@@ -202,7 +202,7 @@ export default defineComponent({
       const alreadySelectedIndex = selectedFilters.value.findIndex(
         (filter) => String(filter.id) === String(option.value)
       );
-      
+
       if (alreadySelectedIndex === -1) {
         selectedFilters.value.push({
           filterName: facet.label,
@@ -229,7 +229,7 @@ export default defineComponent({
       const selectedValue = selectedFilters.value.find(
         (item) => item?.filterName === 'price'
       );
-      
+
       if (selectedValue) {
         const splitedPriceFromUrl = selectedValue?.id?.split('-');
 
@@ -243,6 +243,21 @@ export default defineComponent({
       setPrice();
     });
 
+    const sortByAscendingProductAttributes = (data) => {
+      return data
+        ?.sort(function (a, b) {
+          var labelA = a.label;
+          var labelB = b.label;
+          if (labelA === labelB) {
+            var lastCharA = labelA.charAt(labelA.length - 1);
+            var lastCharB = labelB.charAt(labelB.length - 1);
+            return lastCharA.localeCompare(lastCharB);
+          } else {
+            return labelA.localeCompare(labelB);
+          }
+        })
+        ?.sort((a, b) => a.label - b.label);
+    };
     return {
       price,
       selectPrice,
@@ -257,7 +272,8 @@ export default defineComponent({
       selectFilter,
       isFilterSelected,
       clearFilters,
-      applyFilters
+      applyFilters,
+      sortByAscendingProductAttributes,
     };
   }
 });

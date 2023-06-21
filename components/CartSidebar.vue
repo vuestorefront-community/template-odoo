@@ -194,7 +194,7 @@ export default {
 
     const addProductToWishList = (product) => {
       addItemToWishlist({
-        product: { ...product.product, firstVariant: product.product.id }
+        product: { ...product.product, firstVariant: { id: product.product.id }}
       });
       send({ message: "Product added to wishlist", type: 'info' });
     };

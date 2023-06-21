@@ -10,10 +10,10 @@
           {{ $t('Set up newsletter') }}
         </p>
       </slot>
-      <div class="form">
-        <p class="form__title">{{ $t('Sections that interest you') }}</p>
+      <div class="form flex-col xl:flex-row items-start xl:items-center gap-y-5 xl:gap-x-12 mb-10">
+        <p class="form__title m-0">{{ $t('Sections that interest you') }}</p>
         <slot name="form">
-          <div class="form__checkbox-group">
+          <div class="form__checkbox-group m-0">
             <SfCheckbox
               v-for="(mailing, i) in mailingList"
               :key="mailing.id"
@@ -35,12 +35,6 @@
           </OdooButton>
         </slot>
       </div>
-      <slot name="notice">
-        <p class="notice">
-          {{ $t('I have read and understand the') }} <a href="#">{{ $t('Privacy') }}</a> {{ $t('and') }}
-          <a href="#">{{ $t('Cookies Policy') }}</a> {{ $t('and agree to receive personalized commercial information from Brand name by email.') }}
-        </p>
-      </slot>
     </SfTab>
   </SfTabs>
 </template>
