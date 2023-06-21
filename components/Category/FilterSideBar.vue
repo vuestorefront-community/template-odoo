@@ -62,7 +62,7 @@
       </div>
     </div>
     <SfAccordion class="filters smartphone-only">
-      <div v-for="(facet, i) in facets" :key="i">  
+      <div v-for="(facet, i) in facets" :key="i">
         <SfAccordionItem
           :key="`filter-title-${facet.id}`"
           :header="facet.label"
