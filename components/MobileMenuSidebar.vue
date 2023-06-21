@@ -14,8 +14,7 @@
           data-cy="app-header-top-categories"
           class="nav-item"
           :label="category.name"
-          :link="localePath(category.slug)"
-          @click="openChilds(category.name)"
+          @click="openChilds(category.name, category.slug)"
         />
       </template>
 
@@ -116,8 +115,9 @@ export default defineComponent({
       )
     );
 
-    const openChilds = async (menuName) => {
+    const openChilds = async (menuName, slug) => {
       currentParentMenu.value = menuName;
+      router.push(root.localePath(slug));
       const params = { ...getFacetsFromURL() };
       await search(params);
       isChildsOpened.value = true;
