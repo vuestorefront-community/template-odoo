@@ -270,6 +270,7 @@ export default {
   }
 }
 .sf-footer {
+  margin-top: var(--spacer-lg);
   @include for-desktop {
     border-top: var(--spacer-xs) solid var(--c-primary);
     padding-bottom: 0;
