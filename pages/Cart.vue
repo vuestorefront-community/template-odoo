@@ -6,6 +6,101 @@
     />
     <SfLoader :loading="loading">
     <div class="detailed-cart">
+      <div class="detailed-cart__main">
+        <transition name="sf-fade" mode="out-in">
+          <div
+            v-if="totalItems"
+            key="detailed-cart"
+            class="collected-product-list"
+          >
+            <transition-group name="sf-fade" tag="div">
+              <SfCollectedProduct
+                v-for="product in products"
+                :key="cartGetters.getItemSku(product)"
+                :image="
+                  $image(
+                    cartGetters.getItemImage(product),
+                    140,
+                    236,
+                    cartGetters.getItemImageFilename(product)
+                  )
+                "
+                :title="cartGetters.getItemName(product)"
+                :regular-price="cartGetters.getItemPrice(product).special ? $n(cartGetters.getItemPrice(product).special, 'currency') : $n(cartGetters.getItemPrice(product).regular, 'currency')"
+                :stock="99999"
+                :qty="cartGetters.getItemQty(product)"
+                @input="updateItemQty({ product, quantity: $event })"
+                class="sf-collected-product--detailed collected-product"
+              >
+                <template #remove>
+                  <span class="">
+                    <SfButton
+                      class="sf-button--text custom__text"
+                      @click="removeItem({ product })"
+                      >{{ $t("Remove from cart") }}</SfButton
+                    >
+                  </span>
+                </template>
+
+                <template #actions>
+                  <div class="actions desktop-only">
+                    <SfButton
+                      @click="
+                        addProductToWishList({ product: product.product })
+                      "
+                      class="sf-button--text actions__button custom__margin"
+                      >{{ $t("Save for later") }}</SfButton
+                    >
+                    <span class="actions__description">
+                      {{
+                        $t(
+                          "Usually arrives in 5-13 business days. A shipping timeline specific to your destination can be viewed in Checkout."
+                        )
+                      }}
+                    </span>
+                  </div>
+                </template>
+
+                <template #configuration>
+                  <div class="collected-product__properties">
+                    <SfProperty
+                      v-for="(attribute, key) in cartGetters.getItemAttributes(
+                        product,
+                        ['color', 'size']
+                      )"
+                      :key="key"
+                      :name="key"
+                      :value="attribute"
+                    />
+                  </div>
+                </template>
+              </SfCollectedProduct>
+            </transition-group>
+          </div>
+          <div v-else key="empty-cart" class="empty-cart">
+            <SfImage
+              :src="require('@storefront-ui/shared/icons/empty_cart.svg')"
+              alt="Empty cart"
+              class="empty-cart__image"
+            />
+            <SfHeading
+              :title="$t('Your cart is empty')"
+              :level="2"
+              :description="
+                $t(
+                  'Looks like you haven\'t added any items to the cart yet. Start shopping to fill it in.'
+                )
+              "
+            />
+            <nuxt-link to="/">
+              <SfButton
+              class="sf-button--full-width color-primary empty-cart__button"
+              >{{ $t("Start shopping") }}</SfButton
+            >
+            </nuxt-link>
+          </div>
+        </transition>
+      </div>
       <div v-if="totalItems" class="detailed-cart__aside">
         <SfOrderSummary
           :products="products"
@@ -103,101 +198,6 @@
             </div>
           </template>
         </SfOrderSummary>
-      </div>
-      <div class="detailed-cart__main">
-        <transition name="sf-fade" mode="out-in">
-          <div
-            v-if="totalItems"
-            key="detailed-cart"
-            class="collected-product-list"
-          >
-            <transition-group name="sf-fade" tag="div">
-              <SfCollectedProduct
-                v-for="product in products"
-                :key="cartGetters.getItemSku(product)"
-                :image="
-                  $image(
-                    cartGetters.getItemImage(product),
-                    140,
-                    236,
-                    cartGetters.getItemImageFilename(product)
-                  )
-                "
-                :title="cartGetters.getItemName(product)"
-                :regular-price="cartGetters.getItemPrice(product).special ? $n(cartGetters.getItemPrice(product).special, 'currency') : $n(cartGetters.getItemPrice(product).regular, 'currency')"
-                :stock="99999"
-                :qty="cartGetters.getItemQty(product)"
-                @input="updateItemQty({ product, quantity: $event })"
-                class="sf-collected-product--detailed collected-product"
-              >
-                <template #remove>
-                  <span class="">
-                    <SfButton
-                      class="sf-button--text custom__text"
-                      @click="removeItem({ product })"
-                      >{{ $t("Remove from cart") }}</SfButton
-                    >
-                  </span>
-                </template>
-
-                <template #actions>
-                  <div class="actions desktop-only">
-                    <SfButton
-                      @click="
-                        addProductToWishList({ product: product.product })
-                      "
-                      class="sf-button--text actions__button custom__margin"
-                      >{{ $t("Save for later") }}</SfButton
-                    >
-                    <span class="actions__description">
-                      {{
-                        $t(
-                          "Usually arrives in 5-13 business days. A shipping timeline specific to your destination can be viewed in Checkout."
-                        )
-                      }}
-                    </span>
-                  </div>
-                </template>
-
-                <template #configuration>
-                  <div class="collected-product__properties">
-                    <SfProperty
-                      v-for="(attribute, key) in cartGetters.getItemAttributes(
-                        product,
-                        ['color', 'size']
-                      )"
-                      :key="key"
-                      :name="key"
-                      :value="attribute"
-                    />
-                  </div>
-                </template>
-              </SfCollectedProduct>
-            </transition-group>
-          </div>
-          <div v-else key="empty-cart" class="empty-cart">
-            <SfImage
-              :src="require('@storefront-ui/shared/icons/empty_cart.svg')"
-              alt="Empty cart"
-              class="empty-cart__image"
-            />
-            <SfHeading
-              :title="$t('Your cart is empty')"
-              :level="2"
-              :description="
-                $t(
-                  'Looks like you haven\'t added any items to the cart yet. Start shopping to fill it in.'
-                )
-              "
-            />
-            <nuxt-link to="/">
-              <SfButton
-              class="sf-button--full-width color-primary empty-cart__button"
-              >{{ $t("Start shopping") }}</SfButton
-            >
-            </nuxt-link>
-          </div>
-        </transition>
       </div>
     </div>
     </SfLoader>
