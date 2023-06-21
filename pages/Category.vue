@@ -19,7 +19,7 @@
             <SfAccordionItem
               v-for="(cat, i) in categoryTree.items"
               :key="i"
-              :header="cat.label"
+              :header="categoryItems[i]"
             >
               <template>
                 <SfList class="list">
@@ -61,7 +61,7 @@
             class="products__grid"
           >
             <SfSkeleton type="image" />
-           
+
             <SfProductCard
               data-cy="category-product-card"
               v-for="(product, i) in products"
@@ -94,7 +94,7 @@
               :score-rating="productGetters.getAverageRating(product)"
               :show-add-to-cart-button="true"
               :isInWishlist="isInWishlist({ product })"
-              :isAddedToCart="isInCart({ product })"
+              :isAddedToCart="product.firstVariant ? isInCart({ product }) : false"
               :link="localePath(productGetters.getSlug(product))"
               class="products__product-card"
               @click:wishlist="
@@ -330,7 +330,12 @@ export default defineComponent({
     const categoryTree = computed(() =>
       facetGetters.getCategoryTree(result.value)
     );
-
+    const categoryItems = computed(() => {
+      let category = facetGetters.getCategoryTree(result.value)
+      return category.items.map((item) => {
+        return item.label.charAt(0).toUpperCase() + item.label.slice(1)
+      })
+    });
     const addProductToWishList = (product) => {
       addItemToWishlist({ product })
       send({ message: "Product added to wishlist", type: 'info' });
@@ -401,6 +406,7 @@ export default defineComponent({
       generic,
       products,
       categoryTree,
+      categoryItems,
       loading,
       productGetters,
       pagination,

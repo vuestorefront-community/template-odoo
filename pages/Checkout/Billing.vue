@@ -107,6 +107,7 @@
         </ValidationProvider>
 
         <ValidationProvider
+          v-if="countryStates && countryStates.length !== 0"
           name="state"
           rules="required"
           v-slot="{ errors, validate }"
@@ -121,9 +122,6 @@
               sf-select--underlined
               common_form_style
             "
-            :class="[
-              countryStates && countryStates.length ? 'd-block' : 'hidden',
-            ]"
             required
             @change="validate"
             :valid="!errors[0]"
@@ -279,8 +277,6 @@ export default {
         await searchCountryStates(form?.value?.country?.id || null);
         if (!countryStates.value || countryStates.value.length === 0) {
           form.value.state.id = null;
-        } else {
-          form.value.state.id = String(countryStates.value?.[0]?.id);
         }
       }
     );

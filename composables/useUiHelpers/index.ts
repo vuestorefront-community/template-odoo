@@ -42,7 +42,7 @@ const useUiHelpers = (): any => {
     let option = {}
     if (attribute) {
       option = attribute?.options.find(item => {
-        return Number(item.value) === Number(value.slice(0,2))
+        return Number(item.value) === Number(value.split('-')[0])
       })
     }
     return option;

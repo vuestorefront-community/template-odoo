@@ -1,6 +1,6 @@
 {
   "name": "@vue-storefront/odoo-theme",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "private": true,
   "scripts": {
     "build": "cross-var nuxt build -m --dotenv $VSF_RC",
@@ -42,7 +42,7 @@
     "@vue-storefront/middleware": "2.7.5",
     "@vue-storefront/nuxt": "2.7.5",
     "@vue-storefront/nuxt-theme": "2.7.5",
-    "@vue-storefront/odoo": "1.5.2-rc.12",
+    "@vue-storefront/odoo": "1.5.2",
     "@vue-storefront/redis-cache": "^1.0.1",
     "@babel/plugin-proposal-private-property-in-object": "7.21.0",
     "cookie-universal-nuxt": "^2.1.3",

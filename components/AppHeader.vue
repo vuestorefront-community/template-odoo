@@ -227,9 +227,12 @@ export default {
       return searchBarRef.value.$el.children[0].focus();
     };
 
-    // const isAuthenticated = computed(() => root.$cookies.get('odoo-user'));
+    const isAuthenticated = computed(() => {
+      return isLoggedIn.value
+        ? isLoggedIn.value
+        : root.$cookies.get("odoo-user");
+    });
 
-    // TODO: https://github.com/DivanteLtd/vue-storefront/issues/4927
     const handleAccountClick = async () => {
       if (isAuthenticated.value) {
         root.$cookies.remove('odoo-user');
