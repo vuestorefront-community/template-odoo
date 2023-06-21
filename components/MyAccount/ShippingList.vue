@@ -8,7 +8,7 @@
         class="shipping"
         data-testid="shipping-address-list-item"
       >
-        <div class="flex flex-row justify-between items-end mb-5">
+        <div class="flex flex-row items-center justify-between lg:items-end mb-5">
           <div class="shipping__content">
             <p class="shipping__address">
               <span class="font-bold">{{ shipping.name }}</span
@@ -22,21 +22,23 @@
               {{ shipping.phoneNumber }}
             </p>
           </div>
-          <div class="flex flex-row gap-3">
-            <OdooButton
-              @click="handleDeleteAddress(shipping)"
-              class="smartphone-only"
-            >
-              <SfIcon icon="cross" color="gray" size="14px" />
-            </OdooButton>
+          <div class="flex flex-col lg:flex-row gap-3">
             <OdooButton
               data-testid="change-address"
               @click="handleChangeAddress(shipping)"
+              class="padding-remover"
             >
               {{ $t('Change') }}
             </OdooButton>
             <OdooButton
-              class="desktop-only"
+              @click="handleDeleteAddress(shipping)"
+              styleType="Danger"
+              class="smartphone-only padding-remover"
+            >
+            {{ $t('Delete') }}
+            </OdooButton>
+            <OdooButton
+              class="desktop-only padding-remover"
               styleType="Danger"
               @click="handleDeleteAddress(shipping)"
             >
