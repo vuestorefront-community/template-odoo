@@ -79,6 +79,7 @@ export default defineComponent({
 
     onSSR(async () => {
       await getMailingLists();
+      await getMailingContacts();
     });
 
     onMounted(async() => {
