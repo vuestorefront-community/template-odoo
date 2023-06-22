@@ -504,3 +504,17 @@ export default {
   }
 }
 </style>
+<style>
+@media only screen and (max-width: 1023px) {
+  .password-icon-position {
+    .sf-input__wrapper {
+      display: inline !important;
+      position: relative !important;
+      .sf-input__button {
+        position: absolute !important;
+        top: 28px;
+      }
+    }
+  }
+}
+</style>
