@@ -30,7 +30,7 @@
             }}
           </p>
         </div>
-        <ValidationObserver v-slot="{ handleSubmit }" 
+        <ValidationObserver v-slot="{ handleSubmit }"
          key="log-in"
          >
           <form
@@ -41,7 +41,7 @@
               )
             "
           >
-            <ValidationProvider rules="required|email" 
+            <ValidationProvider rules="required|email"
              v-slot="{ errors }"
              class="form__element common_form_style mb-3"
              >
@@ -57,7 +57,7 @@
             </ValidationProvider>
             <template v-if="!isForgottenPassword">
               <ValidationProvider rules="required"
-               class="form__element common_form_style mb-3" 
+               class="form__element common_form_style mb-3"
                v-slot="{ errors }">
                 <SfInput
                   data-cy="login-input_password"
@@ -74,7 +74,7 @@
                     }
                   "
                   :type="showPassword ? 'text' : 'password'"
-                  class="form__element"
+                  class="form__element password-icon-position"
                 />
               </ValidationProvider>
               <div class="action">
@@ -168,7 +168,7 @@
                 }}
               </p>
             </div>
-            <ValidationProvider rules="required" v-slot="{ errors }" 
+            <ValidationProvider rules="required" v-slot="{ errors }"
               class="form__element common_form_style mb-3">
               <SfInput
                 data-cy="login-input_name"
@@ -179,7 +179,7 @@
                 :label="$t('Your name')"
               />
             </ValidationProvider>
-            <ValidationProvider rules="required|email" v-slot="{ errors }" 
+            <ValidationProvider rules="required|email" v-slot="{ errors }"
              class="form__element common_form_style mb-3">
               <SfInput
                 data-cy="login-input_email"
@@ -207,6 +207,7 @@
                   }
                 "
                 :type="showPassword ? 'text' : 'password'"
+                class="password-icon-position"
               />
             </ValidationProvider>
             <ValidationProvider
@@ -500,6 +501,20 @@ export default {
   height: 19px;
   .sf-loader__overlay {
     background: #f1f2f3;
+  }
+}
+</style>
+<style>
+@media only screen and (max-width: 1023px) {
+  .password-icon-position {
+    .sf-input__wrapper {
+      display: inline !important;
+      position: relative !important;
+      .sf-input__button {
+        position: absolute !important;
+        top: 28px;
+      }
+    }
   }
 }
 </style>
