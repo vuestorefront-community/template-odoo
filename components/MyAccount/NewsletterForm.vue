@@ -71,19 +71,21 @@ export default defineComponent({
 
     const fillCheckedNewsletter = () => {
       checkedNewsletter.value = mailingContacts?.value?.map((item) => {
-            return item.subscriptionList
+        return item.subscriptionList;
       })?.flat()?.filter(item => {
-        return item.optOut
-      })?.map(item => `${item.mailingList.id}`)
+        return item.optOut;
+      })?.map(item => `${item.mailingList.id}`);
     };
 
     onSSR(async () => {
       await getMailingLists();
-      await getMailingContacts();
     });
 
     onMounted(async() => {
-      fillCheckedNewsletter()
+      await getMailingContacts();
+      fillCheckedNewsletter(
+        mailingContacts?.value?.map((item) => item.subscriptionList)
+      );
     });
 
     const handleUpdateNewsletter = async () => {
@@ -91,8 +93,8 @@ export default defineComponent({
         return {
           mailinglistId: item.id,
           optout: checkedNewsletter.value?.includes(`${item.id}`)
-        }
-      })
+        };
+      });
 
       await userAddMultipleMailing(selectedItem);
 
