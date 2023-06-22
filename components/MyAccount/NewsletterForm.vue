@@ -78,10 +78,10 @@ export default defineComponent({
 
     onSSR(async () => {
       await getMailingLists();
-      await getMailingContacts();
     });
 
-    onMounted(() => {
+    onMounted(async() => {
+      await getMailingContacts();
       fillCheckedNewsletter(
         mailingContacts?.value?.map((item) => item.subscriptionList)
       );
