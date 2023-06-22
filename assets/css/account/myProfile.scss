@@ -26,6 +26,10 @@
   ::v-deep .my-account {
     margin-top: 40px;
   }
+
+  ::v-deep .my-account .sf-tabs__chevron, .sf-tabs .sf-chevron {
+    display: none;
+  }
   
   ::v-deep .my-account .sf-content-pages__sidebar {
     max-height: 550px;
