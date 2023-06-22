@@ -33,11 +33,20 @@
                 class="sf-collected-product--detailed collected-product"
               >
                 <template #remove>
-                  <span class="">
+                  <span class="desktop-only">
                     <SfButton
                       class="sf-button--text custom__text"
                       @click="removeItem({ product })"
                       >{{ $t("Remove from cart") }}</SfButton
+                    >
+                  </span>
+                  <span class="smartphone-only">
+                    <SfButton
+                      class="sf-button--text custom-text__mobile"
+                      @click="removeItem({ product })"
+                      >
+                       X
+                      </SfButton
                     >
                   </span>
                 </template>
@@ -442,6 +451,11 @@ export default {
 
 .custom__text {
   color: #72757e;
+}
+.custom-text__mobile {
+  color: #72757e;
+  text-decoration: none;
+  font-size: 20px;
 }
 .custom__text:hover {
   color: #5ece7b;
