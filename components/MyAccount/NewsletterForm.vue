@@ -7,11 +7,13 @@
     <SfTab :title="$t('My newsletter')" data-testid="newsletter-tab">
       <slot name="tab-description">
         <p class="message">
-          {{ $t('Set up newsletter') }}
+          {{ $t("Set up newsletter") }}
         </p>
       </slot>
-      <div class="form flex-col xl:flex-row items-start xl:items-center gap-y-5 xl:gap-x-12 mb-10">
-        <p class="form__title m-0">{{ $t('Sections that interest you') }}</p>
+      <div
+        class="form flex-col xl:flex-row items-start xl:items-center gap-y-5 xl:gap-x-12 mb-10"
+      >
+        <p class="form__title m-0">{{ $t("Sections that interest you") }}</p>
         <slot name="form">
           <div class="form__checkbox-group m-0">
             <SfCheckbox
@@ -31,7 +33,7 @@
             :loading="loading"
             :disabled="checkedNewsletter.length === 0 || loading"
           >
-            {{ $t('Save changes') }}
+            {{ $t("Save changes") }}
           </OdooButton>
         </slot>
       </div>
@@ -67,13 +69,12 @@ export default defineComponent({
       mailingContacts
     } = useMailing();
 
-    const fillCheckedNewsletter = (subscribed) => {
-      const subscribedMailings = subscribed.map((item) =>
-        item.map((subItem) => subItem.mailingList)
-      );
-      checkedNewsletter.value = subscribedMailings
-        ?.flat()
-        .map((item) => String(item.id));
+    const fillCheckedNewsletter = () => {
+      checkedNewsletter.value = mailingContacts?.value?.map((item) => {
+            return item.subscriptionList
+      })?.flat()?.filter(item => {
+        return item.optOut
+      })?.map(item => `${item.mailingList.id}`)
     };
 
     onSSR(async () => {
@@ -82,19 +83,18 @@ export default defineComponent({
     });
 
     onMounted(async() => {
-      await getMailingContacts();
-      fillCheckedNewsletter(
-        mailingContacts?.value?.map((item) => item.subscriptionList)
-      );
+      fillCheckedNewsletter()
     });
 
     const handleUpdateNewsletter = async () => {
-      await userAddMultipleMailing(
-        checkedNewsletter.value.map((item) => ({
-          mailinglistId: Number(item),
-          optout: true
-        }))
-      );
+      const selectedItem = mailingList.value?.map(item => {
+        return {
+          mailinglistId: item.id,
+          optout: checkedNewsletter.value?.includes(`${item.id}`)
+        }
+      })
+
+      await userAddMultipleMailing(selectedItem);
 
       send({
         message: root.$t('Successfull update!'),
@@ -112,6 +112,6 @@ export default defineComponent({
 });
 </script>
 
-<style lang='scss' scoped>
-@import '~@storefront-ui/shared/styles/components/templates/SfMyNewsletter.scss';
+<style lang="scss" scoped>
+@import "~@storefront-ui/shared/styles/components/templates/SfMyNewsletter.scss";
 </style>
