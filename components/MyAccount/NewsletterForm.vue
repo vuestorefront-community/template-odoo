@@ -7,7 +7,7 @@
     <SfTab :title="$t('My newsletter')" data-testid="newsletter-tab">
       <slot name="tab-description">
         <p class="message">
-          {{ $t('Set up newsletter') }}
+          {{ $t("Set up newsletter") }}
         </p>
       </slot>
       <div
@@ -33,7 +33,7 @@
             :loading="loading"
             :disabled="loading"
           >
-            {{ $t('Save changes') }}
+            {{ $t("Save changes") }}
           </OdooButton>
         </slot>
       </div>
@@ -112,6 +112,6 @@ export default defineComponent({
 });
 </script>
 
-<style lang='scss' scoped>
-@import '~@storefront-ui/shared/styles/components/templates/SfMyNewsletter.scss';
+<style lang="scss" scoped>
+@import "~@storefront-ui/shared/styles/components/templates/SfMyNewsletter.scss";
 </style>
