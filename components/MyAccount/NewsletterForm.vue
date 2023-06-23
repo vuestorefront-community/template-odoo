@@ -7,13 +7,13 @@
     <SfTab :title="$t('My newsletter')" data-testid="newsletter-tab">
       <slot name="tab-description">
         <p class="message">
-          {{ $t("Set up newsletter") }}
+          {{ $t('Set up newsletter') }}
         </p>
       </slot>
       <div
         class="form flex-col xl:flex-row items-start xl:items-center gap-y-5 xl:gap-x-12 mb-10"
       >
-        <p class="form__title m-0">{{ $t("Sections that interest you") }}</p>
+        <p class="form__title m-0">{{ $t('Sections that interest you') }}</p>
         <slot name="form">
           <div class="form__checkbox-group mb-5 lg:m-0">
             <SfCheckbox
@@ -33,7 +33,7 @@
             :loading="loading"
             :disabled="checkedNewsletter.length === 0 || loading"
           >
-            {{ $t("Save changes") }}
+            {{ $t('Save changes') }}
           </OdooButton>
         </slot>
       </div>
@@ -112,6 +112,6 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-@import "~@storefront-ui/shared/styles/components/templates/SfMyNewsletter.scss";
+<style lang='scss' scoped>
+@import '~@storefront-ui/shared/styles/components/templates/SfMyNewsletter.scss';
 </style>
