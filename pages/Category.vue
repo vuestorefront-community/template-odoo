@@ -98,7 +98,7 @@
               "
             >
               <template #image>
-                <nuxt-link :to="localePath(productGetters.getSlug(product))">
+                <nuxt-link :to="localePath(mountUrlSlugForProductVariant(product.firstVariant))">
                   <SfImage
                     class="sf-product-card__image"
                     :src="$image(
