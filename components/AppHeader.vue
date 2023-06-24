@@ -176,20 +176,20 @@ export default {
       useCategories('AppHeader:TopCategories');
     const cartItems = computed(() => {
       return cartGetters.getItems(cart.value).map((item) => {
-        return item.quantity
-      })
-    })
+        return item.quantity;
+      });
+    });
     const cartTotalItems = computed(() => {
-      let array = cartItems.value
-      let sum = 0
+      const array = cartItems.value;
+      let sum = 0;
       array.forEach((num) => {
         sum += num;
-      })
-      return sum
+      });
+      return sum;
     });
 
     const TotalWishlistItems = computed(() => {
-      const count = wishlistGetters.getTotalItems(wishlist.value)
+      const count = wishlistGetters.getTotalItems(wishlist.value);
       return count ? count.toString() : root.$cookies.get('wishlist-size');
     });
 
@@ -242,7 +242,7 @@ export default {
     const isAuthenticated = computed(() => {
       return isLoggedIn.value
         ? isLoggedIn.value
-        : root.$cookies.get("odoo-user");
+        : root.$cookies.get('odoo-user');
     });
 
     const handleAccountClick = async () => {
@@ -283,7 +283,6 @@ export default {
         }
       }
     );
-
 
     onSSR(async () => {
       await searchTopCategoryApi({filter: { parent: true }});

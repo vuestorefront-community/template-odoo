@@ -270,7 +270,7 @@ export default {
       addItemToWishlist({
         product: { ...product.product, firstVariant: { id: product.product.id }}
       });
-      send({ message: "Product added to wishlist", type: 'info' });
+      send({ message: 'Product added to wishlist', type: 'info' });
     };
 
     let loading = ref(true)

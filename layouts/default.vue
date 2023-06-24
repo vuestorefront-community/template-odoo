@@ -46,7 +46,7 @@ export default {
     BottomNavigation: speedkitHydrate(() => import('@/components/BottomNavigation')),
     CartSidebar,
     WishlistSidebar,
-    LoginModal,
+    LoginModal
   }
 };
 </script>

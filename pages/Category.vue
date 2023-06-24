@@ -337,8 +337,8 @@ export default defineComponent({
       })
     });
     const addProductToWishList = (product) => {
-      addItemToWishlist({ product })
-      send({ message: "Product added to wishlist", type: 'info' });
+      addItemToWishlist({ product });
+      send({ message: 'Product added to wishlist', type: 'info' });
     };
 
     const pagination = computed(() => facetGetters.getPagination(result.value));
