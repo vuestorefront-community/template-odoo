@@ -122,7 +122,7 @@ const useUiHelpers = (): any => {
       const valueList = query[label].split(',');
 
       valueList.forEach((value) => {
-        if(label === 'price') {
+        if (label === 'price') {
           const item = {
             filterName: label,
             label: `${value.slice(0, 2)}`,
@@ -173,16 +173,16 @@ const useUiHelpers = (): any => {
     }
 
     if (query.sort) {
-      allQuery.sort = query.sort ;
+      allQuery.sort = query.sort;
     }
 
-    delete allQuery.page
+    delete allQuery.page;
 
     router.push({ query: allQuery });
   };
   const clearAllFilters = () => {
     router.push({ query: {} });
-  }
+  };
 
   const changeItemsPerPage = (itemsPerPage) => {
     delete query.page;

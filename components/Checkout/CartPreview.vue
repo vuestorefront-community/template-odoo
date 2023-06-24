@@ -117,8 +117,8 @@ export default {
       let sum = 0;
       array.forEach((num) => {
         sum += num;
-      })
-      return sum
+      });
+      return sum;
     });
 
     return {

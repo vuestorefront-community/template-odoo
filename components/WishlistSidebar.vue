@@ -91,8 +91,8 @@
                     />
                   </div>
                 </template>
-                <template #actions> 
-                  <div class="hidden"></div>                
+                <template #actions>
+                  <div class="hidden"></div>
                 </template>
               </SfCollectedProduct>
             </transition-group>
