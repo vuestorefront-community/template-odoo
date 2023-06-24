@@ -31,13 +31,14 @@ import speedkitHydrate from 'nuxt-speedkit/hydrate';
 import CartSidebar from '@/components/CartSidebar.vue';
 import WishlistSidebar from '@/components/WishlistSidebar.vue';
 import LoginModal from '@/components/LoginModal.vue';
+import MobileMenuSidebar from '@/components/MobileMenuSidebar';
 
 export default {
   name: 'DefaultLayout',
 
   components: {
     LazyHydrate,
-    MobileMenuSidebar: speedkitHydrate(() => import('@/components/MobileMenuSidebar')),
+    MobileMenuSidebar,
     TopBar: speedkitHydrate(() => import('@/components/TopBar')),
     AppHeader: speedkitHydrate(() => import('@/components/AppHeader')),
     AppFooter: speedkitHydrate(() => import('@/components/AppFooter')),
