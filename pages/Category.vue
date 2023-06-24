@@ -93,7 +93,7 @@
               :show-add-to-cart-button="true"
               :isInWishlist="isInWishlist({ product })"
               :isAddedToCart="product.firstVariant ? isInCart({ product }) : false"
-              :link="localePath(productGetters.getSlug(product))"
+              :link="localePath(mountUrlSlugForProductVariant(product.firstVariant))"
               class="products__product-card"
               @click:wishlist="
                 isInWishlist({ product })
@@ -105,7 +105,7 @@
               "
             >
               <template #image>
-                <nuxt-link :to="localePath(productGetters.getSlug(product))">
+                <nuxt-link :to="localePath(mountUrlSlugForProductVariant(product.firstVariant))">
                   <SfImage
                     class="sf-product-card__image"
                     :src="$image(
@@ -170,7 +170,7 @@
                   toggleCartSidebar()
               "
               v-model="products[i].qty"
-              :link="localePath(productGetters.getSlug(product))"
+              :link="localePath(mountUrlSlugForProductVariant(product.firstVariant))"
             >
               <template #actions>
                 <SfButton
@@ -377,6 +377,13 @@ export default defineComponent({
       return breadcrumbs;
     });
 
+    const mountUrlSlugForProductVariant = (product) => {
+      const { slug, variantAttributeValues } = product;
+      return `${slug}?${variantAttributeValues
+        .map((variant) => `${variant?.attribute?.name}=${variant?.id}&`)
+        .join('')}`
+    };
+
     onSSR(async () => {
       const params = {
         pageSize: query.itemsPerPage || 12,
@@ -415,6 +422,7 @@ export default defineComponent({
       removeItemFromWishList,
       addItemToCart,
       isInWishlist,
+      mountUrlSlugForProductVariant,
       isInCart,
       showProducts,
       result,
