@@ -55,6 +55,13 @@
                   :regular-price="
                     $n(productGetters.getPrice(product).regular, 'currency')
                   "
+                  :special-price="
+                    productGetters.getPrice(product).regular !==
+                    productGetters.getPrice(product).special
+                    ? productGetters.getPrice(product).special &&
+                    $n(productGetters.getPrice(product).special, 'currency')
+                    : ''
+                   "
                   :imageWidth="216"
                   :imageHeight="288"
                   :nuxtImgConfig="{ fit: 'cover' }"
@@ -97,6 +104,13 @@
                 :regular-price="
                   $n(productGetters.getPrice(product).regular, 'currency')
                 "
+                :special-price="
+                    productGetters.getPrice(product).regular !==
+                    productGetters.getPrice(product).special
+                    ? productGetters.getPrice(product).special &&
+                    $n(productGetters.getPrice(product).special, 'currency')
+                    : ''
+                   "
                 :score-rating="productGetters.getAverageRating(product)"
                 :reviews-count="7"
                 :image="
