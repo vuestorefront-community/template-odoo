@@ -31,12 +31,26 @@
     max-height: 550px;
     height: 100%;
     border-radius: 14px;
-    max-width: 374px;
-    overflow: hidden;
   }
   
-  ::v-deep .my-account .sf-content-pages__content {
+  ::v-deep .sf-content-pages__content {
     padding-left: 98px;
+    @include for-mobile {
+      padding: 0 16px;
+    }
+  }
+
+  ::v-deep .sf-bar {
+    padding-left: 13px;
+  }
+
+  ::v-deep .sf-tabs__content__tab {
+    padding:24px 0cm;
+  }
+
+  ::v-deep .sf-tabs__title {
+    padding-right: 0px;
+    padding-left: 0px;
   }
   
   ::v-deep .my-account .sf-tabs__title {
