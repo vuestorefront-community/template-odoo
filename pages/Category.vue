@@ -84,10 +84,10 @@
                 $n(productGetters.getPrice(product).regular, 'currency')
               "
               :special-price="
-                productGetters.getPrice(product).regular !==
-                productGetters.getPrice(product).special
-                  ? productGetters.getPrice(product).special &&
-                    $n(productGetters.getPrice(product).special, 'currency')
+                productGetters.getPrice(product.firstVariant).regular !==
+                productGetters.getPrice(product.firstVariant).special
+                  ? productGetters.getPrice(product.firstVariant).special &&
+                    $n(productGetters.getPrice(product.firstVariant).special, 'currency')
                   : ''
               "
               :max-rating="5"
