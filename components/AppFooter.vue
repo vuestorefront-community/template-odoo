@@ -105,7 +105,7 @@
         >
           <SfImage
             v-for="picture in social"
-            :key="picture"
+            :key="picture.id"
             :src="addBasePath('/icons/' + picture + '.svg')"
             :alt="picture"
             :width="32"

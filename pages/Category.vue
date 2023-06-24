@@ -60,8 +60,6 @@
             tag="div"
             class="products__grid"
           >
-            <SfSkeleton type="image" />
-
             <SfProductCard
               data-cy="category-product-card"
               v-for="(product, i) in products"
@@ -127,6 +125,7 @@
               </template>
             </SfProductCard>
           </transition-group>
+
           <transition-group
             v-else
             appear
