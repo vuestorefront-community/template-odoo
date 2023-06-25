@@ -239,6 +239,9 @@ export default {
       if (window.innerWidth <= 1023) {
         isSearchOpen.value = false;
       }
+      if (window.innerWidth <= 1023) {
+        isSearchOpen.value = false;
+      }
       term.value = '';
       return searchBarRef.value.$el.children[0].focus();
     };
