@@ -14,6 +14,7 @@
           data-cy="app-header-top-categories"
           class="nav-item"
           :label="category.name"
+          :link="localePath(category.slug)"
           @click="openChilds(category.name)"
         />
       </template>
