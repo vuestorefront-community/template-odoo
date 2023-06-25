@@ -1,0 +1,134 @@
+:root {
+  @include generate-color-variants(--disabled-grey-color, #E0E0E1);
+  @include generate-color-variants(--disabled-grey-background, #F1F2F3);
+}
+
+.sf-sidebar__aside {
+  z-index: var(--sidebar-z-index, 2 !important);
+}
+
+.sf-search-bar .sf-input__wrapper input{
+  padding: 2px 6px 3px 6px !important;
+}
+
+.sf-image--placeholder {
+  opacity: 0 !important;
+}
+
+.sf-scrollable__view-all span {
+  display: none;
+}
+
+.sf-collected-product__more-actions {
+  display: none;
+}
+
+<<<<<<< HEAD
+.remove-quantity .sf-collected-product__quantity-wrapper {
+  display: none;
+}
+
+=======
+.mega-menu .sf-button--pure{
+  @include for-mobile {
+    margin-left: 18px;
+  }
+}
+>>>>>>> 9909a88 (16390)
+
+.notifications .sf-notification__message {
+  margin-right: 35px;
+}
+
+.padding-remover span {
+  padding-right: 0px !important;
+}
+
+.common_form_style .sf-input__wrapper input {
+  padding: 25px 4px 10px 4px !important;
+  height: 56px !important;
+}
+
+.common_form_style .sf-input__label {
+  padding-left: 3px;
+  top: 27px;
+}
+
+.common_form_style .sf-select__label {
+  font-size: 18px !important;
+  height: 0.825rem !important;
+}
+
+.form {
+  --button-width: 100%;
+  &__select {
+    display: flex;
+    align-items: center;
+    --select-option-font-size: var(--font-size--lg);
+    ::v-deep .sf-select__dropdown {
+      font-size: var(--font-size--lg);
+      margin: 0;
+      color: var(--c-text);
+      font-family: var(--font-family--secondary);
+      font-weight: var(--font-weight--normal);
+    }
+    ::v-deep .sf-select__label {
+      left: initial;
+    }
+  }
+  @include for-desktop {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    --button-width: auto;
+  }
+  &__element {
+    margin: 0 0 var(--spacer-lg) 0;
+    @include for-desktop {
+      flex: 0 0 100%;
+    }
+    &--half {
+      @include for-desktop {
+        flex: 1 1 50%;
+      }
+      &-even {
+        @include for-desktop {
+          padding: 0 0 0 var(--spacer-xl);
+        }
+      }
+    }
+  }
+  &__action {
+    @include for-desktop {
+      flex: 0 0 100%;
+      display: flex;
+    }
+  }
+  &__action-button {
+    &--secondary {
+      @include for-desktop {
+        order: -1;
+        text-align: left;
+      }
+    }
+    &--add-address {
+      width: 100%;
+      margin: 0;
+      @include for-desktop {
+        margin: 0 0 var(--spacer-lg) 0;
+        width: auto;
+      }
+    }
+  }
+  &__back-button {
+    margin: var(--spacer-xl) 0 var(--spacer-sm);
+    &:hover {
+      color: var(--c-white);
+    }
+    @include for-desktop {
+      margin: 0 var(--spacer-xl) 0 0;
+    }
+  }
+}
+
+
