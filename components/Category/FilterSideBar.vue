@@ -68,6 +68,15 @@
           :header="facet.label"
           class="filters__accordion-item"
         >
+          <template v-if="isFacetPrice(facet)">
+            <SfRange
+             :value="[20, 600]"
+             :disabled="false"
+             :config="config"
+             v-model="price"
+             @change="selectPrice"
+           />
+          </template>
           <SfFilter
             v-for="option in sortByAscendingProductAttributes(facet.options)"
             :key="`${facet.id}-${option.id}`"
@@ -155,14 +164,14 @@ export default defineComponent({
       keyboardSupport: true
     });
 
-    const { changeFilters, isFacetColor, isFacetPrice, facetsFromUrlToFilter } =
+    const { changeFilters,clearAllFilters, isFacetColor, isFacetPrice, facetsFromUrlToFilter } =
       useUiHelpers();
     const { toggleFilterSidebar, isFilterSidebarOpen } = useUiState();
 
     const clearFilters = () => {
       toggleFilterSidebar();
       selectedFilters.value = [];
-      changeFilters(selectedFilters.value);
+      clearAllFilters();
     };
 
     const applyFilters = () => {

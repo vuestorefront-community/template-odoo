@@ -19,8 +19,17 @@
   display: none;
 }
 
+.sf-collected-product__more-actions {
+  display: none;
+}
+
+
 .notifications .sf-notification__message {
   margin-right: 35px;
+}
+
+.padding-remover span {
+  padding-right: 0px !important;
 }
 
 .common_form_style .sf-input__wrapper input {

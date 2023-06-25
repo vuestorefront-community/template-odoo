@@ -45,9 +45,14 @@
           >
             <SfIcon
               class="sf-header__icon"
-              :icon="wishlistHasItens ? 'heart_fill' : 'heart'"
+              icon="heart"
               size="1.25rem"
             />
+            <SfBadge
+              v-if="TotalWishlistItems"
+              class="sf-badge--number cart-badge"
+              >{{ TotalWishlistItems }}</SfBadge
+            >
           </SfButton>
           <SfButton
             class="sf-button--pure sf-header__action"
@@ -129,7 +134,8 @@ import {
   cartGetters,
   categoryGetters,
   useCategories,
-  useFacet
+  useFacet,
+  wishlistGetters
 } from '@vue-storefront/odoo';
 import { clickOutside } from '@storefront-ui/vue/src/utilities/directives/click-outside/click-outside-directive.js';
 import { computed, ref, watch, onMounted } from '@nuxtjs/composition-api';
@@ -170,17 +176,23 @@ export default {
       useCategories('AppHeader:TopCategories');
     const cartItems = computed(() => {
       return cartGetters.getItems(cart.value).map((item) => {
-        return item.quantity
-      })
-    })
+        return item.quantity;
+      });
+    });
     const cartTotalItems = computed(() => {
-      let array = cartItems.value
-      let sum = 0
+      const array = cartItems.value;
+      let sum = 0;
       array.forEach((num) => {
         sum += num;
-      })
-      return sum
+      });
+      return sum;
     });
+
+    const TotalWishlistItems = computed(() => {
+      const count = wishlistGetters.getTotalItems(wishlist.value);
+      return count ? count.toString() : root.$cookies.get('wishlist-size');
+    });
+
     const accountIcon = computed(() =>
       isAuthenticated.value ? 'profile_fill' : 'profile'
     );
@@ -230,7 +242,7 @@ export default {
     const isAuthenticated = computed(() => {
       return isLoggedIn.value
         ? isLoggedIn.value
-        : root.$cookies.get("odoo-user");
+        : root.$cookies.get('odoo-user');
     });
 
     const handleAccountClick = async () => {
@@ -272,15 +284,12 @@ export default {
       }
     );
 
-
     onSSR(async () => {
       await searchTopCategoryApi({filter: { parent: true }});
     });
 
     return {
-      wishlistHasItens: computed(
-        () => (wishlist.value?.wishlistItems.length > 0) || (root.$cookies.get('wishlist-size') > 0)
-      ),
+      TotalWishlistItems,
       filteredTopCategories,
       accountIcon,
       closeOrFocusSearchBar,

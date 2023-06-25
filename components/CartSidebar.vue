@@ -175,16 +175,16 @@ export default {
     const totals = computed(() => cartGetters.getTotals(cart.value));
     const cartItems = computed(() => {
       return cartGetters.getItems(cart.value).map((item) => {
-        return item.quantity
-      })
-    })
+        return item.quantity;
+      });
+    });
     const totalItems = computed(() => {
-      let array = cartItems.value
-      let sum = 0
+      const array = cartItems.value;
+      let sum = 0;
       array.forEach((num) => {
         sum += num;
-      })
-      return sum
+      });
+      return sum;
     });
     const { addItem: addItemToWishlist } = useWishlist();
     const { send } = useUiNotification();
@@ -196,7 +196,7 @@ export default {
       addItemToWishlist({
         product: { ...product.product, firstVariant: { id: product.product.id }}
       });
-      send({ message: "Product added to wishlist", type: 'info' });
+      send({ message: 'Product added to wishlist', type: 'info' });
     };
 
     return {

@@ -32,7 +32,7 @@
       <div class="footer__socials">
         <a v-for="item in social" :href="item.url" target="_blank" >
           <SfImage
-            class="footer__social-image"          
+            class="footer__social-image"
             :key="item.id"
             :src="addBasePath('/icons/' + item.brand + '.svg')"
             :alt="item.brand"
@@ -105,7 +105,7 @@
         >
           <SfImage
             v-for="picture in social"
-            :key="picture"
+            :key="picture.id"
             :src="addBasePath('/icons/' + picture + '.svg')"
             :alt="picture"
             :width="32"
@@ -221,25 +221,30 @@ export default {
       paymentsDelivery: ['Purchase terms', 'Guarantee'],
       social: [
         {
-          id:1,
+          id: 1,
           brand: 'facebook',
           url: 'https://www.facebook.com/'
         },
         {
-          id:2,
+          id: 2,
           brand: 'pinterest',
           url: 'https://www.pinterest.com/'
         },
         {
-          id:3,
+          id: 3,
+          brand: 'google',
+          url: '/'
+        },
+        {
+          id: 4,
           brand: 'twitter',
           url: 'https://twitter.com/'
         },
         {
-          id:4,
+          id: 4,
           brand: 'youtube',
           url: 'https://www.youtube.com/'
-        },
+        }
       ],
       isMobile: false,
       desktopMin: 1024
@@ -270,6 +275,7 @@ export default {
   }
 }
 .sf-footer {
+  margin-top: var(--spacer-lg);
   @include for-desktop {
     border-top: var(--spacer-xs) solid var(--c-primary);
     padding-bottom: 0;

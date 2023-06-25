@@ -60,8 +60,6 @@
             tag="div"
             class="products__grid"
           >
-            <SfSkeleton type="image" />
-
             <SfProductCard
               data-cy="category-product-card"
               v-for="(product, i) in products"
@@ -84,10 +82,10 @@
                 $n(productGetters.getPrice(product).regular, 'currency')
               "
               :special-price="
-                productGetters.getPrice(product).regular !==
-                productGetters.getPrice(product).special
-                  ? productGetters.getPrice(product).special &&
-                    $n(productGetters.getPrice(product).special, 'currency')
+                productGetters.getPrice(product.firstVariant).regular !==
+                productGetters.getPrice(product.firstVariant).special
+                  ? productGetters.getPrice(product.firstVariant).special &&
+                    $n(productGetters.getPrice(product.firstVariant).special, 'currency')
                   : ''
               "
               :max-rating="5"
@@ -95,7 +93,7 @@
               :show-add-to-cart-button="true"
               :isInWishlist="isInWishlist({ product })"
               :isAddedToCart="product.firstVariant ? isInCart({ product }) : false"
-              :link="localePath(productGetters.getSlug(product))"
+              :link="localePath(mountUrlSlugForProductVariant(product.firstVariant))"
               class="products__product-card"
               @click:wishlist="
                 isInWishlist({ product })
@@ -107,7 +105,7 @@
               "
             >
               <template #image>
-                <nuxt-link :to="localePath(productGetters.getSlug(product))">
+                <nuxt-link :to="localePath(mountUrlSlugForProductVariant(product.firstVariant))">
                   <SfImage
                     class="sf-product-card__image"
                     :src="$image(
@@ -127,6 +125,7 @@
               </template>
             </SfProductCard>
           </transition-group>
+
           <transition-group
             v-else
             appear
@@ -171,7 +170,7 @@
                   toggleCartSidebar()
               "
               v-model="products[i].qty"
-              :link="localePath(productGetters.getSlug(product))"
+              :link="localePath(mountUrlSlugForProductVariant(product.firstVariant))"
             >
               <template #actions>
                 <SfButton
@@ -337,8 +336,8 @@ export default defineComponent({
       })
     });
     const addProductToWishList = (product) => {
-      addItemToWishlist({ product })
-      send({ message: "Product added to wishlist", type: 'info' });
+      addItemToWishlist({ product });
+      send({ message: 'Product added to wishlist', type: 'info' });
     };
 
     const pagination = computed(() => facetGetters.getPagination(result.value));
@@ -378,6 +377,13 @@ export default defineComponent({
       return breadcrumbs;
     });
 
+    const mountUrlSlugForProductVariant = (product) => {
+      const { slug, variantAttributeValues } = product;
+      return `${slug}?${variantAttributeValues
+        .map((variant) => `${variant?.attribute?.name}=${variant?.id}&`)
+        .join('')}`
+    };
+
     onSSR(async () => {
       const params = {
         pageSize: query.itemsPerPage || 12,
@@ -416,6 +422,7 @@ export default defineComponent({
       removeItemFromWishList,
       addItemToCart,
       isInWishlist,
+      mountUrlSlugForProductVariant,
       isInCart,
       showProducts,
       result,

@@ -4,7 +4,7 @@
       class="breadcrumbs desktop-only"
       :breadcrumbs="breadcrumbs"
     />
-    <div class="product">        
+    <div class="product">
          <div class="col-span-5">
            <div class="grid grid-cols-1 grid-rows-1 lg:grid-cols-4 lg:grid-rows-4 gap-x-4" v-if="productIsLoading || !showSkeleton">
             <template>
@@ -12,10 +12,10 @@
             </template>
             <template>
              <SfSkeleton class="hidden lg:block lg:col-span-3 lg:row-span-3 w-full h-full" type="image" />
-            </template>    
+            </template>
            </div>
           <LazyHydrate v-else>
-           <SfGallery            
+           <SfGallery
             :images="productGallery"
             :imageWidth="422"
             :imageHeight="644"
@@ -225,7 +225,7 @@ export default {
     const th = useUiHelpers();
     const { id } = root.$route.params;
     const { path } = useRoute().value;
-    
+
     const { query } = root.$route;
     const { size, color } = root.$route.query;
     const configuration = reactive({ size, color });
@@ -240,7 +240,7 @@ export default {
       await addItemToWishlist({
         product
       });
-      send({ message: "Product added to wishlist", type: 'info' });
+      send({ message: 'Product added to wishlist', type: 'info' });
     };
     const { searchRealProduct, productVariants, realProduct, elementNames } =
       useProductVariant(query);
@@ -297,11 +297,11 @@ export default {
       }))
     );
 
-    const showSkeleton = ref(false)
+    const showSkeleton = ref(false);
 
     onMounted(() => {
-      showSkeleton.value = true
-    })
+      showSkeleton.value = true;
+    });
 
     onSSR(async () => {
       await search({

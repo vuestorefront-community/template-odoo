@@ -14,18 +14,31 @@
       label="Menu"
       @click="toggleMobileMenu"
     />
-    <!-- <SfBottomNavigationItem
-      icon="heart"
-      size="20px"
-      label="Wishlist"
-      @click="toggleWishlistSidebar"
-    /> -->
     <SfBottomNavigationItem
       icon="profile"
       size="20px"
       label="Account"
       @click="handleAccountClick"
     />
+    <SfBottomNavigationItem
+      label="Wishlist"
+      icon="heart"
+      @click="toggleWishlistSidebar"
+    >
+      <template #icon>
+        <SfCircleIcon class="cart-button" aria-label="Add to wishlist">
+          <SfIcon
+            icon="heart"
+            color="white"
+            size="25px"
+            :style="{ margin: '0 0 0 -2px' }"
+          />
+          <SfBadge v-if="TotalWishlistItems" class="sf-badge--number cart-badge">{{
+            TotalWishlistItems
+          }}</SfBadge>
+        </SfCircleIcon>
+      </template>
+    </SfBottomNavigationItem>
     <!-- TODO: add logic for label - if on Home then Basket, if on PDC then AddToCart etc. -->
     <SfBottomNavigationItem
       label="Basket"
@@ -57,7 +70,7 @@ import {
   SfBadge
 } from '@storefront-ui/vue';
 import { useUiState } from '~/composables';
-import { useUser, useCart, cartGetters } from '@vue-storefront/odoo';
+import { useUser, useCart, cartGetters, useWishlist, wishlistGetters } from '@vue-storefront/odoo';
 import { computed, useRoute, useRouter } from '@nuxtjs/composition-api';
 
 export default {
@@ -79,7 +92,7 @@ export default {
     } = useUiState();
     const { isAuthenticated } = useUser();
     const { cart } = useCart();
-
+    const { load: loadWishlist, wishlist } = useWishlist();
     const handleAccountClick = async () => {
       if (isAuthenticated.value) {
         return router.push(root.localePath('/my-account'));
@@ -98,6 +111,11 @@ export default {
       return count ? count.toString() : null;
     });
 
+    const TotalWishlistItems = computed(() => {
+      const count = wishlistGetters.getTotalItems(wishlist.value)
+      return count ? count.toString() : root.$cookies.get('wishlist-size');
+    });
+
     return {
       route,
       isMobileMenuOpen,
@@ -106,7 +124,8 @@ export default {
       toggleMobileMenu,
       cartTotalItems,
       handleAccountClick,
-      handleHomeClick
+      handleHomeClick,
+      TotalWishlistItems
     };
   }
 };
