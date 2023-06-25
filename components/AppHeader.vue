@@ -203,8 +203,11 @@ export default {
 
     const closeSearch = () => {
       if (!isSearchOpen.value) return;
-      term.value = '';
-      isSearchOpen.value = false;
+
+      if (window.innerWidth > 1023) {
+        term.value = '';
+        isSearchOpen.value = false;
+      }
     };
 
     const handleSearch = debounce(async (paramValue) => {
@@ -235,6 +238,9 @@ export default {
       };
     }, 100);
     const closeOrFocusSearchBar = () => {
+      if (window.innerWidth <= 1023) {
+        isSearchOpen.value = false;
+      }
       term.value = '';
       return searchBarRef.value.$el.children[0].focus();
     };

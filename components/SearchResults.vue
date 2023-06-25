@@ -219,7 +219,10 @@ export default {
     const uiHelper = useUiHelpers();
     const isSearchOpen = ref(props.visible);
     const products = computed(() => props.result?.products);
-    const categories = computed(() => props.result?.categories);
+    const categories = computed(() => {
+        return [...new Map(props.result?.categories.map(item =>
+        [item['label'], item])).values()]
+    });
     const { addItem: addItemToWishlist } = useWishlist();
 
     const goToProduct = (product) => {
