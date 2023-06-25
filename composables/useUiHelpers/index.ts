@@ -147,7 +147,7 @@ const useUiHelpers = (): any => {
   const changeFilters = (filters) => {
     const formatedFilters = {};
     filters.forEach((element) => {
-      if (element.filterName == 'Size') {
+      if (element.filterName === 'Size') {
         if (formatedFilters[element.filterName]) {
           formatedFilters[element.filterName] += `,${element.id}-${element.label}`;
           return;
