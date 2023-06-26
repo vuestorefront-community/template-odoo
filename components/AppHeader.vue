@@ -176,16 +176,16 @@ export default {
       useCategories('AppHeader:TopCategories');
     const cartItems = computed(() => {
       return cartGetters.getItems(cart.value).map((item) => {
-        return item.quantity
-      })
-    })
+        return item.quantity;
+      });
+    });
     const cartTotalItems = computed(() => {
       const array = cartItems.value;
       let sum = 0;
       array.forEach((num) => {
         sum += num;
-      })
-      return sum
+      });
+      return sum;
     });
 
     const TotalWishlistItems = computed(() => {
