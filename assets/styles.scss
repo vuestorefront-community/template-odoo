@@ -32,6 +32,19 @@
   padding-right: 0px !important;
 }
 
+.password-icon-position {
+  @include for-mobile {
+    .sf-input__wrapper {
+      display: inline !important;
+      position: relative !important;
+    } 
+    .sf-input__button {
+      position: absolute !important;
+      top: 28px;
+    } 
+  }
+}
+
 .common_form_style .sf-input__wrapper input {
   padding: 25px 4px 10px 4px !important;
   height: 56px !important;
