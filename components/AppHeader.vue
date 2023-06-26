@@ -180,27 +180,19 @@ export default {
       })
     })
     const cartTotalItems = computed(() => {
-<<<<<<< HEAD
       const array = cartItems.value;
       let sum = 0;
-=======
-      let array = cartItems.value
-      let sum = 0
->>>>>>> 5399980 (Revert "login user problem fixed")
       array.forEach((num) => {
         sum += num;
       })
       return sum
     });
-<<<<<<< HEAD
 
     const TotalWishlistItems = computed(() => {
       const count = wishlistGetters.getTotalItems(wishlist.value);
       return count ? count.toString() : root.$cookies.get('wishlist-size');
     });
 
-=======
->>>>>>> 5399980 (Revert "login user problem fixed")
     const accountIcon = computed(() =>
       isAuthenticated.value ? 'profile_fill' : 'profile'
     );
@@ -298,13 +290,7 @@ export default {
     });
 
     return {
-<<<<<<< HEAD
       TotalWishlistItems,
-=======
-      wishlistHasItens: computed(
-        () => (wishlist.value?.wishlistItems.length > 0) || (root.$cookies.get('wishlist-size') > 0)
-      ),
->>>>>>> 5399980 (Revert "login user problem fixed")
       filteredTopCategories,
       accountIcon,
       closeOrFocusSearchBar,
