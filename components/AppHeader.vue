@@ -167,7 +167,7 @@ export default {
     const { toggleCartSidebar, toggleWishlistSidebar, toggleLoginModal } =
       useUiState();
 
-    const { load: loadUser, isAuthenticated: isLoggedIn } = useUser();
+    const { load: loadUser, isAuthenticated } = useUser();
     const { load: loadCart, cart } = useCart();
     const { load: loadWishlist, wishlist } = useWishlist();
     const { search: searchProductApi, result } = useFacet('AppHeader:Search');
@@ -175,17 +175,23 @@ export default {
       useCategories('AppHeader:TopCategories');
     const cartItems = computed(() => {
       return cartGetters.getItems(cart.value).map((item) => {
-        return item.quantity;
-      });
-    });
+        return item.quantity
+      })
+    })
     const cartTotalItems = computed(() => {
+<<<<<<< HEAD
       const array = cartItems.value;
       let sum = 0;
+=======
+      let array = cartItems.value
+      let sum = 0
+>>>>>>> 5399980 (Revert "login user problem fixed")
       array.forEach((num) => {
         sum += num;
-      });
-      return sum;
+      })
+      return sum
     });
+<<<<<<< HEAD
 
     const TotalWishlistItems = computed(() => {
       const count = wishlistGetters.getTotalItems(wishlist.value);
@@ -288,12 +294,19 @@ export default {
       }
     );
 
+
     onSSR(async () => {
       await searchTopCategoryApi({filter: { parent: true }});
     });
 
     return {
+<<<<<<< HEAD
       TotalWishlistItems,
+=======
+      wishlistHasItens: computed(
+        () => (wishlist.value?.wishlistItems.length > 0) || (root.$cookies.get('wishlist-size') > 0)
+      ),
+>>>>>>> 5399980 (Revert "login user problem fixed")
       filteredTopCategories,
       accountIcon,
       closeOrFocusSearchBar,
