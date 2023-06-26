@@ -85,6 +85,7 @@ export default {
     } = useUiState();
     const { isAuthenticated: isLoggedIn } = useUser();
     const { cart } = useCart();
+    const { load: loadWishlist, wishlist } = useWishlist();
     
     const isAuthenticated = computed(() => {
       return isLoggedIn.value
