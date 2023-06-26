@@ -294,7 +294,13 @@ export default {
     });
 
     return {
+<<<<<<< HEAD
       TotalWishlistItems,
+=======
+      wishlistHasItens: computed(
+        () => (wishlist.value?.wishlistItems.length > 0) || (root.$cookies.get('wishlist-size') > 0)
+      ),
+>>>>>>> 5399980 (Revert "login user problem fixed")
       filteredTopCategories,
       accountIcon,
       closeOrFocusSearchBar,
