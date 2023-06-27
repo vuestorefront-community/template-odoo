@@ -6,6 +6,100 @@
     />
     <SfLoader :loading="loading">
     <div class="detailed-cart">
+      <div v-if="totalItems" class="detailed-cart__aside">
+        <SfOrderSummary
+          :products="products"
+          :orderTitle="$t('Totals')"
+          :total-items="totalItems"
+          class="oderSummary"
+        >
+          <template #summary>
+            <div v-for="item in summary" :key="item.name" class="mb-3 px-7">
+              <SfProperty
+                :name="$t(item.name)"
+                class="sf-property--full-width sf-property--large my-cart__total-price property-data"
+              >
+                <template #value>
+                  <span class="card__text" v-if="item.name === 'Products'">
+                    {{ item.value.value }}</span
+                  >
+                  <span
+                    class="card__text"
+                    v-else-if="item.name === 'Sub Total'"
+                  >
+                    ${{ item.value.value.subtotal }}</span
+                  >
+                  <span class="card__text" v-else-if="item.name === 'Shipping'">
+                    {{ $t(item.value) }}</span
+                  >
+                  <span class="card__text" v-else> {{ item.value }}</span>
+                </template>
+              </SfProperty>
+            </div>
+
+            <div class="my-7 px-7">
+              <hr />
+            </div>
+            <div class="mb-5 px-7">
+              <SfProperty class="sf-property--full-width sf-property--large">
+                <template #name>
+                  <span class="card__text">{{ $t("Total Price") }}:</span>
+                </template>
+                <template #value>
+                  <span class="card__text"> ${{ totals.total }}</span>
+                </template>
+              </SfProperty>
+            </div>
+          </template>
+          <template #promo>
+            <div>
+              <div>
+                <nuxt-link :to="localePath('/checkout/shipping')">
+                  <SfButton class="color-primary custom__width">{{
+                    $t("GO TO CHECKOUT")
+                  }}</SfButton>
+                </nuxt-link>
+              </div>
+              <div class="my-5">
+                <SfButton
+                  class="color-black custom__width"
+                  @click="$router.go(-1)"
+                  >{{ $t("GO BACK SHOPPING") }}</SfButton
+                >
+              </div>
+              <div class="mb-3">
+                <div class="custom__row">
+                  <div class="mr-4">
+                    <img src="../assets/email.svg" />
+                  </div>
+                  <div>
+                    <SfButton class="sf-button--text">
+                      {{ $t("Send my basket to email") }}</SfButton
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="custom__con">
+                <div class="bottom__text">
+                  {{ $t("Helpful information") }}: <br />
+                  <span class="text-primary">•</span>
+                  {{ $t("Questions? Chat with us or call 1.888.282.6060.") }}
+                  <br />
+                  <span class="text-primary">•</span>
+                  {{
+                    $t(
+                      "Shipping internationally? Choose your destination & currency."
+                    )
+                  }}<br />
+                  <span class="text-primary">•</span>
+                  {{ $t("Shipping methods & charges.") }} <br />
+                </div>
+              </div>
+            </div>
+          </template>
+        </SfOrderSummary>
+      </div>
       <div class="detailed-cart__main">
         <transition name="sf-fade" mode="out-in">
           <div
@@ -17,26 +111,38 @@
               <SfCollectedProduct
                 v-for="product in products"
                 :key="cartGetters.getItemSku(product)"
-                :image="
-                  $image(
-                    cartGetters.getItemImage(product),
-                    140,
-                    236,
-                    cartGetters.getItemImageFilename(product)
-                  )
-                "
                 :title="cartGetters.getItemName(product)"
                 :regular-price="cartGetters.getItemPrice(product).special ? $n(cartGetters.getItemPrice(product).special, 'currency') : $n(cartGetters.getItemPrice(product).regular, 'currency')"
                 :stock="99999"
                 :qty="cartGetters.getItemQty(product)"
-                @input="updateItemQty({ product, quantity: $event })"
+                @input="handleUpdateItem({ product, quantity: $event })"
+                :link="localePath(productGetters.getSlug(product.product))"
                 class="sf-collected-product--detailed collected-product"
               >
+              <template #image>
+                <nuxt-link :to="localePath(productGetters.getSlug(product.product))">
+                  <SfImage
+                    class="sf-product-card__image"
+                    :src="$image(
+                      productGetters.getCoverImage(product.product),
+                      140,
+                      236,
+                      productGetters.getImageFilename(product.product)
+                    )"
+                    :alt="productGetters.getName(product.product)"
+                    loading="eager"
+                    :width="140"
+                    :height="236"
+                    image-tag="nuxt-img"
+                    :nuxt-img-config="{ fit: 'cover', preload: true }"
+                  />
+                </nuxt-link>
+              </template>
                 <template #remove>
                   <span class="desktop-only">
                     <SfButton
                       class="sf-button--text custom__text"
-                      @click="removeItem({ product })"
+                      @click="handleRemoveItem({ product })"
                       >{{ $t("Remove from cart") }}</SfButton
                     >
                   </span>
@@ -103,9 +209,9 @@
             />
             <nuxt-link to="/">
               <SfButton
-              class="sf-button--full-width color-primary empty-cart__button"
-              >{{ $t("Start shopping") }}</SfButton
-            >
+                class="sf-button--full-width color-primary empty-cart__button"
+                >{{ $t("Start shopping") }}</SfButton
+              >
             </nuxt-link>
           </div>
         </transition>
@@ -226,7 +332,6 @@ import {
 import { ref } from '@nuxtjs/composition-api';
 import { computed, onMounted } from '@nuxtjs/composition-api';
 import {
-  useCart,
   useUser,
   cartGetters,
   useWishlist
@@ -255,30 +360,33 @@ export default {
     const products = computed(() => cartGetters.getItems(cart.value));
     const totals = computed(() => cartGetters.getTotals(cart.value));
     const totalItems = computed(() => {
-      let array = cartGetters.getItems(cart.value).map((item) => {
-        return item.quantity
-      })
-      let sum = 0
+      const array = cartGetters.getItems(cart.value).map((item) => {
+        return item.quantity;
+      });
+      let sum = 0;
       array.forEach((num) => {
         sum += num;
-      })
-      return sum
+      });
+      return sum;
     });
     const { send } = useUiNotification();
     const { addItem: addItemToWishlist } = useWishlist();
 
     const addProductToWishList = (product) => {
       addItemToWishlist({
-        product: { ...product.product, firstVariant: { id: product.product.id }}
+        product: {
+          ...product.product,
+          firstVariant: { id: product.product.id }
+        }
       });
       send({ message: 'Product added to wishlist', type: 'info' });
     };
 
-    let loading = ref(true)
+    const loading = ref(true);
     onMounted(async () => {
       await loadCart();
-      if(cart.value.order){
-        loading.value = false        
+      if (cart.value.order) {
+        loading.value = false;
       }
     });
 
@@ -307,20 +415,29 @@ export default {
       }
     ];
 
+    const handleUpdateItem = async ({product, quantity}) => {
+      await updateItemQty(product.id, quantity);
+    };
+
+    const handleRemoveItem = async (orderLine) => {
+      await removeItem(orderLine.product.id);
+    };
+
     return {
       loading,
       isAuthenticated,
       products,
-      updateItemQty,
+      handleUpdateItem,
       isCartSidebarOpen,
       toggleCartSidebar,
-      removeItem,
+      handleRemoveItem,
       breadcrumbs,
       totals,
       totalItems,
       summary,
       cartGetters,
-      addProductToWishList
+      addProductToWishList,
+      productGetters
     };
   }
 };
@@ -529,4 +646,3 @@ hr {
   }
 }
 </style>
-

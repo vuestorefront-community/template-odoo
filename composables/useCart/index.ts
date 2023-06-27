@@ -44,22 +44,44 @@ const useCart = () : any => {
     }
   };
 
-  const updateCartItem = async (itemId: number, quantity: number) => {
+  const cartAddItem = async (productId: number, quantity: number) => {
     try {
       loading.value = true;
-      const { data, errors } = await context.$odoo.api.updateCartItem(
+      const { data, errors } = await context.$odoo.api.addToCart(
         {
-          productId: itemId,
+          productId,
           quantity
         }
       );
 
       throwErrors(errors);
+      setCart(data.cartAddItem);
+      const cookieIndex = context?.$odoo?.config?.app?.$config?.cart?.cookieIndex || 'orderLines.length';
+      context.$odoo.config.app.$cookies.set('cart-size', resolvePath(data?.cartAddItem?.order, cookieIndex, 0) || 0);
 
+      error.value.addToCart = null;
+    } catch (err) {
+      error.value.addToCart = err;
+      Logger.error('useCart-addToCart-error', err);
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const updateItemQty = async (itemId: number, quantity: number) => {
+    try {
+      loading.value = true;
+      const { data, errors } = await context.$odoo.api.updateItemQty(
+        {
+          lineId: itemId,
+          quantity
+        }
+      );
+
+      throwErrors(errors);
       setCart(data.cartUpdateItem);
       const cookieIndex = context?.$odoo?.config?.app?.$config?.cart?.cookieIndex || 'orderLines.length';
       context.$odoo.config.app.$cookies.set('cart-size', resolvePath(cart?.value?.order, cookieIndex, 0) || 0);
-
       error.value.cartUpdateItem = null;
     } catch (err) {
       error.value.cartUpdateItem = err;
@@ -69,11 +91,34 @@ const useCart = () : any => {
     }
   };
 
+  const removeItem = async (itemId: number,) => {
+    try {
+      loading.value = true;
+      const { data, errors } = await context.$odoo.api.removeCartItem(
+        {
+          lineId: itemId,
+        }
+      );
+      throwErrors(errors);
+      setCart(data.cartRemoveItem);
+      const cookieIndex = context?.$odoo?.config?.app?.$config?.cart?.cookieIndex || 'orderLines.length';
+      context.$odoo.config.app.$cookies.set('cart-size', resolvePath(cart?.value?.order, cookieIndex, 0) || 0);
+      error.value.cartRemoveItem = null;
+    } catch (err) {
+      error.value.cartRemoveItem = err;
+      Logger.error('useCart-cartRemoveItem-error', err);
+    } finally {
+      loading.value = false;
+    }
+  };
+
   return {
     cart,
     loading: computed(() => loading.value),
     load,
-    updateCartItem,
+    cartAddItem,
+    updateItemQty,
+    removeItem,
     error: computed(() => error.value)
   };
 };

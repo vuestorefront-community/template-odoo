@@ -101,7 +101,7 @@
                   : addProductToWishList(product)
               "
               @click:add-to-cart="
-                addItemToCart({ product, quantity: 1 }), toggleCartSidebar()
+                handleAddToCartItem({ product, quantity: 1 }), toggleCartSidebar()
               "
             >
               <template #image>
@@ -166,7 +166,7 @@
               class="products__product-card-horizontal"
               @click:wishlist="addProductToWishList(product)"
               @click:add-to-cart="
-                addItemToCart({ product, quantity: products[i].qty || 1 }),
+                handleAddToCartItem({ product, quantity: products[i].qty || 1 }),
                   toggleCartSidebar()
               "
               v-model="products[i].qty"
@@ -280,7 +280,7 @@ import {
   facetGetters
 } from '@vue-storefront/odoo';
 import { useCache, CacheTagPrefix } from '@vue-storefront/cache';
-import { useUiHelpers, useUiState, useUiNotification } from '~/composables';
+import { useUiHelpers, useUiState, useUiNotification, useCart as customUseCart } from '~/composables';
 import { onSSR } from '@vue-storefront/core';
 import LazyHydrate from 'vue-lazy-hydration';
 import speedkitHydrate from 'nuxt-speedkit/hydrate';
@@ -314,7 +314,8 @@ export default defineComponent({
 
     const { addTags } = useCache();
     const uiState = useUiState();
-    const { addItem: addItemToCart, isInCart } = useCart();
+    const { isInCart } = useCart();
+    const { cartAddItem } = customUseCart()
     const {
       addItem: addItemToWishlist,
       removeItem: removeItemFromWishList,
@@ -400,6 +401,14 @@ export default defineComponent({
       ]);
     });
 
+
+    const handleAddToCartItem = async ({product, quantity}) => {
+      const productId = product.realProduct
+        ? product.realProduct?.product?.id
+        : product.firstVariant.id;
+      await cartAddItem(productId, quantity)
+    }
+
     onMounted(() => {
       root.$scrollTo(root.$el, 2000);
     });
@@ -420,7 +429,7 @@ export default defineComponent({
       addProductToWishList,
       addItemToWishlist,
       removeItemFromWishList,
-      addItemToCart,
+      handleAddToCartItem,
       isInWishlist,
       mountUrlSlugForProductVariant,
       isInCart,
