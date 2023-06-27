@@ -108,14 +108,12 @@ export default {
     const totals = computed(() => cartGetters.getTotals(cart.value));
     const discounts = computed(() => cartGetters.getDiscounts(cart.value));
     const shippingMethodPrice = computed(() => checkoutGetters.getShippingMethodPrice(cart.value));
-    const cartItems = computed(() => {
-      return cartGetters.getItems(cart.value).map((item) => {
-        return item.quantity;
-      });
-    });
+    
     const totalItems = computed(() => {
-      const array = cartItems.value;
-      let sum = 0;
+      let array = cartGetters.getItems(cart.value).map((item) => {
+        return item.quantity
+      })
+      let sum = 0
       array.forEach((num) => {
         sum += num;
       });
