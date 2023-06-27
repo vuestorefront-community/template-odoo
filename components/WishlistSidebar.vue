@@ -25,7 +25,7 @@
           <div class="my-wishlist__total-items">
             {{ $t('Total items') }}: <strong>{{ totalItems }}</strong>
           </div>
-          <div class="collected-product-list">
+          <div class="collected-product-list remove-quantity">
             <transition-group name="fade" tag="div">
               <SfCollectedProduct
                 v-for="product in products"
