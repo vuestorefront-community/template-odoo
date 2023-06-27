@@ -128,7 +128,6 @@ import {
 } from '@storefront-ui/vue';
 import { useUiState } from '~/composables';
 import {
-  useCart,
   useWishlist,
   useUser,
   cartGetters,
@@ -140,7 +139,7 @@ import {
 import { clickOutside } from '@storefront-ui/vue/src/utilities/directives/click-outside/click-outside-directive.js';
 import { computed, ref, watch, onMounted } from '@nuxtjs/composition-api';
 import { onSSR } from '@vue-storefront/core';
-import { useUiHelpers } from '~/composables';
+import { useUiHelpers, useCart } from '~/composables';
 import LocaleSelector from './LocaleSelector';
 import SearchResults from '~/components/SearchResults';
 
