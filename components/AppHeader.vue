@@ -173,14 +173,12 @@ export default {
     const { search: searchProductApi, result } = useFacet('AppHeader:Search');
     const { categories: topCategories, search: searchTopCategoryApi } =
       useCategories('AppHeader:TopCategories');
-    const cartItems = computed(() => {
-      return cartGetters.getItems(cart.value).map((item) => {
-        return item.quantity;
-      });
-    });
+
     const cartTotalItems = computed(() => {
-      const array = cartItems.value;
-      let sum = 0;
+      let array = cartGetters.getItems(cart.value).map((item) => {
+        return item.quantity
+      })
+      let sum = 0
       array.forEach((num) => {
         sum += num;
       });
@@ -267,12 +265,10 @@ export default {
     };
 
     const handleCartSideBarClick = async () => {
-      await loadCart();
       toggleCartSidebar();
     };
 
     const handleWishlistSideBarClick = async () => {
-      await loadWishlist();
       toggleWishlistSidebar();
     };
 
@@ -294,6 +290,10 @@ export default {
         }
       }
     );
+
+    onMounted(async() => {
+      await loadWishlist();
+    })
 
     onSSR(async () => {
       await searchTopCategoryApi({filter: { parent: true }});
