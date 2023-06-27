@@ -407,6 +407,14 @@ export default defineComponent({
       ]);
     });
 
+
+    const handleAddToCartItem = async ({product, quantity}) => {
+      const productId = product.realProduct
+        ? product.realProduct?.product?.id
+        : product.firstVariant.id;
+      await cartAddItem(productId, quantity)
+    }
+
     onMounted(() => {
       root.$scrollTo(root.$el, 2000);
     });

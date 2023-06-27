@@ -6,6 +6,100 @@
     />
     <SfLoader :loading="loading">
     <div class="detailed-cart">
+      <div v-if="totalItems" class="detailed-cart__aside">
+        <SfOrderSummary
+          :products="products"
+          :orderTitle="$t('Totals')"
+          :total-items="totalItems"
+          class="oderSummary"
+        >
+          <template #summary>
+            <div v-for="item in summary" :key="item.name" class="mb-3 px-7">
+              <SfProperty
+                :name="$t(item.name)"
+                class="sf-property--full-width sf-property--large my-cart__total-price property-data"
+              >
+                <template #value>
+                  <span class="card__text" v-if="item.name === 'Products'">
+                    {{ item.value.value }}</span
+                  >
+                  <span
+                    class="card__text"
+                    v-else-if="item.name === 'Sub Total'"
+                  >
+                    ${{ item.value.value.subtotal }}</span
+                  >
+                  <span class="card__text" v-else-if="item.name === 'Shipping'">
+                    {{ $t(item.value) }}</span
+                  >
+                  <span class="card__text" v-else> {{ item.value }}</span>
+                </template>
+              </SfProperty>
+            </div>
+
+            <div class="my-7 px-7">
+              <hr />
+            </div>
+            <div class="mb-5 px-7">
+              <SfProperty class="sf-property--full-width sf-property--large">
+                <template #name>
+                  <span class="card__text">{{ $t("Total Price") }}:</span>
+                </template>
+                <template #value>
+                  <span class="card__text"> ${{ totals.total }}</span>
+                </template>
+              </SfProperty>
+            </div>
+          </template>
+          <template #promo>
+            <div>
+              <div>
+                <nuxt-link :to="localePath('/checkout/shipping')">
+                  <SfButton class="color-primary custom__width">{{
+                    $t("GO TO CHECKOUT")
+                  }}</SfButton>
+                </nuxt-link>
+              </div>
+              <div class="my-5">
+                <SfButton
+                  class="color-black custom__width"
+                  @click="$router.go(-1)"
+                  >{{ $t("GO BACK SHOPPING") }}</SfButton
+                >
+              </div>
+              <div class="mb-3">
+                <div class="custom__row">
+                  <div class="mr-4">
+                    <img src="../assets/email.svg" />
+                  </div>
+                  <div>
+                    <SfButton class="sf-button--text">
+                      {{ $t("Send my basket to email") }}</SfButton
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="custom__con">
+                <div class="bottom__text">
+                  {{ $t("Helpful information") }}: <br />
+                  <span class="text-primary">•</span>
+                  {{ $t("Questions? Chat with us or call 1.888.282.6060.") }}
+                  <br />
+                  <span class="text-primary">•</span>
+                  {{
+                    $t(
+                      "Shipping internationally? Choose your destination & currency."
+                    )
+                  }}<br />
+                  <span class="text-primary">•</span>
+                  {{ $t("Shipping methods & charges.") }} <br />
+                </div>
+              </div>
+            </div>
+          </template>
+        </SfOrderSummary>
+      </div>
       <div class="detailed-cart__main">
         <transition name="sf-fade" mode="out-in">
           <div
@@ -255,7 +349,7 @@ import {
 import { useUiState, useUiNotification } from '~/composables';
 import { onSSR } from '@vue-storefront/core';
 export default {
-  name: 'DetailedCart',
+  name: "DetailedCart",
   components: {
     SfCollectedProduct,
     SfBreadcrumbs,
@@ -301,20 +395,28 @@ export default {
         value: amountTotal
       },
       {
-        name: 'Shipping',
-        value: 'Free'
-      }
+        name: "Shipping",
+        value: "Free",
+      },
     ]);
     const breadcrumbs = [
       {
-        text: root.$t('Home'),
-        link: '/'
+        text: root.$t("Home"),
+        link: "/",
       },
       {
-        text: root.$t('Cart'),
-        link: '#'
-      }
+        text: root.$t("Cart"),
+        link: "#",
+      },
     ];
+
+    const handleUpdateItem = async ({product, quantity}) => {
+      await updateItemQty(product.id, quantity)
+    };
+
+    const handleRemoveItem = async (orderLine) => {
+      await removeItem(orderLine.product.id)
+    }
 
     return {
       loading,
@@ -324,7 +426,7 @@ export default {
       amountTotal,
       isCartSidebarOpen,
       toggleCartSidebar,
-      removeItem,
+      handleRemoveItem,
       breadcrumbs,
       totalItemsInCartWithQuantity,
       summary,
@@ -332,7 +434,7 @@ export default {
       addProductToWishList,
       productGetters
     };
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
