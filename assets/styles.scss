@@ -23,6 +23,10 @@
   display: none;
 }
 
+.remove-quantity .sf-collected-product__quantity-wrapper {
+  display: none;
+}
+
 .mega-menu .sf-button--pure{
   @include for-mobile {
     margin-left: 18px;
