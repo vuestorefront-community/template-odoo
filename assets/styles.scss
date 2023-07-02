@@ -27,6 +27,11 @@
   display: none;
 }
 
+.mega-menu .sf-button--pure{
+  @include for-mobile {
+    margin-left: 18px;
+  }
+}
 
 .notifications .sf-notification__message {
   margin-right: 35px;
@@ -34,6 +39,19 @@
 
 .padding-remover span {
   padding-right: 0px !important;
+}
+
+.password-icon-position {
+  @include for-mobile {
+    .sf-input__wrapper {
+      display: inline !important;
+      position: relative !important;
+    } 
+    .sf-input__button {
+      position: absolute !important;
+      top: 28px;
+    } 
+  }
 }
 
 .common_form_style .sf-input__wrapper input {

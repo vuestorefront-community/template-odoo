@@ -17,26 +17,38 @@
               <SfCollectedProduct
                 v-for="product in products"
                 :key="cartGetters.getItemSku(product)"
-                :image="
-                  $image(
-                    cartGetters.getItemImage(product),
-                    140,
-                    236,
-                    cartGetters.getItemImageFilename(product)
-                  )
-                "
                 :title="cartGetters.getItemName(product)"
                 :regular-price="cartGetters.getItemPrice(product).special ? $n(cartGetters.getItemPrice(product).special, 'currency') : $n(cartGetters.getItemPrice(product).regular, 'currency')"
                 :stock="99999"
                 :qty="cartGetters.getItemQty(product)"
-                @input="updateItemQty({ product, quantity: $event })"
+                @input="handleUpdateItem({ product, quantity: $event })"
+                :link="localePath(productGetters.getSlug(product.product))"
                 class="sf-collected-product--detailed collected-product"
               >
+              <template #image>
+                <nuxt-link :to="localePath(productGetters.getSlug(product.product))">
+                  <SfImage
+                    class="sf-product-card__image"
+                    :src="$image(
+                      productGetters.getCoverImage(product.product),
+                      140,
+                      236,
+                      productGetters.getImageFilename(product.product)
+                    )"
+                    :alt="productGetters.getName(product.product)"
+                    loading="eager"
+                    :width="140"
+                    :height="236"
+                    image-tag="nuxt-img"
+                    :nuxt-img-config="{ fit: 'cover', preload: true }"
+                  />
+                </nuxt-link>
+              </template>
                 <template #remove>
                   <span class="desktop-only">
                     <SfButton
                       class="sf-button--text custom__text"
-                      @click="removeItem({ product })"
+                      @click="handleRemoveItem({ product })"
                       >{{ $t("Remove from cart") }}</SfButton
                     >
                   </span>
@@ -103,9 +115,9 @@
             />
             <nuxt-link to="/">
               <SfButton
-              class="sf-button--full-width color-primary empty-cart__button"
-              >{{ $t("Start shopping") }}</SfButton
-            >
+                class="sf-button--full-width color-primary empty-cart__button"
+                >{{ $t("Start shopping") }}</SfButton
+              >
             </nuxt-link>
           </div>
         </transition>
@@ -226,15 +238,15 @@ import {
 import { ref } from '@nuxtjs/composition-api';
 import { computed, onMounted } from '@nuxtjs/composition-api';
 import {
-  useCart,
   useUser,
   cartGetters,
-  useWishlist
-} from '@vue-storefront/odoo';
-import { useUiState, useUiNotification } from '~/composables';
+  productGetters,
+  useWishlist,
+} from "@vue-storefront/odoo";
+import { useUiState, useUiNotification, useCart } from "~/composables";
 
 export default {
-  name: 'DetailedCart',
+  name: "DetailedCart",
   components: {
     SfCollectedProduct,
     SfBreadcrumbs,
@@ -268,9 +280,12 @@ export default {
 
     const addProductToWishList = (product) => {
       addItemToWishlist({
-        product: { ...product.product, firstVariant: { id: product.product.id }}
+        product: {
+          ...product.product,
+          firstVariant: { id: product.product.id },
+        },
       });
-      send({ message: 'Product added to wishlist', type: 'info' });
+      send({ message: "Product added to wishlist", type: "info" });
     };
 
     let loading = ref(true)
@@ -283,45 +298,54 @@ export default {
 
     const summary = ref([
       {
-        name: 'Products',
-        value: totalItems
+        name: "Products",
+        value: totalItems,
       },
       {
-        name: 'Sub Total',
-        value: totals
+        name: "Sub Total",
+        value: totals,
       },
       {
-        name: 'Shipping',
-        value: 'Free'
-      }
+        name: "Shipping",
+        value: "Free",
+      },
     ]);
     const breadcrumbs = [
       {
-        text: root.$t('Home'),
-        link: '/'
+        text: root.$t("Home"),
+        link: "/",
       },
       {
-        text: root.$t('Cart'),
-        link: '#'
-      }
+        text: root.$t("Cart"),
+        link: "#",
+      },
     ];
+
+    const handleUpdateItem = async ({product, quantity}) => {
+      await updateItemQty(product.id, quantity)
+    };
+
+    const handleRemoveItem = async (orderLine) => {
+      await removeItem(orderLine.product.id)
+    }
 
     return {
       loading,
       isAuthenticated,
       products,
-      updateItemQty,
+      handleUpdateItem,
       isCartSidebarOpen,
       toggleCartSidebar,
-      removeItem,
+      handleRemoveItem,
       breadcrumbs,
       totals,
       totalItems,
       summary,
       cartGetters,
-      addProductToWishList
+      addProductToWishList,
+      productGetters,
     };
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -528,4 +552,3 @@ hr {
   }
 }
 </style>
-

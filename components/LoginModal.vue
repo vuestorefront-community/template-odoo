@@ -74,7 +74,7 @@
                     }
                   "
                   :type="showPassword ? 'text' : 'password'"
-                  class="form__element"
+                  class="form__element password-icon-position"
                 />
               </ValidationProvider>
               <div class="action">
@@ -87,7 +87,7 @@
                 />
                 <SfButton
                   data-cy="login-btn_forgot-password"
-                  class="sf-button--text"
+                  class="sf-button--text w-40"
                   @click="isForgottenPassword = !isForgottenPassword"
                 >
                   {{
@@ -207,6 +207,7 @@
                   }
                 "
                 :type="showPassword ? 'text' : 'password'"
+                class="password-icon-position"
               />
             </ValidationProvider>
             <ValidationProvider
@@ -502,4 +503,9 @@ export default {
     background: #f1f2f3;
   }
 }
+</style>
+<style>
+
+  
+
 </style>

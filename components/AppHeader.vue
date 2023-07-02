@@ -128,7 +128,6 @@ import {
 } from '@storefront-ui/vue';
 import { useUiState } from '~/composables';
 import {
-  useCart,
   useWishlist,
   useUser,
   cartGetters,
@@ -140,7 +139,7 @@ import {
 import { clickOutside } from '@storefront-ui/vue/src/utilities/directives/click-outside/click-outside-directive.js';
 import { computed, ref, watch, onMounted } from '@nuxtjs/composition-api';
 import { onSSR } from '@vue-storefront/core';
-import { useUiHelpers } from '~/composables';
+import { useUiHelpers, useCart } from '~/composables';
 import LocaleSelector from './LocaleSelector';
 import SearchResults from '~/components/SearchResults';
 
@@ -203,8 +202,11 @@ export default {
 
     const closeSearch = () => {
       if (!isSearchOpen.value) return;
-      term.value = '';
-      isSearchOpen.value = false;
+
+      if (window.innerWidth > 1023) {
+        term.value = '';
+        isSearchOpen.value = false;
+      }
     };
 
     const handleSearch = debounce(async (paramValue) => {
@@ -235,6 +237,9 @@ export default {
       };
     }, 100);
     const closeOrFocusSearchBar = () => {
+      if (window.innerWidth <= 1023) {
+        isSearchOpen.value = false;
+      }
       term.value = '';
       return searchBarRef.value.$el.children[0].focus();
     };
