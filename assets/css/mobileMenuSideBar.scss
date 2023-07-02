@@ -21,4 +21,11 @@
   
 ::v-deep .sf-list .sf-list__item {
   padding: 10px 0;
+}
+
+::v-deep .sf-header-navigation-item__item--desktop {
+  display: block;
+  @include for-mobile {
+    display: none;
+  }
 }  
