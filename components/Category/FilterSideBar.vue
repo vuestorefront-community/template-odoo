@@ -74,6 +74,7 @@
              :disabled="false"
              :config="config"
              v-model="price"
+             class="range"
              @change="selectPrice"
            />
           </template>
@@ -295,6 +296,10 @@ export default defineComponent({
     --sidebar-content-padding: 0 var(--spacer-xl);
     --sidebar-bottom-padding: 0 var(--spacer-xl);
   }
+}
+
+.range {
+  margin-bottom: 65px;
 }
 
 .sf-range {
