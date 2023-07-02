@@ -1,5 +1,3 @@
-import loadCart from './loadCart';
+import { loadCart, addToCart, updateItemQty, removeCartItem } from "./cart";
 
-export {
-  loadCart
-};
+export { loadCart, addToCart, updateItemQty, removeCartItem };
