@@ -20,25 +20,18 @@
       label="Account"
       @click="handleAccountClick"
     />
-    <SfBottomNavigationItem
-      label="Wishlist"
+    <div class="relative">
+      <SfBottomNavigationItem
       icon="heart"
+      size="20px"
+      label="Wishlist"
       @click="toggleWishlistSidebar"
-    >
-      <template #icon>
-        <SfCircleIcon class="cart-button" aria-label="Add to wishlist">
-          <SfIcon
-            icon="heart"
-            color="white"
-            size="25px"
-            :style="{ margin: '0 0 0 -2px' }"
-          />
-          <SfBadge v-if="TotalWishlistItems" class="sf-badge--number cart-badge">{{
-            TotalWishlistItems
-          }}</SfBadge>
-        </SfCircleIcon>
-      </template>
-    </SfBottomNavigationItem>
+    />
+    <SfBadge v-if="TotalWishlistItems" class="sf-badge--number absolute top-0 right-0">
+      {{ TotalWishlistItems }}
+    </SfBadge>
+    </div>
+    
     <!-- TODO: add logic for label - if on Home then Basket, if on PDC then AddToCart etc. -->
     <SfBottomNavigationItem
       label="Basket"
