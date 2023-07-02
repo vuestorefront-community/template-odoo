@@ -23,6 +23,11 @@
   display: none;
 }
 
+.mega-menu .sf-button--pure{
+  @include for-mobile {
+    margin-left: 18px;
+  }
+}
 
 .notifications .sf-notification__message {
   margin-right: 35px;
