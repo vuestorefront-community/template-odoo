@@ -81,7 +81,7 @@
           <template v-if="facetHasMoreThanOneOption(facet)">
           <div
             v-if="isFacetColor(facet, facet.options)"
-            class="filters__colors"
+            class="filters__colors ml-10"
             :key="`${facet.value}-colors`"
           >
            <SfColor
@@ -90,7 +90,7 @@
               :data-cy="`category-filter_color_${option.value}`"
               :color="option.htmlColor"
               :selected="isFilterSelected(facet, option)"
-              class="filters__color ml-10"
+              class="filters__color"
               @click="() => selectFilter(facet, option)"
             />
           </div>
