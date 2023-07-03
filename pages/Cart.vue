@@ -509,8 +509,6 @@ hr {
 }
 
 .bottom__text {
-  width: 400px;
-
   /* Desktop Bullet Text */
 
   font-family: Roboto;
