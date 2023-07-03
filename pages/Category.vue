@@ -391,6 +391,20 @@ export default defineComponent({
       return null;
     };
 
+    const getRegularPrice =(product) => {
+      if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
+        return product.firstVariant.combinationInfoVariant.list_price ? root.$n(product.firstVariant.combinationInfoVariant.list_price, 'currency') : null
+      }
+      return null
+    }
+    const getSpecialPrice =(product) => {
+      if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
+        return (product.firstVariant.combinationInfoVariant.list_price !== product.firstVariant.combinationInfoVariant.price &&
+         product.firstVariant.combinationInfoVariant.has_discounted_price) ? root.$n(product.firstVariant.combinationInfoVariant.price, 'currency') : null
+      }
+      return null
+    }
+
     onSSR(async () => {
       const params = {
         pageSize: query.itemsPerPage || 12,
