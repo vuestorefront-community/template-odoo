@@ -132,7 +132,9 @@ export default defineComponent({
     };
 
     const goToSubCategory = (subCategory) => {
-      router.push(root.localePath(getCatLink(subCategory)));
+      if(subCategory){
+        router.push(root.localePath(getCatLink(subCategory)))
+      };
       toggleMobileMenu();
     };
 
