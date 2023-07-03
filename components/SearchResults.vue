@@ -226,7 +226,7 @@ export default {
       return product
     });
     const categories = computed(() => {
-        let newCategories = [...new Map(props.result?.categories.map(item =>
+        const newCategories = [...new Map(props.result?.categories.map(item =>
         [item['label'], item])).values()]
         return newCategories
     });
