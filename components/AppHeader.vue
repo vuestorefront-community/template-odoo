@@ -175,21 +175,15 @@ export default {
       useCategories('AppHeader:TopCategories');
 
     const cartTotalItems = computed(() => {
-      let array = cartGetters.getItems(cart.value).map((item) => {
-        return item.quantity
-      })
-      let sum = 0
-      array.forEach((num) => {
-        sum += num;
-      });
-      return sum;
+      const count = cartGetters.getTotalItems(cart.value)
+      return count ? count.toString() : root.$cookies.get('cart-size');
     });
 
     const TotalWishlistItems = computed(() => {
-      const count = wishlistGetters.getTotalItems(wishlist.value);
+      const count = wishlistGetters.getTotalItems(wishlist.value)
       return count ? count.toString() : root.$cookies.get('wishlist-size');
     });
-
+    
     const accountIcon = computed(() =>
       isAuthenticated.value ? 'profile_fill' : 'profile'
     );
@@ -265,10 +259,12 @@ export default {
     };
 
     const handleCartSideBarClick = async () => {
+      await loadCart()
       toggleCartSidebar();
     };
 
     const handleWishlistSideBarClick = async () => {
+      await loadWishlist()
       toggleWishlistSidebar();
     };
 
@@ -292,7 +288,7 @@ export default {
     );
 
     onMounted(async() => {
-      await loadWishlist();
+      await loadCart()
     })
 
     onSSR(async () => {

@@ -247,10 +247,9 @@ import { computed, onMounted } from '@nuxtjs/composition-api';
 import {
   useUser,
   cartGetters,
-  productGetters,
-  useWishlist,
-} from "@vue-storefront/odoo";
-import { useUiState, useUiNotification, useCart } from "~/composables";
+  useWishlist
+} from '@vue-storefront/odoo';
+import { useUiState, useUiNotification, useCart } from '~/composables';
 
 export default {
   name: "DetailedCart",
