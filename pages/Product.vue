@@ -120,7 +120,7 @@
           />
 
           <SfButton
-            class="sf-button--text desktop-only product__save"
+            class="sf-button--text product__save"
             @click="addToWishList(product)"
           >
             {{ $t('Save for later') }}
