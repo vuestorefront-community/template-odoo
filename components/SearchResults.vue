@@ -218,10 +218,17 @@ export default {
   setup(props, { emit }) {
     const uiHelper = useUiHelpers();
     const isSearchOpen = ref(props.visible);
-    const products = computed(() => props.result?.products);
+    const products = computed(() => {
+      console.log(props?.result?.products)
+      const product = props?.result?.products.filter((item) => {
+        return item.categories[0].name === 'WOMEN' || item.categories[0].name === 'MEN'
+      })
+      return product
+    });
     const categories = computed(() => {
-        return [...new Map(props.result?.categories.map(item =>
+        let newCategories = [...new Map(props.result?.categories.map(item =>
         [item['label'], item])).values()]
+        return newCategories
     });
     const { addItem: addItemToWishlist } = useWishlist();
 
