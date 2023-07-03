@@ -78,16 +78,8 @@
               "
               :nuxtImgConfig="{ loading: 'eager', fit: 'cover', preload: true }"
               image-tag="nuxt-img"
-              :regular-price="
-                $n(productGetters.getPrice(product).regular, 'currency')
-              "
-              :special-price="
-                productGetters.getPrice(product.firstVariant).regular !==
-                productGetters.getPrice(product.firstVariant).special
-                  ? productGetters.getPrice(product.firstVariant).special &&
-                    $n(productGetters.getPrice(product.firstVariant).special, 'currency')
-                  : ''
-              "
+              :regular-price="getRegularPrice(product)"
+              :special-price="getSpecialPrice(product)"
               :max-rating="5"
               :score-rating="productGetters.getAverageRating(product)"
               :show-add-to-cart-button="true"
@@ -152,16 +144,8 @@
                   productGetters.getImageFilename(product)
                 )
               "
-              :regular-price="
-                $n(productGetters.getPrice(product).regular, 'currency')
-              "
-              :special-price="
-                productGetters.getPrice(product).regular !==
-                productGetters.getPrice(product).special
-                  ? productGetters.getPrice(product).special &&
-                    $n(productGetters.getPrice(product).special, 'currency')
-                  : ''
-              "
+              :regular-price="getRegularPrice(product)"
+              :special-price="getSpecialPrice(product)"
               :isInWishlist="isInWishlist({ product })"
               class="products__product-card-horizontal"
               @click:wishlist="addProductToWishList(product)"
@@ -385,6 +369,20 @@ export default defineComponent({
         .join('')}`
     };
 
+    const getRegularPrice =(product) => {
+      if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
+        return product.firstVariant.combinationInfoVariant.list_price ? root.$n(product.firstVariant.combinationInfoVariant.list_price, 'currency') : null
+      }
+      return null
+    }
+    const getSpecialPrice =(product) => {
+      if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
+        return (product.firstVariant.combinationInfoVariant.list_price !== product.firstVariant.combinationInfoVariant.price &&
+         product.firstVariant.combinationInfoVariant.has_discounted_price) ? root.$n(product.firstVariant.combinationInfoVariant.price, 'currency') : null
+      }
+      return null
+    }
+
     onSSR(async () => {
       const params = {
         pageSize: query.itemsPerPage || 12,
@@ -435,7 +433,9 @@ export default defineComponent({
       isInCart,
       showProducts,
       result,
-      currentCategoryNameForAccordion
+      currentCategoryNameForAccordion,
+      getRegularPrice,
+      getSpecialPrice,
     };
   },
   head: {
