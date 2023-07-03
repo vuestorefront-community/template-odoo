@@ -130,7 +130,7 @@
         <LazyHydrate when-idle>
           <SfTabs :open-tab="1" class="product__tabs">
             <SfTab data-cy="product-tab_description" :title="$t('Description')">
-              <p class="product__description desktop-only">
+              <p class="product__description">
                 {{ description }}
               </p>
             </SfTab>
