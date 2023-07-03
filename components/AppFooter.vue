@@ -256,7 +256,7 @@ export default {
     display: flex;
     column-gap: 4px;
     margin: 0 auto var(--spacer-lg);
-    padding: var(--spacer-base) var(--spacer-xl);
+    padding: var(--spacer-base) 24px;
     @include for-desktop {
       justify-content: flex-start;
       padding: var(--spacer-xs) 0;
