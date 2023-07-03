@@ -41,14 +41,8 @@
         </div>
         <div class="product__price-and-rating">
           <SfPrice
-            :regular="$n(productGetters.getPrice(product).regular, 'currency')"
-            :special-price="
-              productGetters.getPrice(product).regular !==
-              productGetters.getPrice(product).special
-                ? productGetters.getPrice(product).special &&
-                  $n(productGetters.getPrice(product).special, 'currency')
-                : ''
-            "
+            :regular="getRegularPrice(product)"
+            :special-price="getSpecialPrice(product)"
           />
         </div>
         <div>
@@ -257,7 +251,21 @@ export default {
         ...products.value,
         realProduct: realProduct.value
       };
-    });
+    });const getRegularPrice =(product) => {
+      if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
+        return product.firstVariant.combinationInfoVariant.list_price ? root.$n(product.firstVariant.combinationInfoVariant.list_price, 'currency') : null
+      }
+      return null
+    }
+
+    
+    const getSpecialPrice =(product) => {
+      if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
+        return (product.firstVariant.combinationInfoVariant.list_price !== product.firstVariant.combinationInfoVariant.price &&
+         product.firstVariant.combinationInfoVariant.has_discounted_price) ? root.$n(product.firstVariant.combinationInfoVariant.price, 'currency') : null
+      }
+      return null
+    }
 
     const options = computed(() =>
       productGetters.getAttributes(product.value, ['color', 'size'])
@@ -388,7 +396,9 @@ export default {
       toggleCartSidebar,
       handleAddToCart,
       addToWishList,
-      showSkeleton
+      showSkeleton,
+      getRegularPrice,
+      getSpecialPrice,
     };
   },
   components: {
