@@ -20,16 +20,18 @@
       label="Account"
       @click="handleAccountClick"
     />
-    <div class="relative">
-      <SfBottomNavigationItem
-      icon="heart"
-      size="20px"
-      label="Wishlist"
-      @click="toggleWishlistSidebar"
-    />
-    <SfBadge v-if="TotalWishlistItems" class="sf-badge--number absolute top-0 right-0">
-      {{ TotalWishlistItems }}
-    </SfBadge>
+    <div class="wishlist-wrapper">
+      <div class="relative w-10">
+        <SfBottomNavigationItem
+          icon="heart"
+          size="20px"
+          label="Wishlist"
+          @click="toggleWishlistSidebar"
+        />
+        <SfBadge v-if="TotalWishlistItems" class="sf-badge--number wishlist-badge">
+          {{ TotalWishlistItems }}
+        </SfBadge>
+     </div>
     </div>
     
     <!-- TODO: add logic for label - if on Home then Basket, if on PDC then AddToCart etc. -->
@@ -138,6 +140,27 @@ export default {
 <style lang="scss" scoped>
 .navigation-bottom {
   --bottom-navigation-z-index: 3;
+}
+.wishlist-wrapper{
+  width: 73px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@media screen and (min-width: 410px) {
+   .wishlist-wrapper {
+     min-width: 85px;
+   }
+}
+@media screen and (min-width: 600px) {
+   .wishlist-wrapper {
+     min-width: 150px;
+   }
+}
+.wishlist-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 .cart-button {
   position: relative;
