@@ -70,7 +70,7 @@
             :value="option.value"
             :label="option.attrName"
             class="filters__item"
-            @change="changeSortEvent"
+            @change="changeSorting"
           />
         </SfAccordionItem>
       <div v-for="(facet, i) in facets" :key="i">
@@ -224,10 +224,9 @@ export default defineComponent({
       );
     };
 
-    const changeSortEvent = (sort) => {
-      toggleFilterSidebar();
-      changeSorting(sort)
-    }
+    const sortBy = computed(() =>
+      facetGetters.getSortOptions({ input: { sort: query?.sort } })
+    );
 
     const facetHasMoreThanOneOption = (facet) =>
       facet?.options?.length > 1 || false;
@@ -299,11 +298,11 @@ export default defineComponent({
     const sortByAscendingProductAttributes = (data) => {
       return data
         ?.sort(function (a, b) {
-          var labelA = a.label;
-          var labelB = b.label;
+          const labelA = a.label;
+          const labelB = b.label;
           if (labelA === labelB) {
-            var lastCharA = labelA.charAt(labelA.length - 1);
-            var lastCharB = labelB.charAt(labelB.length - 1);
+            const lastCharA = labelA.charAt(labelA.length - 1);
+            const lastCharB = labelB.charAt(labelB.length - 1);
             return lastCharA.localeCompare(lastCharB);
           } else {
             return labelA.localeCompare(labelB);
@@ -328,8 +327,7 @@ export default defineComponent({
       applyFilters,
       sortByAscendingProductAttributes,
       changeSorting,
-      sortBy,
-      changeSortEvent,
+      sortBy
     };
   }
 });
