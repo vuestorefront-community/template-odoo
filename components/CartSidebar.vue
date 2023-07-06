@@ -8,9 +8,19 @@
       @close="toggleCartSidebar"
     >
       <template #content-top>
+        <div class="heading__wrapper smartphone-only">
+          <SfHeading :level="3" :title="$t('My Cart')" class="sf-heading--left pb-0" />
+          <SfButton
+            class="heading__close-button sf-button--pure"
+            aria-label="Wishlist sidebar close button"
+            @click="toggleCartSidebar"
+          >
+            <SfIcon icon="cross" size="14px" color="gray-primary" />
+          </SfButton>
+        </div>
         <SfProperty
           v-if="totalItems"
-          class="sf-property--large cart-summary desktop-only"
+          class="sf-property--large cart-summary"
           :name="$t('Total items')"
           :value="totalItems"
         />
@@ -240,6 +250,12 @@ export default {
 }
 .cart-summary {
   margin-top: var(--spacer-xl);
+}
+.heading__wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
 }
 .my-cart {
   flex: 1;
