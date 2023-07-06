@@ -79,6 +79,22 @@
         </ValidationObserver>
       </template>
     </SfFooterColumn>
+
+    <SfFooterColumn title="Social" class="smartphone-only">
+      <div class="footer__socials">
+        <a v-for="item in social" :href="item.url" target="_blank" >
+          <SfImage
+            class="footer__social-image"
+            :key="item.id"
+            :src="addBasePath('/icons/' + item.brand + '.svg')"
+            :alt="item.brand"
+            :width="32"
+            :height="32"
+          />
+        </a>
+      </div>
+    </SfFooterColumn>
+
     <div class="sf-footer-column smartphone-only">
       <div
         style="
@@ -89,29 +105,6 @@
           width: 100%;
         "
       >
-        <div
-          class="sf-footer-column__title"
-          style="align-self: flex-start; width: auto"
-        >
-          Social
-        </div>
-        <div
-          style="
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            margin-bottom: 32px;
-          "
-        >
-          <SfImage
-            v-for="picture in social"
-            :key="picture.id"
-            :src="addBasePath('/icons/' + picture + '.svg')"
-            :alt="picture"
-            :width="32"
-            :height="32"
-          />
-        </div>
         <div
           style="
             display: flex;
@@ -261,9 +254,9 @@ export default {
   }
   &__socials {
     display: flex;
-    justify-content: space-between;
+    column-gap: 4px;
     margin: 0 auto var(--spacer-lg);
-    padding: var(--spacer-base) var(--spacer-xl);
+    padding: var(--spacer-base) 24px;
     @include for-desktop {
       justify-content: flex-start;
       padding: var(--spacer-xs) 0;
