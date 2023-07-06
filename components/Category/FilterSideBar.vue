@@ -206,6 +206,10 @@ export default defineComponent({
       useUiHelpers();
     const { toggleFilterSidebar, isFilterSidebarOpen } = useUiState();
 
+    const sortBy = computed(() =>
+      facetGetters.getSortOptions({ input: { sort: query?.sort } })
+    );
+
     const clearFilters = () => {
       toggleFilterSidebar();
       selectedFilters.value = [];
