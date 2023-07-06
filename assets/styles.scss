@@ -23,6 +23,11 @@
   display: none;
 }
 
+.select-size .sf-select__option {
+  display: block;
+  width: 100%;
+}
+
 .remove-quantity .sf-collected-product__quantity-wrapper {
   display: none;
 }
@@ -44,13 +49,13 @@
 .password-icon-position {
   @include for-mobile {
     .sf-input__wrapper {
-      display: inline !important;
-      position: relative !important;
-    } 
-    .sf-input__button {
-      position: absolute !important;
-      top: 28px !important;
-    } 
+      display: block;
+    }
+    .sf-input__icon {
+      position: absolute;
+      top: -27px;
+      right: 5px;
+    }
   }
 }
 
