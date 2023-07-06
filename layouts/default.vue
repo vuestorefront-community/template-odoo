@@ -6,22 +6,23 @@
     <LazyHydrate when-idle>
       <AppHeader />
     </LazyHydrate>
+    <div>
+      <div id="layout">
+        <nuxt :key="$route.fullPath" />
 
-    <div id="layout">
-      <nuxt :key="$route.fullPath" />
-
-      <MobileMenuSidebar :critical="false"/>
+        <MobileMenuSidebar :critical="false" />
+        <LazyHydrate when-visible>
+          <BottomNavigation />
+        </LazyHydrate>
+        <CartSidebar :critical="false" />
+        <WishlistSidebar :critical="false" />
+        <LoginModal :critical="false" />
+        <Notification :critical="false" />
+      </div>
       <LazyHydrate when-visible>
-        <BottomNavigation />
+        <AppFooter />
       </LazyHydrate>
-      <CartSidebar :critical="false"/>
-      <WishlistSidebar :critical="false"/>
-      <LoginModal :critical="false"/>
-      <Notification :critical="false"/>
     </div>
-    <LazyHydrate when-visible>
-      <AppFooter />
-    </LazyHydrate>
   </div>
 </template>
 
