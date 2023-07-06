@@ -15,7 +15,7 @@
       @click="toggleMobileMenu"
     />
     <SfBottomNavigationItem
-      icon="profile"
+      :icon="accountIcon"
       size="20px"
       label="Account"
       @click="handleAccountClick"
@@ -83,9 +83,20 @@ export default {
       toggleMobileMenu,
       isMobileMenuOpen
     } = useUiState();
-    const { isAuthenticated } = useUser();
+    const { isAuthenticated: isLoggedIn } = useUser();
     const { cart } = useCart();
     const { load: loadWishlist, wishlist } = useWishlist();
+    
+    const isAuthenticated = computed(() => {
+      return isLoggedIn.value
+        ? isLoggedIn.value
+        : root.$cookies.get("odoo-user");
+    });
+
+    const accountIcon = computed(() =>
+      isAuthenticated.value ? 'profile_fill' : 'profile'
+    );
+
     const handleAccountClick = async () => {
       if (isAuthenticated.value) {
         return router.push(root.localePath('/my-account'));
@@ -113,6 +124,7 @@ export default {
       route,
       isMobileMenuOpen,
       toggleWishlistSidebar,
+      accountIcon,
       toggleCartSidebar,
       toggleMobileMenu,
       cartTotalItems,
