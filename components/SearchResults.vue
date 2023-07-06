@@ -218,7 +218,11 @@ export default {
   setup(props, { emit }) {
     const uiHelper = useUiHelpers();
     const isSearchOpen = ref(props.visible);
-    const products = computed(() => props.result?.products);
+    const products = computed(() => {
+      return props?.result?.products.filter((item) => {
+        return item.categories[0].name === 'WOMEN' || item.categories[0].name === 'MEN'
+      })
+    });
     const categories = computed(() => {
         return [...new Map(props.result?.categories.map(item =>
         [item['label'], item])).values()]
