@@ -147,7 +147,8 @@ import {
   SfProperty,
   SfImage,
   SfRange,
-  SfAccordion
+  SfAccordion,
+  SfRadio
 } from '@storefront-ui/vue';
 import { facetGetters } from '@vue-storefront/odoo';
 import {
@@ -155,7 +156,8 @@ import {
   ref,
   onMounted,
   reactive,
-  computed
+  computed,
+  useRoute
 } from '@nuxtjs/composition-api';
 import { useUiState, useUiHelpers } from '~/composables';
 
@@ -172,7 +174,8 @@ export default defineComponent({
     SfProperty,
     SfAccordion,
     SfImage,
-    SfRange
+    SfRange,
+    SfRadio
   },
   props: {
     facetsList: {
@@ -184,6 +187,7 @@ export default defineComponent({
     }
   },
   setup(props) {
+    const { query } = useRoute().value;
     const selectedFilters = ref([]);
     const price = ref([]);
     const config = reactive({
