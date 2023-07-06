@@ -41,7 +41,7 @@
               :data-cy="`category-filter_color_${option.value}`"
               :color="option.htmlColor"
               :selected="isFilterSelected(facet, option)"
-              class="filters__color mr-3"
+              class="filters__color"
               @click="() => selectFilter(facet, option)"
             />
           </div>
@@ -78,7 +78,24 @@
              @change="selectPrice"
            />
           </template>
-          <SfFilter
+          <template v-if="facetHasMoreThanOneOption(facet)">
+          <div
+            v-if="isFacetColor(facet, facet.options)"
+            class="filters__colors ml-10"
+            :key="`${facet.value}-colors`"
+          >
+           <SfColor
+              v-for="option in facet.options"
+              :key="`${facet.id}-${option.value}`"
+              :data-cy="`category-filter_color_${option.value}`"
+              :color="option.htmlColor"
+              :selected="isFilterSelected(facet, option)"
+              class="filters__color"
+              @click="() => selectFilter(facet, option)"
+            />
+          </div>
+          <div v-else>
+            <SfFilter
             v-for="option in sortByAscendingProductAttributes(facet.options)"
             :key="`${facet.id}-${option.id}`"
             :label="option.label"
@@ -86,6 +103,8 @@
             class="filters__item"
             @change="() => selectFilter(facet, option)"
           />
+          </div>
+        </template>
         </SfAccordionItem>
       </div>
     </SfAccordion>
