@@ -70,7 +70,7 @@
             :value="option.value"
             :label="option.attrName"
             class="filters__item"
-            @change="changeSorting"
+            @change="changeSortEvent"
           />
         </SfAccordionItem>
       <div v-for="(facet, i) in facets" :key="i">
@@ -203,6 +203,10 @@ export default defineComponent({
       useUiHelpers();
     const { toggleFilterSidebar, isFilterSidebarOpen } = useUiState();
 
+    const sortBy = computed(() =>
+      facetGetters.getSortOptions({ input: { sort: query?.sort } })
+    );
+
     const clearFilters = () => {
       toggleFilterSidebar();
       selectedFilters.value = [];
@@ -220,9 +224,10 @@ export default defineComponent({
       );
     };
 
-    const sortBy = computed(() =>
-      facetGetters.getSortOptions({ input: { sort: query?.sort } })
-    );
+    const changeSortEvent = (sort) => {
+      toggleFilterSidebar();
+      changeSorting(sort)
+    }
 
     const facetHasMoreThanOneOption = (facet) =>
       facet?.options?.length > 1 || false;
@@ -323,7 +328,8 @@ export default defineComponent({
       applyFilters,
       sortByAscendingProductAttributes,
       changeSorting,
-      sortBy
+      sortBy,
+      changeSortEvent,
     };
   }
 });
