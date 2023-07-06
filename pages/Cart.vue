@@ -194,7 +194,7 @@
                   >{{ $t("GO BACK SHOPPING") }}</SfButton
                 >
               </div>
-              <div class="mb-3">
+              <div class="mb-3 hidden">
                 <div class="custom__row">
                   <div class="mr-4">
                     <img src="../assets/email.svg" />
