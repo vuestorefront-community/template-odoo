@@ -62,7 +62,7 @@
                   <span class="smartphone-only">
                     <SfButton
                       class="sf-button--text custom-text__mobile"
-                      @click="removeItem({ product })"
+                      @click="handleRemoveItem({ product })"
                       >
                        X
                       </SfButton
