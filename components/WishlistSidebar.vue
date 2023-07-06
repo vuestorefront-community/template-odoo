@@ -42,11 +42,7 @@
                 :regular-price="
                   $n(wishlistGetters.getItemPrice(product).regular, 'currency')
                 "
-                :special-price="
-                  wishlistGetters.getItemPrice(product).regular !== wishlistGetters.getItemPrice(product).special ?
-                  wishlistGetters.getItemPrice(product).special &&
-                  $n(wishlistGetters.getItemPrice(product).special, 'currency') : ''
-                "
+                :special-price="$n(wishlistGetters.getItemPrice(product).special, 'currency')"
                 :stock="99999"
                 :link="localePath(productGetters.getSlug(product.product))"
                 :image-width="180"
