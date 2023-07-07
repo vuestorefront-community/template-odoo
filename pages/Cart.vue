@@ -279,8 +279,8 @@ export default {
       let sum = 0
       array.forEach((num) => {
         sum += num;
-      });
-      return sum;
+      })
+      return sum
     });
     const { send } = useUiNotification();
     const { addItem: addItemToWishlist } = useWishlist();
