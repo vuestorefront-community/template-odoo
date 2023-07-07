@@ -16,6 +16,7 @@
             class="
               sf-mega-menu-column--pined-content-on-mobile
               search__categories
+              pl-4
             "
           >
             <template #title="{ title }">
