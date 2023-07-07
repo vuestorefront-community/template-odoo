@@ -5,7 +5,7 @@
       :button="false"
       :title="currentParentMenu"
       @close="backMenu"
-      class="sidebar sf-sidebar--right"
+      class="sidebar sf-sidebar--right dddd"
     >
       <template v-if="!isChildsOpened">
         <SfHeaderNavigationItem
@@ -124,9 +124,7 @@ export default defineComponent({
     };
 
     const backMenu = () => {
-      if (!isChildsOpened.value) {
-        toggleMobileMenu();
-      }
+      toggleMobileMenu();
       currentParentMenu.value = 'Menu';
       isChildsOpened.value = false;
     };
@@ -136,6 +134,8 @@ export default defineComponent({
         router.push(root.localePath(getCatLink(subCategory)))
       };
       toggleMobileMenu();
+      currentParentMenu.value = 'Menu';
+      isChildsOpened.value = false;
     };
 
     onSSR(async () => {});
