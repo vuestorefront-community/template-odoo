@@ -62,17 +62,6 @@
       </div>
     </div>
     <SfAccordion class="filters smartphone-only">
-      <SfAccordionItem header="Sort by" class="filters__accordion-item">
-          <SfRadio
-            v-for="(option, index) in sortBy.options"
-            :key="index"
-            v-model="sortBy.selected"
-            :value="option.value"
-            :label="option.attrName"
-            class="filters__item"
-            @change="changeSortEvent"
-          />
-        </SfAccordionItem>
       <div v-for="(facet, i) in facets" :key="i">
         <SfAccordionItem
           :key="`filter-title-${facet.id}`"
@@ -147,8 +136,7 @@ import {
   SfProperty,
   SfImage,
   SfRange,
-  SfAccordion,
-  SfRadio
+  SfAccordion
 } from '@storefront-ui/vue';
 import { facetGetters } from '@vue-storefront/odoo';
 import {
@@ -156,8 +144,7 @@ import {
   ref,
   onMounted,
   reactive,
-  computed,
-  useRoute
+  computed
 } from '@nuxtjs/composition-api';
 import { useUiState, useUiHelpers } from '~/composables';
 
@@ -174,8 +161,7 @@ export default defineComponent({
     SfProperty,
     SfAccordion,
     SfImage,
-    SfRange,
-    SfRadio
+    SfRange
   },
   props: {
     facetsList: {
@@ -184,7 +170,6 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const { query } = useRoute().value;
     const selectedFilters = ref([]);
     const price = ref([]);
     const config = reactive({
@@ -199,13 +184,9 @@ export default defineComponent({
       keyboardSupport: true
     });
 
-    const { changeFilters, clearAllFilters, changeSorting, isFacetColor, isFacetPrice, facetsFromUrlToFilter } =
+    const { changeFilters,clearAllFilters, isFacetColor, isFacetPrice, facetsFromUrlToFilter } =
       useUiHelpers();
     const { toggleFilterSidebar, isFilterSidebarOpen } = useUiState();
-
-    const sortBy = computed(() =>
-      facetGetters.getSortOptions({ input: { sort: query?.sort } })
-    );
 
     const clearFilters = () => {
       toggleFilterSidebar();
@@ -223,11 +204,6 @@ export default defineComponent({
         (filter) => String(filter.id) === String(option.value)
       );
     };
-
-    const changeSortEvent = (sort) => {
-      toggleFilterSidebar();
-      changeSorting(sort)
-    }
 
     const facetHasMoreThanOneOption = (facet) =>
       facet?.options?.length > 1 || false;
@@ -327,9 +303,6 @@ export default defineComponent({
       clearFilters,
       applyFilters,
       sortByAscendingProductAttributes,
-      changeSorting,
-      sortBy,
-      changeSortEvent,
     };
   }
 });
