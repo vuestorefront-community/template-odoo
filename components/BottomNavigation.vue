@@ -99,6 +99,8 @@ export default {
 
     const handleAccountClick = async () => {
       if (isAuthenticated.value) {
+        root.$cookies.remove('odoo-user');
+        await loadUser();
         return router.push(root.localePath('/my-account'));
       }
       toggleLoginModal();
