@@ -149,7 +149,7 @@ import {
   SfCollectedProduct,
   SfImage
 } from '@storefront-ui/vue';
-import { computed, onMounted } from '@nuxtjs/composition-api';
+import { computed } from '@nuxtjs/composition-api';
 import {
   useWishlist,
   useUser,
