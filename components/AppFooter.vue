@@ -224,11 +224,6 @@ export default {
           url: 'https://www.pinterest.com/'
         },
         {
-          id: 3,
-          brand: 'google',
-          url: '/'
-        },
-        {
           id: 4,
           brand: 'twitter',
           url: 'https://twitter.com/'
