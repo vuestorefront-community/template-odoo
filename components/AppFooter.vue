@@ -32,7 +32,7 @@
       <div class="footer__socials">
         <a v-for="item in social" :href="item.url" target="_blank" >
           <SfImage
-            class="footer__social-image"          
+            class="footer__social-image"
             :key="item.id"
             :src="addBasePath('/icons/' + item.brand + '.svg')"
             :alt="item.brand"
@@ -79,6 +79,22 @@
         </ValidationObserver>
       </template>
     </SfFooterColumn>
+
+    <SfFooterColumn title="Social" class="smartphone-only">
+      <div class="footer__socials">
+        <a v-for="item in social" :href="item.url" target="_blank" >
+          <SfImage
+            class="footer__social-image"
+            :key="item.id"
+            :src="addBasePath('/icons/' + item.brand + '.svg')"
+            :alt="item.brand"
+            :width="32"
+            :height="32"
+          />
+        </a>
+      </div>
+    </SfFooterColumn>
+
     <div class="sf-footer-column smartphone-only">
       <div
         style="
@@ -89,29 +105,6 @@
           width: 100%;
         "
       >
-        <div
-          class="sf-footer-column__title"
-          style="align-self: flex-start; width: auto"
-        >
-          Social
-        </div>
-        <div
-          style="
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            margin-bottom: 32px;
-          "
-        >
-          <SfImage
-            v-for="picture in social"
-            :key="picture"
-            :src="addBasePath('/icons/' + picture + '.svg')"
-            :alt="picture"
-            :width="32"
-            :height="32"
-          />
-        </div>
         <div
           style="
             display: flex;
@@ -221,25 +214,30 @@ export default {
       paymentsDelivery: ['Purchase terms', 'Guarantee'],
       social: [
         {
-          id:1,
+          id: 1,
           brand: 'facebook',
           url: 'https://www.facebook.com/'
         },
         {
-          id:2,
+          id: 2,
           brand: 'pinterest',
           url: 'https://www.pinterest.com/'
         },
         {
-          id:3,
+          id: 3,
+          brand: 'google',
+          url: '/'
+        },
+        {
+          id: 4,
           brand: 'twitter',
           url: 'https://twitter.com/'
         },
         {
-          id:4,
+          id: 4,
           brand: 'youtube',
           url: 'https://www.youtube.com/'
-        },
+        }
       ],
       isMobile: false,
       desktopMin: 1024
@@ -256,9 +254,9 @@ export default {
   }
   &__socials {
     display: flex;
-    justify-content: space-between;
+    column-gap: 4px;
     margin: 0 auto var(--spacer-lg);
-    padding: var(--spacer-base) var(--spacer-xl);
+    padding: var(--spacer-base) 24px;
     @include for-desktop {
       justify-content: flex-start;
       padding: var(--spacer-xs) 0;
@@ -270,6 +268,7 @@ export default {
   }
 }
 .sf-footer {
+  margin-top: var(--spacer-lg);
   @include for-desktop {
     border-top: var(--spacer-xs) solid var(--c-primary);
     padding-bottom: 0;

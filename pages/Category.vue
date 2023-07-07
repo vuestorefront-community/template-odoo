@@ -60,8 +60,6 @@
             tag="div"
             class="products__grid"
           >
-            <SfSkeleton type="image" />
-
             <SfProductCard
               data-cy="category-product-card"
               v-for="(product, i) in products"
@@ -80,22 +78,14 @@
               "
               :nuxtImgConfig="{ loading: 'eager', fit: 'cover', preload: true }"
               image-tag="nuxt-img"
-              :regular-price="
-                $n(productGetters.getPrice(product).regular, 'currency')
-              "
-              :special-price="
-                productGetters.getPrice(product).regular !==
-                productGetters.getPrice(product).special
-                  ? productGetters.getPrice(product).special &&
-                    $n(productGetters.getPrice(product).special, 'currency')
-                  : ''
-              "
+              :regular-price="getRegularPrice(product)"
+              :special-price="getSpecialPrice(product)"
               :max-rating="5"
               :score-rating="productGetters.getAverageRating(product)"
               :show-add-to-cart-button="true"
               :isInWishlist="isInWishlist({ product })"
               :isAddedToCart="product.firstVariant ? isInCart({ product }) : false"
-              :link="localePath(productGetters.getSlug(product))"
+              :link="localePath(mountUrlSlugForProductVariant(product.firstVariant))"
               class="products__product-card"
               @click:wishlist="
                 isInWishlist({ product })
@@ -103,11 +93,11 @@
                   : addProductToWishList(product)
               "
               @click:add-to-cart="
-                addItemToCart({ product, quantity: 1 }), toggleCartSidebar()
+                handleAddToCartItem({ product, quantity: 1 }), toggleCartSidebar()
               "
             >
               <template #image>
-                <nuxt-link :to="localePath(productGetters.getSlug(product))">
+                <nuxt-link :to="localePath(mountUrlSlugForProductVariant(product.firstVariant))">
                   <SfImage
                     class="sf-product-card__image"
                     :src="$image(
@@ -127,6 +117,7 @@
               </template>
             </SfProductCard>
           </transition-group>
+
           <transition-group
             v-else
             appear
@@ -153,25 +144,17 @@
                   productGetters.getImageFilename(product)
                 )
               "
-              :regular-price="
-                $n(productGetters.getPrice(product).regular, 'currency')
-              "
-              :special-price="
-                productGetters.getPrice(product).regular !==
-                productGetters.getPrice(product).special
-                  ? productGetters.getPrice(product).special &&
-                    $n(productGetters.getPrice(product).special, 'currency')
-                  : ''
-              "
+              :regular-price="getRegularPrice(product)"
+              :special-price="getSpecialPrice(product)"
               :isInWishlist="isInWishlist({ product })"
               class="products__product-card-horizontal"
               @click:wishlist="addProductToWishList(product)"
               @click:add-to-cart="
-                addItemToCart({ product, quantity: products[i].qty || 1 }),
+                handleAddToCartItem({ product, quantity: products[i].qty || 1 }),
                   toggleCartSidebar()
               "
               v-model="products[i].qty"
-              :link="localePath(productGetters.getSlug(product))"
+              :link="localePath(mountUrlSlugForProductVariant(product.firstVariant))"
             >
               <template #actions>
                 <SfButton
@@ -281,7 +264,7 @@ import {
   facetGetters
 } from '@vue-storefront/odoo';
 import { useCache, CacheTagPrefix } from '@vue-storefront/cache';
-import { useUiHelpers, useUiState, useUiNotification } from '~/composables';
+import { useUiHelpers, useUiState, useUiNotification, useCart as customUseCart } from '~/composables';
 import { onSSR } from '@vue-storefront/core';
 import LazyHydrate from 'vue-lazy-hydration';
 import speedkitHydrate from 'nuxt-speedkit/hydrate';
@@ -315,7 +298,8 @@ export default defineComponent({
 
     const { addTags } = useCache();
     const uiState = useUiState();
-    const { addItem: addItemToCart, isInCart } = useCart();
+    const { isInCart } = useCart();
+    const { cartAddItem } = customUseCart()
     const {
       addItem: addItemToWishlist,
       removeItem: removeItemFromWishList,
@@ -337,8 +321,8 @@ export default defineComponent({
       })
     });
     const addProductToWishList = (product) => {
-      addItemToWishlist({ product })
-      send({ message: "Product added to wishlist", type: 'info' });
+      addItemToWishlist({ product });
+      send({ message: 'Product added to wishlist', type: 'info' });
     };
 
     const pagination = computed(() => facetGetters.getPagination(result.value));
@@ -378,6 +362,26 @@ export default defineComponent({
       return breadcrumbs;
     });
 
+    const mountUrlSlugForProductVariant = (product) => {
+      const { slug, variantAttributeValues } = product;
+      return `${slug}?${variantAttributeValues
+        .map((variant) => `${variant?.attribute?.name}=${variant?.id}&`)
+        .join('')}`
+    };
+
+    const getRegularPrice =(product) => {
+      if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
+        return product.firstVariant.combinationInfoVariant.list_price ? root.$n(product.firstVariant.combinationInfoVariant.list_price, 'currency') : null
+      }
+      return null
+    }
+    const getSpecialPrice =(product) => {
+      if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
+        return product.firstVariant.combinationInfoVariant.has_discounted_price ? root.$n(product.firstVariant.combinationInfoVariant.price, 'currency') : null
+      }
+      return null
+    }
+
     onSSR(async () => {
       const params = {
         pageSize: query.itemsPerPage || 12,
@@ -393,6 +397,14 @@ export default defineComponent({
         }
       ]);
     });
+
+
+    const handleAddToCartItem = async ({product, quantity}) => {
+      const productId = product.realProduct
+        ? product.realProduct?.product?.id
+        : product.firstVariant.id;
+      await cartAddItem(productId, quantity)
+    }
 
     onMounted(() => {
       root.$scrollTo(root.$el, 2000);
@@ -414,12 +426,15 @@ export default defineComponent({
       addProductToWishList,
       addItemToWishlist,
       removeItemFromWishList,
-      addItemToCart,
+      handleAddToCartItem,
       isInWishlist,
+      mountUrlSlugForProductVariant,
       isInCart,
       showProducts,
       result,
-      currentCategoryNameForAccordion
+      currentCategoryNameForAccordion,
+      getRegularPrice,
+      getSpecialPrice,
     };
   },
   head: {

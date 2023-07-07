@@ -17,6 +17,19 @@ const coreProductAttribs = `
       sku
       slug
     }
+    firstVariant{
+      id
+      combinationInfoVariant
+      slug
+      variantAttributeValues{
+        id
+        name
+        attribute{
+          id
+          name
+        }
+      }
+    }
 `;
 
 const query = `

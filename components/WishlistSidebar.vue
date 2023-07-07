@@ -25,7 +25,7 @@
           <div class="my-wishlist__total-items">
             {{ $t('Total items') }}: <strong>{{ totalItems }}</strong>
           </div>
-          <div class="collected-product-list">
+          <div class="collected-product-list remove-quantity">
             <transition-group name="fade" tag="div">
               <SfCollectedProduct
                 v-for="product in products"
@@ -42,11 +42,7 @@
                 :regular-price="
                   $n(wishlistGetters.getItemPrice(product).regular, 'currency')
                 "
-                :special-price="
-                  wishlistGetters.getItemPrice(product).regular !== wishlistGetters.getItemPrice(product).special ?
-                  wishlistGetters.getItemPrice(product).special &&
-                  $n(wishlistGetters.getItemPrice(product).special, 'currency') : ''
-                "
+                :special-price="$n(wishlistGetters.getItemPrice(product).special, 'currency')"
                 :stock="99999"
                 :link="localePath(productGetters.getSlug(product.product))"
                 :image-width="180"
@@ -69,8 +65,8 @@
                     />
                   </div>
                 </template>
-                <template #actions> 
-                  <div class="hidden"></div>                
+                <template #actions>
+                  <div class="hidden"></div>
                 </template>
               </SfCollectedProduct>
             </transition-group>

@@ -41,7 +41,7 @@
               :data-cy="`category-filter_color_${option.value}`"
               :color="option.htmlColor"
               :selected="isFilterSelected(facet, option)"
-              class="filters__color mr-3"
+              class="filters__color"
               @click="() => selectFilter(facet, option)"
             />
           </div>
@@ -68,7 +68,34 @@
           :header="facet.label"
           class="filters__accordion-item"
         >
-          <SfFilter
+          <template v-if="isFacetPrice(facet)">
+            <SfRange
+             :value="[20, 600]"
+             :disabled="false"
+             :config="config"
+             v-model="price"
+             class="range"
+             @change="selectPrice"
+           />
+          </template>
+          <template v-if="facetHasMoreThanOneOption(facet)">
+          <div
+            v-if="isFacetColor(facet, facet.options)"
+            class="filters__colors ml-10"
+            :key="`${facet.value}-colors`"
+          >
+           <SfColor
+              v-for="option in facet.options"
+              :key="`${facet.id}-${option.value}`"
+              :data-cy="`category-filter_color_${option.value}`"
+              :color="option.htmlColor"
+              :selected="isFilterSelected(facet, option)"
+              class="filters__color"
+              @click="() => selectFilter(facet, option)"
+            />
+          </div>
+          <div v-else>
+            <SfFilter
             v-for="option in sortByAscendingProductAttributes(facet.options)"
             :key="`${facet.id}-${option.id}`"
             :label="option.label"
@@ -76,6 +103,8 @@
             class="filters__item"
             @change="() => selectFilter(facet, option)"
           />
+          </div>
+        </template>
         </SfAccordionItem>
       </div>
     </SfAccordion>
@@ -155,14 +184,14 @@ export default defineComponent({
       keyboardSupport: true
     });
 
-    const { changeFilters, isFacetColor, isFacetPrice, facetsFromUrlToFilter } =
+    const { changeFilters,clearAllFilters, isFacetColor, isFacetPrice, facetsFromUrlToFilter } =
       useUiHelpers();
     const { toggleFilterSidebar, isFilterSidebarOpen } = useUiState();
 
     const clearFilters = () => {
       toggleFilterSidebar();
       selectedFilters.value = [];
-      changeFilters(selectedFilters.value);
+      clearAllFilters();
     };
 
     const applyFilters = () => {
@@ -286,6 +315,10 @@ export default defineComponent({
     --sidebar-content-padding: 0 var(--spacer-xl);
     --sidebar-bottom-padding: 0 var(--spacer-xl);
   }
+}
+
+.range {
+  margin-bottom: 65px;
 }
 
 .sf-range {

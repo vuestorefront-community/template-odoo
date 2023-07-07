@@ -13,7 +13,7 @@
         <SfHeading
           :level="3"
           :title="$t('Subscribe to newsletter')"
-          class="modal__title desktop-only"
+          class="modal__title desktop-only mb-3"
         />
         <ValidationObserver v-slot="{ handleSubmit, invalid }" key="log-in">
           <form @submit.prevent="$emit('email-submitted', emailAddress)">
@@ -24,12 +24,12 @@
                 :valid="!errors[0]"
                 :errorMessage="errors[0]"
                 v-model="emailAddress"
-                class="modal__input"
+                class="modal__input common_form_style"
               />
             </ValidationProvider>
 
             <SfButton
-              class="modal__button"
+              class="modal__button mt-4"
               type="submit"
               :disabled="loading || invalid"
             >

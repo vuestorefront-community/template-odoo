@@ -14,7 +14,7 @@
           data-cy="app-header-top-categories"
           class="nav-item"
           :label="category.name"
-          @click="openChilds(category.name)"
+          @click="openChilds(category.name, category.slug)"
         />
       </template>
 
@@ -109,10 +109,15 @@ export default defineComponent({
       facetGetters.getCategoryTree(result.value)
     );
 
-    const filteredTopCategories = computed(() => topCategories.value);
+    const filteredTopCategories = computed(() =>
+      topCategories.value?.filter(
+        (cat) => cat.name === 'WOMEN' || cat.name === 'MEN'
+      )
+    );
 
-    const openChilds = async (menuName) => {
+    const openChilds = async (menuName, slug) => {
       currentParentMenu.value = menuName;
+      router.push(root.localePath(slug));
       const params = { ...getFacetsFromURL() };
       await search(params);
       isChildsOpened.value = true;

@@ -55,6 +55,13 @@
                   :regular-price="
                     $n(productGetters.getPrice(product).regular, 'currency')
                   "
+                  :special-price="
+                    productGetters.getPrice(product).regular !==
+                    productGetters.getPrice(product).special
+                    ? productGetters.getPrice(product).special &&
+                    $n(productGetters.getPrice(product).special, 'currency')
+                    : ''
+                   "
                   :imageWidth="216"
                   :imageHeight="288"
                   :nuxtImgConfig="{ fit: 'cover' }"
@@ -97,6 +104,13 @@
                 :regular-price="
                   $n(productGetters.getPrice(product).regular, 'currency')
                 "
+                :special-price="
+                    productGetters.getPrice(product).regular !==
+                    productGetters.getPrice(product).special
+                    ? productGetters.getPrice(product).special &&
+                    $n(productGetters.getPrice(product).special, 'currency')
+                    : ''
+                   "
                 :score-rating="productGetters.getAverageRating(product)"
                 :reviews-count="7"
                 :image="
@@ -204,8 +218,15 @@ export default {
   setup(props, { emit }) {
     const uiHelper = useUiHelpers();
     const isSearchOpen = ref(props.visible);
-    const products = computed(() => props.result?.products);
-    const categories = computed(() => props.result?.categories);
+    const products = computed(() => {
+      return props?.result?.products.filter((item) => {
+        return item.categories[0].name === 'WOMEN' || item.categories[0].name === 'MEN'
+      })
+    });
+    const categories = computed(() => {
+        return [...new Map(props.result?.categories.map(item =>
+        [item['label'], item])).values()]
+    });
     const { addItem: addItemToWishlist } = useWishlist();
 
     const goToProduct = (product) => {

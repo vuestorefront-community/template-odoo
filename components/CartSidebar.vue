@@ -23,14 +23,6 @@
                 data-cy="collected-product-cart-sidebar"
                 v-for="product in products"
                 :key="cartGetters.getItemSku(product)"
-                :image="
-                  $image(
-                    cartGetters.getItemImage(product),
-                    140,
-                    236,
-                    cartGetters.getItemImageFilename(product)
-                  )
-                "
                 :title="cartGetters.getItemName(product)"
                 :regular-price="
                   $n(cartGetters.getItemPrice(product).regular, 'currency')
@@ -44,10 +36,31 @@
                 "
                 :stock="99999"
                 :qty="cartGetters.getItemQty(product)"
-                @input="updateItemQty({ product, quantity: $event })"
-                @click:remove="removeItem({ product })"
+                @input="handleUpdateItem({ product, quantity: $event })"
+                @click:remove="handleRemoveItem({ product })"
+                :link="localePath(productGetters.getSlug(product.product))"
                 class="collected-product"
               >
+              <template #image>
+                <nuxt-link :to="localePath(productGetters.getSlug(product.product))">
+                  <SfImage
+                    class="sf-product-card__image"
+                    :src="$image(
+                      productGetters.getCoverImage(product.product),
+                      140,
+                      236,
+                      productGetters.getImageFilename(product.product)
+                    )"
+                    :alt="productGetters.getName(product.product)"
+                    loading="eager"
+                    :width="140"
+                    :height="236"
+                    image-tag="nuxt-img"
+                    :nuxt-img-config="{ fit: 'cover', preload: true }"
+                  />
+                </nuxt-link>
+              </template>
+
                 <template #configuration>
                   <div class="collected-product__properties">
                     <SfProperty
@@ -147,13 +160,12 @@ import {
 } from '@storefront-ui/vue';
 import { computed } from '@nuxtjs/composition-api';
 import {
-  useCart,
   useUser,
   cartGetters,
+  productGetters,
   useWishlist
 } from '@vue-storefront/odoo';
-import { useUiState, useUiNotification } from '~/composables';
-import { onSSR } from '@vue-storefront/core';
+import { useUiState, useUiNotification, useCart } from '~/composables';
 
 export default {
   name: 'Cart',
@@ -169,47 +181,52 @@ export default {
   },
   setup() {
     const { isCartSidebarOpen, toggleCartSidebar } = useUiState();
-    const { cart, removeItem, updateItemQty } = useCart();
+    const { cart, updateItemQty, removeItem } = useCart();
     const { isAuthenticated } = useUser();
     const products = computed(() => cartGetters.getItems(cart.value));
     const totals = computed(() => cartGetters.getTotals(cart.value));
     const cartItems = computed(() => {
       return cartGetters.getItems(cart.value).map((item) => {
-        return item.quantity
-      })
-    })
+        return item.quantity;
+      });
+    });
     const totalItems = computed(() => {
-      let array = cartItems.value
-      let sum = 0
+      const array = cartItems.value;
+      let sum = 0;
       array.forEach((num) => {
         sum += num;
-      })
-      return sum
+      });
+      return sum;
     });
     const { addItem: addItemToWishlist } = useWishlist();
     const { send } = useUiNotification();
-    onSSR(async () => {
-      // await loadCart();
-    });
-
     const addProductToWishList = (product) => {
       addItemToWishlist({
         product: { ...product.product, firstVariant: { id: product.product.id }}
       });
-      send({ message: "Product added to wishlist", type: 'info' });
+      send({ message: 'Product added to wishlist', type: 'info' });
     };
+
+    const handleUpdateItem = async ({product, quantity}) => {
+      await updateItemQty(product.id, quantity)
+    };
+
+    const handleRemoveItem = async (orderLine) => {
+      await removeItem(orderLine.product.id)
+    }
 
     return {
       isAuthenticated,
       products,
-      removeItem,
-      updateItemQty,
+      handleRemoveItem,
       isCartSidebarOpen,
       toggleCartSidebar,
       totals,
       totalItems,
       cartGetters,
-      addProductToWishList
+      addProductToWishList,
+      productGetters,
+      handleUpdateItem,
     };
   }
 };

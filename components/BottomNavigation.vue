@@ -14,18 +14,24 @@
       label="Menu"
       @click="toggleMobileMenu"
     />
-    <!-- <SfBottomNavigationItem
-      icon="heart"
-      size="20px"
-      label="Wishlist"
-      @click="toggleWishlistSidebar"
-    /> -->
     <SfBottomNavigationItem
-      icon="profile"
+      :icon="accountIcon"
       size="20px"
       label="Account"
       @click="handleAccountClick"
     />
+    <div class="relative">
+      <SfBottomNavigationItem
+      icon="heart"
+      size="20px"
+      label="Wishlist"
+      @click="toggleWishlistSidebar"
+    />
+    <SfBadge v-if="TotalWishlistItems" class="sf-badge--number absolute top-0 right-0">
+      {{ TotalWishlistItems }}
+    </SfBadge>
+    </div>
+    
     <!-- TODO: add logic for label - if on Home then Basket, if on PDC then AddToCart etc. -->
     <SfBottomNavigationItem
       label="Basket"
@@ -57,7 +63,7 @@ import {
   SfBadge
 } from '@storefront-ui/vue';
 import { useUiState } from '~/composables';
-import { useUser, useCart, cartGetters } from '@vue-storefront/odoo';
+import { useUser, useCart, cartGetters, useWishlist, wishlistGetters } from '@vue-storefront/odoo';
 import { computed, useRoute, useRouter } from '@nuxtjs/composition-api';
 
 export default {
@@ -77,8 +83,19 @@ export default {
       toggleMobileMenu,
       isMobileMenuOpen
     } = useUiState();
-    const { isAuthenticated } = useUser();
+    const { isAuthenticated: isLoggedIn } = useUser();
     const { cart } = useCart();
+    const { load: loadWishlist, wishlist } = useWishlist();
+    
+    const isAuthenticated = computed(() => {
+      return isLoggedIn.value
+        ? isLoggedIn.value
+        : root.$cookies.get("odoo-user");
+    });
+
+    const accountIcon = computed(() =>
+      isAuthenticated.value ? 'profile_fill' : 'profile'
+    );
 
     const handleAccountClick = async () => {
       if (isAuthenticated.value) {
@@ -98,15 +115,22 @@ export default {
       return count ? count.toString() : null;
     });
 
+    const TotalWishlistItems = computed(() => {
+      const count = wishlistGetters.getTotalItems(wishlist.value)
+      return count ? count.toString() : root.$cookies.get('wishlist-size');
+    });
+
     return {
       route,
       isMobileMenuOpen,
       toggleWishlistSidebar,
+      accountIcon,
       toggleCartSidebar,
       toggleMobileMenu,
       cartTotalItems,
       handleAccountClick,
-      handleHomeClick
+      handleHomeClick,
+      TotalWishlistItems
     };
   }
 };

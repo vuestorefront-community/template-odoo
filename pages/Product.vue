@@ -4,7 +4,7 @@
       class="breadcrumbs desktop-only"
       :breadcrumbs="breadcrumbs"
     />
-    <div class="product">        
+    <div class="product">
          <div class="col-span-5">
            <div class="grid grid-cols-1 grid-rows-1 lg:grid-cols-4 lg:grid-rows-4 gap-x-4" v-if="productIsLoading || !showSkeleton">
             <template>
@@ -12,10 +12,10 @@
             </template>
             <template>
              <SfSkeleton class="hidden lg:block lg:col-span-3 lg:row-span-3 w-full h-full" type="image" />
-            </template>    
+            </template>
            </div>
           <LazyHydrate v-else>
-           <SfGallery            
+           <SfGallery
             :images="productGallery"
             :imageWidth="422"
             :imageHeight="644"
@@ -41,14 +41,8 @@
         </div>
         <div class="product__price-and-rating">
           <SfPrice
-            :regular="$n(productGetters.getPrice(product).regular, 'currency')"
-            :special-price="
-              productGetters.getPrice(product).regular !==
-              productGetters.getPrice(product).special
-                ? productGetters.getPrice(product).special &&
-                  $n(productGetters.getPrice(product).special, 'currency')
-                : ''
-            "
+            :regular="getRegularPrice(product)"
+            :special="getSpecialPrice(product)"
           />
         </div>
         <div>
@@ -120,7 +114,7 @@
           />
 
           <SfButton
-            class="sf-button--text desktop-only product__save"
+            class="sf-button--text product__save"
             @click="addToWishList(product)"
           >
             {{ $t('Save for later') }}
@@ -130,7 +124,7 @@
         <LazyHydrate when-idle>
           <SfTabs :open-tab="1" class="product__tabs">
             <SfTab data-cy="product-tab_description" :title="$t('Description')">
-              <p class="product__description desktop-only">
+              <p class="product__description">
                 {{ description }}
               </p>
             </SfTab>
@@ -225,7 +219,7 @@ export default {
     const th = useUiHelpers();
     const { id } = root.$route.params;
     const { path } = useRoute().value;
-    
+
     const { query } = root.$route;
     const { size, color } = root.$route.query;
     const configuration = reactive({ size, color });
@@ -240,7 +234,7 @@ export default {
       await addItemToWishlist({
         product
       });
-      send({ message: "Product added to wishlist", type: 'info' });
+      send({ message: 'Product added to wishlist', type: 'info' });
     };
     const { searchRealProduct, productVariants, realProduct, elementNames } =
       useProductVariant(query);
@@ -257,7 +251,20 @@ export default {
         ...products.value,
         realProduct: realProduct.value
       };
-    });
+    });const getRegularPrice =(product) => {
+      if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
+        return product.firstVariant.combinationInfoVariant.list_price ? root.$n(product.firstVariant.combinationInfoVariant.list_price, 'currency') : null
+      }
+      return null
+    }
+
+    
+    const getSpecialPrice =(product) => {
+      if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
+        return product.firstVariant.combinationInfoVariant.has_discounted_price ? root.$n(product.firstVariant.combinationInfoVariant.price, 'currency') : null
+      }
+      return null
+    }
 
     const options = computed(() =>
       productGetters.getAttributes(product.value, ['color', 'size'])
@@ -297,11 +304,11 @@ export default {
       }))
     );
 
-    const showSkeleton = ref(false)
+    const showSkeleton = ref(false);
 
     onMounted(() => {
-      showSkeleton.value = true
-    })
+      showSkeleton.value = true;
+    });
 
     onSSR(async () => {
       await search({
@@ -388,7 +395,9 @@ export default {
       toggleCartSidebar,
       handleAddToCart,
       addToWishList,
-      showSkeleton
+      showSkeleton,
+      getRegularPrice,
+      getSpecialPrice,
     };
   },
   components: {

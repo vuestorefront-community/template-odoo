@@ -15,7 +15,7 @@
       >
         <p class="form__title m-0">{{ $t("Sections that interest you") }}</p>
         <slot name="form">
-          <div class="form__checkbox-group m-0">
+          <div class="form__checkbox-group mb-5 lg:m-0">
             <SfCheckbox
               v-for="(mailing, i) in mailingList"
               :key="mailing.id"

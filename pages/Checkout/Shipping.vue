@@ -243,7 +243,7 @@ export default {
         root.$router.push(root.localePath('/checkout/billing'));
       else root.$router.push(root.localePath('/my-account/shipping-details'));
 
-      emit("finish", true);
+      emit('finish', true);
     };
 
     const formFieldAutoFocusSet = () => {
@@ -349,7 +349,7 @@ export default {
       countries,
       countryStates,
       handleFormSubmit,
-      formFieldAutoFocusSet,
+      formFieldAutoFocusSet
     };
   }
 };
