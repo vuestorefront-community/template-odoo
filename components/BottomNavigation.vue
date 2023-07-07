@@ -83,7 +83,7 @@ export default {
       toggleMobileMenu,
       isMobileMenuOpen
     } = useUiState();
-    const { isAuthenticated: isLoggedIn } = useUser();
+    const { load: loadUser, isAuthenticated: isLoggedIn } = useUser();
     const { cart } = useCart();
     const { load: loadWishlist, wishlist } = useWishlist();
     
