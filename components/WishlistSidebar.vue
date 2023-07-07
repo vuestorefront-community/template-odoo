@@ -57,7 +57,7 @@
                 </nuxt-link>
               </template>
               <template #image>
-                <nuxt-link :to="localePath(productGetters.getSlug(product.product))" @click="toggleCartSidebar">
+                <nuxt-link :to="localePath(productGetters.getSlug(product.product))">
                   <SfImage
                     class="sf-product-card__image"
                     :src="$image(
@@ -72,6 +72,7 @@
                     :height="236"
                     image-tag="nuxt-img"
                     :nuxt-img-config="{ fit: 'cover', preload: true }"
+                    @click="toggleWishlistSidebar"
                   />
                 </nuxt-link>
               </template>
