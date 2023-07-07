@@ -78,7 +78,7 @@
                   "
                   :alt="productGetters.getName(product)"
                   :title="productGetters.getName(product)"
-                  :link="localePath(goToProduct(product))"
+                  :link="localePath(mountUrlSlugForProductVariant(product.firstVariant))"
                   @click:wishlist="addItemToWishlist({ product })"
                   @click="$emit('close')"
                 />
@@ -123,7 +123,7 @@
                 "
                 :alt="productGetters.getName(product)"
                 :title="productGetters.getName(product)"
-                :link="localePath(goToProduct(product))"
+                :link="localePath(mountUrlSlugForProductVariant(product.firstVariant))"
                 @click="$emit('close')"
               />
             </div>
@@ -232,6 +232,12 @@ export default {
     const goToProduct = (product) => {
       return productGetters.getSlug(product);
     };
+    const mountUrlSlugForProductVariant = (product) => {
+      const { slug, variantAttributeValues } = product;
+      return `${slug}?${variantAttributeValues
+        .map((variant) => `${variant?.attribute?.name}=${variant?.id}&`)
+        .join('')}`
+    };
     watch(
       () => props.visible,
       (newVal) => {
@@ -252,7 +258,8 @@ export default {
       categoryGetters,
       productGetters,
       products,
-      categories
+      categories,
+      mountUrlSlugForProductVariant
     };
   }
 };
