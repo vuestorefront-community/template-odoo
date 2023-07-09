@@ -364,10 +364,12 @@ export default defineComponent({
     });
 
     const mountUrlSlugForProductVariant = (product) => {
-      const { slug, variantAttributeValues } = product;
-      return `${slug}?${variantAttributeValues
+      if(product) {
+        const { slug, variantAttributeValues } = product;
+        return `${slug}?${variantAttributeValues
         .map((variant) => `${variant?.attribute?.name}=${variant?.id}&`)
         .join('')}`
+      }
     };
 
     const getRegularPrice =(product) => {
