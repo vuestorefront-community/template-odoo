@@ -5,7 +5,7 @@
       :button="false"
       :title="currentParentMenu"
       @close="backMenu"
-      class="sidebar sf-sidebar--right dddd"
+      class="sidebar sf-sidebar--right"
     >
       <template v-if="!isChildsOpened">
         <SfHeaderNavigationItem
