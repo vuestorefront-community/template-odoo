@@ -178,10 +178,11 @@ import {
   SfCheckbox
 } from '@storefront-ui/vue';
 import { ref, onMounted, watch, computed } from '@nuxtjs/composition-api';
+import { useShippingAsBillingAddress, useCustomBilling } from "~/composables";
 import {
   useBilling,
   useCountrySearch,
-  useShippingAsBillingAddress,
+  // useShippingAsBillingAddress,
   useCart,
   cartGetters
 } from '@vue-storefront/odoo';
@@ -203,9 +204,10 @@ export default {
     const { load: loadCart } = useCart();
 
     const { search, searchCountryStates, countries, countryStates } = useCountrySearch();
-    const { load: loadBillingAddress, billing, save, error } = useBilling();
+    const { load: loadBillingAddress, billing, error } = useBilling();
 
     const { use } = useShippingAsBillingAddress();
+    const { saveBillingAddress } = useCustomBilling();
 
     const isFormSubmitted = ref(false);
     const sameAsShipping = ref(false);
@@ -233,12 +235,10 @@ export default {
     };
 
     const handleFormSubmit = async () => {
-      await save({
-        params: {
+      await saveBillingAddress({
           ...form.value,
-          stateId: parseInt(form.value.state.id),
+          stateId: parseInt(form.value.state && form.value.state.id ? form.value.state.id: ''),
           countryId: parseInt(form.value?.country?.id)
-        }
       });
       isFormSubmitted.value = true;
 

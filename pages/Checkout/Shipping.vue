@@ -84,9 +84,7 @@
             v-model="form.country.id"
             :label="$t('Country')"
             name="country"
-            class="
-              form__element sf-select--underlined common_form_style
-            "
+            class="form__element sf-select--underlined common_form_style"
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           >
@@ -111,14 +109,11 @@
             v-model="form.state.id"
             :label="$t('State/Province')"
             name="state"
-            class="
-              form__element sf-select--underlined
-              common_form_style
-            "
+            class="form__element sf-select--underlined common_form_style"
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           >
-           <SfSelectOption
+            <SfSelectOption
               v-for="countryStateOption in countryStates"
               :key="countryStateOption.id"
               :value="countryStateOption.id"
@@ -176,20 +171,19 @@
 </template>
 
 <script>
-import { SfHeading, SfInput, SfButton, SfSelect } from '@storefront-ui/vue';
-import { ref, watch, onMounted, computed } from '@nuxtjs/composition-api';
+import { SfHeading, SfInput, SfButton, SfSelect } from "@storefront-ui/vue";
+import { ref, watch, onMounted, computed } from "@nuxtjs/composition-api";
 import {
   useCountrySearch,
   useUser,
   userShippingGetters,
   useShipping,
   useCart,
-  cartGetters,
-  useUserShipping
-} from '@vue-storefront/odoo';
-import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
+} from "@vue-storefront/odoo";
+import { ValidationProvider, ValidationObserver, extend } from "vee-validate";
+import { useCustomShipping } from "~/composables";
 export default {
-  name: 'Shipping',
+  name: "Shipping",
   components: {
     SfHeading,
     SfInput,
@@ -211,7 +205,8 @@ export default {
     const canAddNewAddress = ref(true);
     const { load: loadCart } = useCart();
 
-    const { load: loadShippingAddress, shipping, save } = useShipping();
+    const { load: loadShippingAddress, shipping } = useShipping();
+    const { saveShippingAddress } = useCustomShipping();
 
     const { isAuthenticated } = useUser();
 
@@ -230,12 +225,10 @@ export default {
     });
 
     const handleFormSubmit = async () => {
-      await save({
-        params: {
-          ...form.value,
-          stateId: parseInt(form.value.state.id),
-          countryId: parseInt(form.value?.country?.id)
-        }
+      await saveShippingAddress({
+        ...form.value,
+        stateId: parseInt(form.value.state.id),
+        countryId: parseInt(form.value?.country?.id),
       });
       isFormSubmitted.value = true;
 
