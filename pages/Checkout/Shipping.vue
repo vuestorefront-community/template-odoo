@@ -113,7 +113,7 @@
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           >
-            <SfSelectOption
+           <SfSelectOption
               v-for="countryStateOption in countryStates"
               :key="countryStateOption.id"
               :value="countryStateOption.id"
@@ -171,19 +171,19 @@
 </template>
 
 <script>
-import { SfHeading, SfInput, SfButton, SfSelect } from "@storefront-ui/vue";
-import { ref, watch, onMounted, computed } from "@nuxtjs/composition-api";
+import { SfHeading, SfInput, SfButton, SfSelect } from '@storefront-ui/vue';
+import { ref, watch, onMounted, computed } from '@nuxtjs/composition-api';
 import {
   useCountrySearch,
   useUser,
   userShippingGetters,
   useShipping,
   useCart,
-} from "@vue-storefront/odoo";
-import { ValidationProvider, ValidationObserver, extend } from "vee-validate";
-import { useCustomShipping } from "~/composables";
+} from '@vue-storefront/odoo';
+import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
+import { useCustomShipping } from '~/composables';
 export default {
-  name: "Shipping",
+  name: 'Shipping',
   components: {
     SfHeading,
     SfInput,
