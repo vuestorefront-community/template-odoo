@@ -39,10 +39,8 @@
                   )
                 "
                 :title="wishlistGetters.getItemName(product)"
-                :regular-price="
-                  $n(wishlistGetters.getItemPrice(product).regular, 'currency')
-                "
-                :special-price="$n(wishlistGetters.getItemPrice(product).special, 'currency')"
+                :regular-price="getRegularPrice(product)"
+                :special-price="getSpecialPrice(product)"
                 :stock="99999"
                 :link="localePath(productGetters.getSlug(product.product))"
                 :image-width="180"
@@ -146,7 +144,7 @@ export default {
     SfCollectedProduct,
     SfImage
   },
-  setup() {
+  setup(_,{root}) {
     const { isWishlistSidebarOpen, toggleWishlistSidebar } = useUiState();
     const { wishlist, removeItem } = useWishlist();
     const { isAuthenticated } = useUser();
@@ -155,6 +153,20 @@ export default {
     const totalItems = computed(() =>
       wishlistGetters.getTotalItems(wishlist.value)
     );
+
+    const getRegularPrice =({ product }) => {
+      if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
+        return product.firstVariant.combinationInfoVariant.list_price ? root.$n(product.firstVariant.combinationInfoVariant.list_price, 'currency') : null
+      }
+      return null
+    }
+
+    const getSpecialPrice =({ product }) => {
+      if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
+        return product.firstVariant.combinationInfoVariant.has_discounted_price ? root.$n(product.firstVariant.combinationInfoVariant.price, 'currency') : null
+      }
+      return null
+    }
 
     onSSR(async () => {
       // await loadWishlist();
@@ -177,7 +189,9 @@ export default {
       totalItems,
       wishlistGetters,
       productGetters,
-      cartGetters
+      cartGetters,
+      getRegularPrice,
+      getSpecialPrice
     };
   }
 };
