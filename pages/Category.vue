@@ -216,12 +216,13 @@
           <p class="before-results__paragraph">
             {{ $t('Sorry, we didnt find what youre looking for') }}
           </p>
-          <SfButton
+          <nuxt-link to="/">
+            <SfButton
             class="before-results__button color-secondary smartphone-only"
-            @click="$emit('close')"
-          >
+            >
             {{ $t('Go back') }}
           </SfButton>
+          </nuxt-link>
         </div>
       </SfLoader>
     </div>

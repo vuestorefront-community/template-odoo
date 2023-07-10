@@ -124,16 +124,18 @@ export default defineComponent({
     };
 
     const backMenu = () => {
-      if (!isChildsOpened.value) {
-        toggleMobileMenu();
-      }
+      toggleMobileMenu();
       currentParentMenu.value = 'Menu';
       isChildsOpened.value = false;
     };
 
     const goToSubCategory = (subCategory) => {
-      router.push(root.localePath(getCatLink(subCategory)));
+      if(subCategory){
+        router.push(root.localePath(getCatLink(subCategory)))
+      };
       toggleMobileMenu();
+      currentParentMenu.value = 'Menu';
+      isChildsOpened.value = false;
     };
 
     onSSR(async () => {});
