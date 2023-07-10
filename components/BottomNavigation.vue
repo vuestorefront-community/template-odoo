@@ -83,7 +83,7 @@ export default {
       toggleMobileMenu,
       isMobileMenuOpen
     } = useUiState();
-    const { isAuthenticated: isLoggedIn } = useUser();
+    const { load: loadUser, isAuthenticated: isLoggedIn } = useUser();
     const { cart } = useCart();
     const { load: loadWishlist, wishlist } = useWishlist();
     
@@ -99,6 +99,8 @@ export default {
 
     const handleAccountClick = async () => {
       if (isAuthenticated.value) {
+        root.$cookies.remove('odoo-user');
+        await loadUser();
         return router.push(root.localePath('/my-account'));
       }
       toggleLoginModal();
