@@ -105,32 +105,42 @@
           width: 100%;
         "
       >
-        <div
-          style="
+      <template>
+        <ValidationObserver v-slot="{ handleSubmit }" key="log-in">
+          <form
+            @submit.prevent="handleSubmit(onSubscribe)"
+            style="
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 38px;
           "
-        >
-          <SfInput
-            id="email-smartphone"
-            name="email-smartphone"
-            class="sf-input--outline"
-            type="text"
-            placeholder="Type your email address"
-            style="
-              width: 242px;
-              min-height: auto;
-              height: 32px;
-              font-size: 16px;
-              color: #43464e;
-              background-color: #f1f2f3;
-              --input-border-color: #f1f2f3;
+          >
+            <ValidationProvider rules="required|email" v-slot="{ errors }">
+              <SfInput
+                class="sf-input--outline"
+                type="text"
+                :valid="!errors[0]"
+                v-model="emailAddress"
+                :errorMessage="errors[0]"
+                placeholder="Type your email address"
+                style="
+                 width: 242px;
+                 min-height: auto;
+                 height: 32px;
+                 font-size: 16px;
+                 color: #43464e;
+                 background-color: #f1f2f3;
+                 --input-border-color: #f1f2f3;
             "
-          />
-          <SfButton style="width: 116px; height: 32px">Subscribe</SfButton>
-        </div>
+              />
+            </ValidationProvider>
+            <SfButton style="width: 116px; height: 32px" type="submit" :disabled="loading"
+              >Subscribe</SfButton
+            >
+          </form>
+        </ValidationObserver>
+      </template>
         <SfLink link="#">
           <SfImage
             src="/icons/logo.svg"
