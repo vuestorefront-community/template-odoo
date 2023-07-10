@@ -34,3 +34,31 @@ export default {
   }
 }
 </style>
+
+
+<!-- <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 38px;
+          "
+        >
+          <SfInput
+            id="email-smartphone"
+            name="email-smartphone"
+            class="sf-input--outline"
+            type="text"
+            placeholder="Type your email address"
+            style="
+              width: 242px;
+              min-height: auto;
+              height: 32px;
+              font-size: 16px;
+              color: #43464e;
+              background-color: #f1f2f3;
+              --input-border-color: #f1f2f3;
+            "
+          />
+          <SfButton style="width: 116px; height: 32px">Subscribe</SfButton>
+        </div> -->
