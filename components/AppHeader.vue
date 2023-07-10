@@ -109,7 +109,7 @@
     <SearchResults
       :visible="isSearchOpen"
       :result="formatedResult"
-      @close="closeSearch"
+      @close="closeSearchDialog"
       @removeSearchResults="removeSearchResults"
     />
     <SfOverlay :visible="isSearchOpen" />
@@ -207,6 +207,12 @@ export default {
         term.value = '';
         isSearchOpen.value = false;
       }
+    };
+
+    const closeSearchDialog = () => {
+      if (!isSearchOpen.value) return;
+       term.value = '';
+      isSearchOpen.value = false;
     };
 
     const handleSearch = debounce(async (paramValue) => {
@@ -309,7 +315,8 @@ export default {
       formatedResult,
       term,
       handleSearch,
-      closeSearch
+      closeSearch,
+      closeSearchDialog,
     };
   }
 };
