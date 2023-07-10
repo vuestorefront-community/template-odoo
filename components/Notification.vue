@@ -87,7 +87,6 @@ export default {
   }
 }
 .slide-fade-leave-to {
-  transform: translateY(80px);
   @include for-desktop {
     opacity: 0;
   }
