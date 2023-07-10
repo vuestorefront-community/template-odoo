@@ -46,11 +46,11 @@
           />
         </div>
         <div>
-          <div v-if="options.select">
+          <div class="px-4" v-if="options.select">
             <SfSelect
               v-for="(select, selectKey) in options.select"
               :key="selectKey"
-              class="sf-select--underlined"
+              class="sf-select--underlined select-size"
               :value="$route.query[select.label]"
               :label="select.label"
               required
@@ -59,14 +59,14 @@
               <SfSelectOption
                 :key="`${selectKey}_${itemKey}`"
                 :value="item.value"
-                :label="item.label"
                 v-for="(item, itemKey) in select.values"
               >
+                {{ item.label }}
               </SfSelectOption>
             </SfSelect>
           </div>
 
-          <div v-if="options.radio">
+          <div class="px-4" v-if="options.radio">
             <template v-for="(radio, radioKey) in options.radio">
               <p class="product__radio-label" :key="radioKey">
                 {{ radio.label }}:
