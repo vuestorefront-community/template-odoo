@@ -293,10 +293,6 @@ export default {
       }
     );
 
-    onMounted(async() => {
-      await loadCart()
-    })
-
     onSSR(async () => {
       await searchTopCategoryApi({filter: { parent: true }});
     });
