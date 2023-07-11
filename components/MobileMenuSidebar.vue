@@ -40,6 +40,7 @@
                     <template #label="{ label }">
                       <a
                         @click="goToSubCategory(subCat)"
+                        class="w-11/12 flex justify-items-start"
                         :class="subCat.isCurrent ? 'sidebar--cat-selected' : ''"
                       >
                         {{ label }}
