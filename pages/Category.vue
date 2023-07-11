@@ -5,7 +5,7 @@
       :breadcrumbs="breadcrumbs"
     />
 
-    <CategoryNavbar :facetsList="result" />
+    <CategoryNavbar :productLength="products.length" :facetsList="result" />
 
     <div class="main section">
       <div class="sidebar desktop-only">
