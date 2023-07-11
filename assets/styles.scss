@@ -28,6 +28,13 @@
   width: 100%;
 }
 
+.collected-product-title .sf-heading__title {
+  font-size: 1rem;
+  text-align: left;
+  color: var(--c-link);
+  font-weight: var(--font-weight--normal);
+}
+
 .remove-quantity .sf-collected-product__quantity-wrapper {
   display: none;
 }
