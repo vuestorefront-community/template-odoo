@@ -130,14 +130,14 @@
             </div>
           </SfMegaMenuColumn>
           <div class="action-buttons smartphone-only">
-            <SfButton
+            <!-- <SfButton
               class="action-buttons__button color-secondary mb-4"
               @click="$emit('close')"
             >
               {{ $t('See all results') }}
-            </SfButton>
+            </SfButton> -->
             <SfButton
-              class="action-buttons__button color-light"
+              class="action-buttons__button color-secondary"
               @click="$emit('close')"
             >
               {{ $t('Cancel') }}
