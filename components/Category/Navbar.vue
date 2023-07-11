@@ -8,6 +8,7 @@
     </div>
     <div class="navbar__main">
         <SfButton
+          v-if="productLength > 0"
           class="sf-button--text navbar__filters-button"
           data-cy="category-btn_filters"
           aria-label="Filters"
@@ -96,6 +97,9 @@ export default defineComponent({
     facetsList: {
       type: Object,
       default: () => []
+    },
+    productLength: {
+      type: Number
     }
   },
   components: {
@@ -185,6 +189,7 @@ export default defineComponent({
   }
   &__filters-button {
     display: flex;
+    margin: 0 var(--spacer-2xl) 0 0;
     align-items: center;
     --button-font-size: var(--font-size--base);
     --button-text-decoration: none;
@@ -193,6 +198,7 @@ export default defineComponent({
     @include for-mobile {
       --button-font-weight: var(--font-weight--medium);
       order: 2;
+      margin: 0;
     }
     svg {
       fill: var(--c-text-muted);
@@ -236,7 +242,7 @@ export default defineComponent({
   &__sort {
     display: flex;
     align-items: center;
-    margin: 0 auto 0 var(--spacer-2xl);
+    margin: 0;
   }
   &__counter {
     font-family: var(--font-family--secondary);
