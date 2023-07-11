@@ -48,6 +48,33 @@
                 @click:remove="removeItem({ product })"
                 class="collected-product"
               >
+              <template #title>
+                <nuxt-link :to="localePath(productGetters.getSlug(product.product))">
+                  <SfHeading :title="wishlistGetters.getItemName(product)" 
+                    class="collected-product-title" 
+                   @click="toggleWishlistSidebar"
+                  />
+                </nuxt-link>
+              </template>
+              <template #image>
+                <nuxt-link :to="localePath(productGetters.getSlug(product.product))" @click="toggleCartSidebar">
+                  <SfImage
+                    class="sf-product-card__image"
+                    :src="$image(
+                      productGetters.getCoverImage(product.product),
+                      140,
+                      236,
+                      productGetters.getImageFilename(product.product)
+                    )"
+                    :alt="productGetters.getName(product.product)"
+                    loading="eager"
+                    :width="140"
+                    :height="236"
+                    image-tag="nuxt-img"
+                    :nuxt-img-config="{ fit: 'cover', preload: true }"
+                  />
+                </nuxt-link>
+              </template>
                 <template #configuration>
                   <div class="collected-product__properties hidden">
                     <SfProperty

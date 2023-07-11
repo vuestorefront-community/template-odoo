@@ -33,7 +33,6 @@
                 data-cy="collected-product-cart-sidebar"
                 v-for="product in products"
                 :key="cartGetters.getItemSku(product)"
-                :title="cartGetters.getItemName(product)"
                 :regular-price="
                   $n(cartGetters.getItemPrice(product).regular, 'currency')
                 "
@@ -51,6 +50,14 @@
                 :link="localePath(productGetters.getSlug(product.product))"
                 class="collected-product"
               >
+              <template #title>
+                <nuxt-link :to="localePath(productGetters.getSlug(product.product))">
+                  <SfHeading :title="cartGetters.getItemName(product)" 
+                    class="collected-product-title" 
+                   @click="toggleCartSidebar"
+                  />
+                </nuxt-link>
+              </template>
               <template #image>
                 <nuxt-link :to="localePath(productGetters.getSlug(product.product))">
                   <SfImage
@@ -67,6 +74,7 @@
                     :height="236"
                     image-tag="nuxt-img"
                     :nuxt-img-config="{ fit: 'cover', preload: true }"
+                    @click="toggleCartSidebar"
                   />
                 </nuxt-link>
               </template>
