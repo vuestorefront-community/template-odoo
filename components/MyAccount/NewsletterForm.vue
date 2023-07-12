@@ -31,7 +31,7 @@
           <OdooButton
             @click="handleUpdateNewsletter"
             :loading="loading"
-            :disabled="checkedNewsletter.length === 0 || loading"
+            :disabled="loading"
           >
             {{ $t("Save changes") }}
           </OdooButton>
