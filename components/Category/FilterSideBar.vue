@@ -61,7 +61,18 @@
         </template>
       </div>
     </div>
-    <SfAccordion class="filters smartphone-only">
+    <SfAccordion v-if="productLength > 0" class="filters smartphone-only">
+      <SfAccordionItem header="Sort by" class="filters__accordion-item">
+          <SfRadio
+            v-for="(option, index) in sortBy.options"
+            :key="index"
+            v-model="sortBy.selected"
+            :value="option.value"
+            :label="option.attrName"
+            class="filters__item"
+            @change="changeSortEvent"
+          />
+        </SfAccordionItem>
       <div v-for="(facet, i) in facets" :key="i">
         <SfAccordionItem
           :key="`filter-title-${facet.id}`"
@@ -167,6 +178,9 @@ export default defineComponent({
     facetsList: {
       type: Object,
       default: () => []
+    },
+    productLength: {
+      type: Number
     }
   },
   setup(props) {
@@ -184,7 +198,7 @@ export default defineComponent({
       keyboardSupport: true
     });
 
-    const { changeFilters,clearAllFilters, isFacetColor, isFacetPrice, facetsFromUrlToFilter } =
+    const { changeFilters, clearAllFilters, isFacetColor, isFacetPrice, facetsFromUrlToFilter } =
       useUiHelpers();
     const { toggleFilterSidebar, isFilterSidebarOpen } = useUiState();
 
@@ -302,7 +316,7 @@ export default defineComponent({
       isFilterSelected,
       clearFilters,
       applyFilters,
-      sortByAscendingProductAttributes,
+      sortByAscendingProductAttributes
     };
   }
 });
