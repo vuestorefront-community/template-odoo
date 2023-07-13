@@ -61,7 +61,7 @@
         </template>
       </div>
     </div>
-    <SfAccordion class="filters smartphone-only">
+    <SfAccordion v-if="productLength > 0" class="filters smartphone-only">
       <SfAccordionItem header="Sort by" class="filters__accordion-item">
           <SfRadio
             v-for="(option, index) in sortBy.options"
@@ -181,6 +181,9 @@ export default defineComponent({
     facetsList: {
       type: Object,
       default: () => []
+    },
+    productLength: {
+      type: Number
     }
   },
   setup(props) {
