@@ -179,12 +179,8 @@ export default {
       });
     });
     const cartTotalItems = computed(() => {
-      const array = cartItems.value;
-      let sum = 0;
-      array.forEach((num) => {
-        sum += num;
-      });
-      return sum;
+      const count = cartGetters.getTotalItems(cart.value);
+        return count ? count.toString() : root.$cookies.get('cart-size')
     });
 
     const TotalWishlistItems = computed(() => {
