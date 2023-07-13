@@ -173,7 +173,7 @@ export default {
     const { search: searchProductApi, result } = useFacet('AppHeader:Search');
     const { categories: topCategories, search: searchTopCategoryApi } =
       useCategories('AppHeader:TopCategories');
-      const cartItems = computed(() => {
+    const cartItems = computed(() => {
       return cartGetters.getItems(cart.value).map((item) => {
         return item.quantity;
       });
@@ -191,7 +191,6 @@ export default {
       const count = wishlistGetters.getTotalItems(wishlist.value);
       return count ? count.toString() : root.$cookies.get('wishlist-size');
     });
-        
     const accountIcon = computed(() =>
       isAuthenticated.value ? 'profile_fill' : 'profile'
     );
