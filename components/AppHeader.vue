@@ -191,6 +191,7 @@ export default {
       const count = wishlistGetters.getTotalItems(wishlist.value);
       return count ? count.toString() : root.$cookies.get('wishlist-size');
     });
+
     const accountIcon = computed(() =>
       isAuthenticated.value ? 'profile_fill' : 'profile'
     );
