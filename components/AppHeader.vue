@@ -174,11 +174,14 @@ export default {
     const { categories: topCategories, search: searchTopCategoryApi } =
       useCategories('AppHeader:TopCategories');
 
-      const cartTotalItems = computed(() => {
-      let array = cartGetters.getItems(cart.value).map((item) => {
-        return item.quantity
-      })
-      let sum = 0
+      const cartItems = computed(() => {
+      return cartGetters.getItems(cart.value).map((item) => {
+        return item.quantity;
+      });
+    });
+    const cartTotalItems = computed(() => {
+      const array = cartItems.value;
+      let sum = 0;
       array.forEach((num) => {
         sum += num;
       });
