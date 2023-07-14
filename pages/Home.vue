@@ -106,6 +106,7 @@ export default {
   setup() {
     const { $config } = useContext();
     const { sendSubscription, loading } = useNewsLetter();
+
     const { toggleNewsletterModal } = useUiState();
     const { send } = useUiNotification();
     const { addTags } = useCache();

@@ -35,7 +35,7 @@ const useUiHelpers = (): any => {
       ...facetGetters.getGrouped(result?.value, ['color', 'size'])
     ];
     const attribute = facets?.find(item => {
-      return item.label == filterKey;
+      return item.label === filterKey;
     });
     let option = {};
     if (attribute) {

@@ -26,7 +26,7 @@
         />
       </template>
       <transition name="sf-fade" mode="out-in">
-        <div v-if="totalItems" key="my-cart" class="my-cart">
+        <div v-if="totalItems !== 0" key="my-cart" class="my-cart">
           <div class="collected-product-list">
             <transition-group name="sf-fade" tag="div">
               <SfCollectedProduct
@@ -52,8 +52,8 @@
               >
               <template #title>
                 <nuxt-link :to="localePath(productGetters.getSlug(product.product))">
-                  <SfHeading :title="cartGetters.getItemName(product)" 
-                    class="collected-product-title" 
+                  <SfHeading :title="cartGetters.getItemName(product)"
+                    class="collected-product-title"
                    @click="toggleCartSidebar"
                   />
                 </nuxt-link>
@@ -176,8 +176,9 @@ import {
   SfCollectedProduct,
   SfImage
 } from '@storefront-ui/vue';
-import { computed } from '@nuxtjs/composition-api';
+import { computed, watch } from '@nuxtjs/composition-api';
 import {
+  useCartRedis,
   useUser,
   cartGetters,
   productGetters,
@@ -186,7 +187,7 @@ import {
 import { useUiState, useUiNotification, useCart } from '~/composables';
 
 export default {
-  name: 'Cart',
+  name: 'CartSidebar',
   components: {
     SfSidebar,
     SfButton,
@@ -199,22 +200,17 @@ export default {
   },
   setup() {
     const { isCartSidebarOpen, toggleCartSidebar } = useUiState();
-    const { cart, updateItemQty, removeItem } = useCart();
+    // /const { cart, updateItemQty, removeItem } = useCartRedis();
     const { isAuthenticated } = useUser();
-    const products = computed(() => cartGetters.getItems(cart.value));
+    const { cart, load } = useCartRedis();
+    const products = computed(() => cart.value.orderLines);
     const totals = computed(() => cartGetters.getTotals(cart.value));
     const totalItems = computed(() => {
-      return cartGetters.getItems(cart.value).map((item) => {
-        return item.quantity;
-        // let sum = 0
-        // item.quantity.map((i) => {
-        //    sum +=i
-        // })
-        // return sum
-      });
+      return cart.value?.orderLines?.length || 0;
     });
     const { addItem: addItemToWishlist } = useWishlist();
     const { send } = useUiNotification();
+
     const addProductToWishList = (product) => {
       addItemToWishlist({
         product: { ...product.product, firstVariant: { id: product.product.id }}
@@ -222,26 +218,26 @@ export default {
       send({ message: 'Product added to wishlist', type: 'info' });
     };
 
-    const handleUpdateItem = async ({product, quantity}) => {
-      await updateItemQty(product.id, quantity)
-    };
-
-    const handleRemoveItem = async (orderLine) => {
-      await removeItem(orderLine.product.id)
-    }
+    watch(() => isCartSidebarOpen.value,
+      async () => {
+        if (isCartSidebarOpen.value) {
+          await load();
+        }
+      }
+    );
 
     return {
       isAuthenticated,
       products,
-      handleRemoveItem,
+      removeItem: false,
+      updateItemQty: false,
       isCartSidebarOpen,
       toggleCartSidebar,
       totals,
       totalItems,
       cartGetters,
       addProductToWishList,
-      productGetters,
-      handleUpdateItem,
+      cart
     };
   }
 };

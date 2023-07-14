@@ -93,7 +93,7 @@
                   : addProductToWishList(product)
               "
               @click:add-to-cart="
-                handleAddToCartItem({ product, quantity: 1 }), toggleCartSidebar()
+                addItemToCart(product), toggleCartSidebar()
               "
             >
               <template #image>
@@ -149,10 +149,7 @@
               :isInWishlist="isInWishlist({ product })"
               class="products__product-card-horizontal"
               @click:wishlist="addProductToWishList(product)"
-              @click:add-to-cart="
-                handleAddToCartItem({ product, quantity: products[i].qty || 1 }),
-                  toggleCartSidebar()
-              "
+              @click:add-to-cart="addItemToCart(product), toggleCartSidebar()"
               v-model="products[i].qty"
               :link="localePath(mountUrlSlugForProductVariant(product.firstVariant))"
             >
@@ -232,7 +229,7 @@
 </template>
 
 <script >
-import CategoryFilterSideBar from "@/components/Category/FilterSideBar.vue"
+import CategoryFilterSideBar from '@/components/Category/FilterSideBar.vue';
 import {
   SfButton,
   SfList,
@@ -259,6 +256,7 @@ import {
 } from '@nuxtjs/composition-api';
 import {
   useCart,
+  useCartRedis,
   useWishlist,
   productGetters,
   useFacet,
@@ -299,8 +297,8 @@ export default defineComponent({
 
     const { addTags } = useCache();
     const uiState = useUiState();
-    const { isInCart } = useCart();
-    const { cartAddItem } = customUseCart()
+    // const { addItem: addItemToCart, isInCart } = useCart();
+    const { addItem: addItemToCart, isInCart } = useCartRedis();
     const {
       addItem: addItemToWishlist,
       removeItem: removeItemFromWishList,
@@ -316,10 +314,10 @@ export default defineComponent({
       facetGetters.getCategoryTree(result.value)
     );
     const categoryItems = computed(() => {
-      let category = facetGetters.getCategoryTree(result.value)
+      const category = facetGetters.getCategoryTree(result.value);
       return category.items.map((item) => {
-        return item.label.charAt(0).toUpperCase() + item.label.slice(1)
-      })
+        return item.label.charAt(0).toUpperCase() + item.label.slice(1);
+      });
     });
     const addProductToWishList = (product) => {
       addItemToWishlist({ product });
@@ -364,26 +362,26 @@ export default defineComponent({
     });
 
     const mountUrlSlugForProductVariant = (product) => {
-      if(product) {
+      if (product) {
         const { slug, variantAttributeValues } = product;
         return `${slug}?${variantAttributeValues
-        .map((variant) => `${variant?.attribute?.name}=${variant?.id}&`)
-        .join('')}`
+          .map((variant) => `${variant?.attribute?.name}=${variant?.id}&`)
+          .join('')}`;
       }
     };
 
-    const getRegularPrice =(product) => {
+    const getRegularPrice = (product) => {
       if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
-        return product.firstVariant.combinationInfoVariant.list_price ? root.$n(product.firstVariant.combinationInfoVariant.list_price, 'currency') : null
+        return product.firstVariant.combinationInfoVariant.list_price ? root.$n(product.firstVariant.combinationInfoVariant.list_price, 'currency') : null;
       }
-      return null
-    }
-    const getSpecialPrice =(product) => {
+      return null;
+    };
+    const getSpecialPrice = (product) => {
       if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
-        return product.firstVariant.combinationInfoVariant.has_discounted_price ? root.$n(product.firstVariant.combinationInfoVariant.price, 'currency') : null
+        return product.firstVariant.combinationInfoVariant.has_discounted_price ? root.$n(product.firstVariant.combinationInfoVariant.price, 'currency') : null;
       }
-      return null
-    }
+      return null;
+    };
 
     onSSR(async () => {
       const params = {
@@ -401,13 +399,12 @@ export default defineComponent({
       ]);
     });
 
-
     const handleAddToCartItem = async ({product, quantity}) => {
       const productId = product.realProduct
         ? product.realProduct?.product?.id
         : product.firstVariant.id;
-      await cartAddItem(productId, quantity)
-    }
+      await cartAddItem(productId, quantity);
+    };
 
     onMounted(() => {
       root.$scrollTo(root.$el, 2000);
@@ -437,7 +434,7 @@ export default defineComponent({
       result,
       currentCategoryNameForAccordion,
       getRegularPrice,
-      getSpecialPrice,
+      getSpecialPrice
     };
   },
   head: {

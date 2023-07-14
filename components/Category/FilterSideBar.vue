@@ -219,6 +219,11 @@ export default defineComponent({
       );
     };
 
+    const changeSortEvent = (sort) => {
+      toggleFilterSidebar();
+      changeSorting(sort);
+    };
+
     const facetHasMoreThanOneOption = (facet) =>
       facet?.options?.length > 1 || false;
 
@@ -288,7 +293,7 @@ export default defineComponent({
 
     const sortByAscendingProductAttributes = (data) => {
       return data
-        ?.sort(function (a, b) {
+        ?.sort((a, b) => {
           const labelA = a.label;
           const labelB = b.label;
           if (labelA === labelB) {

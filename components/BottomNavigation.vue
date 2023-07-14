@@ -120,7 +120,7 @@ export default {
     });
 
     const TotalWishlistItems = computed(() => {
-      const count = wishlistGetters.getTotalItems(wishlist.value)
+      const count = wishlistGetters.getTotalItems(wishlist.value);
       return count ? count.toString() : root.$cookies.get('wishlist-size');
     });
 

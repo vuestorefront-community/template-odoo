@@ -5,7 +5,7 @@
     class="w-full"
   >
     <form @submit.prevent="handleSubmit(submitForm)">
-      
+
         <ValidationProvider
           v-slot="{ errors }"
           name="firstName"
@@ -22,9 +22,7 @@
             :error-message="errors[0]"
           />
         </ValidationProvider>
-      
 
-      
         <ValidationProvider
           v-slot="{ errors }"
           name="streetName"
@@ -57,9 +55,7 @@
             :error-message="errors[0]"
           />
         </ValidationProvider>
-     
 
-      
         <ValidationProvider
           v-slot="{ errors }"
           name="zipCode"
@@ -123,7 +119,7 @@
             :error-message="errors[0]"
           >
             <SfSelectOption
-              value="" 
+              value=""
               selected
             ></SfSelectOption>
             <SfSelectOption
@@ -135,7 +131,7 @@
             </SfSelectOption>
           </SfSelect>
         </ValidationProvider>
-     
+
       <ValidationProvider
         v-slot="{ errors }"
         name="phone"

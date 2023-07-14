@@ -192,6 +192,12 @@ export default {
       return count ? count.toString() : root.$cookies.get('wishlist-size');
     });
 
+    const isAuthenticated = computed(() => {
+      return isLoggedIn.value
+        ? isLoggedIn.value
+        : root.$cookies.get('odoo-user');
+    });
+
     const accountIcon = computed(() =>
       isAuthenticated.value ? 'profile_fill' : 'profile'
     );
@@ -249,12 +255,6 @@ export default {
       term.value = '';
       return searchBarRef.value.$el.children[0].focus();
     };
-
-    const isAuthenticated = computed(() => {
-      return isLoggedIn.value
-        ? isLoggedIn.value
-        : root.$cookies.get('odoo-user');
-    });
 
     const handleAccountClick = async () => {
       if (isAuthenticated.value) {

@@ -30,7 +30,7 @@
             }}
           </p>
         </div>
-        <ValidationObserver v-slot="{ handleSubmit }" 
+        <ValidationObserver v-slot="{ handleSubmit }"
          key="log-in"
          >
           <form
@@ -41,7 +41,7 @@
               )
             "
           >
-            <ValidationProvider rules="required|email" 
+            <ValidationProvider rules="required|email"
              v-slot="{ errors }"
              class="form__element common_form_style mb-3"
              >
@@ -57,7 +57,7 @@
             </ValidationProvider>
             <template v-if="!isForgottenPassword">
               <ValidationProvider rules="required"
-               class="form__element common_form_style mb-3" 
+               class="form__element common_form_style mb-3"
                v-slot="{ errors }">
                 <SfInput
                   data-cy="login-input_password"
@@ -168,7 +168,7 @@
                 }}
               </p>
             </div>
-            <ValidationProvider rules="required" v-slot="{ errors }" 
+            <ValidationProvider rules="required" v-slot="{ errors }"
               class="form__element common_form_style mb-3">
               <SfInput
                 data-cy="login-input_name"
@@ -179,7 +179,7 @@
                 :label="$t('Your name')"
               />
             </ValidationProvider>
-            <ValidationProvider rules="required|email" v-slot="{ errors }" 
+            <ValidationProvider rules="required|email" v-slot="{ errors }"
              class="form__element common_form_style mb-3">
               <SfInput
                 data-cy="login-input_email"
@@ -366,9 +366,9 @@ export default {
     };
 
     const handleRegister = async () => {
-      await handleForm(register, form.value)()
-      await logout()
-      displayChoosedTrue(() => (isLogin.value = true))
+      await handleForm(register, form.value)();
+      await logout();
+      displayChoosedTrue(() => (isLogin.value = true));
       toggleLoginModal();
     };
 
