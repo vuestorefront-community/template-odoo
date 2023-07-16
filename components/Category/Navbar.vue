@@ -24,7 +24,7 @@
           {{ $t('Filters') }}
         </SfButton>
 
-      <div class="navbar__sort desktop-only">
+      <div v-if="productLength > 0" class="navbar__sort desktop-only">
         <span class="navbar__label">{{ $t('Sort by') }}:</span>
         <LazyHydrate when-idle>
           <SfSelect

@@ -227,7 +227,7 @@
       </SfLoader>
     </div>
 
-    <CategoryFilterSideBar :facetsList="result" />
+    <CategoryFilterSideBar :productLength="products.length" :facetsList="result" />
   </div>
 </template>
 
