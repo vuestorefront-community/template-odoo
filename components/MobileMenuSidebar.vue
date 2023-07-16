@@ -4,9 +4,47 @@
       :visible="isMobileMenuOpen"
       :button="false"
       :title="currentParentMenu"
-      @close="backMenu"
       class="sidebar sf-sidebar--right"
     >
+      <template #bar>
+        <div class="sf-bar smartphone-only">
+          <div>
+            <button
+              @click="backMenu"
+              type="button"
+              aria-label="back"
+              class="sf-button--pure sf-bar__icon sf-button"
+            >
+              <SfIcon
+                icon="chevron_left"
+                size="xxs"
+                color="gray-primary"
+                viewBox="0 0 24 24"
+                :coverage="1"
+              />
+            </button>
+          </div>
+          <div>
+            <div class="sf-bar__title">{{ currentParentMenu }}</div>
+          </div>
+          <div>
+            <button
+              type="button"
+              aria-label="close"
+              class="display-none sf-button--pure sf-bar__icon sf-button"
+            >
+              <SfIcon
+                icon="cross"
+                size="xxs"
+                color="gray-primary"
+                viewBox="0 0 24 24"
+                :coverage="1"
+              />
+            </button>
+          </div>
+        </div>
+      </template>
+
       <template v-if="!isChildsOpened">
         <SfHeaderNavigationItem
           v-for="(category, index) in filteredTopCategories"
@@ -64,7 +102,8 @@ import {
   SfAccordion,
   SfLoader,
   SfList,
-  SfMenuItem
+  SfMenuItem,
+  SfIcon
 } from '@storefront-ui/vue';
 import {
   computed,
@@ -91,7 +130,8 @@ export default defineComponent({
     SfAccordion,
     SfLoader,
     SfList,
-    SfMenuItem
+    SfMenuItem,
+    SfIcon,
   },
   setup(_, {root}) {
     const isChildsOpened = ref(false);
@@ -125,9 +165,14 @@ export default defineComponent({
     };
 
     const backMenu = () => {
-      toggleMobileMenu();
-      currentParentMenu.value = 'Menu';
-      isChildsOpened.value = false;
+      if (isChildsOpened.value) {
+        currentParentMenu.value = "Menu";
+        isChildsOpened.value = false;
+      } else {
+        toggleMobileMenu();
+        currentParentMenu.value = "Menu";
+        isChildsOpened.value = false;
+      }
     };
 
     const goToSubCategory = (subCategory) => {
