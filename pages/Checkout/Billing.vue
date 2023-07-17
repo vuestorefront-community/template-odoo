@@ -181,11 +181,11 @@ import { ref, onMounted, watch, computed } from '@nuxtjs/composition-api';
 import {
   useBilling,
   useCountrySearch,
-  useShippingAsBillingAddress,
   useCart,
   cartGetters
 } from '@vue-storefront/odoo';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
+import { useShippingAsBillingAddress } from "~/composables";
 
 export default {
   name: 'Billing',
@@ -215,8 +215,8 @@ export default {
       name: '',
       street: '',
       city: '',
-      state: { id: null },
-      country: { id: null },
+      state: { id: ' ' },
+      country: { id: ' ' },
       zip: '',
       phone: null
     });
@@ -236,8 +236,13 @@ export default {
       await save({
         params: {
           ...form.value,
-          stateId: parseInt(form.value.state.id),
-          countryId: parseInt(form.value?.country?.id)
+          stateId: parseInt(form.value?.state?.id),
+          countryId: parseInt(form.value?.country?.id),
+          type: 'Billing'
+        },
+        customQuery: {
+          billingUpdateAddress: 'customUpdateAddress',
+          billingAddAddress: 'customAddAddress',
         }
       });
       isFormSubmitted.value = true;
@@ -257,8 +262,8 @@ export default {
       form.value.name = name;
       form.value.street = street;
       form.value.city = city;
-      form.value.state = state.id !== 'undefined' ? state : { id: '' },
-      form.value.country = country.id !== 'undefined' ? country : { id: '' },
+      form.value.state = state.id !== 'undefined' ? state : { id: ' ' },
+      form.value.country = country.id !== 'undefined' ? country : { id: ' ' },
       form.value.zip = zip;
       form.value.phone = phone;
       form.value.selectedMethodShipping = id;
@@ -276,7 +281,7 @@ export default {
       async () => {
         await searchCountryStates(form?.value?.country?.id || null);
         if (!countryStates.value || countryStates.value.length === 0) {
-          form.value.state.id = null;
+          form.value.state.id = 0;
         }
       }
     );

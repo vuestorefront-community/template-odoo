@@ -1,12 +1,12 @@
 const canEnterShipping = (cart) => cart?.order.orderLines?.length > 0 || false;
 
 const canEnterBiling = (cart) => {
-  const checkShippingAddress = cart?.order.partnerShipping.id && cart?.order.partnerShipping.street
+  const checkShippingAddress = cart?.order.partnerShipping.id && cart?.order.partnerShipping.name
   return canEnterShipping(cart) && checkShippingAddress
 };
 
 const canEnterPayment = (cart) => {
-const checkInvoiceAddress = cart?.order.partnerInvoice.id && cart?.order.partnerInvoice.street
+const checkInvoiceAddress = cart?.order.partnerInvoice.id && cart?.order.partnerInvoice.name
   return canEnterShipping(cart) && canEnterBiling(cart) && checkInvoiceAddress;
 } 
 
