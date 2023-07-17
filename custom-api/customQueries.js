@@ -69,8 +69,95 @@ module.exports = {
         $lastName: String!
         $password: String
       ) {
-        register(emailPhone: $email, firstName: $firstName, lastName: $lastName, password: $password)
+        register(
+          emailPhone: $email
+          firstName: $firstName
+          lastName: $lastName
+          password: $password
+        )
       }
-    `
-  })
+    `,
+  }),
+  customAddAddress: ({ variables }) => ({
+    variables,
+    mutation: gql`
+      mutation addAddress(
+        $name: String!
+        $city: String!
+        $countryId: Int!
+        $phone: String!
+        $street: String!
+        $stateId: Int
+        $zip: String!
+        $type: AddressEnum!
+      ) {
+        addAddress(
+          type: $type
+          address: {
+            name: $name
+            city: $city
+            countryId: $countryId
+            phone: $phone
+            street: $street
+            stateId: $stateId
+            zip: $zip
+          }
+        ) {
+          id
+          name
+          street
+          city
+          state {
+            id
+          }
+          country {
+            id
+          }
+          email
+          phone
+        }
+      }
+    `,
+  }),
+  customUpdateAddress: ({ variables }) => ({
+    variables,
+    mutation: gql`
+      mutation updateAddress(
+        $id: Int!
+        $name: String!
+        $city: String!
+        $countryId: Int!
+        $phone: String!
+        $street: String!
+        $stateId: Int
+        $zip: String!
+      ) {
+        updateAddress(
+          address: {
+            id: $id
+            name: $name
+            city: $city
+            countryId: $countryId
+            phone: $phone
+            street: $street
+            stateId: $stateId
+            zip: $zip
+          }
+        ) {
+          id
+          name
+          street
+          city
+          state {
+            id
+          }
+          country {
+            id
+          }
+          email
+          phone
+        }
+      }
+    `,
+  }),
 };
