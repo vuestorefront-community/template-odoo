@@ -233,8 +233,13 @@ export default {
       await save({
         params: {
           ...form.value,
-          stateId: parseInt(form.value.state.id),
-          countryId: parseInt(form.value?.country?.id)
+          stateId: parseInt(form.value?.state?.id),
+          countryId: parseInt(form.value?.country?.id),
+          type: 'Shipping'
+        },
+        customQuery: {
+          shippingAddAdress: 'customAddAddress',
+          shippingUpdateAddress: 'customUpdateAddress',
         }
       });
       isFormSubmitted.value = true;
