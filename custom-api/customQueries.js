@@ -113,6 +113,7 @@ module.exports = {
           country {
             id
           }
+          zip
           email
           phone
         }
@@ -154,6 +155,7 @@ module.exports = {
           country {
             id
           }
+          zip
           email
           phone
         }
