@@ -221,12 +221,12 @@ export default {
     const isSearchOpen = ref(props.visible);
     const products = computed(() => {
       return props?.result?.products.filter((item) => {
-        return item.categories[0].name === 'WOMEN' || item.categories[0].name === 'MEN'
-      })
+        return item.categories[0].name === 'WOMEN' || item.categories[0].name === 'MEN';
+      });
     });
     const categories = computed(() => {
-        return [...new Map(props.result?.categories.map(item =>
-        [item['label'], item])).values()]
+      return [...new Map(props.result?.categories.map(item =>
+        [item.label, item])).values()];
     });
     const { addItem: addItemToWishlist } = useWishlist();
 
@@ -237,7 +237,7 @@ export default {
       const { slug, variantAttributeValues } = product;
       return `${slug}?${variantAttributeValues
         .map((variant) => `${variant?.attribute?.name}=${variant?.id}&`)
-        .join('')}`
+        .join('')}`;
     };
     watch(
       () => props.visible,

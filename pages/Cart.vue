@@ -4,45 +4,44 @@
       class="breadcrumbs desktop-only"
       :breadcrumbs="breadcrumbs"
     />
-    <SfLoader :loading="loading">
     <div class="detailed-cart">
       <div class="detailed-cart__main">
         <transition name="sf-fade" mode="out-in">
           <div
-            v-if="totalItems"
+            v-if="totalItemsInCartWithQuantity"
             key="detailed-cart"
             class="collected-product-list"
           >
             <transition-group name="sf-fade" tag="div">
               <SfCollectedProduct
-                v-for="product in products"
-                :key="cartGetters.getItemSku(product)"
-                :title="cartGetters.getItemName(product)"
-                :regular-price="$n(cartGetters.getItemPrice(product).regular, 'currency')"
+                v-for="orderLine in orderLines"
+                :key="cartGetters.getItemSku(orderLine)"
+                :title="cartGetters.getItemName(orderLine)"
+                :regular-price="$n(cartGetters.getItemPrice(orderLine).regular, 'currency')"
                 :special-price="
-                  cartGetters.getItemPrice(product).regular !==
-                  cartGetters.getItemPrice(product).special
-                    ? cartGetters.getItemPrice(product).special &&
-                      $n(cartGetters.getItemPrice(product).special, 'currency')
+                  cartGetters.getItemPrice(orderLine).regular !==
+                  cartGetters.getItemPrice(orderLine).special
+                    ? cartGetters.getItemPrice(orderLine).special &&
+                      $n(cartGetters.getItemPrice(orderLine).special, 'currency')
                     : ''
                 "
                 :stock="99999"
-                :qty="cartGetters.getItemQty(product)"
-                @input="handleUpdateItem({ product, quantity: $event })"
-                :link="localePath(productGetters.getSlug(product.product))"
+                :qty="cartGetters.getItemQty(orderLine)"
+                @input="updateItemQty(orderLine.id,  $event)"
+                :link="localePath(productGetters.getSlug(orderLine.product))"
                 class="sf-collected-product--detailed collected-product"
               >
               <template #image>
-                <nuxt-link :to="localePath(productGetters.getSlug(product.product))">
+                <nuxt-link :to="localePath(productGetters.getSlug(orderLine.product))">
                   <SfImage
                     class="sf-product-card__image"
                     :src="$image(
-                      productGetters.getCoverImage(product.product),
+                      productGetters.getCoverImage(orderLine.product),
                       140,
                       236,
-                      productGetters.getImageFilename(product.product)
+                      productGetters.getImageFilename(orderLine.product)
                     )"
-                    :alt="productGetters.getName(product.product)"
+                    :alt="productGetters.getName(orderLine.product)"
                     loading="eager"
                     :width="140"
                     :height="236"
@@ -55,14 +54,14 @@
                   <span class="desktop-only">
                     <SfButton
                       class="sf-button--text custom__text"
-                      @click="handleRemoveItem({ product })"
+                      @click="removeItem(orderLine.id)"
                       >{{ $t("Remove from cart") }}</SfButton
                     >
                   </span>
                   <span class="smartphone-only">
                     <SfButton
                       class="sf-button--text custom-text__mobile"
-                      @click="handleRemoveItem({ product })"
+                      @click="removeItem(orderLine.id)"
                       >
                        X
                       </SfButton
@@ -74,7 +73,7 @@
                   <div class="actions desktop-only">
                     <SfButton
                       @click="
-                        addProductToWishList({ product: product.product })
+                        addProductToWishList({ product: orderLine.product })
                       "
                       class="sf-button--text actions__button custom__margin"
                       >{{ $t("Save for later") }}</SfButton
@@ -93,7 +92,7 @@
                   <div class="collected-product__properties">
                     <SfProperty
                       v-for="(attribute, key) in cartGetters.getItemAttributes(
-                        product,
+                        orderLine,
                         ['color', 'size']
                       )"
                       :key="key"
@@ -129,11 +128,11 @@
           </div>
         </transition>
       </div>
-      <div v-if="totalItems" class="detailed-cart__aside">
+      <div v-if="totalItemsInCartWithQuantity" class="detailed-cart__aside">
         <SfOrderSummary
-          :products="products"
+          :products="orderLines"
           :orderTitle="$t('Totals')"
-          :total-items="totalItems"
+          :total-items="totalItemsInCartWithQuantity"
           class="oderSummary"
         >
           <template #summary>
@@ -154,7 +153,8 @@
                     class="card__text"
                     v-else-if="item.name === 'Sub Total'"
                   >
-                    ${{ item.value.value.subtotal.toFixed(2) }}</span
+                    <!-- ${{ item.value.value.subtotal.toFixed(2) }} -->
+                    </span
                   >
                   <span class="card__text" v-else-if="item.name === 'Shipping'">
                     {{ $t(item.value) }}</span
@@ -173,7 +173,7 @@
                   <span class="card__text">{{ $t("Total Price") }}:</span>
                 </template>
                 <template #value>
-                  <span class="card__text"> ${{ totals.total.toFixed(2) }}</span>
+                  <span class="card__text"> {{ $n(amountTotal, 'currency') }}</span>
                 </template>
               </SfProperty>
             </div>
@@ -228,7 +228,6 @@
         </SfOrderSummary>
       </div>
     </div>
-    </SfLoader>
   </div>
 </template>
 <script>
@@ -247,11 +246,12 @@ import { computed, onMounted } from '@nuxtjs/composition-api';
 import {
   useUser,
   cartGetters,
-  useWishlist
+  productGetters,
+  useWishlist,
+  useCartRedis
 } from '@vue-storefront/odoo';
 import { useUiState, useUiNotification } from '~/composables';
 import { onSSR } from '@vue-storefront/core';
-
 export default {
   name: 'DetailedCart',
   components: {
@@ -267,50 +267,36 @@ export default {
   setup(_, { root }) {
     // simple test submodule 3
     const { isAuthenticated } = useUser();
-    const { cart, load: loadCart, removeItem, updateItemQty } = useCart();
+    const { cart, loading, load, removeItem, updateItemQty, totalItemsInCartWithQuantity, amountTotal } = useCartRedis();
     const { isCartSidebarOpen, toggleCartSidebar } = useUiState();
 
-    const products = computed(() => cartGetters.getItems(cart.value));
-    const totals = computed(() => cartGetters.getTotals(cart.value));
-    const totalItems = computed(() => {
-      const array = cartGetters.getItems(cart.value).map((item) => {
-        return item.quantity;
-      });
-      let sum = 0;
-      array.forEach((num) => {
-        sum += num;
-      });
-      return sum;
-    });
+    const orderLines = computed(() => cart.value.orderLines);
+
     const { send } = useUiNotification();
     const { addItem: addItemToWishlist } = useWishlist();
 
-    const addProductToWishList = (product) => {
+    onSSR(async () => {
+      await load();
+    });
+
+    const addProductToWishList = (orderLine) => {
       addItemToWishlist({
         product: {
-          ...product.product,
-          firstVariant: { id: product.product.id }
+          ...orderLine.product,
+          firstVariant: { id: orderLine.product.id }
         }
       });
-      send({ message: "Product added to wishlist", type: "info" });
+      send({ message: 'Product added to wishlist', type: 'info' });
     };
-
-    const loading = ref(true);
-    onMounted(async () => {
-      await loadCart();
-      if (cart.value.order) {
-        loading.value = false;
-      }
-    });
 
     const summary = ref([
       {
         name: 'Products',
-        value: totalItems
+        value: totalItemsInCartWithQuantity
       },
       {
         name: 'Sub Total',
-        value: totals
+        value: amountTotal
       },
       {
         name: 'Shipping',
@@ -328,25 +314,17 @@ export default {
       }
     ];
 
-    const handleUpdateItem = async ({product, quantity}) => {
-      await updateItemQty(product.id, quantity);
-    };
-
-    const handleRemoveItem = async (orderLine) => {
-      await removeItem(orderLine.product.id);
-    };
-
     return {
       loading,
       isAuthenticated,
-      products,
-      handleUpdateItem,
+      orderLines,
+      updateItemQty,
+      amountTotal,
       isCartSidebarOpen,
       toggleCartSidebar,
-      handleRemoveItem,
+      removeItem,
       breadcrumbs,
-      totals,
-      totalItems,
+      totalItemsInCartWithQuantity,
       summary,
       cartGetters,
       addProductToWishList,

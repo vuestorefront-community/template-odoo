@@ -1,4 +1,4 @@
-const canEnterShipping = (cart) => cart?.order.orderLines?.length > 0 || false;
+const canEnterShipping = (cart) => cart?.order?.orderLines?.length > 0 || false;
 
 const canEnterBiling = (cart) => {
   const checkShippingAddress = cart?.order.partnerShipping.id && cart?.order.partnerShipping.street;
@@ -15,23 +15,22 @@ export default async ({ app, $vsf, redirect }) => {
 
   if (!currentPath) return;
 
-  const { data } = await $vsf.$odoo.api.cartLoad();
-  const { cart } = data;
-  if (!cart) return;
+  const { data } = await $vsf.$odoo.api.redisSyncCartToOdoo();
+  if (!data.cart) return;
 
   switch (currentPath) {
     case 'shipping':
-      if (!canEnterShipping(cart)) {
+      if (!canEnterShipping(data.cart)) {
         redirect('/');
       }
       break;
     case 'billing':
-      if (!canEnterBiling(cart)) {
+      if (!canEnterBiling(data.cart)) {
         redirect('/');
       }
       break;
     case 'payment':
-      if (!canEnterPayment(cart)) {
+      if (!canEnterPayment(data.cart)) {
         redirect('/');
       }
       break;

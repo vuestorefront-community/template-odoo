@@ -110,7 +110,7 @@
             :stock="stock"
             :disabled="loading || !allOptionsSelected"
             class="product__add-to-cart"
-            @click="handleAddToCart(qty), toggleCartSidebar()"
+            @click="addItemToCart(product, qty), toggleCartSidebar()"
           />
 
           <SfButton
@@ -196,7 +196,7 @@ import { ref, computed, reactive } from '@nuxtjs/composition-api';
 import { useCache, CacheTagPrefix } from '@vue-storefront/cache';
 import {
   useProduct,
-  useCart,
+  useCartRedis,
   productGetters,
   useReview,
   useProductVariant,
@@ -240,7 +240,8 @@ export default {
       useProductVariant(query);
     const { products: relatedProducts, loading: relatedLoading } =
       useProduct('relatedProducts');
-    const { addItem, loading } = useCart();
+    const { addItem: addItemToCart, loading, updateItemQty } = useCartRedis();
+
     const { addTags } = useCache();
     const { toggleCartSidebar } = useUiState();
 
@@ -249,22 +250,22 @@ export default {
     const product = computed(() => {
       return {
         ...products.value,
-        realProduct: realProduct.value
+        ...realProduct?.value?.product
       };
-    });const getRegularPrice =(product) => {
+    });
+    const getRegularPrice = (product) => {
       if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
-        return product.firstVariant.combinationInfoVariant.list_price ? root.$n(product.firstVariant.combinationInfoVariant.list_price, 'currency') : null
+        return product.firstVariant.combinationInfoVariant.list_price ? root.$n(product.firstVariant.combinationInfoVariant.list_price, 'currency') : null;
       }
-      return null
-    }
+      return null;
+    };
 
-    
-    const getSpecialPrice =(product) => {
+    const getSpecialPrice = (product) => {
       if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
-        return product.firstVariant.combinationInfoVariant.has_discounted_price ? root.$n(product.firstVariant.combinationInfoVariant.price, 'currency') : null
+        return product.firstVariant.combinationInfoVariant.has_discounted_price ? root.$n(product.firstVariant.combinationInfoVariant.price, 'currency') : null;
       }
-      return null
-    }
+      return null;
+    };
 
     const options = computed(() =>
       productGetters.getAttributes(product.value, ['color', 'size'])
@@ -334,15 +335,6 @@ export default {
       });
     };
 
-    const handleAddToCart = async (qty) => {
-      const params = {
-        product: product.value,
-        quantity: qty
-      };
-
-      await addItem(params);
-    };
-
     const allOptionsSelected = computed(() => {
       let keys = [];
       Object.keys(options.value).forEach((item) => {
@@ -387,17 +379,16 @@ export default {
       relatedLoading,
       options,
       qty,
-      addItem,
+      addItemToCart,
       loading,
       productGetters,
       productVariants,
       productGallery,
       toggleCartSidebar,
-      handleAddToCart,
       addToWishList,
       showSkeleton,
       getRegularPrice,
-      getSpecialPrice,
+      getSpecialPrice
     };
   },
   components: {

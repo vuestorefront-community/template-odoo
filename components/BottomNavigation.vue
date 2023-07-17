@@ -33,7 +33,7 @@
         </SfBadge>
      </div>
     </div>
-    
+
     <!-- TODO: add logic for label - if on Home then Basket, if on PDC then AddToCart etc. -->
     <SfBottomNavigationItem
       label="Basket"
@@ -88,11 +88,11 @@ export default {
     const { load: loadUser, isAuthenticated: isLoggedIn } = useUser();
     const { cart } = useCart();
     const { load: loadWishlist, wishlist } = useWishlist();
-    
+
     const isAuthenticated = computed(() => {
       return isLoggedIn.value
         ? isLoggedIn.value
-        : root.$cookies.get("odoo-user");
+        : root.$cookies.get('odoo-user');
     });
 
     const accountIcon = computed(() =>

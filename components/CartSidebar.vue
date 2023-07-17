@@ -19,56 +19,56 @@
           </SfButton>
         </div>
         <SfProperty
-          v-if="totalItems"
+          v-if="totalItemsInCartWithQuantity"
           class="sf-property--large cart-summary"
           :name="$t('Total items')"
-          :value="totalItems"
+          :value="totalItemsInCartWithQuantity"
         />
       </template>
       <transition name="sf-fade" mode="out-in">
-        <div v-if="totalItems !== 0" key="my-cart" class="my-cart">
+        <div v-if="totalItemsInCartWithQuantity !== 0" key="my-cart" class="my-cart">
           <div class="collected-product-list">
             <transition-group name="sf-fade" tag="div">
               <SfCollectedProduct
                 data-cy="collected-product-cart-sidebar"
-                v-for="product in products"
-                :key="cartGetters.getItemSku(product)"
+                v-for="orderLine in orderLines"
+                :key="cartGetters.getItemSku(orderLine)"
                 :regular-price="
-                  $n(cartGetters.getItemPrice(product).regular, 'currency')
+                  $n(cartGetters.getItemPrice(orderLine).regular, 'currency')
                 "
                 :special-price="
-                  cartGetters.getItemPrice(product).regular !==
-                  cartGetters.getItemPrice(product).special
-                    ? cartGetters.getItemPrice(product).special &&
-                      $n(cartGetters.getItemPrice(product).special, 'currency')
+                  cartGetters.getItemPrice(orderLine).regular !==
+                  cartGetters.getItemPrice(orderLine).special
+                    ? cartGetters.getItemPrice(orderLine).special &&
+                      $n(cartGetters.getItemPrice(orderLine).special, 'currency')
                     : ''
                 "
                 :stock="99999"
-                :qty="cartGetters.getItemQty(product)"
-                @input="handleUpdateItem({ product, quantity: $event })"
-                @click:remove="handleRemoveItem({ product })"
-                :link="localePath(productGetters.getSlug(product.product))"
+                :qty="cartGetters.getItemQty(orderLine)"
+                @input="updateItemQty(orderLine.id, $event, isCheckoutRoute ? orderLine.product.id : null)"
+                @click:remove="removeItem(orderLine.id, isCheckoutRoute ? orderLine.product.id : null)"
+                :link="localePath(productGetters.getSlug(orderLine.product))"
                 class="collected-product"
               >
               <template #title>
-                <nuxt-link :to="localePath(productGetters.getSlug(product.product))">
-                  <SfHeading :title="cartGetters.getItemName(product)"
+                <nuxt-link :to="localePath(productGetters.getSlug(orderLine.product))">
+                  <SfHeading :title="cartGetters.getItemName(orderLine)"
                     class="collected-product-title"
                    @click="toggleCartSidebar"
                   />
                 </nuxt-link>
               </template>
               <template #image>
-                <nuxt-link :to="localePath(productGetters.getSlug(product.product))">
+                <nuxt-link :to="localePath(productGetters.getSlug(orderLine.product))">
                   <SfImage
                     class="sf-product-card__image"
                     :src="$image(
-                      productGetters.getCoverImage(product.product),
+                      productGetters.getCoverImage(orderLine.product),
                       140,
                       236,
-                      productGetters.getImageFilename(product.product)
+                      productGetters.getImageFilename(orderLine.product)
                     )"
-                    :alt="productGetters.getName(product.product)"
+                    :alt="productGetters.getName(orderLine.product)"
                     loading="eager"
                     :width="140"
                     :height="236"
@@ -83,7 +83,7 @@
                   <div class="collected-product__properties">
                     <SfProperty
                       v-for="(attribute, key) in cartGetters.getItemAttributes(
-                        product,
+                        orderLine,
                         ['color', 'size']
                       )"
                       :key="key"
@@ -95,7 +95,7 @@
                 <template #actions>
                   <SfButton
                     class="sf-button--text desktop-only"
-                    @click="addProductToWishList({ product: product.product })"
+                    @click="addProductToWishList({ orderLine: orderLine.product })"
                   >
                     {{ $t("Save for later") }}
                   </SfButton>
@@ -122,7 +122,7 @@
       </transition>
       <template #content-bottom>
         <transition name="sf-fade">
-          <div v-if="totalItems">
+          <div v-if="totalItemsInCartWithQuantity">
             <SfProperty
               :name="$t('Total price')"
               class="
@@ -131,7 +131,7 @@
               "
             >
               <template #value>
-                <SfPrice :regular="$n(totals.subtotal, 'currency')" />
+                <SfPrice :regular="$n(amountTotal, 'currency')" />
               </template>
             </SfProperty>
 
@@ -176,7 +176,7 @@ import {
   SfCollectedProduct,
   SfImage
 } from '@storefront-ui/vue';
-import { computed, watch } from '@nuxtjs/composition-api';
+import { computed, watch, useRoute } from '@nuxtjs/composition-api';
 import {
   useCartRedis,
   useUser,
@@ -184,7 +184,7 @@ import {
   productGetters,
   useWishlist
 } from '@vue-storefront/odoo';
-import { useUiState, useUiNotification, useCart } from '~/composables';
+import { useUiState, useUiNotification } from '~/composables';
 
 export default {
   name: 'CartSidebar',
@@ -199,17 +199,16 @@ export default {
     SfImage
   },
   setup() {
+    const route = useRoute();
     const { isCartSidebarOpen, toggleCartSidebar } = useUiState();
-    // /const { cart, updateItemQty, removeItem } = useCartRedis();
     const { isAuthenticated } = useUser();
-    const { cart, load } = useCartRedis();
-    const products = computed(() => cart.value.orderLines);
-    const totals = computed(() => cartGetters.getTotals(cart.value));
-    const totalItems = computed(() => {
-      return cart.value?.orderLines?.length || 0;
-    });
+    const { cart, load, updateItemQty, removeItem, totalItemsInCartWithQuantity } = useCartRedis();
+    const orderLines = computed(() => cart.value?.orderLines || []);
+
     const { addItem: addItemToWishlist } = useWishlist();
     const { send } = useUiNotification();
+
+    const amountTotal = computed(() => cart.value.amountTotal);
 
     const addProductToWishList = (product) => {
       addItemToWishlist({
@@ -218,26 +217,24 @@ export default {
       send({ message: 'Product added to wishlist', type: 'info' });
     };
 
-    watch(() => isCartSidebarOpen.value,
-      async () => {
-        if (isCartSidebarOpen.value) {
-          await load();
-        }
-      }
-    );
+    const isCheckoutRoute = computed(() => {
+      return route.value.path.includes('checkout');
+    });
 
     return {
+      isCheckoutRoute,
       isAuthenticated,
-      products,
-      removeItem: false,
-      updateItemQty: false,
+      orderLines,
       isCartSidebarOpen,
       toggleCartSidebar,
-      totals,
-      totalItems,
+      totalItemsInCartWithQuantity,
       cartGetters,
+      productGetters,
+      amountTotal,
+
+      removeItem,
       addProductToWishList,
-      cart
+      updateItemQty
     };
   }
 };

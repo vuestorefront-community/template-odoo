@@ -84,7 +84,7 @@
               :score-rating="productGetters.getAverageRating(product)"
               :show-add-to-cart-button="true"
               :isInWishlist="isInWishlist({ product })"
-              :isAddedToCart="product.firstVariant ? isInCart({ product }) : false"
+              :isAddedToCart="isInCart(product)"
               :link="localePath(mountUrlSlugForProductVariant(product.firstVariant))"
               class="products__product-card"
               @click:wishlist="
@@ -93,7 +93,7 @@
                   : addProductToWishList(product)
               "
               @click:add-to-cart="
-                addItemToCart(product), toggleCartSidebar()
+                handleAddItemToCart(product), toggleCartSidebar()
               "
             >
               <template #image>
@@ -149,7 +149,7 @@
               :isInWishlist="isInWishlist({ product })"
               class="products__product-card-horizontal"
               @click:wishlist="addProductToWishList(product)"
-              @click:add-to-cart="addItemToCart(product), toggleCartSidebar()"
+              @click:add-to-cart="handleAddItemToCart(product, products[i].qty), toggleCartSidebar()"
               v-model="products[i].qty"
               :link="localePath(mountUrlSlugForProductVariant(product.firstVariant))"
             >
@@ -297,7 +297,6 @@ export default defineComponent({
 
     const { addTags } = useCache();
     const uiState = useUiState();
-    // const { addItem: addItemToCart, isInCart } = useCart();
     const { addItem: addItemToCart, isInCart } = useCartRedis();
     const {
       addItem: addItemToWishlist,
@@ -361,6 +360,14 @@ export default defineComponent({
       return breadcrumbs;
     });
 
+    const handleAddItemToCart = async (product, quantity) => {
+      const formatedProduct = {
+        ...product,
+        ...product.firstVariant
+      };
+      await addItemToCart(formatedProduct, quantity);
+    };
+
     const mountUrlSlugForProductVariant = (product) => {
       if (product) {
         const { slug, variantAttributeValues } = product;
@@ -399,13 +406,6 @@ export default defineComponent({
       ]);
     });
 
-    const handleAddToCartItem = async ({product, quantity}) => {
-      const productId = product.realProduct
-        ? product.realProduct?.product?.id
-        : product.firstVariant.id;
-      await cartAddItem(productId, quantity);
-    };
-
     onMounted(() => {
       root.$scrollTo(root.$el, 2000);
     });
@@ -426,7 +426,7 @@ export default defineComponent({
       addProductToWishList,
       addItemToWishlist,
       removeItemFromWishList,
-      handleAddToCartItem,
+      handleAddItemToCart,
       isInWishlist,
       mountUrlSlugForProductVariant,
       isInCart,

@@ -9,5 +9,5 @@ export {
   useUiNotification,
   useShippingAsBillingAddress,
   useUiState,
-  useCart,
+  useCart
 };

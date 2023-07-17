@@ -176,9 +176,9 @@ export default defineComponent({
     };
 
     const goToSubCategory = (subCategory) => {
-      if(subCategory){
-        router.push(root.localePath(getCatLink(subCategory)))
-      };
+      if (subCategory) {
+        router.push(root.localePath(getCatLink(subCategory)));
+      }
       toggleMobileMenu();
       currentParentMenu.value = 'Menu';
       isChildsOpened.value = false;

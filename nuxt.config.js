@@ -103,7 +103,7 @@ export default {
     refreshOnResize: true
   },
   serverMiddleware: [
-    '~/serverMiddleware/body-parser.js'
+    '~/serverMiddleware/app.js'
   ],
   loading: { color: '#fff' },
   plugins: [
@@ -270,7 +270,7 @@ export default {
         label: 'English',
         file: 'en.json',
         iso: 'en'
-      },
+      }
       // {
       //   code: 'de',
       //   label: 'German',

@@ -91,12 +91,12 @@ const useCart = () : any => {
     }
   };
 
-  const removeItem = async (itemId: number,) => {
+  const removeItem = async (itemId: number) => {
     try {
       loading.value = true;
       const { data, errors } = await context.$odoo.api.removeCartItem(
         {
-          lineId: itemId,
+          lineId: itemId
         }
       );
       throwErrors(errors);

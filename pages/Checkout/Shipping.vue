@@ -209,7 +209,7 @@ export default {
     const defaultShippingAddress = ref(false);
     const isShippingDetailsStepCompleted = ref(false);
     const canAddNewAddress = ref(true);
-    const { load: loadCart } = useCart();
+    const { load: loadCart, setCart } = useCart();
 
     const { load: loadShippingAddress, shipping, save } = useShipping();
 
@@ -320,6 +320,7 @@ export default {
     };
 
     onMounted(async () => {
+      setCart(null);
       await loadCart();
       await search();
       await loadShippingAddress();

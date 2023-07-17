@@ -61,9 +61,8 @@
             <SfIcon class="sf-header__icon" icon="empty_cart" size="1.25rem" />
 
             <SfBadge
-              v-if="cartTotalItems"
               class="sf-badge--number cart-badge"
-              >{{ cartTotalItems }}</SfBadge
+              >{{ totalItemsInCartWithQuantity }}</SfBadge
             >
           </SfButton>
         </div>
@@ -139,7 +138,8 @@ import {
 import { clickOutside } from '@storefront-ui/vue/src/utilities/directives/click-outside/click-outside-directive.js';
 import { computed, ref, watch, onMounted } from '@nuxtjs/composition-api';
 import { onSSR } from '@vue-storefront/core';
-import { useUiHelpers, useCart } from '~/composables';
+import { useCartRedis } from '@vue-storefront/odoo';
+import { useUiHelpers } from '~/composables';
 import LocaleSelector from './LocaleSelector';
 import SearchResults from '~/components/SearchResults';
 
@@ -168,24 +168,11 @@ export default {
       useUiState();
 
     const { load: loadUser, isAuthenticated: isLoggedIn } = useUser();
-    const { load: loadCart, cart } = useCart();
+    const { cart, load: loadCart, totalItemsInCartWithQuantity } = useCartRedis();
     const { load: loadWishlist, wishlist } = useWishlist();
     const { search: searchProductApi, result } = useFacet('AppHeader:Search');
     const { categories: topCategories, search: searchTopCategoryApi } =
       useCategories('AppHeader:TopCategories');
-    const cartItems = computed(() => {
-      return cartGetters.getItems(cart.value).map((item) => {
-        return item.quantity;
-      });
-    });
-    const cartTotalItems = computed(() => {
-      const array = cartItems.value;
-      let sum = 0;
-      array.forEach((num) => {
-        sum += num;
-      });
-      return sum;
-    });
 
     const TotalWishlistItems = computed(() => {
       const count = wishlistGetters.getTotalItems(wishlist.value);
@@ -217,7 +204,7 @@ export default {
 
     const closeSearchDialog = () => {
       if (!isSearchOpen.value) return;
-       term.value = '';
+      term.value = '';
       isSearchOpen.value = false;
     };
 
@@ -267,7 +254,6 @@ export default {
     };
 
     const handleCartSideBarClick = async () => {
-      await loadCart();
       toggleCartSidebar();
     };
 
@@ -299,12 +285,16 @@ export default {
       await searchTopCategoryApi({filter: { parent: true }});
     });
 
+    onMounted(async () => {
+      await loadCart();
+    });
+
     return {
       TotalWishlistItems,
       filteredTopCategories,
       accountIcon,
       closeOrFocusSearchBar,
-      cartTotalItems,
+      totalItemsInCartWithQuantity,
       removeSearchResults,
       isSearchOpen,
       searchBarRef,
@@ -316,7 +306,7 @@ export default {
       term,
       handleSearch,
       closeSearch,
-      closeSearchDialog,
+      closeSearchDialog
     };
   }
 };

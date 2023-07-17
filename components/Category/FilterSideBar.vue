@@ -221,7 +221,6 @@ export default defineComponent({
 
     const changeSortEvent = (sort) => {
       toggleFilterSidebar();
-      changeSorting(sort);
     };
 
     const facetHasMoreThanOneOption = (facet) =>
@@ -317,10 +316,12 @@ export default defineComponent({
       isFacetColor,
       selectedFilters,
       isFacetPrice,
+      changeSortEvent,
       selectFilter,
       isFilterSelected,
       clearFilters,
       applyFilters,
+      sortBy,
       sortByAscendingProductAttributes
     };
   }

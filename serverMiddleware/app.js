@@ -21,9 +21,11 @@ const redisStore = new RedisStore({
 
 app.use(
   session({
+    name: 'vsf-odoo-cart',
     store: redisStore,
     secret: process.env.INVALIDATION_KEY,
     saveUninitialized: false,
+    rolling: false,
     cookie: { maxAge: 1000 * 60 * 60, httpOnly: false },
     resave: false
   })

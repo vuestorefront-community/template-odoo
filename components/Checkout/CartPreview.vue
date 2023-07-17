@@ -84,8 +84,7 @@ import {
   SfInput,
   SfCircleIcon
 } from '@storefront-ui/vue';
-import { onSSR } from '@vue-storefront/core';
-import { computed, ref } from '@nuxtjs/composition-api';
+import { computed, ref, onMounted, beforeRouteEnter } from '@nuxtjs/composition-api';
 import { useCart, checkoutGetters, cartGetters } from '@vue-storefront/odoo';
 
 export default {
@@ -100,7 +99,7 @@ export default {
     SfCircleIcon
   },
   setup (_, {root}) {
-    const { cart, load: loadCart, removeItem, updateItemQty, applyCoupon } = useCart();
+    const { cart, load: loadCart, applyCoupon } = useCart();
     const listIsHidden = ref(false);
     const promoCode = ref('');
     const showPromoCode = ref(false);
@@ -122,10 +121,6 @@ export default {
       return sum;
     });
 
-    onSSR(async () => {
-      await loadCart();
-    });
-
     return {
       shippingMethodPrice,
       discounts,
@@ -135,8 +130,6 @@ export default {
       totals,
       promoCode,
       showPromoCode,
-      removeItem,
-      updateItemQty,
       checkoutGetters,
       cartGetters,
       applyCoupon,

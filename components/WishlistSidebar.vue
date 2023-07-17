@@ -50,8 +50,8 @@
               >
               <template #title>
                 <nuxt-link :to="localePath(productGetters.getSlug(product.product))">
-                  <SfHeading :title="wishlistGetters.getItemName(product)" 
-                    class="collected-product-title" 
+                  <SfHeading :title="wishlistGetters.getItemName(product)"
+                    class="collected-product-title"
                    @click="toggleWishlistSidebar"
                   />
                 </nuxt-link>
@@ -169,7 +169,7 @@ export default {
     SfCollectedProduct,
     SfImage
   },
-  setup(_,{root}) {
+  setup(_, {root}) {
     const { isWishlistSidebarOpen, toggleWishlistSidebar } = useUiState();
     const { wishlist, removeItem } = useWishlist();
     const { isAuthenticated } = useUser();
@@ -179,19 +179,19 @@ export default {
       wishlistGetters.getTotalItems(wishlist.value)
     );
 
-    const getRegularPrice =({ product }) => {
+    const getRegularPrice = ({ product }) => {
       if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
-        return product.firstVariant.combinationInfoVariant.list_price ? root.$n(product.firstVariant.combinationInfoVariant.list_price, 'currency') : null
+        return product.firstVariant.combinationInfoVariant.list_price ? root.$n(product.firstVariant.combinationInfoVariant.list_price, 'currency') : null;
       }
-      return null
-    }
+      return null;
+    };
 
-    const getSpecialPrice =({ product }) => {
+    const getSpecialPrice = ({ product }) => {
       if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
-        return product.firstVariant.combinationInfoVariant.has_discounted_price ? root.$n(product.firstVariant.combinationInfoVariant.price, 'currency') : null
+        return product.firstVariant.combinationInfoVariant.has_discounted_price ? root.$n(product.firstVariant.combinationInfoVariant.price, 'currency') : null;
       }
-      return null
-    }
+      return null;
+    };
 
     onSSR(async () => {
       // await loadWishlist();
