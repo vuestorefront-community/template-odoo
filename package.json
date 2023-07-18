@@ -52,7 +52,6 @@
     "nuxt": "^2.15.8",
     "nuxt-i18n": "^6.5.0",
     "nuxt-precompress": "^0.5.9",
-    "nuxt-speedkit": "^2.2.0",
     "nuxt-winston-log": "^1.2.0",
     "object-hash": "^3.0.0",
     "redis-tag-cache": "^1.2.1",

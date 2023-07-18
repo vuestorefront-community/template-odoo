@@ -161,7 +161,6 @@ export default {
     }
   },
   modules: [
-    'nuxt-speedkit',
     '@nuxtjs/pwa',
     'nuxt-precompress',
     '@nuxt/image',
@@ -198,12 +197,6 @@ export default {
     '@nuxtjs/redirect-module',
     'nuxt-winston-log'
   ],
-  speedkit: {
-    detection: {
-      performance: true,
-      browserSupport: true
-    }
-  },
   // google tag manager
   gtm: {
     id: process.env.GOOGLE_TAG_MANAGER_ID,

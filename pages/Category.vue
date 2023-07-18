@@ -267,13 +267,12 @@ import { useCache, CacheTagPrefix } from '@vue-storefront/cache';
 import { useUiHelpers, useUiState, useUiNotification, useCart } from '~/composables';
 import { onSSR } from '@vue-storefront/core';
 import LazyHydrate from 'vue-lazy-hydration';
-import speedkitHydrate from 'nuxt-speedkit/hydrate';
 
 export default defineComponent({
   name: 'Category',
   transition: 'fade',
   components: {
-    CategoryNavbar: speedkitHydrate(() => import('@/components/Category/Navbar')),
+    CategoryNavbar: () => import('@/components/Category/Navbar'),
     CategoryFilterSideBar,
     SfSelect,
     SfProperty,
