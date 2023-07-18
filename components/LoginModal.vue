@@ -374,7 +374,7 @@ export default {
 
     const handleLogin = async () => {
       await handleForm(login, {
-        username: form.value.email,
+        email: form.value.email,
         password: form.value.password
       })();
 
@@ -382,7 +382,7 @@ export default {
         send({
           message: 'You are logged in. Welcome!',
           type: 'success'
-        });
+        });''
       }
 
     };

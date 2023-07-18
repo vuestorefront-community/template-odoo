@@ -19,14 +19,14 @@
           </SfButton>
         </div>
         <SfProperty
-          v-if="totalItems"
+          v-if="cartTotalItems"
           class="sf-property--large cart-summary"
           :name="$t('Total items')"
-          :value="totalItems"
+          :value="cartTotalItems"
         />
       </template>
       <transition name="sf-fade" mode="out-in">
-        <div v-if="totalItems" key="my-cart" class="my-cart">
+        <div v-if="cartTotalItems" key="my-cart" class="my-cart">
           <div class="collected-product-list">
             <transition-group name="sf-fade" tag="div">
               <SfCollectedProduct
@@ -122,7 +122,7 @@
       </transition>
       <template #content-bottom>
         <transition name="sf-fade">
-          <div v-if="totalItems">
+          <div v-if="cartTotalItems">
             <SfProperty
               :name="$t('Total price')"
               class="
@@ -199,14 +199,11 @@ export default {
   },
   setup() {
     const { isCartSidebarOpen, toggleCartSidebar } = useUiState();
-    const { cart, updateItemQty, removeItem } = useCart();
+    const { cart, updateItemQty, removeItem, cartTotalItems } = useCart();
     const { isAuthenticated } = useUser();
     const products = computed(() => cartGetters.getItems(cart.value));
     const totals = computed(() => cartGetters.getTotals(cart.value));
 
-    const totalItems = computed(() => {
-       return cart.value?.order?.cartQuantity || 0;
-    });
     const { addItem: addItemToWishlist } = useWishlist();
     const { send } = useUiNotification();
     const addProductToWishList = (product) => {
@@ -231,7 +228,7 @@ export default {
       isCartSidebarOpen,
       toggleCartSidebar,
       totals,
-      totalItems,
+      cartTotalItems,
       cartGetters,
       addProductToWishList,
       productGetters,

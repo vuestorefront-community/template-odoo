@@ -10,7 +10,7 @@
     <div class="highlighted">
       <SfProperty
         :name="$t('Products')"
-        :value="totalItems"
+        :value="cartTotalItems"
         class="sf-property--full-width sf-property--large property"
       />
       <SfProperty
@@ -86,7 +86,8 @@ import {
 } from '@storefront-ui/vue';
 import { onSSR } from '@vue-storefront/core';
 import { computed, ref } from '@nuxtjs/composition-api';
-import { useCart, checkoutGetters, cartGetters } from '@vue-storefront/odoo';
+import { checkoutGetters, cartGetters } from '@vue-storefront/odoo';
+import { useCart } from '~/composables';
 
 export default {
   name: 'CartPreview',
@@ -100,7 +101,7 @@ export default {
     SfCircleIcon
   },
   setup (_, {root}) {
-    const { cart, load: loadCart, removeItem, updateItemQty, applyCoupon } = useCart();
+    const { cart, load: loadCart, removeItem, updateItemQty, applyCoupon, cartTotalItems } = useCart();
     const listIsHidden = ref(false);
     const promoCode = ref('');
     const showPromoCode = ref(false);
@@ -108,19 +109,6 @@ export default {
     const totals = computed(() => cartGetters.getTotals(cart.value));
     const discounts = computed(() => cartGetters.getDiscounts(cart.value));
     const shippingMethodPrice = computed(() => checkoutGetters.getShippingMethodPrice(cart.value));
-    const cartItems = computed(() => {
-      return cartGetters.getItems(cart.value).map((item) => {
-        return item.quantity;
-      });
-    });
-    const totalItems = computed(() => {
-      const array = cartItems.value;
-      let sum = 0;
-      array.forEach((num) => {
-        sum += num;
-      });
-      return sum;
-    });
 
     onSSR(async () => {
       await loadCart();
@@ -129,7 +117,7 @@ export default {
     return {
       shippingMethodPrice,
       discounts,
-      totalItems,
+      cartTotalItems,
       listIsHidden,
       products,
       totals,

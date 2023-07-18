@@ -13,7 +13,6 @@ const throwErrors = (errors: Array<{ message?: string }>) => {
 
 const useCart = () : any => {
   const context = useVSFContext();
-  const cookieIndex = context?.$odoo?.config?.app?.$config?.cart?.cookieIndex || 'orderLines';
 
   const { cart, setCart } = baseUseCart();
   const loading = sharedRef(null, 'useCart-loading');
@@ -22,6 +21,13 @@ const useCart = () : any => {
     clearCart: null,
     cartUpdateItem: null
   }, 'useCart-error');
+
+  const cartTotalItems = computed(() => {
+    if((cart.value?.order as any)?.cartQuantity) {
+      return (cart.value?.order as any)?.cartQuantity
+    }
+     return context.$odoo.config.app.$cookies.get('cart-size');
+  })
 
   const load = async ({ customQuery } = { customQuery: undefined }) => {
     try {
@@ -34,7 +40,6 @@ const useCart = () : any => {
       error.value.load = null;
 
       const cookieIndex = context?.$odoo?.config?.app?.$config?.cart?.cookieIndex || 'cartQuantity';
-      console.log(context?.$odoo?.config?.app?.$config);
       
       context.$odoo.config.app.$cookies.set('cart-size', resolvePath(cart?.value?.order, cookieIndex, 0) || 0);
 
@@ -115,8 +120,10 @@ const useCart = () : any => {
   };
 
   return {
+    ...baseUseCart(),
     cart,
     loading: computed(() => loading.value),
+    cartTotalItems,
     load,
     cartAddItem,
     updateItemQty,

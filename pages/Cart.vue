@@ -9,7 +9,7 @@
       <div class="detailed-cart__main">
         <transition name="sf-fade" mode="out-in">
           <div
-            v-if="totalItems"
+            v-if="cartTotalItems"
             key="detailed-cart"
             class="collected-product-list"
           >
@@ -129,11 +129,11 @@
           </div>
         </transition>
       </div>
-      <div v-if="totalItems" class="detailed-cart__aside">
+      <div v-if="cartTotalItems" class="detailed-cart__aside">
         <SfOrderSummary
           :products="products"
           :orderTitle="$t('Totals')"
-          :total-items="totalItems"
+          :total-items="cartTotalItems"
           class="oderSummary"
         >
           <template #summary>
@@ -265,23 +265,13 @@ export default {
     SfLoader
   },
   setup(_, { root }) {
-    // simple test submodule 3
     const { isAuthenticated } = useUser();
-    const { cart, load: loadCart, removeItem, updateItemQty } = useCart();
+    const { cart, load: loadCart, removeItem, updateItemQty, cartTotalItems } = useCart();
     const { isCartSidebarOpen, toggleCartSidebar } = useUiState();
 
     const products = computed(() => cartGetters.getItems(cart.value));
     const totals = computed(() => cartGetters.getTotals(cart.value));
-    const totalItems = computed(() => {
-      let array = cartGetters.getItems(cart.value).map((item) => {
-        return item.quantity
-      })
-      let sum = 0
-      array.forEach((num) => {
-        sum += num;
-      })
-      return sum
-    });
+
     const { send } = useUiNotification();
     const { addItem: addItemToWishlist } = useWishlist();
 
@@ -306,7 +296,7 @@ export default {
     const summary = ref([
       {
         name: "Products",
-        value: totalItems,
+        value: cartTotalItems,
       },
       {
         name: "Sub Total",
@@ -346,7 +336,7 @@ export default {
       handleRemoveItem,
       breadcrumbs,
       totals,
-      totalItems,
+      cartTotalItems,
       summary,
       cartGetters,
       addProductToWishList,

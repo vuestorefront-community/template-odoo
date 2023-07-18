@@ -258,14 +258,13 @@ import {
   useRoute
 } from '@nuxtjs/composition-api';
 import {
-  useCart,
   useWishlist,
   productGetters,
   useFacet,
   facetGetters
 } from '@vue-storefront/odoo';
 import { useCache, CacheTagPrefix } from '@vue-storefront/cache';
-import { useUiHelpers, useUiState, useUiNotification, useCart as customUseCart } from '~/composables';
+import { useUiHelpers, useUiState, useUiNotification, useCart } from '~/composables';
 import { onSSR } from '@vue-storefront/core';
 import LazyHydrate from 'vue-lazy-hydration';
 import speedkitHydrate from 'nuxt-speedkit/hydrate';
@@ -299,8 +298,7 @@ export default defineComponent({
 
     const { addTags } = useCache();
     const uiState = useUiState();
-    const { isInCart } = useCart();
-    const { cartAddItem } = customUseCart()
+    const { cartAddItem, isInCart } = useCart()
     const {
       addItem: addItemToWishlist,
       removeItem: removeItemFromWishList,

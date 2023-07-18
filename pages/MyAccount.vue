@@ -167,7 +167,8 @@ export default defineComponent({
 
         root.$router.push(root.localePath('/'));
         await logout();
-
+        await load();
+        
         return;
       }
 

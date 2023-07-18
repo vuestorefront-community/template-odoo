@@ -66,10 +66,11 @@ import {
   productGetters,
   useWishlist,
   wishlistGetters,
-  useCart
+  
 } from '@vue-storefront/odoo';
 import { computed } from '@nuxtjs/composition-api';
 import { addBasePath } from '@vue-storefront/core';
+import { useCart } from '~/composables';
 
 export default {
   name: 'RelatedProducts',

@@ -28,7 +28,6 @@
 
 <script>
 import LazyHydrate from 'vue-lazy-hydration';
-import speedkitHydrate from 'nuxt-speedkit/hydrate';
 import CartSidebar from '@/components/CartSidebar.vue';
 import WishlistSidebar from '@/components/WishlistSidebar.vue';
 import LoginModal from '@/components/LoginModal.vue';
@@ -40,11 +39,11 @@ export default {
   components: {
     LazyHydrate,
     MobileMenuSidebar,
-    TopBar: speedkitHydrate(() => import('@/components/TopBar')),
-    AppHeader: speedkitHydrate(() => import('@/components/AppHeader')),
-    AppFooter: speedkitHydrate(() => import('@/components/AppFooter')),
-    Notification: speedkitHydrate(() => import('@/components/Notification')),
-    BottomNavigation: speedkitHydrate(() => import('@/components/BottomNavigation')),
+    TopBar: () => import('@/components/TopBar'),
+    AppHeader: () => import('@/components/AppHeader'),
+    AppFooter: () => import('@/components/AppFooter'),
+    Notification: () => import('@/components/Notification'),
+    BottomNavigation: () => import('@/components/BottomNavigation'),
     CartSidebar,
     WishlistSidebar,
     LoginModal

@@ -48,18 +48,18 @@
               icon="heart"
               size="1.25rem"
             />
-            <SfBadge
-              v-if="TotalWishlistItems"
-              class="sf-badge--number cart-badge"
-              >{{ TotalWishlistItems }}</SfBadge
-            >
+              <SfBadge
+                v-if="TotalWishlistItems"
+                class="sf-badge--number cart-badge"
+                >{{ TotalWishlistItems }}</SfBadge
+              >
           </SfButton>
           <SfButton
             class="sf-button--pure sf-header__action"
             @click="handleCartSideBarClick"
           >
             <SfIcon class="sf-header__icon" icon="empty_cart" size="1.25rem" />
-
+            
             <SfBadge
               v-if="cartTotalItems"
               class="sf-badge--number cart-badge"
@@ -168,25 +168,11 @@ export default {
       useUiState();
 
     const { load: loadUser, isAuthenticated: isLoggedIn } = useUser();
-    const { load: loadCart, cart } = useCart();
+    const { load: loadCart, cart, cartTotalItems } = useCart();
     const { load: loadWishlist, wishlist } = useWishlist();
     const { search: searchProductApi, result } = useFacet('AppHeader:Search');
     const { categories: topCategories, search: searchTopCategoryApi } =
       useCategories('AppHeader:TopCategories');
-    const cartItems = computed(() => {
-      return cartGetters.getItems(cart.value).map((item) => {
-        return item.quantity;
-      });
-    });
-    const cartTotalItems = computed(() => {
-      if(cartItems.value?.length === 0) return root.$cookies.get('cart-size')
-
-      let sum = 0;
-      cartItems.value.forEach((num) => {
-        sum += num;
-      });
-      return sum;
-    });
 
     const TotalWishlistItems = computed(() => {
       const count = wishlistGetters.getTotalItems(wishlist.value);
