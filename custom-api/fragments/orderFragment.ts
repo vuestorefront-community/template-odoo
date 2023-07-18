@@ -43,6 +43,7 @@ const query = `
     dateOrder
     orderUrl
     stage
+    cartQuantity
     websiteOrderLine {
       id
       name

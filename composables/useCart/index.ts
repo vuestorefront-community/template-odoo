@@ -33,7 +33,9 @@ const useCart = () : any => {
       setCart(data.cart);
       error.value.load = null;
 
-      const cookieIndex = context?.$odoo?.config?.app?.$config?.cart?.cookieIndex || 'orderLines.length';
+      const cookieIndex = context?.$odoo?.config?.app?.$config?.cart?.cookieIndex || 'cartQuantity';
+      console.log(context?.$odoo?.config?.app?.$config);
+      
       context.$odoo.config.app.$cookies.set('cart-size', resolvePath(cart?.value?.order, cookieIndex, 0) || 0);
 
     } catch (err) {
@@ -80,7 +82,7 @@ const useCart = () : any => {
 
       throwErrors(errors);
       setCart(data.cartUpdateItem);
-      const cookieIndex = context?.$odoo?.config?.app?.$config?.cart?.cookieIndex || 'orderLines.length';
+      const cookieIndex = context?.$odoo?.config?.app?.$config?.cart?.cookieIndex || 'cartQuantity';
       context.$odoo.config.app.$cookies.set('cart-size', resolvePath(cart?.value?.order, cookieIndex, 0) || 0);
       error.value.cartUpdateItem = null;
     } catch (err) {
@@ -101,7 +103,7 @@ const useCart = () : any => {
       );
       throwErrors(errors);
       setCart(data.cartRemoveItem);
-      const cookieIndex = context?.$odoo?.config?.app?.$config?.cart?.cookieIndex || 'orderLines.length';
+      const cookieIndex = context?.$odoo?.config?.app?.$config?.cart?.cookieIndex || 'cartQuantity';
       context.$odoo.config.app.$cookies.set('cart-size', resolvePath(cart?.value?.order, cookieIndex, 0) || 0);
       error.value.cartRemoveItem = null;
     } catch (err) {

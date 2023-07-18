@@ -154,7 +154,11 @@ export default {
     theme,
     baseURL: process.env.PUBLIC_PATH || process.env.BASE_URL,
     middlewareUrl: isDev ? 'http://localhost:3000/api/' : `${process.env.SITE_URL}api`,
-    siteURL: process.env.SITE_URL
+    siteURL: process.env.SITE_URL,
+    cart: {
+      // When set cart-size cookie, choose what attribute use. Default: orderLine.length
+      cookieIndex: 'cartQuantity'
+    }
   },
   modules: [
     'nuxt-speedkit',

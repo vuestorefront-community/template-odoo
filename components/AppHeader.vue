@@ -179,9 +179,10 @@ export default {
       });
     });
     const cartTotalItems = computed(() => {
-      const array = cartItems.value;
+      if(cartItems.value?.length === 0) return root.$cookies.get('cart-size')
+
       let sum = 0;
-      array.forEach((num) => {
+      cartItems.value.forEach((num) => {
         sum += num;
       });
       return sum;
