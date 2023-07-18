@@ -129,8 +129,6 @@ import {
 import { useUiState } from '~/composables';
 import {
   useWishlist,
-  useUser,
-  cartGetters,
   categoryGetters,
   useCategories,
   useFacet,
@@ -139,7 +137,7 @@ import {
 import { clickOutside } from '@storefront-ui/vue/src/utilities/directives/click-outside/click-outside-directive.js';
 import { computed, ref, watch, onMounted } from '@nuxtjs/composition-api';
 import { onSSR } from '@vue-storefront/core';
-import { useUiHelpers, useCart } from '~/composables';
+import { useUiHelpers, useCart, useUser } from '~/composables';
 import LocaleSelector from './LocaleSelector';
 import SearchResults from '~/components/SearchResults';
 
@@ -167,8 +165,8 @@ export default {
     const { toggleCartSidebar, toggleWishlistSidebar, toggleLoginModal } =
       useUiState();
 
-    const { load: loadUser, isAuthenticated: isLoggedIn } = useUser();
-    const { load: loadCart, cart, cartTotalItems } = useCart();
+    const { load: loadUser, isAuthenticated } = useUser();
+    const { load: loadCart, cartTotalItems } = useCart();
     const { load: loadWishlist, wishlist } = useWishlist();
     const { search: searchProductApi, result } = useFacet('AppHeader:Search');
     const { categories: topCategories, search: searchTopCategoryApi } =
@@ -237,15 +235,8 @@ export default {
       return searchBarRef.value.$el.children[0].focus();
     };
 
-    const isAuthenticated = computed(() => {
-      return isLoggedIn.value
-        ? isLoggedIn.value
-        : root.$cookies.get('odoo-user');
-    });
-
     const handleAccountClick = async () => {
       if (isAuthenticated.value) {
-        root.$cookies.remove('odoo-user');
         await loadUser();
         return root.$router.push(root.localePath('/my-account'));
       }

@@ -23,6 +23,7 @@ const useCart = () : any => {
   }, 'useCart-error');
 
   const cartTotalItems = computed(() => {
+    if(process.server) return 0
     if((cart.value?.order as any)?.cartQuantity) {
       return (cart.value?.order as any)?.cartQuantity
     }
@@ -40,7 +41,6 @@ const useCart = () : any => {
       error.value.load = null;
 
       const cookieIndex = context?.$odoo?.config?.app?.$config?.cart?.cookieIndex || 'cartQuantity';
-      
       context.$odoo.config.app.$cookies.set('cart-size', resolvePath(cart?.value?.order, cookieIndex, 0) || 0);
 
     } catch (err) {

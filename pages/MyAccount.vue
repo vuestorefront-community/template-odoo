@@ -81,9 +81,9 @@ import {
   SfTabs
 } from '@storefront-ui/vue';
 import { ref, computed, defineComponent } from '@nuxtjs/composition-api';
-import { useUser, useUserShipping } from '@vue-storefront/odoo';
+import { useUserShipping } from '@vue-storefront/odoo';
 import { onSSR } from '@vue-storefront/core';
-import { useUiNotification } from '~/composables';
+import { useUiNotification, useUser } from '~/composables';
 import ProfileUpdateForm from '~/components/MyAccount/ProfileUpdateForm.vue';
 import PasswordResetForm from '~/components/MyAccount/PasswordResetForm.vue';
 import OrderHistory from '~/components/MyAccount/OrderHistory.vue';
