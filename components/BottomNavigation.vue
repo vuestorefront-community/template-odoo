@@ -86,6 +86,7 @@ export default {
       isMobileMenuOpen
     } = useUiState();
     const { load: loadUser, isAuthenticated: isLoggedIn } = useUser();
+    const { wishlist } = useWishlist();
     const { cart } = useCart();
     
     const isAuthenticated = computed(() => {

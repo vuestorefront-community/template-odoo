@@ -11,7 +11,6 @@ const canEnterPayment = (cart) => {
 };
 
 export default async ({ app, $vsf, redirect }) => {
-export default async ({ app, $vsf, redirect }) => {
   const currentPath = app.context.route.fullPath.split('/checkout/')[1];
 
   if (!currentPath) return;

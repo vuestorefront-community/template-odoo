@@ -91,7 +91,6 @@
                 isInWishlist({ product })
                   ? removeItemFromWishList({ product: { product } })
                   : addProductToWishList(product)
-                  : addProductToWishList(product)
               "
               @click:add-to-cart="
                 handleAddItemToCart(product), toggleCartSidebar()
@@ -373,22 +372,9 @@ export default defineComponent({
       if (product) {
         const { slug, variantAttributeValues } = product;
         return `${slug}?${variantAttributeValues
-          .map((variant) => `${variant?.attribute?.name}=${variant?.id}&`)
-          .join('')}`;
+          ?.map((variant) => `${variant?.attribute?.name}=${variant?.id}&`)
+          ?.join('')}`;
       }
-    };
-
-    const getRegularPrice = (product) => {
-      if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
-        return product.firstVariant.combinationInfoVariant.list_price ? root.$n(product.firstVariant.combinationInfoVariant.list_price, 'currency') : null;
-      }
-      return null;
-    };
-    const getSpecialPrice = (product) => {
-      if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
-        return product.firstVariant.combinationInfoVariant.has_discounted_price ? root.$n(product.firstVariant.combinationInfoVariant.price, 'currency') : null;
-      }
-      return null;
     };
 
     const getRegularPrice =(product) => {

@@ -13,8 +13,6 @@ const throwErrors = (errors: Array<{ message?: string }>) => {
 
 const useCart = () : any => {
   const context = useVSFContext();
-  const cookieIndex = context?.$odoo?.config?.app?.$config?.cart?.cookieIndex || 'orderLines';
-  const cookieIndex = context?.$odoo?.config?.app?.$config?.cart?.cookieIndex || 'orderLines';
 
   const { cart, setCart } = baseUseCart();
   const loading = sharedRef(null, 'useCart-loading');

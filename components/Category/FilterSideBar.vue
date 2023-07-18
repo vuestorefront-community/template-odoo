@@ -155,7 +155,8 @@ import {
   ref,
   onMounted,
   reactive,
-  computed
+  computed,
+  useRoute
 } from '@nuxtjs/composition-api';
 import { useUiState, useUiHelpers } from '~/composables';
 
@@ -184,6 +185,7 @@ export default defineComponent({
     }
   },
   setup(props) {
+    const { query } = useRoute().value;
     const selectedFilters = ref([]);
     const price = ref([]);
     const config = reactive({
@@ -201,6 +203,11 @@ export default defineComponent({
     const { changeFilters, clearAllFilters, isFacetColor, isFacetPrice, facetsFromUrlToFilter } =
       useUiHelpers();
     const { toggleFilterSidebar, isFilterSidebarOpen } = useUiState();
+
+    const sortBy = computed(() =>
+      facetGetters.getSortOptions({ input: { sort: query?.sort } })
+    );
+
 
     const clearFilters = () => {
       toggleFilterSidebar();
