@@ -24,5 +24,5 @@ function addTrailingSlashToUrls(envVariablesToCheck) {
  
 }
 const envVariablesToCheck = ['BASE_URL', 'SITE_URL'];
-addTrailingSlashToUrls(envVariablesToCheck);
+//addTrailingSlashToUrls(envVariablesToCheck);
 module.exports = async () => addTrailingSlashToUrls;
