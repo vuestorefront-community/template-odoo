@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import webpack from 'webpack';
 import { getRoutes } from './routes';
-import { checkWinstonHook } from '@vue-storefront/odoo';
+import hooks from './hooks';
 import getAppRoutes from './sitemap';
 import redirects from './customRoutes/redirects.json';
 import theme from './themeConfig';
@@ -11,13 +11,7 @@ const { combine, timestamp, label, prettyPrint } = format;
 const isDev = process.env.NODE_ENV !== 'production';
 
 export default {
-  hooks: {
-    build: {
-      before() {
-        checkWinstonHook();
-      }
-    }
-  },
+  hooks,
   components: [
     '~/components/Core/Atoms'
   ],
