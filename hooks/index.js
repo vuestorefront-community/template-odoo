@@ -7,7 +7,7 @@ export default {
   
   build: {
     async before(builder) {
-      await addTrailingSlashToUrls(process.argv);
+      //await addTrailingSlashToUrls(process.argv);
       if (!process.argv.includes("--dontGenerateCustomRoutes")) {
         await buildRoutes();
         await buildRedirects(builder);
