@@ -9,7 +9,7 @@
       <div class="detailed-cart__main">
         <transition name="sf-fade" mode="out-in">
           <div
-            v-if="cartTotalItems"
+            v-show="cartTotalItems"
             key="detailed-cart"
             class="collected-product-list"
           >
@@ -105,7 +105,7 @@
               </SfCollectedProduct>
             </transition-group>
           </div>
-          <div v-else key="empty-cart" class="empty-cart">
+          <div v-if="!cartTotalItems" key="empty-cart" class="empty-cart">
             <SfImage
               :src="require('@storefront-ui/shared/icons/empty_cart.svg')"
               alt="Empty cart"
@@ -129,7 +129,7 @@
           </div>
         </transition>
       </div>
-      <div v-if="cartTotalItems" class="detailed-cart__aside">
+      <div v-show="cartTotalItems" class="detailed-cart__aside">
         <SfOrderSummary
           :products="products"
           :orderTitle="$t('Totals')"

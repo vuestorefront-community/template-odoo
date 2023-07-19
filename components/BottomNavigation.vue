@@ -28,7 +28,7 @@
           label="Wishlist"
           @click="toggleWishlistSidebar"
         />
-        <SfBadge v-if="TotalWishlistItems" class="sf-badge--number wishlist-badge">
+        <SfBadge v-show="TotalWishlistItems" class="sf-badge--number wishlist-badge">
           {{ TotalWishlistItems }}
         </SfBadge>
      </div>

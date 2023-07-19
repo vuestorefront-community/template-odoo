@@ -19,7 +19,7 @@
           </SfButton>
         </div>
         <SfProperty
-          v-if="cartTotalItems"
+          v-show="cartTotalItems"
           class="sf-property--large cart-summary"
           :name="$t('Total items')"
           :value="cartTotalItems"

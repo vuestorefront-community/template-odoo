@@ -61,7 +61,7 @@
         </template>
       </div>
     </div>
-    <SfAccordion v-if="productLength > 0" class="filters smartphone-only">
+    <SfAccordion v-show="productLength > 0" class="filters smartphone-only">
       <SfAccordionItem header="Sort by" class="filters__accordion-item">
           <SfRadio
             v-for="(option, index) in sortBy.options"
@@ -79,7 +79,7 @@
           :header="facet.label"
           class="filters__accordion-item"
         >
-          <template v-if="isFacetPrice(facet)">
+          <template v-show="isFacetPrice(facet)">
             <SfRange
              :value="[20, 600]"
              :disabled="false"
@@ -89,7 +89,7 @@
              @change="selectPrice"
            />
           </template>
-          <template v-if="facetHasMoreThanOneOption(facet)">
+          <template v-show="facetHasMoreThanOneOption(facet)">
           <div
             v-if="isFacetColor(facet, facet.options)"
             class="filters__colors ml-10"

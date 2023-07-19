@@ -49,7 +49,7 @@
               size="1.25rem"
             />
               <SfBadge
-                v-if="TotalWishlistItems"
+                v-show="TotalWishlistItems"
                 class="sf-badge--number cart-badge"
                 >{{ TotalWishlistItems }}</SfBadge
               >
@@ -61,7 +61,7 @@
             <SfIcon class="sf-header__icon" icon="empty_cart" size="1.25rem" />
             
             <SfBadge
-              v-if="cartTotalItems"
+              v-show="cartTotalItems"
               class="sf-badge--number cart-badge"
               >{{ cartTotalItems }}</SfBadge
             >

@@ -8,7 +8,7 @@
     </div>
     <div class="navbar__main">
         <SfButton
-          v-if="productLength > 0"
+          v-show="productLength > 0"
           class="sf-button--text navbar__filters-button"
           data-cy="category-btn_filters"
           aria-label="Filters"
@@ -24,7 +24,7 @@
           {{ $t('Filters') }}
         </SfButton>
 
-      <div v-if="productLength > 0" class="navbar__sort desktop-only">
+      <div v-show="productLength > 0" class="navbar__sort desktop-only">
         <span class="navbar__label">{{ $t('Sort by') }}:</span>
         <LazyHydrate when-idle>
           <SfSelect
