@@ -96,9 +96,7 @@ export default {
   device: {
     refreshOnResize: true
   },
-  serverMiddleware: [
-    '~/serverMiddleware/body-parser.js'
-  ],
+  serverMiddleware: ["~/serverMiddleware/body-parser.js",  "~/requestLogger"],
   loading: { color: '#fff' },
   plugins: [
     '~/plugins/getImage.ts',
