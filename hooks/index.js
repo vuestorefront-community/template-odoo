@@ -1,10 +1,18 @@
-import buildRoutes from './buildRoutes';
-import buildRedirects from './buildRedirects';
+import addTrailingSlashToUrls from '../addTrailingSlash';
+import buildRoutes from "./buildRoutes";
+import buildRedirects from "./buildRedirects";
+import { checkWinstonHook } from "@vue-storefront/odoo";
+
 export default {
+  
   build: {
     async before(builder) {
-      await buildRoutes();
-      await buildRedirects(builder);
-    }
-  }
+      await addTrailingSlashToUrls();
+      if (!process.argv.includes("--dontGenerateCustomRoutes")) {
+        await buildRoutes();
+        await buildRedirects(builder);
+        await checkWinstonHook();
+      }
+    },
+  },
 };
