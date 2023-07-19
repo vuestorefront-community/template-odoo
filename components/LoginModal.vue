@@ -287,8 +287,8 @@ import {
   SfBar
 } from '@storefront-ui/vue';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
-import { useUser, usePassword } from '@vue-storefront/odoo';
-import { useUiState } from '~/composables';
+import { usePassword } from '@vue-storefront/odoo';
+import { useUiState, useUser } from '~/composables';
 
 export default {
   name: 'LoginModal',

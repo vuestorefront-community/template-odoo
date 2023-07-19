@@ -1,21 +1,16 @@
 import { computed, watch } from '@nuxtjs/composition-api';
 import { useVSFContext } from '@vue-storefront/core';
-import { useUser as baseUseUser } from '@vue-storefront/odoo';
+import { useUser as baseUseUser, useWishlist } from '@vue-storefront/odoo';
 import { AgnosticUser } from '@vue-storefront/odoo-api';
 import useCart from '../useCart';
 
 //@tutorial temporary composable to handle new behaviour of not loading user on ssr.
 const useUser = () : any => {
   const context = useVSFContext();
-  const { load : loadCart, setCart} = useCart();
+  const { load : loadCart, setCart } = useCart();
+  const { setWishlist, load : loadWishlist } = useWishlist();
 
   const { user, logout : baseLogout, setUser, load: loadUser } = baseUseUser();
-
-  watch(() => user.value, 
-  async () => {
-    console.log(user.value);
-    
-  })
 
   const isAuthenticated = computed(() => {
     const cookie = context.$odoo.config.app.$cookies.get('odoo-user');
@@ -25,16 +20,23 @@ const useUser = () : any => {
 
   const logout = async () => {
     context.$odoo.config.app.$cookies.remove('odoo-user');
+    context.$odoo.config.app.$cookies.remove('wishlist-size');
     setUser(null);
     setCart(null);
+    setWishlist(null);
     await baseLogout()
     await loadCart()
+    await loadWishlist()
   }
 
-  const logIn = async (params: AgnosticUser & { customQuery }) => {
+  const login = async (params: any & { customQuery }) => {
     const { customQuery } = params;
 
-    const { data, errors } = await context.$odoo.api.logInUser(params, customQuery);
+    const { data, errors } = await context.$odoo.api.logInUser(params.user, customQuery);
+
+    setUser(data?.login?.partner);
+    await loadCart()
+    await loadWishlist()
 
     context.$odoo.config.app.$cookies.set('odoo-user', data?.login?.partner, { sameSite: true, path: '/' });
     return data?.login?.partner;
@@ -44,7 +46,7 @@ const useUser = () : any => {
     ...baseUseUser(),
     isAuthenticated,
     logout,
-    logIn
+    login
   };
 };
 
