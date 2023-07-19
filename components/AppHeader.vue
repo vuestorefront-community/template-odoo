@@ -79,7 +79,6 @@
           @keydown.enter="handleSearch($event)"
           @focus="isSearchOpen = true"
           @keydown.esc="closeSearch"
-          v-click-outside="closeSearch"
         >
           <template #icon>
             <SfButton
@@ -215,7 +214,8 @@ export default {
           pageSize: 12
         },
         categoryParams: {
-          search: term.value
+          search: term.value,
+          cacheKey: term.value
         }
       });
 
@@ -228,9 +228,7 @@ export default {
       };
     }, 100);
     const closeOrFocusSearchBar = () => {
-      if (window.innerWidth <= 1023) {
-        isSearchOpen.value = false;
-      }
+      isSearchOpen.value = false;
       term.value = '';
       return searchBarRef.value.$el.children[0].focus();
     };
