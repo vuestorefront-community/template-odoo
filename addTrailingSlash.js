@@ -1,11 +1,11 @@
 const dotenv = require('dotenv');
 const fs = require('fs');
 
-
-
 function addTrailingSlashToUrls(envVariablesToCheck) {  
+  const dotEnvIndex = process.argv.findIndex(item => item.includes('--dotenv'));
+  const dotEnvPath = process.argv[dotEnvIndex + 1]
 
-  const envConfig = dotenv.parse(fs.readFileSync('.env'));
+  const envConfig = dotenv.parse(fs.readFileSync(dotEnvPath || '.env'));
 
   function addSlashIfNeeded(envVarUrl) {
     if (envVarUrl !== undefined && !envVarUrl.endsWith('/')) {
