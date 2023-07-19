@@ -3,7 +3,7 @@
   "version": "1.5.2",
   "private": true,
   "scripts": {
-    "build": "cross-var nuxt build --dontGenerateCustomRoutes -m --dotenv $VSF_RC",
+    "build": "cross-var nuxt build -m --dotenv $VSF_RC --dontGenerateCustomRoutes",
     "build:local": "nuxt build -m --dotenv .env",
     "test:e2e": "cypress open --config-file tests/e2e/cypress.json",
     "test:e2e:hl": "cypress run --headless --config-file tests/e2e/cypress.json",
