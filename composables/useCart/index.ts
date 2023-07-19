@@ -27,7 +27,7 @@ const useCart = () : any => {
     if((cart.value?.order as any)?.cartQuantity) {
       return (cart.value?.order as any)?.cartQuantity
     }
-     return context.$odoo.config.app.$cookies.get('cart-size');
+     return context.$odoo.config.app.$cookies?.get('cart-size') || 0;
   })
 
   const load = async ({ customQuery } = { customQuery: undefined }) => {

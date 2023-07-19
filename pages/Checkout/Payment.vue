@@ -41,7 +41,7 @@
         </SfTableData>
         <SfTableData class="table__data table__description table__data">
           <div class="product-title">
-            {{ cartGetters.getItemName(product) }}
+            {{ product.product.displayName }}
           </div>
           <div class="product-sku">{{ cartGetters.getItemSku(product) }}</div>
         </SfTableData>
@@ -52,6 +52,7 @@
             'color',
           ])"
           :key="key"
+          
         >
           {{ value }}
         </SfTableData>

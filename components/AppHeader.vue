@@ -49,9 +49,9 @@
               size="1.25rem"
             />
               <SfBadge
-                v-show="TotalWishlistItems"
+                :class="{ 'hidden': totalWishlistItems == 0 }"
                 class="sf-badge--number cart-badge"
-                >{{ TotalWishlistItems }}</SfBadge
+                >{{ totalWishlistItems }}</SfBadge
               >
           </SfButton>
           <SfButton
@@ -61,7 +61,7 @@
             <SfIcon class="sf-header__icon" icon="empty_cart" size="1.25rem" />
             
             <SfBadge
-              v-show="cartTotalItems"
+              :class="{ 'hidden': cartTotalItems == 0 }"
               class="sf-badge--number cart-badge"
               >{{ cartTotalItems }}</SfBadge
             >
@@ -172,9 +172,9 @@ export default {
     const { categories: topCategories, search: searchTopCategoryApi } =
       useCategories('AppHeader:TopCategories');
 
-    const TotalWishlistItems = computed(() => {
+    const totalWishlistItems = computed(() => {
       const count = wishlistGetters.getTotalItems(wishlist.value);
-      return count ? count.toString() : root.$cookies.get('wishlist-size');
+      return count ? count.toString() : root.$cookies?.get('wishlist-size') || 0;
     });
 
     const accountIcon = computed(() =>
@@ -278,7 +278,7 @@ export default {
     });
 
     return {
-      TotalWishlistItems,
+      totalWishlistItems,
       filteredTopCategories,
       accountIcon,
       closeOrFocusSearchBar,
