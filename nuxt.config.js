@@ -60,7 +60,7 @@ export default {
       getRoutes(`${__dirname}`)
         .forEach((route) => routes.unshift(route));
     },
-    middleware: ['checkout', 'is-authenticated']
+    middleware: ['checkout']
   },
   googleFonts: {
     families: {
@@ -174,7 +174,7 @@ export default {
       enabled: process.env.REDIS_ENABLED === 'true',
       invalidation: {
         endpoint: '/cache-invalidate',
-        key: 'process.env.INVALIDATION_KEY',
+        key: process.env.INVALIDATION_KEY,
         handlers: [
           '@vue-storefront/cache/defaultHandler'
         ]

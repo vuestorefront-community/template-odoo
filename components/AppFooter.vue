@@ -56,6 +56,7 @@
           >
             <ValidationProvider rules="required|email" v-slot="{ errors }">
               <SfInput
+                id="input-email-desktop"
                 class="sf-input--outline"
                 type="text"
                 :valid="!errors[0]"
