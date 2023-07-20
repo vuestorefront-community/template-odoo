@@ -35,6 +35,8 @@ const useUser = () : any => {
     const { data, errors } = await context.$odoo.api.logInUser(params.user, customQuery);
 
     setUser(data?.login?.partner);
+    setCart(null);
+    setWishlist(null);
     await loadCart()
     await loadWishlist()
 
