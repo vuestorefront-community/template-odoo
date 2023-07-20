@@ -28,7 +28,9 @@
           label="Wishlist"
           @click="toggleWishlistSidebar"
         />
-        <SfBadge v-show="TotalWishlistItems" class="sf-badge--number wishlist-badge">
+        <SfBadge 
+          :class="{ 'hidden': TotalWishlistItems == 0 }"
+          class="sf-badge--number wishlist-badge">
           {{ TotalWishlistItems }}
         </SfBadge>
      </div>
@@ -121,7 +123,7 @@ export default {
 
     const TotalWishlistItems = computed(() => {
       const count = wishlistGetters.getTotalItems(wishlist.value)
-      return count ? count.toString() : root.$cookies.get('wishlist-size');
+      return count ? count.toString() : root.$cookies?.get('wishlist-size') || 0;
     });
 
     return {
