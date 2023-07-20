@@ -42,14 +42,14 @@
                 :regular-price="getRegularPrice(product)"
                 :special-price="getSpecialPrice(product)"
                 :stock="99999"
-                :link="localePath(productGetters.getSlug(product.product))"
+                :link="localePath(mountUrlSlugForProductVariant(product.product))"
                 :image-width="180"
                 :image-height="200"
                 @click:remove="removeItem({ product })"
                 class="collected-product"
               >
               <template #title>
-                <nuxt-link :to="localePath(productGetters.getSlug(product.product))">
+                <nuxt-link :to="localePath(mountUrlSlugForProductVariant(product.product))">
                   <SfHeading :title="wishlistGetters.getItemName(product)" 
                     class="collected-product-title" 
                    @click="toggleWishlistSidebar"
@@ -57,7 +57,7 @@
                 </nuxt-link>
               </template>
               <template #image>
-                <nuxt-link :to="localePath(productGetters.getSlug(product.product))">
+                <nuxt-link :to="localePath(mountUrlSlugForProductVariant(product.product))">
                   <SfImage
                     class="sf-product-card__image"
                     :src="$image(
@@ -182,6 +182,15 @@ export default {
       wishlistGetters.getTotalItems(wishlist.value)
     );
 
+    const mountUrlSlugForProductVariant = (product) => {
+      if(product) {
+        const { slug, variantAttributeValues } = product;
+        return `${slug}?${variantAttributeValues
+        .map((variant) => `${variant?.attribute?.name}=${variant?.id}&`)
+        .join('')}`
+      }
+    };
+
     const getRegularPrice =({ product }) => {
       if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
         return product.firstVariant.combinationInfoVariant.list_price ? root.$n(product.firstVariant.combinationInfoVariant.list_price, 'currency') : null
@@ -218,6 +227,7 @@ export default {
       wishlistGetters,
       productGetters,
       cartGetters,
+      mountUrlSlugForProductVariant,
       getRegularPrice,
       getSpecialPrice
     };

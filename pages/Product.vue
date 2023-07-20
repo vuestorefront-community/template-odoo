@@ -231,7 +231,11 @@ export default {
     const { addItem: addItemToWishlist } = useWishlist();
     const addToWishList = async (product) => {
       await addItemToWishlist({
-        product
+        product: {
+          firstVariant: {
+            id: product.realProduct.product.id,
+          }
+        }
       });
       send({ message: 'Product added to wishlist', type: 'info' });
     };

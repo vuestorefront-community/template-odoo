@@ -10,6 +10,14 @@ const coreProductAttribs = `
     price
     combinationInfo,
     sku
+    variantAttributeValues{
+      id
+      name
+      attribute{
+        id
+        name
+      }
+    }
     productTemplate {
       id
       name
@@ -49,6 +57,7 @@ const query = `
       name
       product {
         ${coreProductAttribs}
+        
       }
       quantity
       priceTotal

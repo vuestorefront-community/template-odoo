@@ -47,11 +47,11 @@
                 :qty="cartGetters.getItemQty(product)"
                 @input="handleUpdateItem({ product, quantity: $event })"
                 @click:remove="handleRemoveItem({ product })"
-                :link="localePath(productGetters.getSlug(product.product))"
+                :link="mountUrlSlugForProductVariant(product.product)"
                 class="collected-product"
               >
               <template #title>
-                <nuxt-link :to="localePath(productGetters.getSlug(product.product))">
+                <nuxt-link :to="localePath(mountUrlSlugForProductVariant(product.product))">
                   <SfHeading :title="cartGetters.getItemName(product)" 
                     class="collected-product-title" 
                    @click="toggleCartSidebar"
@@ -59,7 +59,7 @@
                 </nuxt-link>
               </template>
               <template #image>
-                <nuxt-link :to="localePath(productGetters.getSlug(product.product))">
+                <nuxt-link :to="localePath(mountUrlSlugForProductVariant(product.product))">
                   <SfImage
                     class="sf-product-card__image"
                     :src="$image(
@@ -206,6 +206,17 @@ export default {
 
     const { addItem: addItemToWishlist } = useWishlist();
     const { send } = useUiNotification();
+
+    const mountUrlSlugForProductVariant = (product) => {
+      if(product) {
+        const { slug, variantAttributeValues } = product;
+
+        return `${slug}?${variantAttributeValues
+        ?.map((variant) => `${variant?.attribute?.name}=${variant?.id}&`)
+        ?.join('')}`
+      }
+    };
+
     const addProductToWishList = (product) => {
       addItemToWishlist({
         product: { ...product.product, firstVariant: { id: product.product.id }}
@@ -222,6 +233,7 @@ export default {
     }
 
     return {
+      mountUrlSlugForProductVariant,
       isAuthenticated,
       products,
       handleRemoveItem,
