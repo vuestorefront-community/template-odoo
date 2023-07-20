@@ -50,9 +50,11 @@
             size="25px"
             :style="{ margin: '0 0 0 -2px' }"
           />
-          <SfBadge v-if="cartTotalItems" class="sf-badge--number cart-badge">{{
-            cartTotalItems
-          }}</SfBadge>
+          <SfBadge 
+            :class="{ 'hidden': cartTotalItems == 0 }"
+            class="sf-badge--number cart-badge">
+            {{ cartTotalItems }}
+          </SfBadge>
         </SfCircleIcon>
       </template>
     </SfBottomNavigationItem>
@@ -67,9 +69,9 @@ import {
   SfBadge
 } from '@storefront-ui/vue';
 import { useUiState } from '~/composables';
-import { useUser, useCart, cartGetters, useWishlist, wishlistGetters } from '@vue-storefront/odoo';
+import { useUser, cartGetters, useWishlist, wishlistGetters } from '@vue-storefront/odoo';
 import { computed, useRoute, useRouter } from '@nuxtjs/composition-api';
-
+import { useCart } from '~/composables'
 export default {
   components: {
     SfBottomNavigation,
@@ -88,7 +90,7 @@ export default {
       isMobileMenuOpen
     } = useUiState();
     const { load: loadUser, isAuthenticated: isLoggedIn } = useUser();
-    const { cart } = useCart();
+    const { cartTotalItems } = useCart();
     const { load: loadWishlist, wishlist } = useWishlist();
     
     const isAuthenticated = computed(() => {
@@ -114,12 +116,6 @@ export default {
       isMobileMenuOpen.value ? toggleMobileMenu() : false;
       router.push(root.localePath('/'));
     };
-
-    const cartTotalItems = computed(() => {
-      const count = cartGetters.getTotalItems(cart.value);
-
-      return count ? count.toString() : null;
-    });
 
     const TotalWishlistItems = computed(() => {
       const count = wishlistGetters.getTotalItems(wishlist.value)

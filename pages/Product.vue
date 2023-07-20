@@ -196,7 +196,6 @@ import { ref, computed, reactive } from '@nuxtjs/composition-api';
 import { useCache, CacheTagPrefix } from '@vue-storefront/cache';
 import {
   useProduct,
-  useCart,
   productGetters,
   useReview,
   useProductVariant,
@@ -209,7 +208,7 @@ import { onSSR } from '@vue-storefront/core';
 import { useRoute, onMounted } from '@nuxtjs/composition-api';
 import MobileStoreBanner from '~/components/MobileStoreBanner.vue';
 import LazyHydrate from 'vue-lazy-hydration';
-import { useUiHelpers, useUiState, useUiNotification } from '~/composables';
+import { useCart, useUiHelpers, useUiState, useUiNotification } from '~/composables';
 
 export default {
   name: 'Product',
@@ -240,7 +239,7 @@ export default {
       useProductVariant(query);
     const { products: relatedProducts, loading: relatedLoading } =
       useProduct('relatedProducts');
-    const { addItem, loading } = useCart();
+    const { cartAddItem, loading } = useCart();
     const { addTags } = useCache();
     const { toggleCartSidebar } = useUiState();
 
@@ -335,12 +334,7 @@ export default {
     };
 
     const handleAddToCart = async (qty) => {
-      const params = {
-        product: product.value,
-        quantity: qty
-      };
-
-      await addItem(params);
+      await cartAddItem(product.value?.realProduct?.product?.id, qty);
     };
 
     const allOptionsSelected = computed(() => {
@@ -387,7 +381,6 @@ export default {
       relatedLoading,
       options,
       qty,
-      addItem,
       loading,
       productGetters,
       productVariants,

@@ -63,7 +63,7 @@ const useCart = () : any => {
 
       throwErrors(errors);
       setCart(data.cartAddItem);
-      const cookieIndex = context?.$odoo?.config?.app?.$config?.cart?.cookieIndex || 'orderLines.length';
+      const cookieIndex = context?.$odoo?.config?.app?.$config?.cart?.cookieIndex || 'cartQuantity';
       context.$odoo.config.app.$cookies.set('cart-size', resolvePath(data?.cartAddItem?.order, cookieIndex, 0) || 0);
 
       error.value.addToCart = null;
