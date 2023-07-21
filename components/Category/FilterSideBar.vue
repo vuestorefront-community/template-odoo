@@ -79,13 +79,14 @@
           :header="facet.label"
           class="filters__accordion-item"
         >
-          <template v-show="isFacetPrice(facet)">
+          <template>
             <SfRange
              :value="[20, 600]"
              :disabled="false"
              :config="config"
              v-model="price"
              class="range"
+             :class="isFacetPrice(facet) ? 'block' : 'hidden'"
              @change="selectPrice"
            />
           </template>
