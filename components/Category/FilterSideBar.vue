@@ -90,9 +90,10 @@
              @change="selectPrice"
            />
           </template>
-          <template v-show="facetHasMoreThanOneOption(facet)">
+          <template>
           <div
             v-if="isFacetColor(facet, facet.options)"
+            :class = "facetHasMoreThanOneOption(facet) ? 'block' : 'hidden'"
             class="filters__colors ml-10"
             :key="`${facet.value}-colors`"
           >
