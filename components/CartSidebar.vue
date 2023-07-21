@@ -210,7 +210,6 @@ export default {
     const mountUrlSlugForProductVariant = (product) => {
       if(product) {
         const { slug, variantAttributeValues } = product;
-
         return `${slug}?${variantAttributeValues
         ?.map((variant) => `${variant?.attribute?.name}=${variant?.id}&`)
         ?.join('')}`
