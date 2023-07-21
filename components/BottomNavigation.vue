@@ -21,16 +21,15 @@
       @click="handleAccountClick"
     />
     <div class="wishlist-wrapper">
-      <div class="relative w-10">
+      <div class="relative">
         <SfBottomNavigationItem
+          class="w-16"
           icon="heart"
           size="20px"
           label="Wishlist"
-          @click="toggleWishlistSidebar"
+          @click="handleWishlistSideBarClick"
         />
-        <SfBadge 
-          :class="{ 'hidden': TotalWishlistItems == 0 }"
-          class="sf-badge--number wishlist-badge">
+        <SfBadge v-show="TotalWishlistItems" class="sf-badge--number wishlist-badge">
           {{ TotalWishlistItems }}
         </SfBadge>
      </div>
@@ -40,7 +39,7 @@
     <SfBottomNavigationItem
       label="Basket"
       icon="add_to_cart"
-      @click="toggleCartSidebar"
+      @click="handleCartSideBarClick"
     >
       <template #icon>
         <SfCircleIcon class="cart-button" aria-label="Add to cart">
@@ -51,10 +50,10 @@
             :style="{ margin: '0 0 0 -2px' }"
           />
           <SfBadge 
-            :class="{ 'hidden': cartTotalItems == 0 }"
-            class="sf-badge--number cart-badge">
-            {{ cartTotalItems }}
-          </SfBadge>
+            :class="{ 'hidden': cartTotalItems == 0 }" 
+            class="sf-badge--number cart-badge">{{
+              cartTotalItems
+            }}</SfBadge>
         </SfCircleIcon>
       </template>
     </SfBottomNavigationItem>
@@ -68,10 +67,10 @@ import {
   SfCircleIcon,
   SfBadge
 } from '@storefront-ui/vue';
-import { useUiState } from '~/composables';
+import { useUiState, useCart } from '~/composables';
 import { useUser, cartGetters, useWishlist, wishlistGetters } from '@vue-storefront/odoo';
 import { computed, useRoute, useRouter } from '@nuxtjs/composition-api';
-import { useCart } from '~/composables'
+
 export default {
   components: {
     SfBottomNavigation,
@@ -90,7 +89,7 @@ export default {
       isMobileMenuOpen
     } = useUiState();
     const { load: loadUser, isAuthenticated: isLoggedIn } = useUser();
-    const { cartTotalItems } = useCart();
+    const { load: loadCart, cartTotalItems } = useCart();
     const { load: loadWishlist, wishlist } = useWishlist();
     
     const isAuthenticated = computed(() => {
@@ -117,9 +116,19 @@ export default {
       router.push(root.localePath('/'));
     };
 
+    const handleWishlistSideBarClick = async () => {
+      await loadWishlist();
+      toggleWishlistSidebar();
+    };
+
+    const handleCartSideBarClick = async () => {
+      await loadCart();
+      toggleCartSidebar();
+    };
+
     const TotalWishlistItems = computed(() => {
       const count = wishlistGetters.getTotalItems(wishlist.value)
-      return count ? count.toString() : root.$cookies?.get('wishlist-size') || 0;
+      return count ? count.toString() : root.$cookies.get('wishlist-size');
     });
 
     return {
@@ -132,7 +141,9 @@ export default {
       cartTotalItems,
       handleAccountClick,
       handleHomeClick,
-      TotalWishlistItems
+      TotalWishlistItems,
+      handleWishlistSideBarClick,
+      handleCartSideBarClick
     };
   }
 };
@@ -160,7 +171,7 @@ export default {
 .wishlist-badge {
   position: absolute;
   top: 0;
-  right: 0;
+  right: 10px;
 }
 .cart-button {
   position: relative;

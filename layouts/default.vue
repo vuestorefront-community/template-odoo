@@ -28,25 +28,26 @@
 
 <script>
 import LazyHydrate from 'vue-lazy-hydration';
-import CartSidebar from '@/components/CartSidebar.vue';
-import WishlistSidebar from '@/components/WishlistSidebar.vue';
-import LoginModal from '@/components/LoginModal.vue';
+import CartSidebar from '@/components/CartSidebar';
+import WishlistSidebar from '@/components/WishlistSidebar';
+import LoginModal from '@/components/LoginModal';
 import MobileMenuSidebar from '@/components/MobileMenuSidebar';
+import BottomNavigation from '@/components/BottomNavigation';
 
 export default {
   name: 'DefaultLayout',
 
   components: {
     LazyHydrate,
-    MobileMenuSidebar,
     TopBar: () => import('@/components/TopBar'),
     AppHeader: () => import('@/components/AppHeader'),
     AppFooter: () => import('@/components/AppFooter'),
     Notification: () => import('@/components/Notification'),
-    BottomNavigation: () => import('@/components/BottomNavigation'),
     CartSidebar,
     WishlistSidebar,
-    LoginModal
+    LoginModal,
+    MobileMenuSidebar,
+    BottomNavigation
   }
 };
 </script>
