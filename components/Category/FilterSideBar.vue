@@ -79,19 +79,21 @@
           :header="facet.label"
           class="filters__accordion-item"
         >
-          <template v-show="isFacetPrice(facet)">
+          <template>
             <SfRange
              :value="[20, 600]"
              :disabled="false"
              :config="config"
              v-model="price"
              class="range"
+             :class="isFacetPrice(facet) ? 'block' : 'hidden'"
              @change="selectPrice"
            />
           </template>
-          <template v-show="facetHasMoreThanOneOption(facet)">
+          <template>
           <div
             v-if="isFacetColor(facet, facet.options)"
+            :class = "facetHasMoreThanOneOption(facet) ? 'block' : 'hidden'"
             class="filters__colors ml-10"
             :key="`${facet.value}-colors`"
           >
