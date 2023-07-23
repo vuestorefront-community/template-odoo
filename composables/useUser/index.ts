@@ -1,7 +1,6 @@
 import { computed, watch } from '@nuxtjs/composition-api';
 import { useVSFContext } from '@vue-storefront/core';
 import { useUser as baseUseUser, useWishlist } from '@vue-storefront/odoo';
-import { AgnosticUser } from '@vue-storefront/odoo-api';
 import useCart from '../useCart';
 
 //@tutorial temporary composable to handle new behaviour of not loading user on ssr.
