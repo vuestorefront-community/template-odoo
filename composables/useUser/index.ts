@@ -10,7 +10,7 @@ const useUser = () : any => {
   const { load : loadCart, setCart } = useCart();
   const { setWishlist, load : loadWishlist } = useWishlist();
 
-  const { user, logout : baseLogout, setUser, load: loadUser } = baseUseUser();
+  const { user, logout : baseLogout, setUser, login: baseLogin } = baseUseUser();
 
   const isAuthenticated = computed(() => {
     const cookie = context.$odoo.config.app.$cookies.get('odoo-user');
@@ -32,16 +32,15 @@ const useUser = () : any => {
   const login = async (params: any & { customQuery }) => {
     const { customQuery } = params;
 
-    const { data, errors } = await context.$odoo.api.logInUser(params.user, customQuery);
+    await baseLogin(params);
 
-    setUser(data?.login?.partner);
     setCart(null);
     setWishlist(null);
     await loadCart()
     await loadWishlist()
 
-    context.$odoo.config.app.$cookies.set('odoo-user', data?.login?.partner, { sameSite: true, path: '/' });
-    return data?.login?.partner;
+    context.$odoo.config.app.$cookies.set('odoo-user', user?.value, { sameSite: true, path: '/' });
+    return user?.value;
   }
 
   return {
