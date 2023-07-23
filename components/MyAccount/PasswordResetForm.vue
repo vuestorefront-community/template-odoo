@@ -1,6 +1,6 @@
 <template>
-  <ValidationObserver v-slot="{ handleSubmit, invalid }">
-    <form class="form" @submit.prevent="handleSubmit(submitForm)">
+  <ValidationObserver v-slot="{ handleSubmit, invalid, reset }">
+    <form class="form" @submit.prevent="handleSubmit(submitForm(reset))">
       <h1 class="mb-5">{{ $t('Update password') }}</h1>
 
       <ValidationProvider
@@ -85,7 +85,7 @@ export default {
     });
     const form = ref(resetForm());
 
-    const submitForm = async () => {
+    const submitForm = async (reset) => {
       await updatePassword(form.value.currentPassword, form.value.newPassword);
 
       if (errors.value) {
@@ -96,6 +96,7 @@ export default {
       }
 
       form.value = resetForm();
+      await reset()
 
       send({
         message: root.$t('Successfull update!'),
