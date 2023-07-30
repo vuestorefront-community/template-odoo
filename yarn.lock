@@ -1089,9 +1089,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@erpgap/odoo-sdk-api-client@npm:0.1.1, @erpgap/odoo-sdk-api-client@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "@erpgap/odoo-sdk-api-client@npm:0.1.1"
+"@erpgap/odoo-sdk-api-client@npm:0.1.2, @erpgap/odoo-sdk-api-client@npm:^0.1.2":
+  version: 0.1.2
+  resolution: "@erpgap/odoo-sdk-api-client@npm:0.1.2"
   dependencies:
     "@apollo/client": ^3.7.16
     "@vue-storefront/middleware": 3.0.0-rc.2
@@ -1100,17 +1100,17 @@ __metadata:
     cross-fetch: ^4.0.0
     graphql: ^16.7.1
     winston: ^3.9.0
-  checksum: cec23151f2b2e3cc9eb924f31ad8785065832a3e4051b987368269d43e168382c22256fc39ac7bc049d7b046b0e2f156969489e894087363cad252ffe9ad58d9
+  checksum: a7f2109e4d572ac9f1b036b26446c48a3c20cf8944891a057e60aa5b8f50c1480512ae7850d3927451f647dfe584be20b33fe83aefad50b21c05a04baca0c2ff
   languageName: node
   linkType: hard
 
-"@erpgap/odoo-sdk@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "@erpgap/odoo-sdk@npm:0.1.1"
+"@erpgap/odoo-sdk@npm:^0.1.2":
+  version: 0.1.2
+  resolution: "@erpgap/odoo-sdk@npm:0.1.2"
   dependencies:
     "@apollo/client": ^3.7.16
     axios: ^1.4.0
-  checksum: f754fc61d9a2394da253d45f146dc740766bc35ccb58350cab4987c3494b801f96b2280b70c16df96299f3517420a74481b561ee8539cdc4e8c68673a9b676a5
+  checksum: cdd7c6d71ef20c90ccc3c232258870b9a69c440709180b22877dbc77d2af70a598788d64603789786e22e277d5d4ad66b5075a2d28987f4b5e5724295645d93a
   languageName: node
   linkType: hard
 
@@ -13874,7 +13874,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "server@workspace:apps/server"
   dependencies:
-    "@erpgap/odoo-sdk-api-client": 0.1.1
+    "@erpgap/odoo-sdk-api-client": 0.1.2
     "@vue-storefront/middleware": 3.0.1
     cors: ^2.8.5
     nodemon: ^2.0.19
@@ -16231,8 +16231,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "web@workspace:apps/web"
   dependencies:
-    "@erpgap/odoo-sdk": ^0.1.1
-    "@erpgap/odoo-sdk-api-client": ^0.1.1
+    "@erpgap/odoo-sdk": ^0.1.2
+    "@erpgap/odoo-sdk-api-client": ^0.1.2
     "@nuxt/devtools": ^0.7.1
     "@nuxtjs/tailwindcss": ^6.6.5
     "@storefront-ui/typography": ^2.0.0
