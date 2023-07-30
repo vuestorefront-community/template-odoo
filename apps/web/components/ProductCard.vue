@@ -2,9 +2,9 @@
 defineProps({
   product: {
     type: Object as PropType<Product>,
-    required: true,
+    required: true
   }
-})
+});
 
 import { SfRating, SfCounter, SfLink, SfButton, SfIconShoppingCart, SfIconFavorite } from '@storefront-ui/vue';
 import { Product } from '@vue-storefront/integration-odoo-api';
@@ -36,7 +36,7 @@ import { Product } from '@vue-storefront/integration-odoo-api';
         <SfLink href="#" variant="secondary" class="no-underline"> {{product.name }} </SfLink>
         <div class="flex items-center pt-1">
           <SfRating size="xs" :value="5" :max="5" />
-  
+
           <SfLink href="#" variant="secondary" class="pl-1 no-underline">
             <SfCounter size="xs">123</SfCounter>
           </SfLink>
@@ -54,6 +54,4 @@ import { Product } from '@vue-storefront/integration-odoo-api';
       </div>
     </div>
   </template>
-  
 
-  
