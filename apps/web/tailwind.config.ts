@@ -7,4 +7,12 @@ export default <Config>{
   content: ['./**/*.vue', '../../node_modules/@storefront-ui/vue/**/*.{js,mjs}'],
   plugins: [sfTypography],
   css: ['~/assets/css/tailwind.css'],
+
+  theme: {
+    extend: {
+      screens: {
+        xxl: '1440px',
+      },
+    },
+  },
 };

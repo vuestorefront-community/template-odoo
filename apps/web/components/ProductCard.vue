@@ -1,57 +1,69 @@
-<script lang="ts" setup>
+<template>
+  <div
+    class="border border-neutral-200 rounded-md hover:shadow-lg flex-auto flex-shrink-0"
+    data-testid="product-card"
+  >
+    <div class="relative">
+      <SfLink :tag="NuxtLink" to="/">
+        <NuxtImg
+          :src="imageUrl"
+          :alt="imageAlt"
+          class="object-cover rounded-md aspect-square w-full h-full"
+          data-testid="image-slot"
+          width="190"
+          height="190"
+          format="webp"
+        />
+      </SfLink>
+    </div>
+    <div class="p-2 border-t border-neutral-200 typography-text-sm">
+      <SfLink :tag="NuxtLink" to="/" class="no-underline" variant="secondary">
+        {{ name }}
+      </SfLink>
+      <div class="flex items-center pt-1">
+        <SfRating size="xs" :value="rating ?? 0" :max="5" />
+        <SfLink
+          to="#"
+          variant="secondary"
+          :tag="NuxtLink"
+          class="ml-1 no-underline"
+        >
+          <SfCounter size="xs">{{ ratingCount }}</SfCounter>
+        </SfLink>
+      </div>
+      <span
+        class="block pb-2 pt-4 font-bold typography-text-sm"
+        data-testid="product-card-vertical-price"
+      >
+        ${{ price }}
+      </span>
+      <SfButton type="button" size="sm">
+        <template #prefix>
+          <SfIconShoppingCart size="sm" />
+        </template>
+        Add
+      </SfButton>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import {
+  SfLink,
+  SfRating,
+  SfCounter,
+  SfButton,
+  SfIconShoppingCart,
+} from '@storefront-ui/vue';
+
 defineProps({
-  product: {
-    type: Object as PropType<Product>,
-    required: true
-  }
+  imageUrl: String,
+  imageAlt: String,
+  name: String,
+  ratingCount: String,
+  rating: Number,
+  price: String,
 });
 
-import { SfRating, SfCounter, SfLink, SfButton, SfIconShoppingCart, SfIconFavorite } from '@storefront-ui/vue';
-import { Product } from '@vue-storefront/integration-odoo-api';
+const NuxtLink = resolveComponent('NuxtLink');
 </script>
-<template>
-    <div class="border border-neutral-200 rounded-md hover:shadow-lg max-w-[300px]">
-      <div class="relative">
-        <SfLink href="#">
-          <img
-            :src="`https://vsfdemo15.labs.odoogap.com${product.image}`"
-            alt="Great product"
-            class="block object-cover h-auto rounded-md aspect-square"
-            :width="300"
-            :height="300"
-          />
-        </SfLink>
-        <SfButton
-          type="button"
-          variant="tertiary"
-          size="sm"
-          square
-          class="absolute bottom-0 right-0 mr-2 mb-2 bg-white border border-neutral-200 !rounded-full"
-          aria-label="Add to wishlist"
-        >
-          <SfIconFavorite size="sm" />
-        </SfButton>
-      </div>
-      <div class="p-4 border-t border-neutral-200">
-        <SfLink href="#" variant="secondary" class="no-underline"> {{product.name }} </SfLink>
-        <div class="flex items-center pt-1">
-          <SfRating size="xs" :value="5" :max="5" />
-
-          <SfLink href="#" variant="secondary" class="pl-1 no-underline">
-            <SfCounter size="xs">123</SfCounter>
-          </SfLink>
-        </div>
-        <p class="block py-2 font-normal leading-5 typography-text-sm text-neutral-700">
-          Lightweight • Non slip • Flexible outsole • Easy to wear on and off
-        </p>
-        <span class="block pb-2 font-bold typography-text-lg">$2345,99</span>
-        <SfButton type="button" size="sm">
-          <template #prefix>
-            <SfIconShoppingCart size="sm" />
-          </template>
-          Add to cart
-        </SfButton>
-      </div>
-    </div>
-  </template>
-

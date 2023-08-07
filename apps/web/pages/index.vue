@@ -8,9 +8,10 @@ const { data } = await useAsyncData(
 </script>
 
 <template>
-  <div>
-    <MainBanner />
-    <CategoryCard />
-    <!-- <Display/> -->
-  </div>
+  <MainBanner />
+  <CategoryCard />
+  <Display />
+  <section class="pb-16">
+    <ProductSlider />
+  </section>
 </template>

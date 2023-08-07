@@ -1,13 +1,11 @@
 <template>
-  <Navbar />
-  <main
-    class="flex justify-center w-full py-2 px-4 lg:py-5 lg:px-6 bg-white"
-  >
-    <NuxtPage class="flex flex-col items-center h-full max-w-[1336px]" />
+  <TheHeader />
+  <main class="w-full px-4 md:px-6 xl:px-8 xxl:px-0 max-w-[1336px] mx-auto bg-white">
+    <NuxtPage />
   </main>
 
   <Newsletter />
-  <Footer/>
+  <TheFooter />
 </template>
 
 <script lang="ts" setup></script>
