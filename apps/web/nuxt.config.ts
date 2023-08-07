@@ -1,18 +1,17 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@nuxtjs/tailwindcss'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxt/image'],
 
   vite: {
     server: {
       fs: {
-        strict: false
+        strict: false,
         // used to allow importing from outside of the root directory
-      }
-    }
-
+      },
+    },
   },
 
   devtools: {
-    enabled: true
-  }
+    enabled: true,
+  },
 });

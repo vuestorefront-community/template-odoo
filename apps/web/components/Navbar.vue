@@ -1,123 +1,210 @@
-<script lang="ts" setup>
+<!-- eslint-disable no-undef -->
+<script setup lang="ts">
 import {
+  SfBadge,
   SfButton,
+  SfIconExpandMore,
   SfIconShoppingCart,
   SfIconFavorite,
-  SfIconPerson,
-  SfIconExpandMore,
-  SfInput,
+  SfIconClose,
   SfIconSearch,
-  SfIconMenu,
-  useDisclosure
+  SfInput,
+  SfIconCancel,
+  SfIconPerson,
+  SfDropdown,
+  SfListItem,
+  SfModal,
+  useDisclosure,
 } from '@storefront-ui/vue';
+import { unrefElement } from '@vueuse/core';
+import { DefaultLayoutProps } from '~/layouts/types';
 
-const { toggle } = useDisclosure();
+const { open } = useDisclosure();
 
+const inputModel = ref('');
+const inputReference = ref<HTMLSpanElement>();
+const handleInputFocus = () => {
+  const inputElement = unrefElement(inputReference)?.querySelector('input');
+  inputElement?.focus();
+};
+const handleReset = () => {
+  inputModel.value = '';
+  handleInputFocus();
+};
+const handleSubmit = () => {
+  handleReset();
+};
 
-const actionItems = [
+watch(inputModel, () => {
+  if (inputModel.value === '') {
+    handleReset();
+  }
+});
+
+const { isOpen: isAccountDropdownOpen, toggle: accountDropdownToggle } =
+  useDisclosure();
+const {
+  isOpen: isSearchModalOpen,
+  open: searchModalOpen,
+  close: searchModalClose,
+} = useDisclosure();
+
+defineProps<DefaultLayoutProps>();
+
+const NuxtLink = resolveComponent('NuxtLink');
+const cartLineItemsCount = 3;
+
+const accountDropdown = [
   {
-    icon: SfIconShoppingCart,
-    ariaLabel: 'Cart',
-    role: 'button',
-    label: '',
+    label: 'My Account',
+    link: '/',
   },
   {
-    icon: SfIconFavorite,
-    ariaLabel: 'Wishlist',
-    role: 'button',
-    label: '',
+    label: 'My Orders',
+    link: '/',
   },
   {
-    label: 'Log in',
-    icon: SfIconPerson,
-    ariaLabel: 'Log in',
-    role: 'login',
+    label: 'Returns',
+    link: '/',
+  },
+  {
+    label: 'Logout',
+    link: '/',
   },
 ];
-
-const inputValue = ref(''); 
-
-const search = () => {
-  alert(`Successfully found 10 results for ${inputValue.value}`);
-};
 </script>
 
 <template>
-    <header class="flex justify-center w-full py-2 px-4 lg:py-5 lg:px-6 bg-white border-b border-neutral-200">
-      <div class="flex flex-wrap lg:flex-nowrap items-center flex-row justify-start h-full max-w-[1336px] w-full">
-        <NuxtLink
-          to="/"
-          aria-label="SF Homepage"
-          class="inline-block mr-4 focus-visible:outline focus-visible:outline-offset focus-visible:rounded-sm shrink-0"
-        >
-          <picture>
-            <source srcset="https://storage.googleapis.com/sfui_docs_artifacts_bucket_public/production/vsf_logo.svg" media="(min-width: 768px)" />
-            <img
-              src="https://storage.googleapis.com/sfui_docs_artifacts_bucket_public/production/vsf_logo_sign.svg"
-              alt="Sf Logo"
-              class="w-8 h-8 md:h-6 md:w-[176px] lg:w-[12.5rem] lg:h-[1.75rem]"
-            />
-          </picture>
-        </NuxtLink>
-        <SfButton aria-label="Open categories" class="lg:hidden order-first lg:order-1 mr-4" square variant="tertiary">
-          <SfIconMenu />
-        </SfButton>
-        <nuxt-link to="/category/1">
-          <SfButton class="hidden lg:flex lg:mr-4" type="button" variant="tertiary" @click="toggle()">
-            <template #suffix>
-              <SfIconExpandMore class="hidden lg:block" />
-            </template>
-            <span class="hidden lg:flex whitespace-nowrap" >Browse products</span>
-          </SfButton>
-        </nuxt-link>
+  <header
+    class="h-14 md:h-20 flex z-50 md:sticky md:-top-5 md:pt-2.5 md:shadow-md bg-primary-700 text-white"
+    data-testid="navbar-top"
+  >
+    <div
+      class="flex gap-[clamp(1rem,3vw,3rem)] items-center w-full max-w-[1336px] md:h-[60px] max-w-screen-3xl px-4 md:px-6 lg:px-0 mx-auto sticky top-0 justify-between md:justify-normal"
+    >
+      <NuxtLink to="/" aria-label="Sf Homepage" class="h-6 md:h-7 -mt-1.5">
+        <VsfLogo />
+      </NuxtLink>
+      <SfButton
+        class="!px-2 mr-auto hidden lg:flex text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900"
+        type="button"
+        variant="tertiary"
+        :tag="NuxtLink"
+        to="/category/1"
+      >
+        <template #suffix>
+          <SfIconExpandMore class="hidden lg:block" />
+        </template>
+        <span class="hidden lg:flex whitespace-nowrap">Browse products</span>
+      </SfButton>
+      <div class="hidden md:block flex-1">
         <form
+          ref="referenceRef"
           role="search"
-          class="flex flex-[100%] order-last lg:order-3 mt-2 lg:mt-0 pb-2 lg:pb-0"
-          @submit.prevent="search"
+          class="relative"
+          @submit.prevent="handleSubmit"
         >
           <SfInput
-            v-model="inputValue"
-            type="search"
-            class="[&::-webkit-search-cancel-button]:appearance-none"
+            ref="inputReference"
+            v-model="inputModel"
+            aria-label="Search"
             placeholder="Search"
-            wrapper-class="flex-1 h-10 pr-0"
-            size="base"
+            @focus="open"
           >
+            <template #prefix>
+              <SfIconSearch />
+            </template>
             <template #suffix>
-              <span class="flex items-center">
-                <SfButton
-                  variant="tertiary"
-                  square
-                  aria-label="search"
-                  type="submit"
-                  class="rounded-l-none hover:bg-transparent active:bg-transparent"
-                >
-                  <SfIconSearch />
-                </SfButton>
-              </span>
+              <button
+                v-if="inputModel"
+                type="button"
+                aria-label="Reset search"
+                class="flex rounded-md focus-visible:outline focus-visible:outline-offset"
+                @click="handleReset"
+              >
+                <SfIconCancel />
+              </button>
             </template>
           </SfInput>
         </form>
-        <nav class="flex-1 flex justify-end lg:order-last lg:ml-4">
-          <div class="flex flex-row flex-nowrap">
-            <SfButton
-              v-for="actionItem in actionItems"
-              :key="actionItem.ariaLabel"
-              class="mr-2 -ml-0.5 rounded-md text-primary-700 hover:bg-primary-100 active:bg-primary-200 hover:text-primary-600 active:text-primary-700"
-              :aria-label="actionItem.ariaLabel"
-              variant="tertiary"
-              square
-            >
-              <template #prefix>
-                <Component :is="actionItem.icon" />
-              </template>
-              <span v-if="actionItem.role === 'login'" class="hidden xl:inline-flex whitespace-nowrap">{{
-                actionItem.label
-              }}</span>
-            </SfButton>
-          </div>
-          
-        </nav>
       </div>
-    </header>
-  </template>
+      <nav class="hidden md:flex md:flex-row md:flex-nowrap">
+        <SfButton
+          class="group relative text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 mr-1 -ml-0.5 rounded-md"
+          to="/"
+          :aria-label="cartLineItemsCount"
+          variant="tertiary"
+          square
+        >
+          <template #prefix>
+            <SfIconFavorite />
+            <SfBadge
+              :content="cartLineItemsCount"
+              class="outline outline-primary-700 bg-white !text-neutral-900 group-hover:outline-primary-800 group-active:outline-primary-900 flex justify-center"
+              data-testid="cart-badge"
+            />
+          </template>
+        </SfButton>
+        <SfButton
+          class="group relative text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 mr-1 -ml-0.5 rounded-md"
+          to="/"
+          :aria-label="cartLineItemsCount"
+          variant="tertiary"
+          square
+        >
+          <template #prefix>
+            <SfIconShoppingCart />
+            <SfBadge
+              :content="cartLineItemsCount"
+              class="outline outline-primary-700 bg-white !text-neutral-900 group-hover:outline-primary-800 group-active:outline-primary-900 flex justify-center"
+              data-testid="cart-badge"
+            />
+          </template>
+        </SfButton>
+        <SfDropdown v-model="isAccountDropdownOpen" placement="bottom-end">
+          <template #trigger>
+            <SfButton
+              variant="tertiary"
+              class="relative text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 rounded-md"
+              :class="{ 'bg-primary-900': isAccountDropdownOpen }"
+              @click="accountDropdownToggle()"
+            >
+              <template #prefix><SfIconPerson /></template>
+              Log In
+            </SfButton>
+          </template>
+          <ul
+            class="rounded bg-white shadow-md border border-neutral-100 text-neutral-900 min-w-[152px] py-2"
+          >
+            <li v-for="{ label, link } in accountDropdown" :key="label">
+              <template v-if="label === 'account.logout'">
+                <UiDivider class="my-2" />
+                <SfListItem
+                  tag="button"
+                  class="text-left"
+                  @click="accountDropdownToggle()"
+                  >{{ label }}</SfListItem
+                >
+              </template>
+              <SfListItem
+                v-else
+                :to="link"
+                :class="{ 'bg-neutral-200': $route.path === link }"
+              >
+                {{ label }}
+              </SfListItem>
+            </li>
+          </ul>
+        </SfDropdown>
+      </nav>
+      <SfButton
+        variant="tertiary"
+        class="relative text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 rounded-md md:hidden"
+        square
+        @click="searchModalOpen"
+      >
+        <SfIconSearch />
+      </SfButton>
+    </div>
+  </header>
+</template>

@@ -1,81 +1,58 @@
 <template>
-    <div class="flex flex-col md:flex-row flex-wrap gap-6 max-w-[1540px]">
+  <div class="relative min-h-[600px] mb-10">
+    <div
+      class="md:flex md:flex-row-reverse md:justify-center min-h-[600px] max-w-screen-3xl mx-auto"
+    >
       <div
-        v-for="{
-          image,
-          title,
-          subtitle,
-          description,
-          buttonText,
-          backgroundColor,
-          reverse,
-          titleClass,
-          subtitleClass,
-        } in displayDetails"
-        :key="title"
-        :class="[
-          'relative flex md:max-w-[1536px] md:[&:not(:first-of-type)]:flex-1 md:first-of-type:w-full',
-          backgroundColor,
-        ]"
+        class="flex flex-col justify-center md:basis-2/4 md:items-stretch md:overflow-hidden"
       >
-        <a
-          class="absolute w-full h-full z-1 focus-visible:outline focus-visible:rounded-lg"
-          :aria-label="title"
-          href="#"
+        <NuxtImg
+          src="/images/hero.png"
+          alt="Hero"
+          class="h-auto w-full object-cover object-left"
+          width="764"
+          height="600"
+          fetchpriority="high"
+          format="webp"
+          preload
         />
-        <div :class="['flex justify-between overflow-hidden grow', { 'flex-row-reverse': reverse }]">
-          <div class="flex flex-col justify-center items-start p-6 lg:p-10 max-w-1/2">
-            <p :class="['uppercase typography-text-xs block font-bold tracking-widest', subtitleClass]">
-              {{ subtitle }}
-            </p>
-            <h2 :class="['mb-4 mt-2 font-bold typography-headline-3', titleClass]">
-              {{ title }}
-            </h2>
-            <p class="typography-text-base block mb-4">
-              {{ description }}
-            </p>
-            <SfButton class="!bg-black">{{ buttonText }}</SfButton>
-          </div>
-          <img :src="image" :alt="title" class="w-1/2 self-end object-contain" />
+      </div>
+      <div
+        class="md:flex md:flex-col md:justify-center md:items-start md:basis-2/4"
+      >
+        <p
+          class="typography-text-xs md:typography-text-sm font-bold tracking-widest text-neutral-500 uppercase"
+        >
+          SPECIAL OFFER
+        </p>
+        <h1
+          class="typography-headline-2 md:typography-headline-1 md:leading-[67.5px] font-bold mt-2 mb-4"
+        >
+          Sneaker hot drops
+        </h1>
+        <p class="typography-text-base md:typography-text-lg">
+          This fashionable sneaker collection features various colors, comfort
+          and style.
+        </p>
+        <div class="flex flex-col md:flex-row gap-4 mt-6">
+          <SfButton size="lg" :tag="NuxtLink" to="/"> Order Now </SfButton>
+          <SfButton
+            size="lg"
+            :tag="NuxtLink"
+            to="/"
+            class="bg-white"
+            variant="secondary"
+          >
+            Show More
+          </SfButton>
         </div>
       </div>
     </div>
-  </template>
-  
-  <script lang="ts" setup>
-  import { SfButton } from '@storefront-ui/vue';
-  
-  const displayDetails = [
-    {
-      image: 'https://storage.googleapis.com/sfui_docs_artifacts_bucket_public/production/display.png',
-      title: 'Sunny Days Ahead',
-      subtitle: 'Be inspired',
-      description: 'Step out in style with our sunglasses collection',
-      buttonText: 'Discover now',
-      reverse: false,
-      backgroundColor: 'bg-negative-200',
-      titleClass: 'md:typography-headline-2',
-      subtitleClass: 'md:typography-headline-6',
-      descriptionClass: 'md:typography-text-lg',
-    },
-    {
-      image: 'https://storage.googleapis.com/sfui_docs_artifacts_bucket_public/production/display-2.png',
-      title: 'Pack it Up',
-      subtitle: 'Be active',
-      description: 'Explore the great outdoors with our backpacks',
-      buttonText: 'Discover now',
-      reverse: true,
-      backgroundColor: 'bg-warning-200',
-    },
-    {
-      image: 'https://storage.googleapis.com/sfui_docs_artifacts_bucket_public/production/display-3.png',
-      title: 'Fresh and Bold',
-      subtitle: 'New collection',
-      description: 'Add a pop up color to your outfit',
-      buttonText: 'Discover now',
-      reverse: false,
-      backgroundColor: 'bg-secondary-200',
-    },
-  ];
-  </script>
-  
+  </div>
+</template>
+
+<script setup lang="ts">
+import { SfButton } from '@storefront-ui/vue';
+
+const NuxtLink = resolveComponent('NuxtLink');
+</script>

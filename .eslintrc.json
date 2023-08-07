@@ -46,7 +46,6 @@
     "array-bracket-spacing": 2,
     "space-in-parens": 2,
     "no-trailing-spaces": 2,
-    "comma-dangle": 2,
     "comma-style": 2,
     "space-infix-ops": 2,
     "keyword-spacing": 2,
@@ -140,7 +139,9 @@
     "@typescript-eslint/explicit-function-return-type": 0,
     "@typescript-eslint/no-unused-vars": 0,
     "@typescript-eslint/ban-ts-ignore": 0,
-    "@typescript-eslint/explicit-module-boundary-types": "off"
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "comma-dangle": "off",
+    "@typescript-eslint/comma-dangle": "off"
   },
   "overrides": [
     {
