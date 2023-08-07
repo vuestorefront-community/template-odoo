@@ -14,6 +14,6 @@ export default function (req, res, next) {
         console.log('----- REQUEST ENDS. -----');
         console.log('-------------------------');  
         console.log('')            
-        next();
     }
+    next();
 }
