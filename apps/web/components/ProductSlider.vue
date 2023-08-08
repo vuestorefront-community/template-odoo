@@ -5,7 +5,7 @@ const products = ref([
   {
     id: 1,
     name: 'Athletic mens walking sneakers',
-    primaryImage: '/images/product.webp',
+    image: '/images/product.webp',
     slug: '/images/product.webp',
     imageAlt: 'imageAlt',
     rating: 4,
@@ -15,7 +15,7 @@ const products = ref([
   {
     id: 2,
     name: 'Athletic mens walking sneakers',
-    primaryImage: '/images/product.webp',
+    image: '/images/product.webp',
     slug: '/images/product.webp',
     imageAlt: 'imageAlt',
     rating: 4,
@@ -25,7 +25,7 @@ const products = ref([
   {
     id: 3,
     name: 'Athletic mens walking sneakers',
-    primaryImage: '/images/product.webp',
+    image: '/images/product.webp',
     slug: '/images/product.webp',
     imageAlt: 'imageAlt',
     rating: 4,
@@ -35,7 +35,7 @@ const products = ref([
   {
     id: 4,
     name: 'Athletic mens walking sneakers',
-    primaryImage: '/images/product.webp',
+    image: '/images/product.webp',
     slug: '/images/product.webp',
     imageAlt: 'imageAlt',
     rating: 4,
@@ -45,7 +45,7 @@ const products = ref([
   {
     id: 5,
     name: 'Athletic mens walking sneakers',
-    primaryImage: '/images/product.webp',
+    image: '/images/product.webp',
     slug: '/images/product.webp',
     imageAlt: 'imageAlt',
     rating: 4,
@@ -55,7 +55,7 @@ const products = ref([
   {
     id: 6,
     name: 'Athletic mens walking sneakers',
-    primaryImage: '/images/product.webp',
+    image: '/images/product.webp',
     slug: '/images/product.webp',
     imageAlt: 'imageAlt',
     rating: 4,
@@ -65,7 +65,7 @@ const products = ref([
   {
     id: 7,
     name: 'Athletic mens walking sneakers',
-    primaryImage: '/images/product.webp',
+    image: '/images/product.webp',
     slug: '/images/product.webp',
     imageAlt: 'imageAlt',
     rating: 4,
@@ -75,7 +75,7 @@ const products = ref([
   {
     id: 8,
     name: 'Athletic mens walking sneakers',
-    primaryImage: '/images/product.webp',
+    image: '/images/product.webp',
     slug: '/images/product.webp',
     imageAlt: 'imageAlt',
     rating: 4,
@@ -85,7 +85,7 @@ const products = ref([
   {
     id: 9,
     name: 'Athletic mens walking sneakers',
-    primaryImage: '/images/product.webp',
+    image: '/images/product.webp',
     slug: '/images/product.webp',
     imageAlt: 'imageAlt',
     rating: 4,
@@ -95,7 +95,7 @@ const products = ref([
   {
     id: 10,
     name: 'Athletic mens walking sneakers',
-    primaryImage: '/images/product.webp',
+    image: '/images/product.webp',
     slug: '/images/product.webp',
     imageAlt: 'imageAlt',
     rating: 4,
@@ -118,12 +118,12 @@ const products = ref([
   >
     <UiProductCard
       v-for="product in products"
-      :key="product.id"
       class="max-w-[192px]"
-      :name="product.name ?? ''"
+      :key="product.id"
       :slug="product.slug"
-      :image-url="product.primaryImage"
-      :image-alt="product.primaryImage"
+      :name="product.name"
+      :image-url="product.image"
+      :image-alt="product.image"
       :price="product.price"
       :rating-count="product.ratingCount"
       :rating="product.rating"

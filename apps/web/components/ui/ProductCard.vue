@@ -1,23 +1,51 @@
+<script lang="ts" setup>
+import {
+  SfRating,
+  SfCounter,
+  SfLink,
+  SfButton,
+  SfIconShoppingCart,
+  SfIconFavorite,
+} from '@storefront-ui/vue';
+
+defineProps({
+  imageUrl: String,
+  imageAlt: String,
+  name: String,
+  description: String,
+  ratingCount: String,
+  rating: Number,
+  price: String,
+});
+
+const NuxtLink = resolveComponent('NuxtLink');
+</script>
 <template>
-  <div
-    class="border border-neutral-200 rounded-md hover:shadow-lg flex-auto flex-shrink-0"
-    data-testid="product-card"
-  >
+  <div class="relative border border-neutral-200 rounded-md hover:shadow-lg">
     <div class="relative">
-      <SfLink :tag="NuxtLink" to="/">
+      <SfLink href="#">
         <NuxtImg
           :src="imageUrl"
           :alt="imageAlt"
-          class="object-cover rounded-md aspect-square w-full h-full"
-          data-testid="image-slot"
-          width="190"
-          height="190"
-          format="webp"
+          class="rounded-md"
+          fit="fill"
+          width="full"
+          height="full"
         />
       </SfLink>
+      <SfButton
+        type="button"
+        variant="tertiary"
+        size="sm"
+        square
+        class="absolute bottom-0 right-0 mr-2 mb-2 bg-white border border-neutral-200 !rounded-full"
+        aria-label="Add to wishlist"
+      >
+        <SfIconFavorite size="sm" />
+      </SfButton>
     </div>
     <div class="p-2 border-t border-neutral-200 typography-text-sm">
-      <SfLink :tag="NuxtLink" to="/" class="no-underline" variant="secondary">
+      <SfLink href="#" variant="secondary" class="no-underline">
         {{ name }}
       </SfLink>
       <div class="flex items-center pt-1">
@@ -31,13 +59,16 @@
           <SfCounter size="xs">{{ ratingCount }}</SfCounter>
         </SfLink>
       </div>
-      <span
-        class="block pb-2 pt-4 font-bold typography-text-sm"
-        data-testid="product-card-vertical-price"
+      <p
+      v-if="description"
+        class="block py-2 font-normal leading-5 typography-text-sm text-neutral-700"
       >
-        ${{ price }}
-      </span>
-      <SfButton type="button" size="sm">
+        {{ description }}
+      </p>
+      <span class="block pb-10 pt-3 font-bold typography-text-sm"
+        >${{ price }}</span
+      >
+      <SfButton type="button" class="absolute bottom-2" size="sm">
         <template #prefix>
           <SfIconShoppingCart size="sm" />
         </template>
@@ -46,24 +77,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import {
-  SfLink,
-  SfRating,
-  SfCounter,
-  SfButton,
-  SfIconShoppingCart,
-} from '@storefront-ui/vue';
-
-defineProps({
-  imageUrl: String,
-  imageAlt: String,
-  name: String,
-  ratingCount: String,
-  rating: Number,
-  price: String,
-});
-
-const NuxtLink = resolveComponent('NuxtLink');
-</script>

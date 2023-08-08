@@ -36,8 +36,8 @@
         "functions": false
       }
     ],
-    "no-undef": 2,
-    "no-unused-vars": 0,
+    "no-undef": "off",
+    "no-unused-vars": "off",
     "brace-style": 2,
     "no-mixed-spaces-and-tabs": 2,
     "no-empty-pattern": 0,
@@ -140,8 +140,7 @@
     "@typescript-eslint/no-unused-vars": 0,
     "@typescript-eslint/ban-ts-ignore": 0,
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    "comma-dangle": "off",
-    "@typescript-eslint/comma-dangle": "off"
+    "comma-dangle": "off"
   },
   "overrides": [
     {

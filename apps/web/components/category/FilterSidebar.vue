@@ -1,15 +1,5 @@
 <template>
   <aside class="w-full md:max-w-[376px]">
-    <div class="flex justify-between mb-4">
-      <h4 class="px-2 font-bold typography-headline-4">List settings</h4>
-      <button
-        type="button"
-        class="sm:hidden text-neutral-500"
-        aria-label="Close filters panel"
-      >
-        <SfIconClose />
-      </button>
-    </div>
     <h5
       class="py-2 px-4 mb-6 bg-neutral-100 typography-headline-6 font-bold text-neutral-900 uppercase tracking-widest md:rounded-md"
     >
@@ -39,25 +29,13 @@
       >
         <SfAccordionItem v-model="opened[index]">
           <template #summary>
-            <div class="flex justify-between p-2 mb-2">
+            <div class="flex justify-between items-center p-2 mb-2">
               <p class="p-2 font-medium typography-headline-5">{{ summary }}</p>
               <SfIconChevronLeft
                 :class="opened[index] ? 'rotate-90' : '-rotate-90'"
               />
             </div>
           </template>
-          <ul v-if="type === 'size'" class="grid grid-cols-5 gap-2">
-            <li v-for="{ id, value, counter, label } in details" :key="id">
-              <SfChip
-                v-model="selectedFilters"
-                class="w-full"
-                size="sm"
-                :input-props="{ value, disabled: !counter }"
-              >
-                {{ label }}
-              </SfChip>
-            </li>
-          </ul>
           <template v-if="type === 'category'">
             <ul class="mt-2 mb-6">
               <li>
@@ -101,6 +79,18 @@
               </li>
             </ul>
           </template>
+          <ul v-if="type === 'size'" class="grid grid-cols-5 gap-2">
+            <li v-for="{ id, value, counter, label } in details" :key="id">
+              <SfChip
+                v-model="selectedFilters"
+                class="w-full"
+                size="sm"
+                :input-props="{ value, disabled: !counter }"
+              >
+                {{ label }}
+              </SfChip>
+            </li>
+          </ul>
           <template v-if="type === 'color'">
             <SfListItem
               v-for="{ id, value, label, counter } in details"
@@ -127,32 +117,6 @@
               </template>
               <p>
                 <span class="mr-2 typography-text-sm">{{ label }}</span>
-                <SfCounter size="sm">{{ counter }}</SfCounter>
-              </p>
-            </SfListItem>
-          </template>
-          <template v-if="type === 'checkbox'">
-            <SfListItem
-              v-for="{ id, value, label, counter } in details"
-              :key="id"
-              tag="label"
-              size="sm"
-              :disabled="counter === 0"
-              :class="[
-                'px-1.5 bg-transparent hover:bg-transparent',
-                { 'font-medium': isItemActive(value) },
-              ]"
-            >
-              <template #prefix>
-                <SfCheckbox
-                  v-model="selectedFilters"
-                  class="flex items-center"
-                  :disabled="counter === 0"
-                  :value="value"
-                />
-              </template>
-              <p>
-                <span class="mr-2 text-sm">{{ label }}</span>
                 <SfCounter size="sm">{{ counter }}</SfCounter>
               </p>
             </SfListItem>
@@ -188,49 +152,11 @@
               </SfListItem>
             </fieldset>
           </template>
-          <template v-if="type === 'rating'">
-            <fieldset id="radio-ratings">
-              <SfListItem
-                v-for="{ id, value, label, counter } in details"
-                :key="id"
-                tag="label"
-                size="sm"
-                class="!items-center py-4 md:py-1 px-1.5 bg-transparent hover:bg-transparent"
-              >
-                <template #prefix>
-                  <SfRadio
-                    v-model="ratingsModel"
-                    name="radio-ratings"
-                    class="flex items-end"
-                    :value="value"
-                    @click="ratingsModel = ratingsModel === value ? '' : value"
-                  />
-                </template>
-                <!-- TODO: Adjust the styling and remove block elements when/if span wrapper removed from ListItem -->
-                <div class="flex flex-wrap items-center">
-                  <SfRating
-                    class="-mt-px"
-                    :value="Number(value)"
-                    :max="5"
-                    size="sm"
-                  />
-                  <span
-                    :class="[
-                      'mx-2 text-base md:text-sm',
-                      { 'font-medium': ratingsModel === value },
-                    ]"
-                    >{{ label }}</span
-                  >
-                  <SfCounter size="sm">{{ counter }}</SfCounter>
-                </div>
-              </SfListItem>
-            </fieldset>
-          </template>
         </SfAccordionItem>
         <hr class="my-4" />
       </li>
     </ul>
-    <div class="flex justify-between">
+    <div class="flex flex-col lg:flex-row gap-y-4 lg:gap-y-0 lg:justify-between px-3 lg:px-0">
       <SfButton
         variant="secondary"
         class="w-full mr-3"
@@ -279,25 +205,6 @@ type Node = {
 
 const filtersData = ref<Node[]>([
   {
-    id: 'acc1',
-    summary: 'Size',
-    type: 'size',
-    details: [
-      { id: 's1', label: '6', value: '6', counter: 10 },
-      { id: 's2', label: '6.5', value: '6.5', counter: 10 },
-      { id: 's3', label: '7', value: '7.5', counter: 30 },
-      { id: 's4', label: '8', value: '8', counter: 0 },
-      { id: 's5', label: '8.5', value: '8.5', counter: 3 },
-      { id: 's6', label: '9', value: '9', counter: 7 },
-      { id: 's7', label: '9.5', value: '9.5', counter: 9 },
-      { id: 's8', label: '10', value: '10', counter: 11 },
-      { id: 's9', label: '10.5', value: '10.5', counter: 12 },
-      { id: 's10', label: '11', value: '11', counter: 0 },
-      { id: 's11', label: '11.5', value: '11.5', counter: 4 },
-      { id: 's12', label: '12', value: '12', counter: 1 },
-    ],
-  },
-  {
     id: 'acc2',
     summary: 'Category',
     type: 'category',
@@ -337,6 +244,25 @@ const filtersData = ref<Node[]>([
         counter: 52,
         link: '#',
       },
+    ],
+  },
+  {
+    id: 'acc1',
+    summary: 'Size',
+    type: 'size',
+    details: [
+      { id: 's1', label: '6', value: '6', counter: 10 },
+      { id: 's2', label: '6.5', value: '6.5', counter: 10 },
+      { id: 's3', label: '7', value: '7.5', counter: 30 },
+      { id: 's4', label: '8', value: '8', counter: 0 },
+      { id: 's5', label: '8.5', value: '8.5', counter: 3 },
+      { id: 's6', label: '9', value: '9', counter: 7 },
+      { id: 's7', label: '9.5', value: '9.5', counter: 9 },
+      { id: 's8', label: '10', value: '10', counter: 11 },
+      { id: 's9', label: '10.5', value: '10.5', counter: 12 },
+      { id: 's10', label: '11', value: '11', counter: 0 },
+      { id: 's11', label: '11.5', value: '11.5', counter: 4 },
+      { id: 's12', label: '12', value: '12', counter: 1 },
     ],
   },
   {
@@ -383,17 +309,6 @@ const filtersData = ref<Node[]>([
     ],
   },
   {
-    id: 'acc4',
-    summary: 'Brand',
-    type: 'checkbox',
-    details: [
-      { id: 'b1', label: 'Conroy', value: 'conroy', counter: 10 },
-      { id: 'b2', label: 'Goyette', value: 'goyette', counter: 100 },
-      { id: 'b3', label: 'Ledner & Ward', value: 'lednerward', counter: 0 },
-      { id: 'b4', label: 'Pacocha', value: 'pacocha', counter: 3 },
-    ],
-  },
-  {
     id: 'acc5',
     summary: 'Price',
     type: 'radio',
@@ -403,18 +318,6 @@ const filtersData = ref<Node[]>([
       { id: 'pr3', label: '$50.00 - $99.99', value: '50-99', counter: 12 },
       { id: 'pr4', label: '$100.00 - $199.99', value: '100-199', counter: 3 },
       { id: 'pr5', label: '$200.00 and above', value: 'above', counter: 18 },
-    ],
-  },
-  {
-    id: 'acc6',
-    summary: 'Rating',
-    type: 'rating',
-    details: [
-      { id: 'r1', label: '5', value: '5', counter: 10 },
-      { id: 'r2', label: '4 & up', value: '4', counter: 123 },
-      { id: 'r3', label: '3 & up', value: '3', counter: 12 },
-      { id: 'r4', label: '2 & up', value: '2', counter: 3 },
-      { id: 'r5', label: '1 & up', value: '1', counter: 13 },
     ],
   },
 ]);
@@ -431,7 +334,7 @@ const selectedFilters = ref<string[]>([]);
 const opened = ref<boolean[]>(filtersData.value.map(() => true));
 const priceModel = ref('');
 const ratingsModel = ref('');
-const sortModel = ref();
+const sortModel = ref(sortOptions.value[0].value);
 
 const isItemActive = (selectedValue: string) => {
   return selectedFilters.value?.includes(selectedValue);
