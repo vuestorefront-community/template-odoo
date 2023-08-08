@@ -24,11 +24,11 @@ if (products.value.length === 0) {
       All products
     </h1>
     <div class="flex flex-row items-stretch">
-      <CategoryMobileSidebar class="lg:hidden">
+      <LazyCategoryMobileSidebar class="lg:hidden">
         <template #default>
           <CategoryFilterSidebar />
         </template>
-      </CategoryMobileSidebar>
+      </LazyCategoryMobileSidebar>
       <div class="lg:ml-10">
         <div class="flex justify-between items-center mb-6">
           <span class="font-bold font-headings md:text-lg"> 45 Products </span>
@@ -44,7 +44,7 @@ if (products.value.length === 0) {
           </SfButton>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8">
-          <UiProductCard
+          <LazyUiProductCard
             v-for="product in products"
             :key="product.id"
             :name="product.name"
