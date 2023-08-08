@@ -9,6 +9,11 @@ const mediaQueries = {
   desktop: '(min-width: 1024px)',
 };
 
+const breadcrumbs = [
+  { name: 'home', link: '/' },
+  { name: 'category', link: '/category' },
+];
+
 const isTabletScreen = useMediaQuery(mediaQueries.tablet);
 const isWideScreen = useMediaQuery(mediaQueries.desktop);
 const maxVisiblePages = ref(1);
@@ -39,7 +44,7 @@ if (products.value.length === 0) {
 </script>
 <template>
   <div class="pb-20">
-    <UiBreadcrumb class="self-start mt-5 mb-14" />
+    <UiBreadcrumb :breadcrumbs="breadcrumbs" class="self-start mt-5 mb-14" />
     <h1 class="font-bold typography-headline-3 md:typography-headline-2 mb-10">
       All products
     </h1>
@@ -80,7 +85,7 @@ if (products.value.length === 0) {
           />
         </section>
         <LazyUiPagination
-           class="mt-5"
+          class="mt-5"
           :current-page="1"
           :total-items="102"
           :page-size="6"

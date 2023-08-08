@@ -24,6 +24,7 @@
     "lhci:mobile": "lhci autorun"
   },
   "dependencies": {
+    "@nuxtjs/fontaine": "^0.4.1",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
     "react": "18.2.0",

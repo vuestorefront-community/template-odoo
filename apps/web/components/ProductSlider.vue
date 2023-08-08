@@ -118,7 +118,7 @@ const products = ref([
   >
     <UiProductCard
       v-for="product in products"
-      class="max-w-[192px]"
+      class="min-w-[190px]"
       :key="product.id"
       :slug="product.slug"
       :name="product.name"

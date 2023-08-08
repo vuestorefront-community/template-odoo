@@ -72,7 +72,7 @@
   </nav>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import {
   SfDropdown,
   SfButton,
@@ -80,13 +80,9 @@ import {
   SfIconMoreHoriz,
 } from '@storefront-ui/vue';
 
-const breadcrumbs = [
-  {
-    name: 'Home',
-    link: '#',
-  },
-  { name: 'All products', link: '#' },
-];
+defineProps({
+  breadcrumbs: Array,
+});
 
 const dropdownOpened = ref(false);
 const close = () => {
