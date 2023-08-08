@@ -76,7 +76,7 @@ if (products.value.length === 0) {
             v-for="product in products"
             :key="product.id"
             :name="product.name"
-            :slug="product.slug"
+            slug="/product/1"
             :image-url="`https://vsfdemo15.labs.odoogap.com${product.image}`"
             :image-alt="product.name"
             :price="product.price"

@@ -9,13 +9,38 @@ import {
 } from '@storefront-ui/vue';
 
 defineProps({
-  imageUrl: String,
-  imageAlt: String,
-  name: String,
-  description: String,
-  ratingCount: String,
-  rating: Number,
-  price: String,
+  imageUrl: {
+    type: String,
+    required: true,
+  },
+  imageAlt: {
+    type: String,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  slug: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: false,
+  },
+  ratingCount: {
+    type: String,
+    required: false,
+  },
+  rating: {
+    type: Number,
+    required: false,
+  },
+  price: {
+    type: String,
+    required: true,
+  },
 });
 
 const NuxtLink = resolveComponent('NuxtLink');
@@ -23,7 +48,7 @@ const NuxtLink = resolveComponent('NuxtLink');
 <template>
   <div class="relative border border-neutral-200 rounded-md hover:shadow-lg">
     <div class="relative">
-      <SfLink href="#">
+      <SfLink :href="slug">
         <NuxtImg
           :src="imageUrl"
           :alt="imageAlt"
@@ -45,7 +70,7 @@ const NuxtLink = resolveComponent('NuxtLink');
       </SfButton>
     </div>
     <div class="p-2 border-t border-neutral-200 typography-text-sm">
-      <SfLink href="#" variant="secondary" class="no-underline">
+      <SfLink :href="slug" variant="secondary" class="no-underline">
         {{ name }}
       </SfLink>
       <div class="flex items-center pt-1">
@@ -60,7 +85,7 @@ const NuxtLink = resolveComponent('NuxtLink');
         </SfLink>
       </div>
       <p
-      v-if="description"
+        v-if="description"
         class="block py-2 font-normal leading-5 typography-text-sm text-neutral-700"
       >
         {{ description }}
