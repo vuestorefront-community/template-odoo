@@ -5,6 +5,7 @@
   </main>
 
   <Newsletter />
+  <BottomNavbar/>
   <TheFooter />
 </template>
 
