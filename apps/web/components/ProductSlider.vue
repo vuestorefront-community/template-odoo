@@ -116,7 +116,7 @@ const products = ref([
     class="items-center pb-4"
     data-testid="product-slider"
   >
-    <ProductCard
+    <UiProductCard
       v-for="product in products"
       :key="product.id"
       class="max-w-[192px]"

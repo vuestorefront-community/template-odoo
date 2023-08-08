@@ -12,12 +12,12 @@ if (products.value.length === 0) {
 </script>
 <template>
     <div>
-        <Breadcrumb class="self-start mb-10" />
+        <UiBreadcrumb class="self-start mt-5 mb-14" />
         <div class="flex flex-row items-stretch ">
             <CategoryFilterSidebar class="mr-10" />
 
             <div class="flex flex-row flex-wrap justify-between">
-                <ProductCard v-for="product in products" class="mb-4" :product="product" />
+                <CategoryProduct v-for="product in products" class="mb-4" :product="product" />
             </div>
         </div>
     </div>
