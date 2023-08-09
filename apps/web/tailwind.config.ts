@@ -12,6 +12,7 @@ export default <Config>{
     extend: {
       screens: {
         xxl: '1440px',
+        xs: '376px'
       },
     },
   },

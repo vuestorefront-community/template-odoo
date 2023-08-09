@@ -62,13 +62,6 @@
                     },
                   ]"
                 >
-                  <template #suffix>
-                    <SfIconCheck
-                      v-if="categoryIndex === 0"
-                      size="xs"
-                      class="text-primary-700"
-                    />
-                  </template>
                   <span class="flex items-center">
                     {{ label }}
                     <SfCounter class="ml-2 typography-text-sm">{{
@@ -79,7 +72,7 @@
               </li>
             </ul>
           </template>
-          <ul v-if="type === 'size'" class="grid grid-cols-5 gap-2">
+          <ul v-if="type === 'size'" class="grid grid-cols-5 gap-2 px-3">
             <li v-for="{ id, value, counter, label } in details" :key="id">
               <SfChip
                 v-model="selectedFilters"
@@ -98,7 +91,7 @@
               size="sm"
               tag="label"
               :class="[
-                'px-1.5 bg-transparent hover:bg-transparent',
+                'px-4 bg-transparent hover:bg-transparent',
                 { 'font-medium': isItemActive(value) },
               ]"
               :selected="isItemActive(value)"

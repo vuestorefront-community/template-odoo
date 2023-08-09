@@ -6,7 +6,7 @@
     </section>
     <section class="col-span-5 grid-in-right md:mb-0">
       <div
-        class="p-4 xl:p-6 md:border md:border-neutral-100 md:shadow-lg md:rounded-md md:sticky md:top-20"
+        class="pt-6 xl:p-6 md:border md:border-neutral-100 md:shadow-lg md:rounded-md md:sticky md:top-20"
         data-testid="purchase-card"
       >
         <div
@@ -122,7 +122,7 @@
     </section>
     <section class="grid-in-left-bottom md:mt-8">
       <UiDivider class="mt-10 mb-6" />
-      <div class="px-4" data-testid="product-properties">
+      <div class="lg:px-4" data-testid="product-properties">
         <fieldset v-if="sizes?.length" class="pb-4 flex">
           <legend
             class="block mb-2 text-base font-medium leading-6 text-neutral-900"
@@ -178,7 +178,7 @@
       <UiDivider class="my-4 md:mt-6" />
       <div data-testid="product-accordion">
         <UiAccordionItem
-          summary-class="md:rounded-md w-full hover:bg-neutral-100 py-2 pl-4 pr-3 flex justify-between items-center"
+          summary-class="md:rounded-md w-full hover:bg-neutral-100 py-2 lg:pl-4 pr-3 flex justify-between items-center"
           v-model="productDetailsOpen"
         >
           <template #summary>
@@ -192,7 +192,7 @@
         </UiAccordionItem>
         <UiDivider class="my-4" />
         <UiAccordionItem
-          summary-class="md:rounded-md w-full hover:bg-neutral-100 py-2 pl-4 pr-3 flex justify-between items-center"
+          summary-class="md:rounded-md w-full hover:bg-neutral-100 py-2 lg:pl-4 pr-3 flex justify-between items-center"
         >
           <template #summary>
             <h2 class="font-bold font-headings text-lg leading-6 md:text-2xl">
@@ -261,8 +261,8 @@ const selectedSize = 'S';
 const selectedColor = 'red';
 const productDetailsOpen = ref(true);
 const breadcrumbs = [
-  { name: 'home', link: '/' },
-  { name: 'category', link: '/category' },
+  { name: 'Home', link: '/' },
+  { name: 'Category', link: '/category' },
   { name: 'Athletic mens walking sneakers', link: '/product' },
 ];
 

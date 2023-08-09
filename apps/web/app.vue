@@ -1,10 +1,7 @@
 <template>
   <div class="h-screen justify-center align-middle">
     <NuxtLayout>
-      <NuxtPage/>
+      <NuxtPage />
     </NuxtLayout>
-      
   </div>
-  
 </template>
-

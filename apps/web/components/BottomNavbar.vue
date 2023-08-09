@@ -51,7 +51,7 @@ const items = [
   {
     label: 'products',
     icon: SfIconMenu,
-    link: '/product/1',
+    link: '/category/1',
   },
   {
     label: 'cart',

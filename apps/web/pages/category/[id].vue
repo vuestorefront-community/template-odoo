@@ -10,8 +10,8 @@ const mediaQueries = {
 };
 
 const breadcrumbs = [
-  { name: 'home', link: '/' },
-  { name: 'category', link: '/category' },
+  { name: 'Home', link: '/' },
+  { name: 'Category', link: '/category' },
 ];
 
 const isTabletScreen = useMediaQuery(mediaQueries.tablet);
