@@ -35,7 +35,7 @@
         @mouseover="activeIndex = index"
         @focus="activeIndex = index"
       >
-        <img
+        <NuxtImg
           :alt="alt"
           class="border border-neutral-200"
           width="78"
@@ -72,7 +72,7 @@
         :key="`${alt}-${index}`"
         class="flex justify-center h-full basis-full shrink-0 grow snap-center"
       >
-        <img
+        <NuxtImg
           :aria-label="alt"
           :aria-hidden="activeIndex !== index"
           class="object-cover w-auto h-full"
@@ -104,7 +104,7 @@ const images = [
     imageSrc: withBase('gallery_1.png'),
     imageThumbSrc: withBase('gallery_1_thumb.png'),
     alt: 'backpack1',
-  }
+  },
 ];
 const thumbsRef = ref<HTMLElement>();
 const firstThumbRef = ref<HTMLButtonElement>();

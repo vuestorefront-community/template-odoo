@@ -15,7 +15,7 @@ export default defineNuxtConfig({
       ],
     },
   },
-  modules: ['@nuxtjs/tailwindcss', '@nuxt/image', '@nuxtjs/fontaine'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxt/image'],
 
   vite: {
     server: {

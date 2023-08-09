@@ -1,5 +1,6 @@
 <script setup>
 import { SfButton } from '@storefront-ui/vue';
+
 const items = ref([
   {
     title: 'NEW COLLECTION',
