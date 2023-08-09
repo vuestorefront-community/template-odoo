@@ -1,9 +1,7 @@
 <template>
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    class="fill-current"
-    width="205"
-    height="28"
+    class="fill-current h-full w-auto"
     viewBox="0 0 205 28"
     data-v-inspector="components/ui/VsfLogo.vue:2:3"
   >

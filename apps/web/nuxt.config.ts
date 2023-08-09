@@ -15,7 +15,25 @@ export default defineNuxtConfig({
       ],
     },
   },
-  modules: ['@nuxtjs/tailwindcss', '@nuxt/image', '@nuxtjs/fontaine'],
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@nuxt/image',
+    '@nuxtjs/fontaine',
+    [
+      '@nuxtjs/i18n',
+      {
+        locales: [
+          {
+            code: 'en',
+            file: 'en.json',
+          },
+        ],
+        lazy: true,
+        langDir: 'lang',
+        defaultLocale: 'en',
+      },
+    ],
+  ],
   image: {
     screens: {
       '2xl': 1536,
