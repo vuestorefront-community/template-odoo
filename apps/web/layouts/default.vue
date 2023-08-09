@@ -5,8 +5,8 @@
   </main>
 
   <Newsletter />
-  <BottomNavbar/>
   <TheFooter />
+  <BottomNavbar/>
 </template>
 
 <script lang="ts" setup></script>
