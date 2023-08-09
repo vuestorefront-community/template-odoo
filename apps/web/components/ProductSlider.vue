@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { SfScrollable } from '@storefront-ui/vue';
 
+defineProps({
+  heading: String,
+  text: String,
+});
+
 const products = ref([
   {
     id: 1,
@@ -107,10 +112,14 @@ const products = ref([
 
 <template>
   <h2
+    v-if="heading"
     class="text-center mb-6 font-bold typography-headline-3 md:typography-headline-2"
   >
-    Inspired by your picks
+    {{ heading }}
   </h2>
+  <p class="my-4 typography-text-lg">
+    {{ text }}
+  </p>
   <SfScrollable
     buttons-placement="floating"
     class="items-center pb-4"

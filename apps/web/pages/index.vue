@@ -8,10 +8,10 @@ const { data } = await useAsyncData(
 </script>
 
 <template>
-  <LazyMainBanner/>
+  <LazyMainBanner />
   <LazyCategoryCard />
   <LazyDisplay />
   <section class="pb-16">
-    <LazyProductSlider />
+    <LazyProductSlider heading="Inspired by your picks" />
   </section>
 </template>

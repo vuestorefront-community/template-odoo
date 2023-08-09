@@ -1,7 +1,7 @@
 <template>
   <UiBreadcrumb :breadcrumbs="breadcrumbs" class="self-start mt-5 mb-10" />
-  <div class="md:grid grid-cols-12 gap-x-6">
-    <section class="col-span-7 md:h-full xl:max-h-[700px]">
+  <div class="md:grid grid-areas-product-page grid-cols-product-page gap-x-6">
+    <section class="grid-in-left-top md:h-full xl:max-h-[700px]">
       <UiGallery />
     </section>
     <section class="col-span-5 grid-in-right md:mb-0">
@@ -121,13 +121,95 @@
       </div>
     </section>
     <section class="grid-in-left-bottom md:mt-8">
-      <UiDivider class="mb-6" />
-      <!-- <ProductProperties v-if="product" :product="product" /> -->
-      <!-- <UiDivider class="mt-4 mb-2 md:mt-8" />
-      <ProductAccordion v-if="product" :product="product" /> -->
+      <UiDivider class="mt-10 mb-6" />
+      <div class="px-4" data-testid="product-properties">
+        <fieldset v-if="sizes?.length" class="pb-4 flex">
+          <legend
+            class="block mb-2 text-base font-medium leading-6 text-neutral-900"
+          >
+            Size
+          </legend>
+          <span
+            v-for="{ label, value } in sizes"
+            class="mr-2 mb-2 uppercase"
+            :key="value"
+          >
+            <SfChip
+              class="min-w-[48px]"
+              size="sm"
+              :input-props="{
+                onClick: (e) => value == selectedSize && e.preventDefault(),
+              }"
+              :model-value="value === selectedSize"
+              @update:model-value=""
+            >
+              {{ label }}
+            </SfChip>
+          </span>
+        </fieldset>
+        <fieldset v-if="sizes?.length" class="pb-2 flex">
+          <legend
+            class="block mb-2 text-base font-medium leading-6 text-neutral-900"
+          >
+            Color
+          </legend>
+          <span
+            v-for="{ label, value } in colors"
+            class="mr-2 mb-2 uppercase"
+            :key="value"
+          >
+            <SfChip
+              class="min-w-[48px]"
+              size="sm"
+              :input-props="{
+                onClick: (e) => value == selectedSize && e.preventDefault(),
+              }"
+              :model-value="value === selectedColor"
+              @update:model-value=""
+            >
+              <template #prefix
+                ><SfThumbnail size="sm" :style="{ background: value }"
+              /></template>
+              {{ label }}
+            </SfChip>
+          </span>
+        </fieldset>
+      </div>
+      <UiDivider class="my-4 md:mt-6" />
+      <div data-testid="product-accordion">
+        <UiAccordionItem
+          summary-class="md:rounded-md w-full hover:bg-neutral-100 py-2 pl-4 pr-3 flex justify-between items-center"
+          v-model="productDetailsOpen"
+        >
+          <template #summary>
+            <h2 class="font-bold font-headings text-lg leading-6 md:text-2xl">
+              Product Details
+            </h2>
+          </template>
+          <p>
+            Lightweight • Non slip • Flexible outsole • Easy to wear on and off
+          </p>
+        </UiAccordionItem>
+        <UiDivider class="my-4" />
+        <UiAccordionItem
+          summary-class="md:rounded-md w-full hover:bg-neutral-100 py-2 pl-4 pr-3 flex justify-between items-center"
+        >
+          <template #summary>
+            <h2 class="font-bold font-headings text-lg leading-6 md:text-2xl">
+              Customer Reviews
+            </h2>
+          </template>
+          <p>
+            Lightweight • Non slip • Flexible outsole • Easy to wear on and off
+          </p>
+        </UiAccordionItem>
+      </div>
     </section>
     <UiDivider class="mt-4 mb-2" />
   </div>
+  <section class="mx-4 mt-28 mb-20">
+    <ProductSlider text="Recommended with this product" />
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -145,7 +227,39 @@ import {
   SfIconShoppingCartCheckout,
   SfIconShoppingCart,
 } from '@storefront-ui/vue';
+import { SfChip, SfThumbnail } from '@storefront-ui/vue';
 
+const sizes = ref([
+  {
+    value: 36,
+    label: 'M',
+  },
+  {
+    value: 37,
+    label: 'S',
+  },
+  {
+    value: 38,
+    label: 'L',
+  },
+  {
+    value: 39,
+    label: 'XL',
+  },
+]);
+const colors = ref([
+  {
+    value: '#FF0000',
+    label: 'red',
+  },
+  {
+    value: '#0000ff',
+    label: 'blue',
+  },
+]);
+const selectedSize = 'S';
+const selectedColor = 'red';
+const productDetailsOpen = ref(true);
 const breadcrumbs = [
   { name: 'home', link: '/' },
   { name: 'category', link: '/category' },
