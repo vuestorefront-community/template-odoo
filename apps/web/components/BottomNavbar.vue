@@ -51,7 +51,7 @@ const items = [
   {
     label: 'products',
     icon: SfIconMenu,
-    link: '/product',
+    link: '/product/1',
   },
   {
     label: 'cart',
@@ -61,7 +61,7 @@ const items = [
   {
     label: 'account',
     icon: SfIconPerson,
-    link: '/account',
+    link: '/my-account',
   },
 ];
 

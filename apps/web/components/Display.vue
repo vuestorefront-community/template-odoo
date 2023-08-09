@@ -1,6 +1,8 @@
 <script setup>
 import { SfButton } from '@storefront-ui/vue';
 
+const NuxtLink = resolveComponent('NuxtLink');
+
 const items = ref([
   {
     title: 'NEW COLLECTION',
