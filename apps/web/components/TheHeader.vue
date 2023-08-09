@@ -18,6 +18,10 @@ import {
 import { unrefElement } from '@vueuse/core';
 import { DefaultLayoutProps } from '~/layouts/types';
 
+defineProps<{
+  filled?: boolean;
+}>();
+
 const { open } = useDisclosure();
 
 const inputModel = ref('');
@@ -48,8 +52,6 @@ const {
   close: searchModalClose,
 } = useDisclosure();
 
-defineProps<DefaultLayoutProps>();
-
 const NuxtLink = resolveComponent('NuxtLink');
 const cartLineItemsCount = 3;
 
@@ -75,7 +77,11 @@ const accountDropdown = [
 
 <template>
   <header
-    class="h-14 md:h-20 flex z-50 md:sticky md:top-0 md:shadow-md bg-primary-700 text-white"
+    :class="[
+      'h-14 md:h-20 flex z-50 md:sticky md:-top-5 md:shadow-md',
+      { 'bg-primary-700 text-white': filled },
+      { 'bg-white text-[#02C652] border-b border-neutral-200': !filled },
+    ]"
     data-testid="navbar-top"
   >
     <div
