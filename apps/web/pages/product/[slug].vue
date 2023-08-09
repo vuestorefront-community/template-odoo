@@ -207,7 +207,7 @@
     </section>
     <UiDivider class="mt-4 mb-2" />
   </div>
-  <section class="mx-4 mt-28 mb-20">
+  <section class="lg:mx-4 mt-28 mb-20">
     <ProductSlider text="Recommended with this product" />
   </section>
 </template>
