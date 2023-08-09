@@ -78,7 +78,7 @@ const accountDropdown = [
 <template>
   <header
     :class="[
-      'h-14 md:h-20 flex z-50 md:sticky md:-top-5 md:shadow-md',
+      'h-14 md:h-20 flex z-50 md:sticky md:top-0 md:shadow-md',
       { 'bg-primary-700 text-white': filled },
       { 'bg-white text-[#02C652] border-b border-neutral-200': !filled },
     ]"
@@ -91,6 +91,7 @@ const accountDropdown = [
         <VsfLogo />
       </NuxtLink>
       <SfButton
+        v-if="filled"
         class="!px-2 mr-auto hidden lg:flex text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900"
         type="button"
         variant="tertiary"
@@ -100,9 +101,11 @@ const accountDropdown = [
         <template #suffix>
           <SfIconExpandMore class="hidden lg:block" />
         </template>
-        <span class="hidden lg:flex whitespace-nowrap">Browse products</span>
+        <span class="hidden lg:flex whitespace-nowrap">{{
+          $t('allProductsLinkText')
+        }}</span>
       </SfButton>
-      <div class="hidden md:block flex-1">
+      <div v-if="filled" class="hidden md:block flex-1">
         <form
           ref="referenceRef"
           role="search"
@@ -133,11 +136,12 @@ const accountDropdown = [
           </SfInput>
         </form>
       </div>
-      <nav class="hidden md:flex md:flex-row md:flex-nowrap">
+      <nav v-if="filled" class="hidden md:flex md:flex-row md:flex-nowrap">
         <SfButton
           class="group relative text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 mr-1 -ml-0.5 rounded-md"
+          :tag="NuxtLink"
           to="/"
-          :aria-label="cartLineItemsCount"
+          :aria-label="$t('numberInCart', cartLineItemsCount)"
           variant="tertiary"
           square
         >
@@ -151,9 +155,10 @@ const accountDropdown = [
           </template>
         </SfButton>
         <SfButton
-          class="group relative text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 mr-1 -ml-0.5 rounded-md"
+          class="group relative text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 mr-1 ml-3 rounded-md"
+          :tag="NuxtLink"
           to="/"
-          :aria-label="cartLineItemsCount"
+          :aria-label="$t('numberInCart', cartLineItemsCount)"
           variant="tertiary"
           square
         >
@@ -175,7 +180,7 @@ const accountDropdown = [
               @click="accountDropdownToggle()"
             >
               <template #prefix><SfIconPerson /></template>
-              Log In
+              Mahade
             </SfButton>
           </template>
           <ul
@@ -188,21 +193,23 @@ const accountDropdown = [
                   tag="button"
                   class="text-left"
                   @click="accountDropdownToggle()"
-                  >{{ label }}</SfListItem
+                  >{{ $t(label) }}</SfListItem
                 >
               </template>
               <SfListItem
                 v-else
+                :tag="NuxtLink"
                 :to="link"
                 :class="{ 'bg-neutral-200': $route.path === link }"
               >
-                {{ label }}
+                {{ $t(label) }}
               </SfListItem>
             </li>
           </ul>
         </SfDropdown>
       </nav>
       <SfButton
+        v-if="filled"
         variant="tertiary"
         class="relative text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 rounded-md md:hidden"
         square

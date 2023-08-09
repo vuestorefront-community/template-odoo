@@ -2,7 +2,7 @@
   <UiBreadcrumb :breadcrumbs="breadcrumbs" class="self-start mt-5 mb-10" />
   <div class="md:grid grid-areas-product-page grid-cols-product-page gap-x-6">
     <section class="grid-in-left-top md:h-full xl:max-h-[700px]">
-      <UiGallery />
+      <LazyUiGallery />
     </section>
     <section class="col-span-5 grid-in-right md:mb-0">
       <div

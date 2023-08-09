@@ -1,5 +1,5 @@
 <template>
-  <NavbarTop />
+  <TheHeader />
   <main
     :class="[
       'mx-auto px-4 pt-4 pb-20 md:px-0 md:mt-4',
