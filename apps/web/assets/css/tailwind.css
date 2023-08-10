@@ -1,3 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Red Hat Display', sans-serif;
+    font-family: 'Red Hat Text', sans-serif;
+  }
+}
+
+@layer components {
+  .narrow-container {
+    @apply px-4 md:px-6 xl:px-8 xxl:px-0 max-w-[1336px] mx-auto;
+  }
+  .scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      @apply hidden /* for Chrome, Safari, and Opera */;
+    }
+  }
+  .grid-areas-product-page {
+    grid-template-areas:
+      'left-top right'
+      'left-bottom right';
+  }
+  .grid-cols-product-page {
+    grid-template-columns: minmax(56%, 500px) auto;
+  }
+  .grid-in-right {
+    grid-area: right;
+  }
+  .grid-in-left-bottom {
+    grid-area: left-bottom;
+  }
+}
