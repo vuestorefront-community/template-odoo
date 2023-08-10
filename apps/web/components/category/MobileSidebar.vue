@@ -17,11 +17,11 @@
     >
       <div class="grid grid-rows-category-sidebar h-full md:block">
         <div class="p-4 flex justify-between items-center md:hidden">
-          <span class="font-bold text-lg">List Setting</span>
+          <span class="font-bold text-lg">{{ $t('listSettings') }}</span>
           <SfButton
             variant="tertiary"
             @click="$emit('close')"
-            aria-label="Close List Setting"
+            :aria-label="$t('closeListSettings')"
           >
             <template #prefix>
               <SfIconClose class="text-neutral-500" />

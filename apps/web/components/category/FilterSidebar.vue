@@ -149,15 +149,17 @@
         <hr class="my-4" />
       </li>
     </ul>
-    <div class="flex flex-col lg:flex-row gap-y-4 lg:gap-y-0 lg:justify-between px-3 lg:px-0">
+    <div
+      class="flex flex-col lg:flex-row gap-y-4 lg:gap-y-0 lg:justify-between px-3 lg:px-0"
+    >
       <SfButton
         variant="secondary"
         class="w-full mr-3"
         @click="handleClearFilters()"
       >
-        Clear all filters
+        {{ $t('clearFilters') }}
       </SfButton>
-      <SfButton class="w-full">Show products</SfButton>
+      <SfButton class="w-full">{{ $t('showProducts') }}</SfButton>
     </div>
   </aside>
 </template>

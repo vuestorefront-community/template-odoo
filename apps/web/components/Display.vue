@@ -33,7 +33,7 @@ const items = ref([
 
 <template>
   <div
-    class="flex flex-col md:flex-row flex-wrap gap-6 md:px-6 mb-10"
+    class="flex flex-col md:flex-row flex-wrap gap-6 mb-10"
     data-testid="display"
   >
     <div

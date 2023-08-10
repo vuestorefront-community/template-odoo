@@ -5,14 +5,14 @@
   >
     <NuxtImg
       src="/images/something-went-wrong.svg"
-      alt="Image for no products found"
+      :alt="$t('emptyStateAltText')"
       width="192"
       height="192"
     />
-    <p class="mt-8 font-medium">We no longer have products in this category.</p>
-    <p class="mt-4">Have not found what you are looking for?</p>
+    <p class="mt-8 font-medium">{{ $t('emptyStateText') }}</p>
+    <p class="mt-4">{{ $t('emptyStateText2') }}</p>
     <SfButton :tag="NuxtLink" to="/" variant="secondary" class="mt-4">
-      Browse products
+      {{ $t('allProductsLinkText') }}
     </SfButton>
   </section>
 </template>

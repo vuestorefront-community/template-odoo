@@ -35,31 +35,38 @@ import {
   SfButton,
   SfBadge,
   SfIconShoppingCart,
+  SfIconFavorite,
   SfIconHome,
   SfIconMenu,
   SfIconPerson,
 } from '@storefront-ui/vue';
 
 const NuxtLink = resolveComponent('NuxtLink');
+const { t } = useI18n();
 
 const items = [
   {
-    label: 'home',
+    label: t('home'),
     icon: SfIconHome,
     link: '/',
   },
   {
-    label: 'products',
+    label: t('products'),
     icon: SfIconMenu,
     link: '/category/1',
   },
   {
-    label: 'cart',
+    label: t('cart'),
     icon: SfIconShoppingCart,
     link: '/cart',
   },
   {
-    label: 'account',
+    label: 'wishlist',
+    icon: SfIconFavorite,
+    link: '/wishlist',
+  },
+  {
+    label: t('account.navBarBottomHeading'),
     icon: SfIconPerson,
     link: '/my-account',
   },
