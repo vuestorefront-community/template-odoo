@@ -6,12 +6,12 @@ const items = ref([
     image: '/images/new-card.png',
   },
   {
-    name: 'New',
+    name: 'Men',
     slug: '/',
     image: '/images/men-card.png',
   },
   {
-    name: 'New',
+    name: 'Women',
     slug: '/',
     image: '/images/women-card.png',
   },
