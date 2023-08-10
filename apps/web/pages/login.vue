@@ -37,7 +37,7 @@ const login = () => {
         class="border-neutral-200 md:border flex flex-col gap-4 md:p-6 rounded-md"
       >
         <label>
-          <UiFormLabel>{{ $t('form.emailLabel') }}</UiFormLabel>
+          <FormLabel>{{ $t('form.emailLabel') }}</FormLabel>
           <SfInput
             name="email"
             type="email"
@@ -48,7 +48,7 @@ const login = () => {
         </label>
 
         <label>
-          <UiFormLabel>{{ $t('form.passwordLabel') }}</UiFormLabel>
+          <FormLabel>{{ $t('form.passwordLabel') }}</FormLabel>
           <FormPasswordInput
             name="password"
             autocomplete="current-password"

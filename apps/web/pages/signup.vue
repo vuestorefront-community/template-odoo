@@ -24,7 +24,7 @@
         @submit.prevent="open"
       >
         <label>
-          <UiFormLabel>{{ $t('form.firstNameLabel') }} *</UiFormLabel>
+          <FormLabel>{{ $t('form.firstNameLabel') }} *</FormLabel>
           <SfInput
             name="firstName"
             autocomplete="given-name"
@@ -33,7 +33,7 @@
           />
         </label>
         <label>
-          <UiFormLabel>{{ $t('form.lastNameLabel') }} *</UiFormLabel>
+          <FormLabel>{{ $t('form.lastNameLabel') }} *</FormLabel>
           <SfInput
             name="lastName"
             autocomplete="family-name"
@@ -42,7 +42,7 @@
           />
         </label>
         <label>
-          <UiFormLabel>{{ $t('form.emailLabel') }} *</UiFormLabel>
+          <FormLabel>{{ $t('form.emailLabel') }} *</FormLabel>
           <SfInput
             name="email"
             type="email"
@@ -53,16 +53,16 @@
         </label>
         <div>
           <label>
-            <UiFormLabel>{{ $t('form.passwordLabel') }} *</UiFormLabel>
-            <UiFormPasswordInput
+            <FormLabel>{{ $t('form.passwordLabel') }} *</FormLabel>
+            <FormPasswordInput
               name="password"
               autocomplete="current-password"
               v-model="passwordModel"
               required
             />
-            <UiFormHelperText class="mb-2">{{
+            <FormHelperText class="mb-2">{{
               $t('form.passwordHint')
-            }}</UiFormHelperText>
+            }}</FormHelperText>
           </label>
         </div>
 
@@ -153,7 +153,7 @@
               <template #information>
                 <SfLink
                   :tag="NuxtLink"
-                  to="/"
+                  to="/my-account"
                   class="focus:outline focus:outline-offset-2 focus:outline-2 outline-secondary-600 rounded"
                 >
                   {{ $t('auth.signup.modal.information') }}
