@@ -16,7 +16,6 @@ import {
   useDisclosure,
 } from '@storefront-ui/vue';
 import { unrefElement } from '@vueuse/core';
-import { DefaultLayoutProps } from '~/layouts/types';
 
 defineProps<{
   filled?: boolean;
@@ -58,7 +57,7 @@ const cartLineItemsCount = 3;
 const accountDropdown = [
   {
     label: 'My Account',
-    link: '/',
+    link: '/my-account',
   },
   {
     label: 'My Orders',
