@@ -3,12 +3,12 @@
       <main class="narrow-container">
         <UiBreadcrumb :breadcrumbs="breadcrumbs" class="mt-5 mb-10" />
         <div
-        :class="['mb-20 md:px-0', { 'px-4': !isRoot }]"
+        :class="mb-20"
         data-testid="account-layout"
       >
         <h1
           v-if="isRoot"
-          class="mt-4 mb-10 md:mb-10 mx-4 md:mx-0 font-bold typography-headline-3 md:typography-headline-2 hidden md:block"
+          class="mb-10 md:mb-10 md:mx-0 font-bold typography-headline-3 md:typography-headline-2"
         >
           {{ $t('account.heading') }}
         </h1>
@@ -35,7 +35,7 @@
             {{ $t('account.back') }}
           </SfButton>
         </div>
-        <div class="md:flex gap-10" data-testid="account-page-sidebar">
+        <div class="md:flex gap-10 pb-20" data-testid="account-page-sidebar">
           <div
             :class="[
               'border-t md:border border-neutral-200 pt-4 pb-4 md:p-4 md:rounded-md min-w-[300px] md:block',
@@ -48,7 +48,7 @@
               :key="title"
             >
               <SfListItem
-                class="py-4 md:py-2 hover:!bg-transparent font-medium !cursor-auto"
+                class="py-4 md:py-2 hover:!bg-transparent font-medium !cursor-auto px-0 md:px-4"
               >
                 <template #prefix><component :is="icon" /></template>
                 {{ title }}
@@ -58,7 +58,7 @@
                   :tag="NuxtLink"
                   :to="link"
                   :class="[
-                    'first-of-type:py-4 md:first-of-type:px-4 md:first-of-type:py-2 rounded-md active:bg-primary-100 !text-neutral-900',
+                    'first-of-type:py-4 md:first-of-type:px-4 md:first-of-type:py-2 px-0 md:px-4 rounded-md active:bg-primary-100 !text-neutral-900',
                     {
                       'font-medium bg-primary-100':
                         router.currentRoute.value.path === link,
@@ -89,7 +89,7 @@
           </div>
           <div class="flex-1">
             <section
-              class="grid grid-cols-1 2xs:grid-cols-2 gap-4 md:gap-6 md:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-4 mb-10 md:mb-5"
+              class="grid grid-cols-1 2xs:grid-cols-2 gap-4 md:gap-6 md:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-4 md:mb-5"
               data-testid="category-grid"
             >
               <slot />
