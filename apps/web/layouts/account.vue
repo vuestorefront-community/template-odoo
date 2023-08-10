@@ -1,14 +1,14 @@
 <template>
   <TheHeader filled />
-  <UiBreadcrumb :breadcrumbs="breadcrumbs" class="self-start mt-5 mb-10" />
-      <main>
+      <main class="narrow-container">
+        <UiBreadcrumb :breadcrumbs="breadcrumbs" class="mt-5 mb-10" />
         <div
         :class="['mb-20 md:px-0', { 'px-4': !isRoot }]"
         data-testid="account-layout"
       >
         <h1
-          v-if="isRoot || isTabletScreen"
-          class="mt-4 mb-10 md:mb-10 mx-4 md:mx-0 font-bold typography-headline-3 md:typography-headline-2"
+          v-if="isRoot"
+          class="mt-4 mb-10 md:mb-10 mx-4 md:mx-0 font-bold typography-headline-3 md:typography-headline-2 hidden md:block"
         >
           {{ $t('account.heading') }}
         </h1>
@@ -24,7 +24,7 @@
           </div>
           <SfButton
             :tag="NuxtLink"
-            to="/"
+            to="/my-account"
             class="flex md:hidden whitespace-nowrap"
             size="sm"
             variant="tertiary"
@@ -67,9 +67,11 @@
                 >
                   <template #prefix><SfIconBase /></template>
                   {{ label }}
-                  <template v-if="!isTabletScreen" #suffix
-                    ><SfIconChevronRight
-                  /></template>
+                  <template  #suffix
+                    ><div class="block md:hidden">
+                      <SfIconChevronRight
+                    />
+                    </div></template>
                 </SfListItem>
               </li>
             </ul>
@@ -103,7 +105,6 @@
 
 <script setup>
 import { SfIconBase, SfIconPerson, SfIconShoppingCart, SfListItem, SfButton, SfIconArrowBack, SfIconChevronRight } from '@storefront-ui/vue';
-import { useMediaQuery } from '@vueuse/core';
 
 const NuxtLink = resolveComponent('NuxtLink');
 const { t } = useI18n();
@@ -144,7 +145,8 @@ const sections = [
 ];
 
 const currentPath = computed(() => router.currentRoute.value.path);
-const rootPathRegex = new RegExp('^\'my-account\'/?$');
+const path = '/my-account';
+const rootPathRegex = new RegExp(`^${path}/?$`);
 const isRoot = computed(() => rootPathRegex.test(currentPath.value));
 const findCurrentPage = computed(() =>
   sections.flatMap(({ subsections }) => subsections).find(({ link }) => currentPath.value.includes(link)),
