@@ -85,7 +85,7 @@ const accountDropdown = [
     data-testid="navbar-top"
   >
     <div
-      class="flex gap-[clamp(1rem,3vw,3rem)] items-center w-full px-4 md:px-6 xl:px-8 xxl:px-0 max-w-[1336px] mx-auto sticky top-0 justify-between md:justify-normal"
+      class="flex gap-[clamp(1rem,3vw,3rem)] items-center w-full narrow-container sticky top-0 justify-between md:justify-normal"
     >
       <NuxtLink to="/" aria-label="Sf Homepage" class="h-6 md:h-7 -mt-1.5">
         <VsfLogo />

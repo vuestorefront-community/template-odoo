@@ -1,7 +1,7 @@
 <template>
   <footer class="pt-10 bg-neutral-100">
     <div
-      class="grid justify-center grid-cols-[1fr_1fr] md:grid-cols-[repeat(4,1fr)] px-4 md:px-6 xl:px-8 xxl:px-0 max-w-[1336px] mx-auto"
+      class="grid justify-center grid-cols-[1fr_1fr] md:grid-cols-[repeat(4,1fr)] narrow-container"
     >
       <div
         v-for="{ label, subcategories } in categories"

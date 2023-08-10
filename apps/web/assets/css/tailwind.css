@@ -10,6 +10,9 @@
 }
 
 @layer components {
+  .narrow-container {
+    @apply px-4 md:px-6 xl:px-8 xxl:px-0 max-w-[1336px] mx-auto;
+  }
   .scrollbar-hidden {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -31,5 +34,5 @@
   }
   .grid-in-left-bottom {
     grid-area: left-bottom;
-}
+  }
 }
