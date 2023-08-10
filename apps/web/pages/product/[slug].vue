@@ -13,7 +13,7 @@
           class="inline-flex items-center justify-center font-medium rounded-none bg-secondary-800 text-sm p-1.5 gap-1 mb-4"
         >
           <SfIconSell color="white" size="sm" class="mr-1" />
-          <span class="mr-1 text-white">Sale</span>
+          <span class="mr-1 text-white">{{ $t(`sale`) }}</span>
         </div>
         <h1
           class="mb-1 font-bold typography-headline-4"
@@ -69,7 +69,7 @@
               <template #prefix>
                 <SfIconShoppingCart size="sm" />
               </template>
-              Add to cart
+              {{ $t('addToCart') }}
             </SfButton>
           </div>
           <div class="flex justify-center mt-4 gap-x-4">
@@ -77,11 +77,11 @@
               <template #prefix>
                 <SfIconCompareArrows size="sm" />
               </template>
-              Compare
+              {{ $t('compare') }}
             </SfButton>
             <SfButton type="button" size="sm" variant="tertiary">
               <SfIconFavorite size="sm" />
-              Add to list
+              {{ $t('addToList') }}
             </SfButton>
           </div>
         </div>
@@ -91,9 +91,13 @@
             class="flex-shrink-0 mr-1 text-neutral-500"
           />
           <p class="text-sm">
-            <span>Free shipping,arrives by Apr 7. Want it faster? </span>
-            <SfLink href="#" variant="secondary">Add an address</SfLink>
-            <span> to see options</span>
+            <i18n-t keypath="additionalInfo.shipping">
+              <template #addAddress>
+                <SfLink href="#" variant="secondary">{{
+                  $t('additionalInfo.addAddress')
+                }}</SfLink>
+              </template>
+            </i18n-t>
           </p>
         </div>
         <div class="flex mt-4">
@@ -102,10 +106,13 @@
             class="flex-shrink-0 mr-1 text-neutral-500"
           />
           <p class="text-sm">
-            <span>Pickup not available at Super center. </span>
-            <SfLink href="#" variant="secondary"
-              >Check availability nearby</SfLink
-            >
+            <i18n-t keypath="additionalInfo.pickup">
+              <template #checkAvailability>
+                <SfLink href="#" variant="secondary">{{
+                  $t('additionalInfo.checkAvailability')
+                }}</SfLink>
+              </template>
+            </i18n-t>
           </p>
         </div>
         <div class="flex mt-4">
@@ -113,10 +120,13 @@
             size="sm"
             class="flex-shrink-0 mr-1 text-neutral-500"
           />
-          <p class="text-sm">
-            <span>Free 30-Day returns </span>
-            <SfLink href="#" variant="secondary">Details</SfLink>
-          </p>
+          <i18n-t keypath="additionalInfo.returns">
+            <template #details>
+              <SfLink href="#" variant="secondary">{{
+                $t('additionalInfo.details')
+              }}</SfLink>
+            </template>
+          </i18n-t>
         </div>
       </div>
     </section>
@@ -183,7 +193,7 @@
         >
           <template #summary>
             <h2 class="font-bold font-headings text-lg leading-6 md:text-2xl">
-              Product Details
+              {{ $t('productDetails') }}
             </h2>
           </template>
           <p>
@@ -196,7 +206,7 @@
         >
           <template #summary>
             <h2 class="font-bold font-headings text-lg leading-6 md:text-2xl">
-              Customer Reviews
+              {{ $t('customerReviews') }}
             </h2>
           </template>
           <p>
