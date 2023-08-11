@@ -1,14 +1,29 @@
 <template>
-  <form data-testid="contact-information-form" @submit.prevent="$emit('on-save')">
+  <form
+    data-testid="contact-information-form"
+    @submit.prevent="$emit('on-save')"
+  >
     <label>
-      <UiFormLabel>{{ $t('contactInfo.email') }}</UiFormLabel>
-      <SfInput name="email" type="email" v-model="cart.customerEmail" required />
+      <FormLabel>{{ $t('contactInfo.email') }}</FormLabel>
+      <SfInput
+        name="email"
+        type="email"
+        v-model="cart.customerEmail"
+        required
+      />
     </label>
     <div class="mt-4 flex flex-col-reverse md:flex-row md:justify-end">
-      <SfButton type="reset" class="md:mr-4" variant="secondary" @click="$emit('on-cancel')">
+      <SfButton
+        type="reset"
+        class="md:mr-4"
+        variant="secondary"
+        @click="$emit('on-cancel')"
+      >
         {{ $t('contactInfo.cancel') }}
       </SfButton>
-      <SfButton type="submit" class="min-w-[120px] mb-4 md:mb-0"> {{ $t('contactInfo.save') }} </SfButton>
+      <SfButton type="submit" class="min-w-[120px] mb-4 md:mb-0">
+        {{ $t('contactInfo.save') }}
+      </SfButton>
     </div>
   </form>
 </template>
