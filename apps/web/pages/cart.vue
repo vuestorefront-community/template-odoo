@@ -1,5 +1,5 @@
 <template>
-  <div class="pb-20">
+  <div v-if="data" class="pb-20">
     <div
       class="flex justify-between mt-8 mb-10 px-4 md:px-0"
       data-v-inspector="layouts/checkout.vue:6:9"
@@ -57,7 +57,7 @@
           />
         </div>
       </div>
-      <div class="col-span-5 lg:sticky lg:top-20 h-fit ">
+      <div class="col-span-5 lg:sticky lg:top-20 h-fit">
         <div
           class="shadow-lg md:rounded-md md:border md:border-neutral-100"
           data-testid="order-summary"
@@ -140,6 +140,19 @@
         </div>
       </div>
     </div>
+  </div>
+  <div
+    v-else
+    class="flex items-center justify-center flex-col pt-24 pb-32"
+    data-testid="cart-page-content"
+  >
+    <NuxtImg
+      src="/images/empty-cart.svg"
+      :alt="$t('emptyCartImgAlt')"
+      width="192"
+      height="192"
+    />
+    <h2 class="mt-8">{{ $t('emptyCart') }}</h2>
   </div>
 </template>
 
