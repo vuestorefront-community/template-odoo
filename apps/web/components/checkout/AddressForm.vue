@@ -61,10 +61,11 @@ import {
   SfModal,
 } from '@storefront-ui/vue';
 
-const props = defineProps({
+defineProps({
   heading: String,
   description: String,
   buttonText: String,
+  type: String,
   savedAddress: {
     type: Object,
     required: true,
