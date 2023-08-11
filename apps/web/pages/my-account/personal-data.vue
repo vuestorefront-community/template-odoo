@@ -58,7 +58,7 @@
         @on-save="closeModal"
         @on-cancel="closeModal"
       />
-      <AccountContactInformationForm
+      <FormContactInformation
         v-else-if="openedForm === 'contactInformation'"
         @on-save="closeModal"
         @on-cancel="closeModal"

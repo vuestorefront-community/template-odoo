@@ -41,7 +41,7 @@
           {{ $t('account.accountSettings.shippingDetails.shippingAddress') }}
         </h3>
       </header>
-      <AccountAddressForm
+      <FormAddAddress
         :saved-address="userShippingAddress"
         type="shippingAddress"
         @on-save="close"
