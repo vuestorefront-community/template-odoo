@@ -44,7 +44,7 @@
           {{ heading }}
         </h3>
       </header>
-      <AddressForm
+      <FormAddAddress
         :saved-address="savedAddress"
         :type="type"
         @on-save="close"
