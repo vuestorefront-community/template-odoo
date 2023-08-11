@@ -57,88 +57,17 @@
           />
         </div>
       </div>
-      <div class="col-span-5 lg:sticky lg:top-20 h-fit">
-        <div
-          class="shadow-lg md:rounded-md md:border md:border-neutral-100"
-          data-testid="order-summary"
+
+      <UiOrderSummary :cart="cart" class="col-span-5 md:sticky md:top-20 h-fit">
+        <SfButton
+          :tag="NuxtLink"
+          to="/checkout"
+          size="lg"
+          class="w-full mb-4 md:mb-0"
         >
-          <div
-            class="flex justify-between items-end py-2 px-4 md:px-6 md:pt-6 md:pb-4"
-          >
-            <p class="typography-headline-4 font-bold md:typography-headline-3">
-              {{ $t('orderSummary') }}
-            </p>
-            <p
-              class="typography-text-base font-medium"
-              data-testid="total-in-cart"
-            >
-              (Items: 1)
-            </p>
-          </div>
-          <div class="px-4 pb-4 mt-3 md:px-6 md:pb-6 md:mt-0">
-            <div class="flex justify-between typography-text-base pb-4">
-              <div class="flex flex-col grow pr-2">
-                <p>{{ $t('itemsSubtotal') }}</p>
-                <p class="typography-text-xs text-neutral-500">
-                  {{ $t('originalPrice') }}
-                </p>
-                <p class="typography-text-xs text-secondary-700">
-                  {{ $t('savings') }}
-                </p>
-                <p class="my-2">{{ $t('delivery') }}</p>
-                <p>{{ $t('estimatedTax') }}</p>
-              </div>
-              <div class="flex flex-col text-right">
-                <p data-testid="special-price">$89.95</p>
-                <p class="typography-text-xs text-neutral-500">$100.99</p>
-                <p class="typography-text-xs text-secondary-700">$20</p>
-                <p class="my-2">$0</p>
-                <p>$1.38</p>
-              </div>
-            </div>
-            <div class="flex items-center py-4 border-t border-neutral-200">
-              <p>{{ $t('promoCode') }}</p>
-              <SfButton size="sm" variant="tertiary" class="ml-auto mr-2">
-                {{ $t('remove') }}
-              </SfButton>
-              <p>$20</p>
-            </div>
-            <div class="flex gap-x-2 py-4 border-y border-neutral-200 mb-4">
-              <SfInput
-                wrapper-class="grow"
-                :placeholder="$t('promoCodePlaceholder')"
-              />
-              <SfButton variant="secondary">{{ $t('apply') }}</SfButton>
-            </div>
-            <div
-              class="px-3 py-1.5 bg-secondary-100 text-secondary-700 typography-text-sm rounded-md text-center mb-4"
-            >
-              <UiAlert class="w-full" variant="secondary">
-                {{
-                  $t('savingsTag', {
-                    amount: `$20`,
-                  })
-                }}
-              </UiAlert>
-            </div>
-            <div
-              class="flex justify-between typography-headline-4 md:typography-headline-3 font-bold pb-4 mb-4"
-            >
-              <p>{{ $t('total') }}</p>
-              <p data-testid="total">$89.95</p>
-            </div>
-            <UiDivider class="my-4 w-auto" />
-            <SfButton
-              :tag="NuxtLink"
-              to="/checkout"
-              size="lg"
-              class="w-full mb-4 md:mb-0"
-            >
-              {{ $t('goToCheckout') }}
-            </SfButton>
-          </div>
-        </div>
-      </div>
+          {{ $t('goToCheckout') }}
+        </SfButton>
+      </UiOrderSummary>
     </div>
   </div>
   <div
@@ -185,4 +114,13 @@ const data = ref([
     slug: '/product/1',
   },
 ]);
+
+const cart = ref({
+  length: 1,
+  totalPrice: '89.95',
+  subtotalRegularPrice: '100.99',
+  totalCouponDiscounts: '20',
+  shippingPrice: '0',
+  totalTax: '1.38',
+});
 </script>
