@@ -5,7 +5,7 @@
     @submit.prevent="$emit('on-save', defaultValues)"
   >
     <label>
-      <UiFormLabel>{{ $t('form.firstNameLabel') }}</UiFormLabel>
+      <FormLabel>{{ $t('form.firstNameLabel') }}</FormLabel>
       <SfInput
         name="firstName"
         autocomplete="given-name"
@@ -14,7 +14,7 @@
       />
     </label>
     <label class="md:col-span-2">
-      <UiFormLabel>{{ $t('form.lastNameLabel') }}</UiFormLabel>
+      <FormLabel>{{ $t('form.lastNameLabel') }}</FormLabel>
       <SfInput
         name="lastName"
         autocomplete="family-name"
@@ -23,7 +23,7 @@
       />
     </label>
     <label class="md:col-span-3">
-      <UiFormLabel>{{ $t('form.phoneLabel') }}</UiFormLabel>
+      <FormLabel>{{ $t('form.phoneLabel') }}</FormLabel>
       <SfInput
         name="phone"
         type="tel"
@@ -33,7 +33,7 @@
       />
     </label>
     <label class="md:col-span-3">
-      <UiFormLabel>{{ $t('form.countryLabel') }}</UiFormLabel>
+      <FormLabel>{{ $t('form.countryLabel') }}</FormLabel>
       <SfSelect
         v-model="defaultValues.country"
         name="country"
@@ -47,22 +47,22 @@
       </SfSelect>
     </label>
     <label class="md:col-span-2">
-      <UiFormLabel>{{ $t('form.streetNameLabel') }}</UiFormLabel>
+      <FormLabel>{{ $t('form.streetNameLabel') }}</FormLabel>
       <SfInput
         name="streetName"
         autocomplete="address-line1"
         v-model="defaultValues.streetName"
         required
       />
-      <UiFormHelperText>{{ $t('form.streetNameHelp') }}</UiFormHelperText>
+      <FormHelperText>{{ $t('form.streetNameHelp') }}</FormHelperText>
     </label>
     <label>
-      <UiFormLabel>{{ $t('form.streetNumberLabel') }}</UiFormLabel>
+      <FormLabel>{{ $t('form.streetNumberLabel') }}</FormLabel>
       <SfInput name="streetNumber" v-model="defaultValues.streetNumber" />
-      <UiFormHelperText>{{ $t('form.streetNumberHelp') }}</UiFormHelperText>
+      <FormHelperText>{{ $t('form.streetNumberHelp') }}</FormHelperText>
     </label>
     <label class="md:col-span-3">
-      <UiFormLabel>{{ $t('form.cityLabel') }}</UiFormLabel>
+      <FormLabel>{{ $t('form.cityLabel') }}</FormLabel>
       <SfInput
         name="city"
         autocomplete="address-level2"
@@ -71,7 +71,7 @@
       />
     </label>
     <label class="md:col-span-2">
-      <UiFormLabel>{{ $t('form.stateLabel') }}</UiFormLabel>
+      <FormLabel>{{ $t('form.stateLabel') }}</FormLabel>
       <SfSelect
         v-model="defaultValues.state"
         name="state"
@@ -83,7 +83,7 @@
       </SfSelect>
     </label>
     <label>
-      <UiFormLabel>{{ $t('form.postalCodeLabel') }}</UiFormLabel>
+      <FormLabel>{{ $t('form.postalCodeLabel') }}</FormLabel>
       <SfInput
         name="postalCode"
         autocomplete="postal-code"
