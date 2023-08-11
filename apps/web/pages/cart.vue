@@ -1,28 +1,32 @@
 <template>
   <div v-if="data" class="pb-20">
-    <div
-      class="flex justify-between mt-8 mb-10 px-4 md:px-0"
-      data-v-inspector="layouts/checkout.vue:6:9"
-    >
-      <div class="w-full flex items-center justify-between">
-        <h1
-          class="font-bold typography-headline-3 md:typography-headline-2"
-          data-v-inspector="layouts/checkout.vue:7:11"
-        >
-          My Cart
-        </h1>
-        <SfButton
-          variant="tertiary"
-          class="self-start"
-          :tag="NuxtLink"
-          to="/category/1"
-          size="lg"
-          @click="$emit('on-click')"
-          ><SvgBackArrow />
-          <span class="mt-[2.5px] hidden md:block">Back To Shopping</span>
-          <span class="mt-[2.5px] md:hidden">Back</span></SfButton
-        >
-      </div>
+    <div class="flex justify-between mt-8 mb-10">
+      <h1 class="font-bold typography-headline-3 md:typography-headline-2">
+        Checkout
+      </h1>
+      <SfButton
+        :tag="NuxtLink"
+        to="/cart"
+        class="flex md:hidden whitespace-nowrap"
+        size="sm"
+        variant="tertiary"
+      >
+        <template #prefix>
+          <SfIconArrowBack />
+        </template>
+        {{ $t('back') }}
+      </SfButton>
+      <SfButton
+        :tag="NuxtLink"
+        to="/cart"
+        class="hidden md:flex"
+        variant="tertiary"
+      >
+        <template #prefix>
+          <SfIconArrowBack />
+        </template>
+        {{ $t('backToCart') }}
+      </SfButton>
     </div>
     <div
       class="lg:grid lg:grid-cols-12 md:gap-x-6"
@@ -86,7 +90,7 @@
 </template>
 
 <script lang="ts" setup>
-import { SfButton, SfInput } from '@storefront-ui/vue';
+import { SfButton, SfIconArrowBack } from '@storefront-ui/vue';
 
 const NuxtLink = resolveComponent('NuxtLink');
 
