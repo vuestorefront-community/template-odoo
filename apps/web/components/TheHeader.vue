@@ -61,11 +61,11 @@ const accountDropdown = [
   },
   {
     label: 'My Orders',
-    link: '//my-account/my-orders',
+    link: '/my-account/my-orders',
   },
   {
     label: 'Returns',
-    link: '//my-account/returns',
+    link: '/my-account/returns',
   },
   {
     label: 'Logout',
