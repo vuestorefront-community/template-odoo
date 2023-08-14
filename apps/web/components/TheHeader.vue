@@ -5,7 +5,6 @@ import {
   SfIconExpandMore,
   SfIconShoppingCart,
   SfIconFavorite,
-  SfIconClose,
   SfIconSearch,
   SfInput,
   SfIconCancel,
@@ -16,7 +15,6 @@ import {
   useDisclosure,
 } from '@storefront-ui/vue';
 import { unrefElement } from '@vueuse/core';
-import { DefaultLayoutProps } from '~/layouts/types';
 
 defineProps<{
   filled?: boolean;
@@ -96,11 +94,8 @@ const accountDropdown = [
         type="button"
         variant="tertiary"
         :tag="NuxtLink"
-        to="/category/1"
+        to="/category/13"
       >
-        <template #suffix>
-          <SfIconExpandMore class="hidden lg:block" />
-        </template>
         <span class="hidden lg:flex whitespace-nowrap">{{
           $t('allProductsLinkText')
         }}</span>

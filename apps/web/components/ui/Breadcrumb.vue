@@ -3,7 +3,7 @@
     data-testid="breadcrumbs"
     class="inline-flex items-center text-sm font-normal font-body"
   >
-    <ol class="flex w-auto leading-none group md:flex-wrap">
+    <ol class="flex w-auto leading-none group md:flex-wrap pl-0">
       <li class="flex items-center sm:hidden text-neutral-500 z-10">
         <SfDropdown
           v-model="dropdownOpened"
