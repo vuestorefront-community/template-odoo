@@ -41,7 +41,19 @@ if (products.value.length === 0) {
   products.value = data.value?.data.products?.products || [];
 }
 
-onMounted(() => setMaxVisiblePages(isWideScreen.value));
+const mountUrlSlugForProductVariant = (product) => {
+  if (product) {
+    const { slug, variantAttributeValues } = product;
+    return `${slug}?${variantAttributeValues
+      .map((variant) => `${variant?.attribute?.name}=${variant?.id}`)
+      .join('')}`;
+  }
+};
+
+onMounted(() => {
+  console.log(products);
+  setMaxVisiblePages(isWideScreen.value);
+});
 </script>
 <template>
   <div class="pb-20">
@@ -77,12 +89,12 @@ onMounted(() => setMaxVisiblePages(isWideScreen.value));
             v-for="product in products"
             :key="product.id"
             :name="product.name"
-            :slug="`${product.slug}`"
+            :slug="mountUrlSlugForProductVariant(product.firstVariant)"
             :image-url="`https://vsfdemo15.labs.odoogap.com${product.image}`"
             :image-alt="product.name"
-            :price="product.price"
-            rating-count="123"
-            rating="4"
+            :price="product.price.toString()"
+            :rating-count="123"
+            :rating="Number(4)"
           />
         </section>
         <LazyUiPagination

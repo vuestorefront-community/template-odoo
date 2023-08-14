@@ -30,7 +30,7 @@ defineProps({
     required: false,
   },
   ratingCount: {
-    type: String,
+    type: Number,
     required: false,
   },
   rating: {
