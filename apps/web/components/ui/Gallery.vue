@@ -96,16 +96,25 @@ import { unrefElement, useIntersectionObserver } from '@vueuse/core';
 import { ref } from 'vue';
 import { watch, type ComponentPublicInstance } from 'vue';
 
-const withBase = (filepath: string) =>
-  `https://storage.googleapis.com/sfui_docs_artifacts_bucket_public/production/gallery/${filepath}`;
+// const withBase = (filepath: string) => `https://storage.googleapis.com/sfui_docs_artifacts_bucket_public/production/gallery/${filepath}`;
 
-const images = [
-  {
-    imageSrc: withBase('gallery_1.png'),
-    imageThumbSrc: withBase('gallery_1_thumb.png'),
-    alt: 'backpack1',
+// const images = [
+//   {
+//     imageSrc: withBase('gallery_1.png'),
+//     imageThumbSrc: withBase('gallery_1_thumb.png'),
+//     alt: 'backpack1',
+//   },
+// ];
+
+const props = defineProps({
+  images: {
+    type: Array,
+    default: [],
   },
-];
+});
+
+const images = computed(() => props.images);
+
 const thumbsRef = ref<HTMLElement>();
 const firstThumbRef = ref<HTMLButtonElement>();
 const lastThumbRef = ref<HTMLButtonElement>();
