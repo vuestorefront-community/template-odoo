@@ -28,6 +28,53 @@ if (data.product) {
   product.value = data.product;
 }
 
+const breadcrumbs = computed(() => {
+  return [
+    { name: 'Home', link: '/' },
+    { name: 'Category', link: '/category' },
+    { name: product.value?.name, link: '/product' },
+  ];
+});
+
+const getRegularPrice = (product: {
+  firstVariant: { combinationInfoVariant: { list_price: any } };
+}) => {
+  if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
+    return product.firstVariant.combinationInfoVariant.list_price;
+  }
+};
+
+const getSpecialPrice = (product: {
+  firstVariant: {
+    combinationInfoVariant: { has_discounted_price: any; price: any };
+  };
+}) => {
+  if (
+    product.firstVariant &&
+    product.firstVariant.combinationInfoVariant.has_discounted_price
+  ) {
+    return product.firstVariant.combinationInfoVariant.price;
+  }
+};
+
+const withBase = (filepath: string) =>
+  `https://vsfdemo15.labs.odoogap.com${filepath}`;
+const images = computed(() => {
+  return [
+    {
+      imageSrc: withBase(product.value?.image),
+      imageThumbSrc: withBase(product.value?.image),
+      alt: product.value?.name,
+    },
+  ];
+});
+
+const selectedSize = 'S';
+const selectedColor = 'red';
+const selectedMaterials = '';
+const productDetailsOpen = ref(true);
+const quantitySelectorValue = ref(1);
+
 const getAllSizes = computed(() => {
   const sizes = product.value?.attributeValues?.filter((item: any) => {
     return item.attribute.name === 'Size';
@@ -75,30 +122,9 @@ const colors = ref([
   },
 ]);
 
-const selectedSize = 'S';
-const selectedColor = 'red';
-const selectedMaterials = '';
-const productDetailsOpen = ref(true);
-const breadcrumbs = computed(() => {
-  return [
-    { name: 'Home', link: '/' },
-    { name: 'Category', link: '/category' },
-    { name: product.value?.name, link: '/product' },
-  ];
+onMounted(() => {
+  console.log(product);
 });
-const withBase = (filepath: string) =>
-  `https://vsfdemo15.labs.odoogap.com${filepath}`;
-const images = computed(() => {
-  return [
-    {
-      imageSrc: withBase(product.value?.image),
-      imageThumbSrc: withBase(product.value?.image),
-      alt: product.value?.name,
-    },
-  ];
-});
-
-const quantitySelectorValue = ref(1);
 </script>
 
 <template>
@@ -127,20 +153,18 @@ const quantitySelectorValue = ref(1);
         <div
           class="my-1"
           v-if="
-            product.combinationInfo &&
-            product.combinationInfo.has_discounted_price
+            product.firstVariant &&
+            product.firstVariant.combinationInfoVariant.has_discounted_price
           "
         >
           <span
             class="mr-2 text-secondary-700 font-bold font-headings text-2xl"
             data-testid="price"
           >
-            ${{ product.combinationInfo ? product.combinationInfo.price : 0 }}
+            ${{ getRegularPrice(product) }}
           </span>
           <span class="text-base font-normal text-neutral-500 line-through">
-            ${{
-              product.combinationInfo ? product.combinationInfo.list_price : 0
-            }}
+            ${{ getSpecialPrice(product) }}
           </span>
         </div>
         <div v-else class="my-1">
@@ -148,7 +172,7 @@ const quantitySelectorValue = ref(1);
             class="mr-2 text-secondary-700 font-bold font-headings text-2xl"
             data-testid="price"
           >
-            ${{ product.combinationInfo ? product.combinationInfo.price : 0 }}
+            ${{ getRegularPrice(product) }}
           </span>
         </div>
         <div class="inline-flex items-center mt-4 mb-2">
@@ -166,7 +190,7 @@ const quantitySelectorValue = ref(1);
           class="mb-4 font-normal typography-text-sm"
           data-testid="product-description"
         >
-          Lightweight • Non slip • Flexible outsole • Easy to wear on and off
+          {{ product.description }}
         </p>
         <div class="py-4 mb-4 border-gray-200 border-y">
           <div
@@ -267,7 +291,7 @@ const quantitySelectorValue = ref(1);
               class="min-w-[48px]"
               size="sm"
               :input-props="{
-                onClick: (e) => value == selectedSize && e.preventDefault(),
+                onClick: (e: { preventDefault: () => any; }) => value == selectedSize && e.preventDefault(),
               }"
               :model-value="value === selectedSize"
               @update:model-value=""
@@ -291,7 +315,7 @@ const quantitySelectorValue = ref(1);
               class="min-w-[48px]"
               size="sm"
               :input-props="{
-                onClick: (e) => value == selectedColor && e.preventDefault(),
+                onClick: (e: { preventDefault: () => any; }) => value == selectedColor && e.preventDefault(),
               }"
               :model-value="value === selectedColor"
               @update:model-value=""
@@ -321,7 +345,7 @@ const quantitySelectorValue = ref(1);
               class="min-w-[48px]"
               size="sm"
               :input-props="{
-                onClick: (e) =>
+                onClick: (e: { preventDefault: () => any; }) =>
                   value == selectedMaterials && e.preventDefault(),
               }"
               :model-value="value === selectedMaterials"
@@ -368,4 +392,3 @@ const quantitySelectorValue = ref(1);
     <ProductSlider text="Recommended with this product" />
   </section>
 </template>
-

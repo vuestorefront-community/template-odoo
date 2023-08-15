@@ -13,6 +13,31 @@ const breadcrumbs = [
   { name: 'Category', link: '/category' },
 ];
 
+const route = useRoute();
+
+const products = useState('product', () => []);
+
+if (products.value.length === 0) {
+  const { data } = await useAsyncData(
+    'product',
+    async () =>
+      await sdk.odoo.getProductTemplateList({
+        pageSize: 12,
+        filter: { categoryId: Number(route.params.id) },
+      })
+  );
+  products.value = data.value?.data.products?.products || [];
+}
+
+const mountUrlSlugForProductVariant = (product) => {
+  if (product) {
+    const { slug, variantAttributeValues } = product;
+    return `${slug}?${variantAttributeValues
+      .map((variant) => `${variant?.attribute?.name}=${variant?.id}&`)
+      .join('')}`;
+  }
+};
+
 const isTabletScreen = useMediaQuery(mediaQueries.tablet);
 const isWideScreen = useMediaQuery(mediaQueries.desktop);
 const maxVisiblePages = ref(1);
@@ -27,31 +52,7 @@ watch(isTabletScreen, (value) => {
   }
 });
 
-const products = useState('product', () => []);
-
-if (products.value.length === 0) {
-  const { data } = await useAsyncData(
-    'product',
-    async () =>
-      await sdk.odoo.getProductTemplateList({
-        pageSize: 12,
-        filter: { categoryId: [13] },
-      })
-  );
-  products.value = data.value?.data.products?.products || [];
-}
-
-const mountUrlSlugForProductVariant = (product) => {
-  if (product) {
-    const { slug, variantAttributeValues } = product;
-    return `${slug}?${variantAttributeValues
-      .map((variant) => `${variant?.attribute?.name}=${variant?.id}`)
-      .join('')}`;
-  }
-};
-
 onMounted(() => {
-  console.log(products);
   setMaxVisiblePages(isWideScreen.value);
 });
 </script>
