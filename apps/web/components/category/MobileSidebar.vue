@@ -8,7 +8,7 @@
     leave-to-class="-translate-x-full"
   >
     <SfDrawer
-      v-show="false"
+      v-show="isOpen"
       :model-value="true"
       :disable-click-away="true"
       :disable-esc="true"
@@ -29,7 +29,7 @@
           </SfButton>
         </div>
         <div class="overflow-y-auto md:overflow-y-visible py-4 md:p-0">
-          <slot/>
+          <slot />
         </div>
       </div>
     </SfDrawer>
@@ -38,4 +38,12 @@
 
 <script setup lang="ts">
 import { SfDrawer, SfButton, SfIconClose } from '@storefront-ui/vue';
+
+export type CategorySidebarProps = {
+  isOpen: boolean;
+};
+export type CategorySidebarEmits = (event: 'close') => void;
+
+defineProps<CategorySidebarProps>();
+defineEmits<CategorySidebarEmits>();
 </script>

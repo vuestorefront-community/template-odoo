@@ -208,7 +208,7 @@ const accountDropdown = [
         variant="tertiary"
         class="relative text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 rounded-md md:hidden"
         square
-        @click="searchModalOpen"
+        @click="$emit('searchModalOpen')"
       >
         <SfIconSearch />
       </SfButton>

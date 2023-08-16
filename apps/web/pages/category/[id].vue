@@ -1,6 +1,6 @@
 <script setup>
 import { sdk } from '../../sdk.config';
-import { SfButton, SfIconTune } from '@storefront-ui/vue';
+import { SfButton, SfIconTune, useDisclosure } from '@storefront-ui/vue';
 import { useMediaQuery } from '@vueuse/core';
 
 const mediaQueries = {
@@ -38,6 +38,7 @@ const mountUrlSlugForProductVariant = (product) => {
   }
 };
 
+const { isOpen, open, close } = useDisclosure();
 const isTabletScreen = useMediaQuery(mediaQueries.tablet);
 const isWideScreen = useMediaQuery(mediaQueries.desktop);
 const maxVisiblePages = ref(1);
@@ -63,7 +64,11 @@ onMounted(() => {
       All products
     </h1>
     <div class="flex flex-row items-stretch">
-      <LazyCategoryMobileSidebar class="lg:hidden">
+      <LazyCategoryMobileSidebar
+        :is-open="isOpen"
+        @close="close"
+        class="lg:hidden"
+      >
         <template #default>
           <CategoryFilterSidebar />
         </template>
@@ -72,14 +77,14 @@ onMounted(() => {
         <div class="flex justify-between items-center mb-6">
           <span class="font-bold font-headings md:text-lg"> 45 Products </span>
           <SfButton
-            @click=""
+            @click="open"
             variant="tertiary"
             class="lg:hidden whitespace-nowrap"
           >
             <template #prefix>
               <SfIconTune />
             </template>
-            List settings
+            {{ $t('listSettings') }}
           </SfButton>
         </div>
         <section

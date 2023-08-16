@@ -93,7 +93,8 @@ const getAllColors = computed(() => {
   });
   return colors.map((item: any) => {
     return {
-      value: item.id,
+      id: item.id,
+      value: item.name,
       label: item.name,
     };
   });
@@ -111,20 +112,7 @@ const getAllMaterials = computed(() => {
   });
 });
 
-const colors = ref([
-  {
-    value: '#FF0000',
-    label: 'red',
-  },
-  {
-    value: '#0000ff',
-    label: 'blue',
-  },
-]);
-
-onMounted(() => {
-  console.log(product);
-});
+onMounted(() => {});
 </script>
 
 <template>
@@ -291,7 +279,7 @@ onMounted(() => {
               class="min-w-[48px]"
               size="sm"
               :input-props="{
-                onClick: (e: { preventDefault: () => any; }) => value == selectedSize && e.preventDefault(),
+                onClick: (e) => value == selectedSize && e.preventDefault(),
               }"
               :model-value="value === selectedSize"
               @update:model-value=""
@@ -307,17 +295,17 @@ onMounted(() => {
             Color
           </legend>
           <span
-            v-for="{ label, value } in colors"
+            v-for="{ id, label, value } in getAllColors"
             class="mr-2 mb-2 uppercase"
-            :key="value"
+            :key="id"
           >
             <SfChip
               class="min-w-[48px]"
               size="sm"
               :input-props="{
-                onClick: (e: { preventDefault: () => any; }) => value == selectedColor && e.preventDefault(),
+                onClick: (e) => value == selectedColor && e.preventDefault(),
               }"
-              :model-value="value === selectedColor"
+              :model-value="id === selectedColor"
               @update:model-value=""
             >
               <template #prefix>
@@ -345,7 +333,7 @@ onMounted(() => {
               class="min-w-[48px]"
               size="sm"
               :input-props="{
-                onClick: (e: { preventDefault: () => any; }) =>
+                onClick: (e) =>
                   value == selectedMaterials && e.preventDefault(),
               }"
               :model-value="value === selectedMaterials"

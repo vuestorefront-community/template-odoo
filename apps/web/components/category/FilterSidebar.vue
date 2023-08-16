@@ -6,13 +6,13 @@
       Sort by
     </h5>
     <div class="px-2">
-      <SfSelect v-model="sortModel" aria-label="Sort by">
+      <SfSelect v-model="sortModal" :aria-label="$t('sortBy')">
         <option
-          v-for="{ id, label, value } in sortOptions"
-          :key="id"
+          v-for="{ value, label } in sortOptions"
+          :key="value"
           :value="value"
         >
-          {{ label }}
+          {{ $t(`sortType.${label}`) }}
         </option>
       </SfSelect>
     </div>
@@ -179,15 +179,11 @@ import {
   SfAccordionItem,
   SfButton,
   SfChip,
-  SfCheckbox,
   SfCounter,
   SfIconArrowBack,
   SfIconChevronLeft,
-  SfIconCheck,
-  SfIconClose,
   SfListItem,
   SfRadio,
-  SfRating,
   SfSelect,
   SfThumbnail,
 } from '@storefront-ui/vue';
@@ -327,19 +323,29 @@ const filtersData = ref<Node[]>([
   },
 ]);
 const sortOptions = ref([
-  { id: 'sort1', label: 'Relevance', value: 'relevance' },
-  { id: 'sort2', label: 'Price: Low to High', value: 'price low to high' },
-  { id: 'sort3', label: 'Price: High to Low', value: 'price high to low' },
-  { id: 'sort4', label: 'New Arrivals', value: 'new arrivals' },
-  { id: 'sort5', label: 'Customer Rating', value: 'customer rating' },
-  { id: 'sort6', label: 'Bestsellers', value: 'bestsellers' },
+  {
+    label: 'latest',
+    value: 'createdAt',
+  },
+  {
+    label: 'priceUp',
+    value: 'price-low-to-high',
+  },
+  {
+    label: 'priceDown',
+    value: 'price-high-to-low',
+  },
+  {
+    label: 'relevance',
+    value: 'relevant',
+  },
 ]);
 
 const selectedFilters = ref<string[]>([]);
 const opened = ref<boolean[]>(filtersData.value.map(() => true));
 const priceModel = ref('');
 const ratingsModel = ref('');
-const sortModel = ref(sortOptions.value[0].value);
+const sortModal = ref(sortOptions.value[0].value);
 
 const isItemActive = (selectedValue: string) => {
   return selectedFilters.value?.includes(selectedValue);
