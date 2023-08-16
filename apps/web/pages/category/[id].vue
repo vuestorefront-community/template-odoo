@@ -7,15 +7,14 @@ const mediaQueries = {
   tablet: '(min-width: 768px)',
   desktop: '(min-width: 1024px)',
 };
-
+const { isOpen, open, close } = useDisclosure();
 const breadcrumbs = [
   { name: 'Home', link: '/' },
   { name: 'Category', link: '/category' },
 ];
 
 const route = useRoute();
-
-const products = useState('product', () => []);
+const products = ref([]);
 
 if (products.value.length === 0) {
   const { data } = await useAsyncData(
@@ -38,7 +37,6 @@ const mountUrlSlugForProductVariant = (product) => {
   }
 };
 
-const { isOpen, open, close } = useDisclosure();
 const isTabletScreen = useMediaQuery(mediaQueries.tablet);
 const isWideScreen = useMediaQuery(mediaQueries.desktop);
 const maxVisiblePages = ref(1);
@@ -55,6 +53,7 @@ watch(isTabletScreen, (value) => {
 
 onMounted(() => {
   setMaxVisiblePages(isWideScreen.value);
+  console.log(products.value);
 });
 </script>
 <template>

@@ -1,7 +1,7 @@
-<script setup lang="ts">
+<script setup>
 import { sdk } from '../sdk.config';
 
-const categories: any = useState('category', () => []);
+const categories = ref([]);
 
 if (categories.value.length === 0) {
   const { data } = await useAsyncData(
@@ -16,7 +16,7 @@ if (categories.value.length === 0) {
 
 <template>
   <LazyMainBanner />
-  <LazyCategoryCard :categories="categories"/>
+  <LazyCategoryCard :categories="categories" />
   <LazyDisplay />
   <section class="pb-16">
     <LazyProductSlider heading="Inspired by your picks" />
