@@ -1,7 +1,7 @@
-<script setup>
+<script setup lang="ts">
 import { sdk } from '../sdk.config';
 
-const categories = ref([]);
+const categories = ref<object[]>([]);
 
 if (categories.value.length === 0) {
   const { data } = await useAsyncData(

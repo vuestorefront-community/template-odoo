@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { sdk } from '../../sdk.config';
+import { sdk } from '@/sdk.config';
 import {
   SfButton,
   SfCounter,
@@ -18,7 +18,7 @@ import {
 } from '@storefront-ui/vue';
 
 const route = useRoute();
-const product = ref<any>({});
+const product = ref<any>();
 
 const { data } = await sdk.odoo.getProductTemplate({
   slug: `/product/${route.params.slug}`,

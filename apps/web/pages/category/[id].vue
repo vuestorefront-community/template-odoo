@@ -15,7 +15,7 @@ const breadcrumbs = [
 ];
 
 const route = useRoute();
-const products: any = ref([]);
+const products = ref<object[]>([]);
 
 if (products.value.length === 0) {
   const { data } = await useAsyncData(
@@ -23,7 +23,7 @@ if (products.value.length === 0) {
     async () =>
       await sdk.odoo.getProductTemplateList({
         pageSize: 12,
-        filter: { categoryId: Number(route.params.id) },
+        filter: { categoryId: [Number(route.params.id)] },
       })
   );
   products.value = data.value?.data.products?.products || [];
@@ -54,7 +54,6 @@ watch(isTabletScreen, (value) => {
 
 onMounted(() => {
   setMaxVisiblePages(isWideScreen.value);
-  console.log(products.value);
 });
 </script>
 <template>
