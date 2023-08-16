@@ -1,5 +1,6 @@
-<script setup>
-import { sdk } from '../../sdk.config';
+<script setup lang="ts">
+import { sdk } from '@/sdk.config';
+import { Product } from '@erpgap/odoo-sdk-api-client';
 import { SfButton, SfIconTune, useDisclosure } from '@storefront-ui/vue';
 import { useMediaQuery } from '@vueuse/core';
 
@@ -14,7 +15,7 @@ const breadcrumbs = [
 ];
 
 const route = useRoute();
-const products = ref([]);
+const products: any = ref([]);
 
 if (products.value.length === 0) {
   const { data } = await useAsyncData(
@@ -28,11 +29,11 @@ if (products.value.length === 0) {
   products.value = data.value?.data.products?.products || [];
 }
 
-const mountUrlSlugForProductVariant = (product) => {
+const mountUrlSlugForProductVariant = (product: { slug: any; variantAttributeValues: any; }) => {
   if (product) {
     const { slug, variantAttributeValues } = product;
     return `${slug}?${variantAttributeValues
-      .map((variant) => `${variant?.attribute?.name}=${variant?.id}&`)
+      .map((variant: { attribute: { name: any; }; id: any; }) => `${variant?.attribute?.name}=${variant?.id}&`)
       .join('')}`;
   }
 };
@@ -41,7 +42,7 @@ const isTabletScreen = useMediaQuery(mediaQueries.tablet);
 const isWideScreen = useMediaQuery(mediaQueries.desktop);
 const maxVisiblePages = ref(1);
 
-const setMaxVisiblePages = (isWide) => (maxVisiblePages.value = isWide ? 5 : 1);
+const setMaxVisiblePages = (isWide: boolean) => (maxVisiblePages.value = isWide ? 5 : 1);
 
 watch(isWideScreen, (value) => setMaxVisiblePages(value));
 
