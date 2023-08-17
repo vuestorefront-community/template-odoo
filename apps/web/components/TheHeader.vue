@@ -156,7 +156,7 @@ const accountDropdown = [
         <SfButton
           class="group relative text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 mr-1 ml-3 rounded-md"
           :tag="NuxtLink"
-          to="/"
+          to="/cart"
           :aria-label="$t('numberInCart', cartLineItemsCount)"
           variant="tertiary"
           square
