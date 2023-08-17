@@ -9,7 +9,7 @@ import {
   SfIconBlock,
   SfListItem,
   SfRadio,
-  SfLink,
+  SfLink
 } from '@storefront-ui/vue';
 
 enum PaymentMethod {
