@@ -21,11 +21,11 @@
       </SfButton>
     </div>
 
-    <UiModal
+    <SfModal
       v-model="isOpen"
       tag="section"
       role="dialog"
-      class="h-full w-full overflow-auto md:w-[600px] md:h-fit"
+      class="h-full w-full overflow-auto md:w-[600px] md:h-fit z-50"
       aria-labelledby="address-modal-title"
     >
       <header>
@@ -50,11 +50,16 @@
         @on-save="close"
         @on-close="close"
       />
-    </UiModal>
+    </SfModal>
   </div>
 </template>
 <script lang="ts" setup>
-import { SfButton, SfIconClose, useDisclosure } from '@storefront-ui/vue';
+import {
+  SfButton,
+  SfIconClose,
+  useDisclosure,
+  SfModal,
+} from '@storefront-ui/vue';
 
 const props = defineProps({
   heading: String,
