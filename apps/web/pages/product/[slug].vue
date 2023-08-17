@@ -115,10 +115,7 @@ const updateFilter = (filter: LocationQueryRaw | undefined) => {
   });
 };
 
-onMounted(() => {
-  // console.log(product.value, 'from product');
-  console.log(route);
-});
+onMounted(() => {});
 </script>
 
 <template>
