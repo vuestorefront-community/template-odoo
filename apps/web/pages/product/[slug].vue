@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { sdk } from '@/sdk.config';
+import { Price } from '@/types/product';
 import {
   SfButton,
   SfCounter,
@@ -38,19 +39,13 @@ const breadcrumbs = computed(() => {
   ];
 });
 
-const getRegularPrice = (product: {
-  firstVariant: { combinationInfoVariant: { list_price: any } };
-}) => {
+const getRegularPrice = (product: Price) => {
   if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
     return product.firstVariant.combinationInfoVariant.list_price;
   }
 };
 
-const getSpecialPrice = (product: {
-  firstVariant: {
-    combinationInfoVariant: { has_discounted_price: any; price: any };
-  };
-}) => {
+const getSpecialPrice = (product: Price) => {
   if (
     product.firstVariant &&
     product.firstVariant.combinationInfoVariant.has_discounted_price

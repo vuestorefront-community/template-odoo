@@ -35,12 +35,13 @@ const mountUrlSlugForProductVariant = (product: {
 }) => {
   if (product) {
     const { slug, variantAttributeValues } = product;
-    return `${slug}?${variantAttributeValues
+    const joinedSlug = `${slug}?${variantAttributeValues
       .map(
         (variant: { attribute: { name: any }; id: any }) =>
           `${variant?.attribute?.name}=${variant?.id}&`
       )
       .join('')}`;
+    return joinedSlug.slice(0, -1);
   }
 };
 
