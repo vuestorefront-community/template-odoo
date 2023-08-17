@@ -11,7 +11,7 @@ const props = defineProps({
 
 const thumbsRef = ref<HTMLElement>();
 const activeIndex = ref(0);
-const images = computed(() => props.images);
+const images = computed<any[]>(() => props.images);
 </script>
 
 <template>
@@ -29,11 +29,11 @@ const images = computed(() => props.images);
         type="button"
         :aria-label="alt"
         :aria-current="activeIndex === 0"
-        class="md:w-[78px] md:h-auto relative shrink-0 pb-1 mx-4 -mb-2 border-b-4 snap-start cursor-pointer focus-visible:outline focus-visible:outline-offset transition-colors flex-grow md:flex-grow-0 border-primary-700"
+        class="md:w-[78px] md:h-auto relative shrink-0 pb-1 mx-4 mb-2 border-b-4 snap-start cursor-pointer focus-visible:outline focus-visible:outline-offset transition-colors flex-grow md:flex-grow-0 border-primary-700"
       >
         <NuxtImg
           :alt="alt"
-          class="object-cover w-auto h-full"
+          class="object-cover"
           width="78"
           height="78"
           :src="imageThumbSrc"
