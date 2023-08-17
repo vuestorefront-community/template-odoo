@@ -71,9 +71,9 @@ const images = computed(() => {
   ];
 });
 
-const selectedSize = computed(() => route.query.Size?.toString());
-const selectedColor = computed(() => route.query.Color?.toString());
-const selectedMaterial = computed(() => route.query.Material?.toString());
+const selectedSize = computed(() => route.query.Size);
+const selectedColor = computed(() => route.query.Color);
+const selectedMaterial = computed(() => route.query.Material);
 const productDetailsOpen = ref(true);
 const quantitySelectorValue = ref(1);
 
@@ -294,7 +294,7 @@ onMounted(() => {
               }"
               :model-value="value == selectedSize"
               @update:model-value="
-                value !== selectedSize &&
+                value != selectedSize &&
                   updateFilter({ ['Size']: value.toString() })
               "
             >
@@ -302,7 +302,7 @@ onMounted(() => {
             </SfChip>
           </span>
         </fieldset>
-        <fieldset v-if="getAllSizes && getAllSizes?.length" class="pb-2 flex">
+        <fieldset v-if="getAllColors && getAllColors?.length" class="pb-2 flex">
           <legend
             class="block mb-2 text-base font-medium leading-6 text-neutral-900"
           >
@@ -319,9 +319,9 @@ onMounted(() => {
               :input-props="{
                 onClick: (e) => value == selectedColor && e.preventDefault(),
               }"
-              :model-value="value === selectedColor"
+              :model-value="value == selectedColor"
               @update:model-value="
-                value !== selectedColor &&
+                value != selectedColor &&
                   updateFilter({ ['Color']: value.toString() })
               "
             >
@@ -352,9 +352,9 @@ onMounted(() => {
               :input-props="{
                 onClick: (e) => value == selectedMaterial && e.preventDefault(),
               }"
-              :model-value="value === selectedMaterial"
+              :model-value="value == selectedMaterial"
               @update:model-value="
-                value !== selectedMaterial &&
+                value != selectedMaterial &&
                   updateFilter({ ['Material']: value.toString() })
               "
             >

@@ -61,7 +61,6 @@ watch(isTabletScreen, (value) => {
 
 onMounted(() => {
   setMaxVisiblePages(isWideScreen.value);
-  console.log(products.value, 'from Category');
 });
 </script>
 <template>
