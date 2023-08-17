@@ -16,8 +16,10 @@ import {
   SfChip,
   SfThumbnail,
 } from '@storefront-ui/vue';
+import { LocationQueryRaw } from 'vue-router';
 
 const route = useRoute();
+const router = useRouter();
 const product = ref<any>();
 
 const { data } = await sdk.odoo.getProductTemplate({
@@ -32,7 +34,7 @@ const breadcrumbs = computed(() => {
   return [
     { name: 'Home', link: '/' },
     { name: 'Category', link: '/category' },
-    { name: product.value?.name, link: '/product' },
+    { name: product.value?.name, link: product.value?.name },
   ];
 });
 
@@ -69,9 +71,9 @@ const images = computed(() => {
   ];
 });
 
-const selectedSize = 'S';
-const selectedColor = 'red';
-const selectedMaterials = '';
+const selectedSize = computed(() => route.query.Size?.toString());
+const selectedColor = computed(() => route.query.Color?.toString());
+const selectedMaterial = computed(() => route.query.Material?.toString());
 const productDetailsOpen = ref(true);
 const quantitySelectorValue = ref(1);
 
@@ -93,8 +95,7 @@ const getAllColors = computed(() => {
   });
   return colors.map((item: any) => {
     return {
-      id: item.id,
-      value: item.name,
+      value: item.id,
       label: item.name,
     };
   });
@@ -112,7 +113,17 @@ const getAllMaterials = computed(() => {
   });
 });
 
-onMounted(() => {});
+const updateFilter = (filter: LocationQueryRaw | undefined) => {
+  router.push({
+    path: route.path,
+    query: { ...route.query, ...filter },
+  });
+};
+
+onMounted(() => {
+  // console.log(product.value, 'from product');
+  console.log(route);
+});
 </script>
 
 <template>
@@ -281,8 +292,11 @@ onMounted(() => {});
               :input-props="{
                 onClick: (e) => value == selectedSize && e.preventDefault(),
               }"
-              :model-value="value === selectedSize"
-              @update:model-value=""
+              :model-value="value == selectedSize"
+              @update:model-value="
+                value !== selectedSize &&
+                  updateFilter({ ['Size']: value.toString() })
+              "
             >
               {{ label }}
             </SfChip>
@@ -295,9 +309,9 @@ onMounted(() => {});
             Color
           </legend>
           <span
-            v-for="{ id, label, value } in getAllColors"
+            v-for="{ label, value } in getAllColors"
             class="mr-2 mb-2 uppercase"
-            :key="id"
+            :key="value"
           >
             <SfChip
               class="min-w-[48px]"
@@ -305,11 +319,14 @@ onMounted(() => {});
               :input-props="{
                 onClick: (e) => value == selectedColor && e.preventDefault(),
               }"
-              :model-value="id === selectedColor"
-              @update:model-value=""
+              :model-value="value === selectedColor"
+              @update:model-value="
+                value !== selectedColor &&
+                  updateFilter({ ['Color']: value.toString() })
+              "
             >
               <template #prefix>
-                <SfThumbnail size="sm" :style="{ background: value }" />
+                <SfThumbnail size="sm" :style="{ background: label }" />
               </template>
               {{ label }}
             </SfChip>
@@ -333,11 +350,13 @@ onMounted(() => {});
               class="min-w-[48px]"
               size="sm"
               :input-props="{
-                onClick: (e) =>
-                  value == selectedMaterials && e.preventDefault(),
+                onClick: (e) => value == selectedMaterial && e.preventDefault(),
               }"
-              :model-value="value === selectedMaterials"
-              @update:model-value=""
+              :model-value="value === selectedMaterial"
+              @update:model-value="
+                value !== selectedMaterial &&
+                  updateFilter({ ['Material']: value.toString() })
+              "
             >
               {{ label }}
             </SfChip>

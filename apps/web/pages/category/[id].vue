@@ -15,7 +15,7 @@ const breadcrumbs = [
 ];
 
 const route = useRoute();
-const products = ref<object[]>([]);
+const products = ref<any[]>([]);
 
 if (products.value.length === 0) {
   const { data } = await useAsyncData(
@@ -29,11 +29,17 @@ if (products.value.length === 0) {
   products.value = data.value?.data.products?.products || [];
 }
 
-const mountUrlSlugForProductVariant = (product: { slug: any; variantAttributeValues: any; }) => {
+const mountUrlSlugForProductVariant = (product: {
+  slug: any;
+  variantAttributeValues: any;
+}) => {
   if (product) {
     const { slug, variantAttributeValues } = product;
     return `${slug}?${variantAttributeValues
-      .map((variant: { attribute: { name: any; }; id: any; }) => `${variant?.attribute?.name}=${variant?.id}&`)
+      .map(
+        (variant: { attribute: { name: any }; id: any }) =>
+          `${variant?.attribute?.name}=${variant?.id}&`
+      )
       .join('')}`;
   }
 };
@@ -42,7 +48,8 @@ const isTabletScreen = useMediaQuery(mediaQueries.tablet);
 const isWideScreen = useMediaQuery(mediaQueries.desktop);
 const maxVisiblePages = ref(1);
 
-const setMaxVisiblePages = (isWide: boolean) => (maxVisiblePages.value = isWide ? 5 : 1);
+const setMaxVisiblePages = (isWide: boolean) =>
+  (maxVisiblePages.value = isWide ? 5 : 1);
 
 watch(isWideScreen, (value) => setMaxVisiblePages(value));
 
@@ -54,6 +61,7 @@ watch(isTabletScreen, (value) => {
 
 onMounted(() => {
   setMaxVisiblePages(isWideScreen.value);
+  console.log(products.value, 'from Category');
 });
 </script>
 <template>
