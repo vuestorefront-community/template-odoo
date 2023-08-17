@@ -1,3 +1,43 @@
+<script lang="ts" setup>
+import {
+  SfButton,
+  SfCheckbox,
+  SfInput,
+  SfLoaderCircular,
+  SfSelect,
+} from '@storefront-ui/vue';
+
+const isCartUpdateLoading = false;
+
+const props = defineProps({
+  savedAddress: {
+    type: Object,
+    required: true,
+  },
+  type: {
+    type: String,
+    required: true,
+  },
+});
+
+const { savedAddress } = toRefs(props);
+
+const defaultValues = ref({
+  firstName: savedAddress?.value?.firstName ?? '',
+  lastName: savedAddress?.value?.lastName ?? '',
+  phone: savedAddress?.value?.phoneNumber ?? '',
+  country: savedAddress?.value?.country ?? '',
+  streetName: savedAddress?.value?.address1 ?? '',
+  streetNumber: savedAddress?.value?.address2 ?? '',
+  city: savedAddress?.value?.city ?? '',
+  state: savedAddress?.value?.state ?? '',
+  postalCode: savedAddress?.value?.postalCode ?? '',
+});
+const countries = ['US'];
+const states = ['California'];
+defineEmits(['on-save', 'on-close']);
+</script>
+
 <template>
   <form
     class="grid grid-cols-1 md:grid-cols-[50%_1fr_120px] gap-4"
@@ -128,38 +168,3 @@
     </div>
   </form>
 </template>
-<script lang="ts" setup>
-import {
-  SfButton,
-  SfCheckbox,
-  SfInput,
-  SfLoaderCircular,
-  SfSelect,
-} from '@storefront-ui/vue';
-
-const isCartUpdateLoading = false;
-
-const props = defineProps({
-  savedAddress: {
-    type: Object,
-    required: true,
-  },
-});
-
-const { savedAddress } = toRefs(props);
-
-const defaultValues = ref({
-  firstName: savedAddress?.value?.firstName ?? '',
-  lastName: savedAddress?.value?.lastName ?? '',
-  phone: savedAddress?.value?.phoneNumber ?? '',
-  country: savedAddress?.value?.country ?? '',
-  streetName: savedAddress?.value?.address1 ?? '',
-  streetNumber: savedAddress?.value?.address2 ?? '',
-  city: savedAddress?.value?.city ?? '',
-  state: savedAddress?.value?.state ?? '',
-  postalCode: savedAddress?.value?.postalCode ?? '',
-});
-const countries = ['US'];
-const states = ['California'];
-defineEmits(['on-save', 'on-close']);
-</script>
