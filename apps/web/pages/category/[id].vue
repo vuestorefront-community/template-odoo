@@ -9,14 +9,14 @@ const mediaQueries = {
   desktop: '(min-width: 1024px)',
 };
 const { isOpen, open, close } = useDisclosure();
+const route = useRoute();
+
 const breadcrumbs = [
   { name: 'Home', link: '/' },
-  { name: 'Category', link: '/category' },
+  { name: 'Category', link: `Category/${route.params.id}` },
 ];
 
-const route = useRoute();
 const products = ref<any[]>([]);
-
 if (products.value.length === 0) {
   const { data } = await useAsyncData(
     'product',

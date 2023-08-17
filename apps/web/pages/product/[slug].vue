@@ -34,7 +34,7 @@ if (data.product) {
 const breadcrumbs = computed(() => {
   return [
     { name: 'Home', link: '/' },
-    { name: 'Category', link: '/category' },
+    { name: 'product' },
     { name: product.value?.name, link: product.value?.name },
   ];
 });
