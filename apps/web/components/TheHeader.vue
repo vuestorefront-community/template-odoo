@@ -5,7 +5,6 @@ import {
   SfIconExpandMore,
   SfIconShoppingCart,
   SfIconFavorite,
-  SfIconClose,
   SfIconSearch,
   SfInput,
   SfIconCancel,
@@ -95,11 +94,8 @@ const accountDropdown = [
         type="button"
         variant="tertiary"
         :tag="NuxtLink"
-        to="/category/1"
+        to="/category/13"
       >
-        <template #suffix>
-          <SfIconExpandMore class="hidden lg:block" />
-        </template>
         <span class="hidden lg:flex whitespace-nowrap">{{
           $t('allProductsLinkText')
         }}</span>
@@ -212,7 +208,7 @@ const accountDropdown = [
         variant="tertiary"
         class="relative text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 rounded-md md:hidden"
         square
-        @click="searchModalOpen"
+        @click="$emit('searchModalOpen')"
       >
         <SfIconSearch />
       </SfButton>

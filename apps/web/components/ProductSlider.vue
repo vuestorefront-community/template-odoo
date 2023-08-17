@@ -14,7 +14,7 @@ const products = ref([
     slug: '/images/product.webp',
     imageAlt: 'imageAlt',
     rating: 4,
-    ratingCount: '26',
+    ratingCount: 26,
     price: '$89.95',
   },
   {
@@ -24,7 +24,7 @@ const products = ref([
     slug: '/images/product.webp',
     imageAlt: 'imageAlt',
     rating: 4,
-    ratingCount: '26',
+    ratingCount: 26,
     price: '$89.95',
   },
   {
@@ -34,7 +34,7 @@ const products = ref([
     slug: '/images/product.webp',
     imageAlt: 'imageAlt',
     rating: 4,
-    ratingCount: '26',
+    ratingCount: 26,
     price: '$89.95',
   },
   {
@@ -44,7 +44,7 @@ const products = ref([
     slug: '/images/product.webp',
     imageAlt: 'imageAlt',
     rating: 4,
-    ratingCount: '26',
+    ratingCount: 26,
     price: '$89.95',
   },
   {
@@ -54,7 +54,7 @@ const products = ref([
     slug: '/images/product.webp',
     imageAlt: 'imageAlt',
     rating: 4,
-    ratingCount: '26',
+    ratingCount: 26,
     price: '$89.95',
   },
   {
@@ -64,7 +64,7 @@ const products = ref([
     slug: '/images/product.webp',
     imageAlt: 'imageAlt',
     rating: 4,
-    ratingCount: '26',
+    ratingCount: 26,
     price: '$89.95',
   },
   {
@@ -74,7 +74,7 @@ const products = ref([
     slug: '/images/product.webp',
     imageAlt: 'imageAlt',
     rating: 4,
-    ratingCount: '26',
+    ratingCount: 26,
     price: '$89.95',
   },
   {
@@ -84,7 +84,7 @@ const products = ref([
     slug: '/images/product.webp',
     imageAlt: 'imageAlt',
     rating: 4,
-    ratingCount: '26',
+    ratingCount: 26,
     price: '$89.95',
   },
   {
@@ -94,7 +94,7 @@ const products = ref([
     slug: '/images/product.webp',
     imageAlt: 'imageAlt',
     rating: 4,
-    ratingCount: '26',
+    ratingCount: 26,
     price: '$89.95',
   },
   {
@@ -104,7 +104,7 @@ const products = ref([
     slug: '/images/product.webp',
     imageAlt: 'imageAlt',
     rating: 4,
-    ratingCount: '26',
+    ratingCount: 26,
     price: '$89.95',
   },
 ]);

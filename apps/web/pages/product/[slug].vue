@@ -1,8 +1,125 @@
+<script setup lang="ts">
+import { sdk } from '@/sdk.config';
+import {
+  SfButton,
+  SfCounter,
+  SfLink,
+  SfRating,
+  SfIconSafetyCheck,
+  SfIconCompareArrows,
+  SfIconWarehouse,
+  SfIconPackage,
+  SfIconFavorite,
+  SfIconSell,
+  SfIconShoppingCartCheckout,
+  SfIconShoppingCart,
+  SfChip,
+  SfThumbnail,
+} from '@storefront-ui/vue';
+
+const route = useRoute();
+const product = ref<any>();
+
+const { data } = await sdk.odoo.getProductTemplate({
+  slug: `/product/${route.params.slug}`,
+});
+
+if (data.product) {
+  product.value = data.product;
+}
+
+const breadcrumbs = computed(() => {
+  return [
+    { name: 'Home', link: '/' },
+    { name: 'Category', link: '/category' },
+    { name: product.value?.name, link: '/product' },
+  ];
+});
+
+const getRegularPrice = (product: {
+  firstVariant: { combinationInfoVariant: { list_price: any } };
+}) => {
+  if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
+    return product.firstVariant.combinationInfoVariant.list_price;
+  }
+};
+
+const getSpecialPrice = (product: {
+  firstVariant: {
+    combinationInfoVariant: { has_discounted_price: any; price: any };
+  };
+}) => {
+  if (
+    product.firstVariant &&
+    product.firstVariant.combinationInfoVariant.has_discounted_price
+  ) {
+    return product.firstVariant.combinationInfoVariant.price;
+  }
+};
+
+const withBase = (filepath: string) =>
+  `https://vsfdemo15.labs.odoogap.com${filepath}`;
+const images = computed(() => {
+  return [
+    {
+      imageSrc: withBase(product.value?.image),
+      imageThumbSrc: withBase(product.value?.image),
+      alt: product.value?.name,
+    },
+  ];
+});
+
+const selectedSize = 'S';
+const selectedColor = 'red';
+const selectedMaterials = '';
+const productDetailsOpen = ref(true);
+const quantitySelectorValue = ref(1);
+
+const getAllSizes = computed(() => {
+  const sizes = product.value?.attributeValues?.filter((item: any) => {
+    return item.attribute.name === 'Size';
+  });
+  return sizes.map((item: any) => {
+    return {
+      value: item.id,
+      label: item.name,
+    };
+  });
+});
+
+const getAllColors = computed(() => {
+  const colors = product.value?.attributeValues?.filter((item: any) => {
+    return item.attribute.name === 'Color';
+  });
+  return colors.map((item: any) => {
+    return {
+      id: item.id,
+      value: item.name,
+      label: item.name,
+    };
+  });
+});
+
+const getAllMaterials = computed(() => {
+  const materials = product.value?.attributeValues?.filter((item: any) => {
+    return item.attribute.name === 'Material';
+  });
+  return materials.map((item: any) => {
+    return {
+      value: item.id,
+      label: item.name,
+    };
+  });
+});
+
+onMounted(() => {});
+</script>
+
 <template>
   <UiBreadcrumb :breadcrumbs="breadcrumbs" class="self-start mt-5 mb-10" />
   <div class="md:grid grid-areas-product-page grid-cols-product-page gap-x-6">
     <section class="grid-in-left-top md:h-full xl:max-h-[700px]">
-      <LazyUiGallery />
+      <LazyUiGallery :images="images" />
     </section>
     <section class="col-span-5 grid-in-right md:mb-0">
       <div
@@ -19,17 +136,31 @@
           class="mb-1 font-bold typography-headline-4"
           data-testid="product-name"
         >
-          Athletic mens walking sneakers
+          {{ product.name }}
         </h1>
-        <div class="my-1">
+        <div
+          class="my-1"
+          v-if="
+            product.firstVariant &&
+            product.firstVariant.combinationInfoVariant.has_discounted_price
+          "
+        >
           <span
             class="mr-2 text-secondary-700 font-bold font-headings text-2xl"
             data-testid="price"
           >
-            $89.95
+            ${{ getRegularPrice(product) }}
           </span>
           <span class="text-base font-normal text-neutral-500 line-through">
-            $100.99
+            ${{ getSpecialPrice(product) }}
+          </span>
+        </div>
+        <div v-else class="my-1">
+          <span
+            class="mr-2 text-secondary-700 font-bold font-headings text-2xl"
+            data-testid="price"
+          >
+            ${{ getRegularPrice(product) }}
           </span>
         </div>
         <div class="inline-flex items-center mt-4 mb-2">
@@ -47,7 +178,7 @@
           class="mb-4 font-normal typography-text-sm"
           data-testid="product-description"
         >
-          Lightweight • Non slip • Flexible outsole • Easy to wear on and off
+          {{ product.description }}
         </p>
         <div class="py-4 mb-4 border-gray-200 border-y">
           <div
@@ -133,14 +264,14 @@
     <section class="grid-in-left-bottom md:mt-8">
       <UiDivider class="mt-10 mb-6" />
       <div class="lg:px-4" data-testid="product-properties">
-        <fieldset v-if="sizes?.length" class="pb-4 flex">
+        <fieldset v-if="getAllSizes && getAllSizes?.length" class="pb-4 flex">
           <legend
             class="block mb-2 text-base font-medium leading-6 text-neutral-900"
           >
             Size
           </legend>
           <span
-            v-for="{ label, value } in sizes"
+            v-for="{ label, value } in getAllSizes"
             class="mr-2 mb-2 uppercase"
             :key="value"
           >
@@ -157,14 +288,44 @@
             </SfChip>
           </span>
         </fieldset>
-        <fieldset v-if="sizes?.length" class="pb-2 flex">
+        <fieldset v-if="getAllSizes && getAllSizes?.length" class="pb-2 flex">
           <legend
             class="block mb-2 text-base font-medium leading-6 text-neutral-900"
           >
             Color
           </legend>
           <span
-            v-for="{ label, value } in colors"
+            v-for="{ id, label, value } in getAllColors"
+            class="mr-2 mb-2 uppercase"
+            :key="id"
+          >
+            <SfChip
+              class="min-w-[48px]"
+              size="sm"
+              :input-props="{
+                onClick: (e) => value == selectedColor && e.preventDefault(),
+              }"
+              :model-value="id === selectedColor"
+              @update:model-value=""
+            >
+              <template #prefix>
+                <SfThumbnail size="sm" :style="{ background: value }" />
+              </template>
+              {{ label }}
+            </SfChip>
+          </span>
+        </fieldset>
+        <fieldset
+          v-if="getAllMaterials && getAllMaterials?.length"
+          class="pb-4 flex"
+        >
+          <legend
+            class="block mb-2 text-base font-medium leading-6 text-neutral-900"
+          >
+            Material
+          </legend>
+          <span
+            v-for="{ label, value } in getAllMaterials"
             class="mr-2 mb-2 uppercase"
             :key="value"
           >
@@ -172,14 +333,12 @@
               class="min-w-[48px]"
               size="sm"
               :input-props="{
-                onClick: (e) => value == selectedSize && e.preventDefault(),
+                onClick: (e) =>
+                  value == selectedMaterials && e.preventDefault(),
               }"
-              :model-value="value === selectedColor"
+              :model-value="value === selectedMaterials"
               @update:model-value=""
             >
-              <template #prefix
-                ><SfThumbnail size="sm" :style="{ background: value }"
-              /></template>
               {{ label }}
             </SfChip>
           </span>
@@ -197,7 +356,7 @@
             </h2>
           </template>
           <p>
-            Lightweight • Non slip • Flexible outsole • Easy to wear on and off
+            {{ product.description }}
           </p>
         </UiAccordionItem>
         <UiDivider class="my-4" />
@@ -221,60 +380,3 @@
     <ProductSlider text="Recommended with this product" />
   </section>
 </template>
-
-<script setup lang="ts">
-import {
-  SfButton,
-  SfCounter,
-  SfLink,
-  SfRating,
-  SfIconSafetyCheck,
-  SfIconCompareArrows,
-  SfIconWarehouse,
-  SfIconPackage,
-  SfIconFavorite,
-  SfIconSell,
-  SfIconShoppingCartCheckout,
-  SfIconShoppingCart,
-} from '@storefront-ui/vue';
-import { SfChip, SfThumbnail } from '@storefront-ui/vue';
-
-const sizes = ref([
-  {
-    value: 36,
-    label: 'M',
-  },
-  {
-    value: 37,
-    label: 'S',
-  },
-  {
-    value: 38,
-    label: 'L',
-  },
-  {
-    value: 39,
-    label: 'XL',
-  },
-]);
-const colors = ref([
-  {
-    value: '#FF0000',
-    label: 'red',
-  },
-  {
-    value: '#0000ff',
-    label: 'blue',
-  },
-]);
-const selectedSize = 'S';
-const selectedColor = 'red';
-const productDetailsOpen = ref(true);
-const breadcrumbs = [
-  { name: 'Home', link: '/' },
-  { name: 'Category', link: '/category' },
-  { name: 'Athletic mens walking sneakers', link: '/product' },
-];
-
-const quantitySelectorValue = ref(1);
-</script>

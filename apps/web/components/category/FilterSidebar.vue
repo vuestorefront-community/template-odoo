@@ -6,13 +6,13 @@
       Sort by
     </h5>
     <div class="px-2">
-      <SfSelect v-model="sortModel" aria-label="Sort by">
+      <SfSelect v-model="sortModal" :aria-label="$t('sortBy')">
         <option
-          v-for="{ id, label, value } in sortOptions"
-          :key="id"
+          v-for="{ value, label } in sortOptions"
+          :key="value"
           :value="value"
         >
-          {{ label }}
+          {{ $t(`sortType.${label}`) }}
         </option>
       </SfSelect>
     </div>
@@ -21,134 +21,144 @@
     >
       Filter
     </h5>
-    <ul>
-      <!-- prettier-ignore-attribute -->
-      <li
-        v-for="{ id: filterDataId, type, summary, details }, index in filtersData"
-        :key="filterDataId"
-      >
-        <SfAccordionItem v-model="opened[index]">
-          <template #summary>
-            <div class="flex justify-between items-center p-2 mb-2">
-              <p class="p-2 font-medium typography-headline-5">{{ summary }}</p>
-              <SfIconChevronLeft
-                :class="opened[index] ? 'rotate-90' : '-rotate-90'"
-              />
-            </div>
-          </template>
-          <template v-if="type === 'category'">
-            <ul class="mt-2 mb-6">
-              <li>
-                <SfListItem size="sm" as="button" type="button">
-                  <div class="flex items-center">
-                    <SfIconArrowBack size="sm" class="text-neutral-500 mr-3" />
-                    Back to {{ details[0].label }}
-                  </div>
-                </SfListItem>
-              </li>
-              <li
-                v-for="({ id, link, label, counter }, categoryIndex) in details"
-                :key="id"
-              >
-                <SfListItem
-                  size="sm"
-                  as="a"
-                  :href="link"
-                  :class="[
-                    'first-of-type:mt-2 rounded-md active:bg-primary-100',
-                    {
-                      'bg-primary-100 hover:bg-primary-100 active:bg-primary-100 font-medium':
-                        categoryIndex === 0,
-                    },
-                  ]"
+    <client-only>
+      <ul>
+        <li
+          v-for="(
+            { id: filterDataId, type, summary, details }, index
+          ) in filtersData"
+          :key="filterDataId"
+        >
+          <SfAccordionItem v-model="opened[index]">
+            <template #summary>
+              <div class="flex justify-between items-center p-2 mb-2">
+                <p class="p-2 font-medium typography-headline-5">
+                  {{ summary }}
+                </p>
+                <SfIconChevronLeft
+                  :class="opened[index] ? 'rotate-90' : '-rotate-90'"
+                />
+              </div>
+            </template>
+            <template v-if="type === 'category'">
+              <ul class="mt-2 mb-6">
+                <li>
+                  <SfListItem size="sm" as="button" type="button">
+                    <div class="flex items-center">
+                      <SfIconArrowBack
+                        size="sm"
+                        class="text-neutral-500 mr-3"
+                      />
+                      Back to {{ details[0].label }}
+                    </div>
+                  </SfListItem>
+                </li>
+                <li
+                  v-for="(
+                    { id, link, label, counter }, categoryIndex
+                  ) in details"
+                  :key="id"
                 >
-                  <span class="flex items-center">
-                    {{ label }}
-                    <SfCounter class="ml-2 typography-text-sm">{{
-                      counter
-                    }}</SfCounter>
-                  </span>
-                </SfListItem>
+                  <SfListItem
+                    size="sm"
+                    as="a"
+                    :href="link"
+                    :class="[
+                      'first-of-type:mt-2 rounded-md active:bg-primary-100',
+                      {
+                        'bg-primary-100 hover:bg-primary-100 active:bg-primary-100 font-medium':
+                          categoryIndex === 0,
+                      },
+                    ]"
+                  >
+                    <span class="flex items-center">
+                      {{ label }}
+                      <SfCounter class="ml-2 typography-text-sm">{{
+                        counter
+                      }}</SfCounter>
+                    </span>
+                  </SfListItem>
+                </li>
+              </ul>
+            </template>
+            <ul v-if="type === 'size'" class="grid grid-cols-5 gap-2 px-3">
+              <li v-for="{ id, value, counter, label } in details" :key="id">
+                <SfChip
+                  v-model="selectedFilters"
+                  class="w-full"
+                  size="sm"
+                  :input-props="{ value, disabled: !counter }"
+                >
+                  {{ label }}
+                </SfChip>
               </li>
             </ul>
-          </template>
-          <ul v-if="type === 'size'" class="grid grid-cols-5 gap-2 px-3">
-            <li v-for="{ id, value, counter, label } in details" :key="id">
-              <SfChip
-                v-model="selectedFilters"
-                class="w-full"
-                size="sm"
-                :input-props="{ value, disabled: !counter }"
-              >
-                {{ label }}
-              </SfChip>
-            </li>
-          </ul>
-          <template v-if="type === 'color'">
-            <SfListItem
-              v-for="{ id, value, label, counter } in details"
-              :key="id"
-              size="sm"
-              tag="label"
-              :class="[
-                'px-4 bg-transparent hover:bg-transparent',
-                { 'font-medium': isItemActive(value) },
-              ]"
-              :selected="isItemActive(value)"
-            >
-              <template #prefix>
-                <input
-                  v-model="selectedFilters"
-                  :value="value"
-                  class="appearance-none peer"
-                  type="checkbox"
-                />
-                <span
-                  class="inline-flex items-center justify-center p-1 transition duration-300 rounded-full cursor-pointer ring-1 ring-neutral-200 ring-inset outline-offset-2 outline-secondary-600 peer-checked:ring-2 peer-checked:ring-primary-700 peer-hover:bg-primary-100 peer-[&:not(:checked):hover]:ring-primary-200 peer-active:bg-primary-200 peer-active:ring-primary-300 peer-disabled:cursor-not-allowed peer-disabled:bg-disabled-100 peer-disabled:opacity-50 peer-disabled:ring-1 peer-disabled:ring-disabled-200 peer-disabled:hover:ring-disabled-200 peer-checked:hover:ring-primary-700 peer-checked:active:ring-primary-700 peer-focus-visible:outline"
-                  ><SfThumbnail size="sm" :class="value"
-                /></span>
-              </template>
-              <p>
-                <span class="mr-2 typography-text-sm">{{ label }}</span>
-                <SfCounter size="sm">{{ counter }}</SfCounter>
-              </p>
-            </SfListItem>
-          </template>
-          <template v-if="type === 'radio'">
-            <fieldset id="radio-price">
+            <template v-if="type === 'color'">
               <SfListItem
                 v-for="{ id, value, label, counter } in details"
                 :key="id"
-                tag="label"
                 size="sm"
-                class="px-1.5 bg-transparent hover:bg-transparent"
+                tag="label"
+                :class="[
+                  'px-4 bg-transparent hover:bg-transparent',
+                  { 'font-medium': isItemActive(value) },
+                ]"
+                :selected="isItemActive(value)"
               >
                 <template #prefix>
-                  <SfRadio
-                    v-model="priceModel"
-                    class="flex items-center"
-                    name="radio-price"
+                  <input
+                    v-model="selectedFilters"
                     :value="value"
-                    @click="priceModel = priceModel === value ? '' : value"
+                    class="appearance-none peer"
+                    type="checkbox"
                   />
+                  <span
+                    class="inline-flex items-center justify-center p-1 transition duration-300 rounded-full cursor-pointer ring-1 ring-neutral-200 ring-inset outline-offset-2 outline-secondary-600 peer-checked:ring-2 peer-checked:ring-primary-700 peer-hover:bg-primary-100 peer-[&:not(:checked):hover]:ring-primary-200 peer-active:bg-primary-200 peer-active:ring-primary-300 peer-disabled:cursor-not-allowed peer-disabled:bg-disabled-100 peer-disabled:opacity-50 peer-disabled:ring-1 peer-disabled:ring-disabled-200 peer-disabled:hover:ring-disabled-200 peer-checked:hover:ring-primary-700 peer-checked:active:ring-primary-700 peer-focus-visible:outline"
+                    ><SfThumbnail size="sm" :class="value"
+                  /></span>
                 </template>
                 <p>
-                  <span
-                    :class="[
-                      'text-sm mr-2',
-                      { 'font-medium': priceModel === value },
-                    ]"
-                    >{{ label }}</span
-                  >
+                  <span class="mr-2 typography-text-sm">{{ label }}</span>
                   <SfCounter size="sm">{{ counter }}</SfCounter>
                 </p>
               </SfListItem>
-            </fieldset>
-          </template>
-        </SfAccordionItem>
-        <hr class="my-4" />
-      </li>
-    </ul>
+            </template>
+            <template v-if="type === 'radio'">
+              <fieldset id="radio-price">
+                <SfListItem
+                  v-for="{ id, value, label, counter } in details"
+                  :key="id"
+                  tag="label"
+                  size="sm"
+                  class="px-1.5 bg-transparent hover:bg-transparent"
+                >
+                  <template #prefix>
+                    <SfRadio
+                      v-model="priceModel"
+                      class="flex items-center"
+                      name="radio-price"
+                      :value="value"
+                      @click="priceModel = priceModel === value ? '' : value"
+                    />
+                  </template>
+                  <p>
+                    <span
+                      :class="[
+                        'text-sm mr-2',
+                        { 'font-medium': priceModel === value },
+                      ]"
+                      >{{ label }}</span
+                    >
+                    <SfCounter size="sm">{{ counter }}</SfCounter>
+                  </p>
+                </SfListItem>
+              </fieldset>
+            </template>
+          </SfAccordionItem>
+          <hr class="my-4" />
+        </li>
+      </ul>
+    </client-only>
     <div
       class="flex flex-col lg:flex-row gap-y-4 lg:gap-y-0 lg:justify-between px-3 lg:px-0"
     >
@@ -169,15 +179,11 @@ import {
   SfAccordionItem,
   SfButton,
   SfChip,
-  SfCheckbox,
   SfCounter,
   SfIconArrowBack,
   SfIconChevronLeft,
-  SfIconCheck,
-  SfIconClose,
   SfListItem,
   SfRadio,
-  SfRating,
   SfSelect,
   SfThumbnail,
 } from '@storefront-ui/vue';
@@ -317,19 +323,29 @@ const filtersData = ref<Node[]>([
   },
 ]);
 const sortOptions = ref([
-  { id: 'sort1', label: 'Relevance', value: 'relevance' },
-  { id: 'sort2', label: 'Price: Low to High', value: 'price low to high' },
-  { id: 'sort3', label: 'Price: High to Low', value: 'price high to low' },
-  { id: 'sort4', label: 'New Arrivals', value: 'new arrivals' },
-  { id: 'sort5', label: 'Customer Rating', value: 'customer rating' },
-  { id: 'sort6', label: 'Bestsellers', value: 'bestsellers' },
+  {
+    label: 'latest',
+    value: 'createdAt',
+  },
+  {
+    label: 'priceUp',
+    value: 'price-low-to-high',
+  },
+  {
+    label: 'priceDown',
+    value: 'price-high-to-low',
+  },
+  {
+    label: 'relevance',
+    value: 'relevant',
+  },
 ]);
 
 const selectedFilters = ref<string[]>([]);
 const opened = ref<boolean[]>(filtersData.value.map(() => true));
 const priceModel = ref('');
 const ratingsModel = ref('');
-const sortModel = ref(sortOptions.value[0].value);
+const sortModal = ref(sortOptions.value[0].value);
 
 const isItemActive = (selectedValue: string) => {
   return selectedFilters.value?.includes(selectedValue);

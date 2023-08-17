@@ -1,20 +1,18 @@
-<script setup lang="ts">
+<script setup>
+defineProps({
+  categories: {
+    type: Array,
+    required: true,
+  },
+});
+
 const items = ref([
   {
-    name: 'New',
-    slug: '/',
-    image: '/images/new-card.png',
-  },
-  {
-    name: 'Men',
-    slug: '/',
-    image: '/images/men-card.png',
-  },
-  {
-    name: 'Women',
-    slug: '/',
     image: '/images/women-card.png',
   },
+  {
+    image: '/images/men-card.png',
+  }
 ]);
 </script>
 
@@ -28,18 +26,32 @@ const items = ref([
     class="md:px-6 mb-10 flex flex-nowrap md:flex-wrap md:justify-center overflow-x-scroll scrollbar-hidden"
     data-testid="category-card"
   >
-    <div v-for="item in items" :key="item.name" class="mr-2 md:mr-6 group">
+    <div
+      v-for="category in categories"
+      :key="category.name"
+      class="mr-2 md:mr-6 group"
+    >
       <NuxtLink
-        :to="item.slug"
+        :to="category.slug"
         class="w-full h-full z-1 focus-visible:outline focus-visible:outline-offset focus-visible:rounded-md"
-        :aria-label="item.name"
+        :aria-label="category.name"
       >
         <div
           class="relative h-[240px] w-[240px] rounded-full bg-neutral-100 group-hover:shadow-xl group-active:shadow-none"
         >
           <NuxtImg
-            :src="item.image"
-            :alt="item.name"
+            v-if="category.name == 'WOMEN'"
+            :src="items[0].image"
+            :alt="category.name"
+            width="240"
+            height="240"
+            loading="lazy"
+            format="webp"
+          />
+          <NuxtImg
+            v-if="category.name == 'MEN'"
+            :src="items[1].image"
+            :alt="category.name"
             width="240"
             height="240"
             loading="lazy"
@@ -50,7 +62,7 @@ const items = ref([
           <p
             class="mt-4 font-semibold no-underline text-normal-900 typography-text-base group-hover:underline group-hover:text-primary-800 group-hover:font-normal group-active:text-primary-800 group-active:font-normal"
           >
-            {{ item.name }}
+            {{ category.name }}
           </p>
         </div>
       </NuxtLink>

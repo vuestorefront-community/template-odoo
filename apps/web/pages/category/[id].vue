@@ -1,34 +1,21 @@
-<script setup>
-import { sdk } from '../../sdk.config';
-import { SfButton, SfIconTune } from '@storefront-ui/vue';
-// import { Product } from '@erpgap/odoo-sdk-api-client';
+<script setup lang="ts">
+import { sdk } from '@/sdk.config';
+import { Product } from '@erpgap/odoo-sdk-api-client';
+import { SfButton, SfIconTune, useDisclosure } from '@storefront-ui/vue';
 import { useMediaQuery } from '@vueuse/core';
 
 const mediaQueries = {
   tablet: '(min-width: 768px)',
   desktop: '(min-width: 1024px)',
 };
-
+const { isOpen, open, close } = useDisclosure();
 const breadcrumbs = [
   { name: 'Home', link: '/' },
   { name: 'Category', link: '/category' },
 ];
 
-const isTabletScreen = useMediaQuery(mediaQueries.tablet);
-const isWideScreen = useMediaQuery(mediaQueries.desktop);
-const maxVisiblePages = ref(1);
-
-const setMaxVisiblePages = (isWide) => (maxVisiblePages.value = isWide ? 5 : 1);
-
-watch(isWideScreen, (value) => setMaxVisiblePages(value));
-onMounted(() => setMaxVisiblePages(isWideScreen.value));
-watch(isTabletScreen, (value) => {
-  if (value && isOpen.value) {
-    close();
-  }
-});
-
-const products = useState('product', () => []);
+const route = useRoute();
+const products = ref<object[]>([]);
 
 if (products.value.length === 0) {
   const { data } = await useAsyncData(
@@ -36,11 +23,38 @@ if (products.value.length === 0) {
     async () =>
       await sdk.odoo.getProductTemplateList({
         pageSize: 12,
-        filter: { categoryId: [13] },
+        filter: { categoryId: [Number(route.params.id)] },
       })
   );
   products.value = data.value?.data.products?.products || [];
 }
+
+const mountUrlSlugForProductVariant = (product: { slug: any; variantAttributeValues: any; }) => {
+  if (product) {
+    const { slug, variantAttributeValues } = product;
+    return `${slug}?${variantAttributeValues
+      .map((variant: { attribute: { name: any; }; id: any; }) => `${variant?.attribute?.name}=${variant?.id}&`)
+      .join('')}`;
+  }
+};
+
+const isTabletScreen = useMediaQuery(mediaQueries.tablet);
+const isWideScreen = useMediaQuery(mediaQueries.desktop);
+const maxVisiblePages = ref(1);
+
+const setMaxVisiblePages = (isWide: boolean) => (maxVisiblePages.value = isWide ? 5 : 1);
+
+watch(isWideScreen, (value) => setMaxVisiblePages(value));
+
+watch(isTabletScreen, (value) => {
+  if (value && isOpen.value) {
+    close();
+  }
+});
+
+onMounted(() => {
+  setMaxVisiblePages(isWideScreen.value);
+});
 </script>
 <template>
   <div class="pb-20">
@@ -49,7 +63,11 @@ if (products.value.length === 0) {
       All products
     </h1>
     <div class="flex flex-row items-stretch">
-      <LazyCategoryMobileSidebar class="lg:hidden">
+      <LazyCategoryMobileSidebar
+        :is-open="isOpen"
+        @close="close"
+        class="lg:hidden"
+      >
         <template #default>
           <CategoryFilterSidebar />
         </template>
@@ -58,14 +76,14 @@ if (products.value.length === 0) {
         <div class="flex justify-between items-center mb-6">
           <span class="font-bold font-headings md:text-lg"> 45 Products </span>
           <SfButton
-            @click=""
+            @click="open"
             variant="tertiary"
             class="lg:hidden whitespace-nowrap"
           >
             <template #prefix>
               <SfIconTune />
             </template>
-            List settings
+            {{ $t('listSettings') }}
           </SfButton>
         </div>
         <section
@@ -76,12 +94,12 @@ if (products.value.length === 0) {
             v-for="product in products"
             :key="product.id"
             :name="product.name"
-            slug="/product/1"
+            :slug="mountUrlSlugForProductVariant(product.firstVariant)"
             :image-url="`https://vsfdemo15.labs.odoogap.com${product.image}`"
             :image-alt="product.name"
-            :price="product.price"
-            rating-count="123"
-            rating="4"
+            :price="product.price.toString()"
+            :rating-count="123"
+            :rating="Number(4)"
           />
         </section>
         <LazyUiPagination
