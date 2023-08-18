@@ -15,6 +15,21 @@ import {
 const route = useRoute();
 const router = useRouter();
 
+// const getCategoryTree = (searchData: { data: { category: any } }) => {
+//   if (!searchData?.data?.category) {
+//     return { items: [], label: '', isCurrent: false };
+//   }
+
+//   const category = searchData.data.category;
+//   let parentCategory: Category = category;
+
+//   if (!category?.childs && category?.parent) {
+//     parentCategory = category?.parent?.parent;
+//   }
+
+//   return CategoryGetters.getTree(parentCategory);
+// };
+
 const getSortOptions = (searchData: { input: any[] }) => ({
   options: [
     {
@@ -254,9 +269,6 @@ const handleClearFilters = () => {
               >{{ count }}</SfCounter
             >
           </span>
-          <template #suffix>
-            <SfIconCheck v-if="selected" size="sm" class="text-primary-700" />
-          </template>
         </NuxtLink>
       </SfListItem>
     </ul>
