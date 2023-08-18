@@ -3,9 +3,7 @@ export interface Discount {
   has_discounted_price?: boolean;
   price?: string;
 }
-export interface CombinationInfo {
+export interface VariantPrice {
   combinationInfoVariant: Discount;
 }
-export interface Price {
-  firstVariant?: CombinationInfo;
-}
+

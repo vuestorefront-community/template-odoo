@@ -75,7 +75,7 @@ onMounted(() => {
         class="lg:hidden"
       >
         <template #default>
-          <CategoryFilterSidebar />
+          <CategoryFilterSidebar :result="products"/>
         </template>
       </LazyCategoryMobileSidebar>
       <div class="lg:ml-10">
@@ -97,14 +97,14 @@ onMounted(() => {
           class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
         >
           <LazyUiProductCard
-            v-for="product in products"
-            :key="product.id"
-            :name="product.name"
-            :slug="mountUrlSlugForProductVariant(product.firstVariant)"
-            :image-url="`https://vsfdemo15.labs.odoogap.com${product.image}`"
-            :image-alt="product.name"
-            :regular-price="getRegularPrice(product)"
-            :special-price="getSpecialPrice(product)"
+            v-for="{id, name,firstVariant,image} in products"
+            :key="id"
+            :name="name"
+            :slug="mountUrlSlugForProductVariant(firstVariant)"
+            :image-url="`https://vsfdemo15.labs.odoogap.com${image}`"
+            :image-alt="name"
+            :regular-price="getRegularPrice(firstVariant)"
+            :special-price="getSpecialPrice(firstVariant)"
             :rating-count="123"
             :rating="Number(4)"
           />

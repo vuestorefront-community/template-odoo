@@ -135,10 +135,10 @@ onMounted(() => {});
             class="mr-2 text-secondary-700 font-bold font-headings text-2xl"
             data-testid="price"
           >
-            ${{ getSpecialPrice(product) }}
+            ${{ getSpecialPrice(product.firstVariant) }}
           </span>
           <span class="text-base font-normal text-neutral-500 line-through">
-            ${{ getRegularPrice(product) }}
+            ${{ getRegularPrice(product.firstVariant) }}
           </span>
         </div>
         <div v-else class="my-1">
@@ -146,7 +146,7 @@ onMounted(() => {});
             class="mr-2 text-secondary-700 font-bold font-headings text-2xl"
             data-testid="price"
           >
-            ${{ getRegularPrice(product) }}
+            ${{ getRegularPrice(product.firstVariant) }}
           </span>
         </div>
         <div class="inline-flex items-center mt-4 mb-2">

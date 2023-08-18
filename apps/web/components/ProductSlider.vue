@@ -133,7 +133,7 @@ const products = ref([
       :name="product.name"
       :image-url="product.image"
       :image-alt="product.image"
-      :price="product.price"
+      :regular-price="product.price"
       :rating-count="product.ratingCount"
       :rating="product.rating"
     />
