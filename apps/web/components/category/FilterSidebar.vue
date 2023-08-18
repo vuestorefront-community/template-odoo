@@ -46,6 +46,40 @@ const sortBy = computed(() =>
   getSortOptions({ input: { sort: route.query?.sort } })
 );
 
+const parent = ref({
+  name: 'All Products',
+  href: '/',
+  count: '1429',
+});
+
+const categories = ref([
+  {
+    name: 'New',
+    href: '/',
+    count: '29',
+  },
+  {
+    name: 'Women',
+    href: '/',
+    count: '1921',
+  },
+  {
+    name: 'Men',
+    href: '/',
+    count: '642',
+  },
+  {
+    name: 'Accessories',
+    href: '/',
+    count: '29',
+  },
+  {
+    name: 'Sale',
+    href: '/',
+    count: '29',
+  },
+]);
+
 type FilterDetail = {
   id: string;
   label: string;
@@ -62,48 +96,6 @@ type Node = {
 };
 
 const filtersData = ref<Node[]>([
-  {
-    id: 'acc2',
-    summary: 'Category',
-    type: 'category',
-    details: [
-      {
-        id: 'CLOTHING',
-        label: 'Clothing',
-        value: 'clothing',
-        counter: 30,
-        link: '#',
-      },
-      {
-        id: 'SHOES',
-        label: 'Shoes',
-        value: 'shoes',
-        counter: 28,
-        link: '#',
-      },
-      {
-        id: 'ACCESSORIES',
-        label: 'Accessories',
-        value: 'accessories',
-        counter: 56,
-        link: '#',
-      },
-      {
-        id: 'WEARABLES',
-        label: 'Wearables',
-        value: 'wearables',
-        counter: 12,
-        link: '#',
-      },
-      {
-        id: 'FOOD_DRINKS',
-        label: 'Food & Drinks',
-        value: 'food and drinks',
-        counter: 52,
-        link: '#',
-      },
-    ],
-  },
   {
     id: 'acc1',
     summary: 'Size',
@@ -197,6 +189,77 @@ const handleClearFilters = () => {
 
 <template>
   <aside class="w-full md:max-w-[376px]">
+    <div
+      class="py-2 px-4 mb-4 bg-neutral-100 typography-headline-6 font-bold text-neutral-900 uppercase tracking-widest md:rounded-md"
+      data-testid="category-tree"
+    >
+      {{ $t('category') }}
+    </div>
+    <div v-if="parent">
+      <SfListItem
+        size="lg"
+        :class="[
+          'md:sf-list-item-sm md:py-1.5 sf-list-item',
+          {
+            'bg-primary-100 hover:bg-primary-100 active:bg-primary-100 font-medium': false,
+          },
+        ]"
+        data-testid="category-tree-item"
+      >
+        <NuxtLink :to="parent.href">
+          <span class="flex gap-2 items-center">
+            <span
+              class="text-base md:text-sm capitalize flex items-center"
+              data-testid="list-item-menu-label"
+            >
+              <SfIconArrowBack size="sm" class="text-neutral-500 mr-2" />
+              {{ parent.name }}
+            </span>
+            <SfCounter v-if="Number(122) > -1" class="md:text-sm font-normal">{{
+              parent.count
+            }}</SfCounter>
+          </span>
+          <template #suffix>
+            <SfIconCheck v-if="true" size="sm" class="text-primary-700" />
+          </template>
+        </NuxtLink>
+      </SfListItem>
+    </div>
+    <ul class="mt-4 mb-6 md:mt-2" data-testid="categories">
+      <SfListItem
+        v-for="({ name, href, count }, index) in categories"
+        :key="name"
+        size="lg"
+        :class="[
+          'md:sf-list-item-sm md:py-1.5 sf-list-item',
+          {
+            'bg-primary-100 hover:bg-primary-100 active:bg-primary-100 font-medium':
+              index === 0,
+          },
+        ]"
+        data-testid="category-tree-item"
+      >
+        <NuxtLink :to="href">
+          <span class="flex gap-2 items-center">
+            <span
+              class="text-base md:text-sm capitalize flex items-center"
+              data-testid="list-item-menu-label"
+            >
+              <slot />
+              {{ name }}
+            </span>
+            <SfCounter
+              v-if="Number(count) > -1"
+              class="md:text-sm font-normal"
+              >{{ count }}</SfCounter
+            >
+          </span>
+          <template #suffix>
+            <SfIconCheck v-if="selected" size="sm" class="text-primary-700" />
+          </template>
+        </NuxtLink>
+      </SfListItem>
+    </ul>
     <h5
       class="py-2 px-4 mb-6 bg-neutral-100 typography-headline-6 font-bold text-neutral-900 uppercase tracking-widest md:rounded-md"
     >
@@ -241,47 +304,6 @@ const handleClearFilters = () => {
                   :class="opened[index] ? 'rotate-90' : '-rotate-90'"
                 />
               </div>
-            </template>
-            <template v-if="type === 'category'">
-              <ul class="mt-2 mb-6">
-                <li>
-                  <SfListItem size="sm" as="button" type="button">
-                    <div class="flex items-center">
-                      <SfIconArrowBack
-                        size="sm"
-                        class="text-neutral-500 mr-3"
-                      />
-                      Back to {{ details[0].label }}
-                    </div>
-                  </SfListItem>
-                </li>
-                <li
-                  v-for="(
-                    { id, link, label, counter }, categoryIndex
-                  ) in details"
-                  :key="id"
-                >
-                  <SfListItem
-                    size="sm"
-                    as="a"
-                    :href="link"
-                    :class="[
-                      'first-of-type:mt-2 rounded-md active:bg-primary-100',
-                      {
-                        'bg-primary-100 hover:bg-primary-100 active:bg-primary-100 font-medium':
-                          categoryIndex === 0,
-                      },
-                    ]"
-                  >
-                    <span class="flex items-center">
-                      {{ label }}
-                      <SfCounter class="ml-2 typography-text-sm">{{
-                        counter
-                      }}</SfCounter>
-                    </span>
-                  </SfListItem>
-                </li>
-              </ul>
             </template>
             <ul v-if="type === 'size'" class="grid grid-cols-5 gap-2 px-3">
               <li v-for="{ id, value, counter, label } in details" :key="id">
