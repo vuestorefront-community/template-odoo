@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCategory } from '@/composables';
+import { useCategory, useProductAttributes } from '@/composables';
 import { SfButton, SfIconTune, useDisclosure } from '@storefront-ui/vue';
 import { useMediaQuery } from '@vueuse/core';
 
@@ -10,14 +10,17 @@ const mediaQueries = {
 const route = useRoute();
 const { isOpen, open, close } = useDisclosure();
 const { loading, responseData, loadCategoryProducts } = useCategory();
+const { getRegularPrice, getSpecialPrice } = useProductAttributes();
 
 const breadcrumbs = [
   { name: 'Home', link: '/' },
   { name: 'Category', link: `Category/${route.params.id}` },
 ];
+const sort = route.query?.sort?.split(',') || [];
 
 await loadCategoryProducts({
   pageSize: 12,
+  sort: { [sort[0]]: sort[1] },
   filter: { categoryId: [Number(route.params.id)] },
 });
 
@@ -56,6 +59,7 @@ watch(isTabletScreen, (value) => {
 
 onMounted(() => {
   setMaxVisiblePages(isWideScreen.value);
+  console.log(sort);
 });
 </script>
 <template>
@@ -99,7 +103,8 @@ onMounted(() => {
             :slug="mountUrlSlugForProductVariant(product.firstVariant)"
             :image-url="`https://vsfdemo15.labs.odoogap.com${product.image}`"
             :image-alt="product.name"
-            :price="product.price.toString()"
+            :regular-price="getRegularPrice(product)"
+            :special-price="getSpecialPrice(product)"
             :rating-count="123"
             :rating="Number(4)"
           />

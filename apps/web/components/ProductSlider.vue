@@ -15,7 +15,7 @@ const products = ref([
     imageAlt: 'imageAlt',
     rating: 4,
     ratingCount: 26,
-    price: '$89.95',
+    price: 89.95,
   },
   {
     id: 2,
@@ -25,7 +25,7 @@ const products = ref([
     imageAlt: 'imageAlt',
     rating: 4,
     ratingCount: 26,
-    price: '$89.95',
+    price: 89.95,
   },
   {
     id: 3,
@@ -35,7 +35,7 @@ const products = ref([
     imageAlt: 'imageAlt',
     rating: 4,
     ratingCount: 26,
-    price: '$89.95',
+    price: 89.95,
   },
   {
     id: 4,
@@ -45,7 +45,7 @@ const products = ref([
     imageAlt: 'imageAlt',
     rating: 4,
     ratingCount: 26,
-    price: '$89.95',
+    price: 89.95,
   },
   {
     id: 5,
@@ -55,7 +55,7 @@ const products = ref([
     imageAlt: 'imageAlt',
     rating: 4,
     ratingCount: 26,
-    price: '$89.95',
+    price: 89.95,
   },
   {
     id: 6,
@@ -65,7 +65,7 @@ const products = ref([
     imageAlt: 'imageAlt',
     rating: 4,
     ratingCount: 26,
-    price: '$89.95',
+    price: 89.95,
   },
   {
     id: 7,
@@ -75,7 +75,7 @@ const products = ref([
     imageAlt: 'imageAlt',
     rating: 4,
     ratingCount: 26,
-    price: '$89.95',
+    price: 89.95,
   },
   {
     id: 8,
@@ -85,7 +85,7 @@ const products = ref([
     imageAlt: 'imageAlt',
     rating: 4,
     ratingCount: 26,
-    price: '$89.95',
+    price: 89.95,
   },
   {
     id: 9,
@@ -95,7 +95,7 @@ const products = ref([
     imageAlt: 'imageAlt',
     rating: 4,
     ratingCount: 26,
-    price: '$89.95',
+    price: 89.95,
   },
   {
     id: 10,
@@ -105,7 +105,7 @@ const products = ref([
     imageAlt: 'imageAlt',
     rating: 4,
     ratingCount: 26,
-    price: '$89.95',
+    price: 89.95,
   },
 ]);
 </script>

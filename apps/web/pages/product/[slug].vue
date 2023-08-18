@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { useProduct } from '@/composables';
-import { Price } from '@/types/product';
+import { useProduct, useProductAttributes } from '@/composables';
 import {
   SfButton,
   SfCounter,
@@ -22,6 +21,7 @@ import { LocationQueryRaw } from 'vue-router';
 const route = useRoute();
 const router = useRouter();
 const { loading, responseData, loadProduct } = useProduct();
+const { getRegularPrice, getSpecialPrice } = useProductAttributes();
 
 await loadProduct({
   slug: `/product/${route.params.slug}`,
@@ -36,21 +36,6 @@ const breadcrumbs = computed(() => {
     { name: product.value?.name, link: `product/${product.value?.name}` },
   ];
 });
-
-const getRegularPrice = (product: Price) => {
-  if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
-    return product.firstVariant.combinationInfoVariant.list_price;
-  }
-};
-
-const getSpecialPrice = (product: Price) => {
-  if (
-    product.firstVariant &&
-    product.firstVariant.combinationInfoVariant.has_discounted_price
-  ) {
-    return product.firstVariant.combinationInfoVariant.price;
-  }
-};
 
 const withBase = (filepath: string) =>
   `https://vsfdemo15.labs.odoogap.com${filepath}`;
@@ -150,10 +135,10 @@ onMounted(() => {});
             class="mr-2 text-secondary-700 font-bold font-headings text-2xl"
             data-testid="price"
           >
-            ${{ getRegularPrice(product) }}
+            ${{ getSpecialPrice(product) }}
           </span>
           <span class="text-base font-normal text-neutral-500 line-through">
-            ${{ getSpecialPrice(product) }}
+            ${{ getRegularPrice(product) }}
           </span>
         </div>
         <div v-else class="my-1">
