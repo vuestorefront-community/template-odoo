@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useProduct } from '@/composables';
 import { sdk } from '@/sdk.config';
 import { Price } from '@/types/product';
 import {
@@ -21,21 +22,19 @@ import { LocationQueryRaw } from 'vue-router';
 
 const route = useRoute();
 const router = useRouter();
-const product = ref<any>();
+const { loading, responseData, loadProduct } = useProduct();
 
-const { data } = await sdk.odoo.getProductTemplate({
+await loadProduct({
   slug: `/product/${route.params.slug}`,
 });
 
-if (data.product) {
-  product.value = data.product;
-}
+const product: any = computed(() => responseData.value);
 
 const breadcrumbs = computed(() => {
   return [
     { name: 'Home', link: '/' },
     { name: 'product' },
-    { name: product.value?.name, link: product.value?.name },
+    { name: product.value?.name, link: `product/${product.value?.name}` },
   ];
 });
 
