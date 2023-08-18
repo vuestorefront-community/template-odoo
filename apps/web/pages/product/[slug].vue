@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useProduct } from '@/composables';
-import { sdk } from '@/sdk.config';
 import { Price } from '@/types/product';
 import {
   SfButton,

@@ -1,15 +1,13 @@
 import { sdk } from '@/sdk.config';
 import { QueryProductArgs } from '@erpgap/odoo-sdk-api-client';
-import { CustomQuery } from '@vue-storefront/middleware';
-import { ref } from 'vue';
 
 export const useProduct: any = () => {
   const loading = ref(false);
-  const responseData = useState('products');
+  const responseData = useState('product');
 
   const loadProduct = async (
     params: QueryProductArgs,
-    customQuery?: CustomQuery<'getProductTemplate'>
+    customQuery = {}
   ) => {
     try {
       loading.value = true;
