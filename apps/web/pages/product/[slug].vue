@@ -20,14 +20,12 @@ import { LocationQueryRaw } from 'vue-router';
 
 const route = useRoute();
 const router = useRouter();
-const { loading, responseData, loadProduct } = useProduct();
+const { loading, loadProduct } = useProduct();
 const { getRegularPrice, getSpecialPrice } = useProductAttributes();
 
-await loadProduct({
+const { product } = await loadProduct({
   slug: `/product/${route.params.slug}`,
 });
-
-const product: any = computed(() => responseData.value);
 
 const breadcrumbs = computed(() => {
   return [
