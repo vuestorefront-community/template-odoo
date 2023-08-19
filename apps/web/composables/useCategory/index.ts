@@ -2,6 +2,7 @@ import { sdk } from '@/sdk.config';
 import {
   QueryProductsArgs,
   QueryCategoriesArgs,
+  QueryCategoryArgs,
 } from '@erpgap/odoo-sdk-api-client';
 
 export const useCategory: any = () => {
@@ -32,10 +33,10 @@ export const useCategory: any = () => {
     }
   };
 
-  const loadCategory = async (params: QueryCategoriesArgs | undefined) => {
+  const loadCategory = async (params: QueryCategoryArgs) => {
     try {
       loading.value = true;
-      const categoryResponse: any = await sdk.odoo.getCategoryList(params);
+      const categoryResponse: any = await sdk.odoo.getCategory(params);
       return {
         category: categoryResponse?.data?.category || {},
       };
