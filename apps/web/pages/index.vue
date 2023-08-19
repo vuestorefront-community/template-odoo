@@ -1,22 +1,15 @@
 <script setup lang="ts">
-import { sdk } from '../sdk.config';
+import { useCategoryList } from '@/composables';
 
-const categories = ref<object[]>([]);
+const { responseData, loadCategoryList } = useCategoryList();
 
-if (categories.value.length === 0) {
-  const { data } = await useAsyncData(
-    'category',
-    async () =>
-      await sdk.odoo.getCategoryList({ pageSize: 12, filter: { id: [13, 14] } })
-  );
-
-  categories.value = data.value?.data?.categories?.categories || [];
-}
+await loadCategoryList({ filter: { parent: true } });
+const categoryTree = computed(() => responseData.value);
 </script>
 
 <template>
   <LazyMainBanner />
-  <LazyCategoryCard :categories="categories" />
+  <LazyCategoryCard :categories="categoryTree" />
   <LazyDisplay />
   <section class="pb-16">
     <LazyProductSlider heading="Inspired by your picks" />
