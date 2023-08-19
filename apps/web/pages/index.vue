@@ -1,15 +1,20 @@
 <script setup lang="ts">
-import { useCategoryList } from '@/composables';
+import { useCategory } from '@/composables';
 
-const { responseData, loadCategoryList } = useCategoryList();
+const { loadCategoryList } = useCategory();
 
-await loadCategoryList({ filter: { parent: true } });
-const categoryTree = computed(() => responseData.value);
+const { categories } = await loadCategoryList({ filter: { parent: true } });
+
+const filteredCategories = computed(() =>
+  categories?.filter(
+    (category: any) => category.name === 'WOMEN' || category.name === 'MEN'
+  )
+);
 </script>
 
 <template>
   <LazyMainBanner />
-  <LazyCategoryCard :categories="categoryTree" />
+  <LazyCategoryCard :categories="filteredCategories" />
   <LazyDisplay />
   <section class="pb-16">
     <LazyProductSlider heading="Inspired by your picks" />

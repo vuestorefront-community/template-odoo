@@ -18,13 +18,13 @@ const breadcrumbs = [
 ];
 const sort = route.query?.sort?.split(',') || [];
 
-await loadCategoryProducts({
+const { products } = await loadCategoryProducts({
   pageSize: 12,
   sort: { [sort[0]]: sort[1] },
   filter: { categoryId: [Number(route.params.id)] },
 });
 
-const products = computed(() => responseData.value);
+// const products = computed(() => responseData.value);
 
 const mountUrlSlugForProductVariant = (product: {
   slug: any;
@@ -59,7 +59,7 @@ watch(isTabletScreen, (value) => {
 
 onMounted(() => {
   setMaxVisiblePages(isWideScreen.value);
-  console.log(sort);
+  console.log(products);
 });
 </script>
 <template>
@@ -75,7 +75,7 @@ onMounted(() => {
         class="lg:hidden"
       >
         <template #default>
-          <CategoryFilterSidebar :result="products"/>
+          <CategoryFilterSidebar :result="products" />
         </template>
       </LazyCategoryMobileSidebar>
       <div class="lg:ml-10">
@@ -97,7 +97,7 @@ onMounted(() => {
           class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
         >
           <LazyUiProductCard
-            v-for="{id, name,firstVariant,image} in products"
+            v-for="{ id, name, firstVariant, image } in products"
             :key="id"
             :name="name"
             :slug="mountUrlSlugForProductVariant(firstVariant)"

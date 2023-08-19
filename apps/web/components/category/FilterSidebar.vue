@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useCategoryList } from '@/composables';
+import { useCategory } from '@/composables';
 import {
   SfAccordionItem,
   SfButton,
@@ -15,10 +15,9 @@ import {
 
 const route = useRoute();
 const router = useRouter();
-const { responseData, loadCategoryList } = useCategoryList();
+const { loadCategoryList } = useCategory();
 
-await loadCategoryList({ filter: { parent: true } });
-const categoryTree = computed(() => responseData.value);
+const {categories: categoryTree} = await loadCategoryList({ filter: { parent: true } });
 
 const getSortOptions = (searchData: { input: any }) => ({
   options: [
@@ -190,9 +189,7 @@ const handleClearFilters = () => {
   priceModel.value = '';
   ratingsModel.value = '';
 };
-onMounted(() => {
-  console.log(categoryTree.value);
-});
+onMounted(() => {});
 </script>
 
 <template>
