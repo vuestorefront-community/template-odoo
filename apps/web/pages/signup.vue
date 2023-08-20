@@ -5,7 +5,7 @@
         class="w-full p-4 md:p-6 mb-6 !justify-start typography-text-base"
         variant="neutral"
       >
-        <i18n-t keypath="auth.signup.bannerText">
+        <P keypath="auth.signup.bannerText" scope="global">
           <template #login>
             <SfLink
               :tag="NuxtLink"
@@ -15,7 +15,7 @@
               {{ $t('auth.login.heading') }}
             </SfLink>
           </template>
-        </i18n-t>
+        </P>
       </UiAlert>
 
       <form
@@ -79,7 +79,7 @@
             for="terms"
           >
             *
-            <i18n-t keypath="form.termsAndConditionsLabel">
+            <i18n-t keypath="form.termsAndConditionsLabel" scope="global">
               <template #terms>
                 <SfLink
                   href="#"
@@ -147,6 +147,7 @@
           >
             <i18n-t
               keypath="auth.signup.modal.description"
+              scope="global"
               tag="p"
               id="signUpModalDesc"
             >

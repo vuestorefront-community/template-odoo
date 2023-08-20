@@ -203,7 +203,7 @@ onMounted(() => {});
             class="flex-shrink-0 mr-1 text-neutral-500"
           />
           <p class="text-sm">
-            <i18n-t keypath="additionalInfo.shipping">
+            <i18n-t keypath="additionalInfo.shipping" scope="global">
               <template #addAddress>
                 <SfLink href="#" variant="secondary">{{
                   $t('additionalInfo.addAddress')
@@ -218,7 +218,7 @@ onMounted(() => {});
             class="flex-shrink-0 mr-1 text-neutral-500"
           />
           <p class="text-sm">
-            <i18n-t keypath="additionalInfo.pickup">
+            <i18n-t keypath="additionalInfo.pickup" scope="global">
               <template #checkAvailability>
                 <SfLink href="#" variant="secondary">{{
                   $t('additionalInfo.checkAvailability')
