@@ -23,12 +23,50 @@ const props = defineProps({
 
 const route = useRoute();
 const router = useRouter();
-const { loadCategoryList, getGrouped } = useCategory();
+const { loadCategoryList } = useCategory();
 
 const { categories: categoryTree } = await loadCategoryList({
   filter: { parent: true },
 });
 
+const getGrouped = (searchData: any) => {
+  if (!searchData) return [];
+
+  const data: any = [];
+
+  searchData.forEach((item: any) => {
+    const current = data.find(
+      (itemData: { attributeName: any }) =>
+        itemData.attributeName === item.attribute?.name
+    );
+
+    if (!current) {
+      data.push({
+        id: String(item.attribute.id),
+        label: item.attribute?.name,
+        attributeName: item.attribute?.name,
+        type: item.displayType,
+        count: 0,
+        options: [],
+      });
+    }
+
+    data
+      .find(
+        (itemData: { attributeName: any }) =>
+          itemData.attributeName === item.attribute?.name
+      )
+      .options.push({
+        id: String(item.search),
+        value: item.id,
+        label: item.name,
+        metadata: item.search,
+        htmlColor: item.htmlColor,
+      });
+  });
+
+  return data;
+};
 const facets = computed(() => [
   {
     id: null,
@@ -42,10 +80,10 @@ const facets = computed(() => [
       { id: 'pr5', label: '$200.00 and above', value: 'above' },
     ],
   },
-  ...getGrouped(props.attributes, ['color', 'size', 'material']),
+  ...getGrouped(props.attributes),
 ]);
 const opened = ref<boolean[]>(facets.value.map(() => true));
-const sortByAscendingProductAttributes = (data: any[]) => {
+const sortSize = (data: any[]) => {
   return (
     data
       // eslint-disable-next-line func-names
@@ -285,7 +323,7 @@ onMounted(() => {
               class="grid grid-cols-5 gap-2 px-3"
             >
               <li
-                v-for="{ id, value, label } in sortByAscendingProductAttributes(
+                v-for="{ id, value, label } in sortSize(
                   facet.options
                 )"
                 :key="id"
@@ -357,7 +395,9 @@ onMounted(() => {
       <SfButton variant="secondary" class="w-full mr-3" @click="">
         {{ $t('clearFilters') }}
       </SfButton>
-      <SfButton class="w-full">{{ $t('showProducts') }}</SfButton>
+      <SfButton class="w-full" @click="applyFilters">{{
+        $t('showProducts')
+      }}</SfButton>
     </div>
   </aside>
 </template>
