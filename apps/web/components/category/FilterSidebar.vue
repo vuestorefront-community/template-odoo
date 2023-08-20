@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useCategory } from '@/composables';
+import { useCategory, useUiHelpers } from '@/composables';
 import {
   SfAccordionItem,
   SfButton,
@@ -24,49 +24,12 @@ const props = defineProps({
 const route = useRoute();
 const router = useRouter();
 const { loadCategoryList } = useCategory();
+const { changeFilters, facetsFromUrlToFilter, getGroups } = useUiHelpers();
 
 const { categories: categoryTree } = await loadCategoryList({
   filter: { parent: true },
 });
-
-const getGrouped = (searchData: any) => {
-  if (!searchData) return [];
-
-  const data: any = [];
-
-  searchData.forEach((item: any) => {
-    const current = data.find(
-      (itemData: { attributeName: any }) =>
-        itemData.attributeName === item.attribute?.name
-    );
-
-    if (!current) {
-      data.push({
-        id: String(item.attribute.id),
-        label: item.attribute?.name,
-        attributeName: item.attribute?.name,
-        type: item.displayType,
-        count: 0,
-        options: [],
-      });
-    }
-
-    data
-      .find(
-        (itemData: { attributeName: any }) =>
-          itemData.attributeName === item.attribute?.name
-      )
-      .options.push({
-        id: String(item.search),
-        value: item.id,
-        label: item.name,
-        metadata: item.search,
-        htmlColor: item.htmlColor,
-      });
-  });
-
-  return data;
-};
+const selectedFilters = ref<any>([]);
 const facets = computed(() => [
   {
     id: null,
@@ -80,7 +43,7 @@ const facets = computed(() => [
       { id: 'pr5', label: '$200.00 and above', value: 'above' },
     ],
   },
-  ...getGrouped(props.attributes),
+  ...getGroups(props.attributes),
 ]);
 const opened = ref<boolean[]>(facets.value.map(() => true));
 const sortSize = (data: any[]) => {
@@ -100,6 +63,38 @@ const sortSize = (data: any[]) => {
       })
       ?.sort((a: { label: number }, b: { label: number }) => a.label - b.label)
   );
+};
+const priceModel = ref('');
+const isItemActive = (selectedValue: string) => {
+  return selectedFilters.value?.includes(selectedValue);
+};
+
+const selectedFilter = (
+  facet: { label: any },
+  option: { id: string; value: string; label: string }
+) => {
+  const alreadySelectedIndex = selectedFilters.value.findIndex(
+    (filter: { id: string }) => String(filter.id) === String(option.value)
+  );
+
+  if (alreadySelectedIndex === -1) {
+    selectedFilters.value.push({
+      filterName: facet.label,
+      label: option.label,
+      id: option.value,
+    });
+
+    return;
+  }
+
+  selectedFilters.value.splice(alreadySelectedIndex, 1);
+};
+const applyFilters = () => {
+  changeFilters(selectedFilters.value);
+};
+const clearFilters = () => {
+  selectedFilters.value = [];
+  router.push({ query: {} });
 };
 
 const getSortOptions = (searchData: { input: any }) => ({
@@ -166,15 +161,10 @@ const categories = ref([
     count: '29',
   },
 ]);
-const selectedFilters = ref<string[]>([]);
-const priceModel = ref('');
-
-const isItemActive = (selectedValue: string) => {
-  return selectedFilters.value?.includes(selectedValue);
-};
 
 onMounted(() => {
-  console.log(facets.value);
+  // selectedFilters.value = facetsFromUrlToFilter();
+  // console.log(facets);
 });
 </script>
 
@@ -323,9 +313,7 @@ onMounted(() => {
               class="grid grid-cols-5 gap-2 px-3"
             >
               <li
-                v-for="{ id, value, label } in sortSize(
-                  facet.options
-                )"
+                v-for="{ id, value, label } in sortSize(facet.options)"
                 :key="id"
               >
                 <SfChip
@@ -333,6 +321,9 @@ onMounted(() => {
                   class="w-full"
                   size="sm"
                   :input-props="{ value }"
+                  @update:model-value="
+                    selectedFilter(facet, { id, value, label })
+                  "
                 >
                   {{ label }}
                 </SfChip>
@@ -348,6 +339,9 @@ onMounted(() => {
                   class="w-full"
                   size="sm"
                   :input-props="{ value }"
+                  @update:model-value="
+                    selectedFilter(facet, { id, value, label })
+                  "
                 >
                   {{ label }}
                 </SfChip>
@@ -371,6 +365,9 @@ onMounted(() => {
                     :value="label"
                     class="appearance-none peer"
                     type="checkbox"
+                    @update:model-value="
+                      selectedFilter(facet, { id, value, label })
+                    "
                   />
                   <span
                     class="inline-flex items-center justify-center p-1 transition duration-300 rounded-full cursor-pointer ring-1 ring-neutral-200 ring-inset outline-offset-2 outline-secondary-600 peer-checked:ring-2 peer-checked:ring-primary-700 peer-hover:bg-primary-100 peer-[&:not(:checked):hover]:ring-primary-200 peer-active:bg-primary-200 peer-active:ring-primary-300 peer-disabled:cursor-not-allowed peer-disabled:bg-disabled-100 peer-disabled:opacity-50 peer-disabled:ring-1 peer-disabled:ring-disabled-200 peer-disabled:hover:ring-disabled-200 peer-checked:hover:ring-primary-700 peer-checked:active:ring-primary-700 peer-focus-visible:outline"
@@ -392,7 +389,7 @@ onMounted(() => {
     <div
       class="flex flex-col lg:flex-row gap-y-4 lg:gap-y-0 lg:justify-between px-3 lg:px-0"
     >
-      <SfButton variant="secondary" class="w-full mr-3" @click="">
+      <SfButton variant="secondary" class="w-full mr-3" @click="clearFilters">
         {{ $t('clearFilters') }}
       </SfButton>
       <SfButton class="w-full" @click="applyFilters">{{

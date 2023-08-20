@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCategory, useProductAttributes } from '@/composables';
+import { useCategory, useProductAttributes, useUiHelpers } from '@/composables';
 import { SfButton, SfIconTune, useDisclosure } from '@storefront-ui/vue';
 import { useMediaQuery } from '@vueuse/core';
 
@@ -7,22 +7,18 @@ const mediaQueries = {
   tablet: '(min-width: 768px)',
   desktop: '(min-width: 1024px)',
 };
-const route:any = useRoute();
+const route: any = useRoute();
 const { isOpen, open, close } = useDisclosure();
 const { loading, loadCategoryProducts } = useCategory();
 const { getRegularPrice, getSpecialPrice } = useProductAttributes();
+const { getFacetsFromURL } = useUiHelpers();
 
 const breadcrumbs = [
   { name: 'Home', link: '/' },
   { name: 'Category', link: `Category/${route.params.id}` },
 ];
-const sort = route.query?.sort?.split(',') || [];
 
-const { products, attributes } = await loadCategoryProducts({
-  pageSize: 12,
-  sort: { [sort[0]]: sort[1] },
-  filter: { categoryId: [Number(route.params.id)] },
-});
+const { products, attributes } = await loadCategoryProducts(getFacetsFromURL());
 
 const mountUrlSlugForProductVariant = (product: {
   slug: any;
