@@ -44,6 +44,25 @@ const facets = computed(() => [
   },
   ...getGrouped(props.attributes, ['color', 'size', 'material']),
 ]);
+const opened = ref<boolean[]>(facets.value.map(() => true));
+const sortByAscendingProductAttributes = (data: any[]) => {
+  return (
+    data
+      // eslint-disable-next-line func-names
+      ?.sort(function (a: any, b: any) {
+        const labelA = a.label;
+        const labelB = b.label;
+        if (labelA === labelB) {
+          const lastCharA = labelA.charAt(labelA.length - 1);
+          const lastCharB = labelB.charAt(labelB.length - 1);
+          return lastCharA.localeCompare(lastCharB);
+        } else {
+          return labelA.localeCompare(labelB);
+        }
+      })
+      ?.sort((a: { label: number }, b: { label: number }) => a.label - b.label)
+  );
+};
 
 const getSortOptions = (searchData: { input: any }) => ({
   options: [
@@ -109,24 +128,7 @@ const categories = ref([
     count: '29',
   },
 ]);
-
-type FilterDetail = {
-  id: string;
-  label: string;
-  value: string;
-  counter?: number;
-  link?: string;
-};
-
-type Node = {
-  id: string;
-  summary: string;
-  type: string;
-  details: FilterDetail[];
-};
-
 const selectedFilters = ref<string[]>([]);
-const opened = ref<boolean[]>(facets.value.map(() => true));
 const priceModel = ref('');
 
 const isItemActive = (selectedValue: string) => {
@@ -282,7 +284,12 @@ onMounted(() => {
               v-if="facet.type === 'select'"
               class="grid grid-cols-5 gap-2 px-3"
             >
-              <li v-for="{ id, value, label } in facet.options" :key="id">
+              <li
+                v-for="{ id, value, label } in sortByAscendingProductAttributes(
+                  facet.options
+                )"
+                :key="id"
+              >
                 <SfChip
                   v-model="selectedFilters"
                   class="w-full"
