@@ -9,7 +9,7 @@ const mediaQueries = {
 };
 const route = useRoute();
 const { isOpen, open, close } = useDisclosure();
-const { loading, responseData, loadCategoryProducts } = useCategory();
+const { loading, loadCategoryProducts } = useCategory();
 const { getRegularPrice, getSpecialPrice } = useProductAttributes();
 
 const breadcrumbs = [
@@ -18,7 +18,7 @@ const breadcrumbs = [
 ];
 const sort = route.query?.sort?.split(',') || [];
 
-const { products } = await loadCategoryProducts({
+const { products, attributes } = await loadCategoryProducts({
   pageSize: 12,
   sort: { [sort[0]]: sort[1] },
   filter: { categoryId: [Number(route.params.id)] },
@@ -74,7 +74,7 @@ onMounted(() => {
         class="lg:hidden"
       >
         <template #default>
-          <CategoryFilterSidebar :result="products" />
+          <CategoryFilterSidebar :attributes="attributes" />
         </template>
       </LazyCategoryMobileSidebar>
       <div class="lg:ml-10">
