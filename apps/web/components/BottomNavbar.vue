@@ -63,7 +63,7 @@ const items = [
   {
     label: 'wishlist',
     icon: SfIconFavorite,
-    link: '/wishlist',
+    link: '/',
   },
   {
     label: t('account.navBarBottomHeading'),

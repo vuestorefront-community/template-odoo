@@ -1,10 +1,17 @@
-<script setup>
-defineProps({
+<script lang="ts" setup>
+const props = defineProps({
   categories: {
     type: Array,
     required: true,
   },
 });
+
+const topCategories = props.categories;
+const filteredCategories: any = computed(() =>
+  topCategories?.filter(
+    (category: any) => category.name === 'WOMEN' || category.name === 'MEN'
+  )
+);
 
 const items = ref([
   {
@@ -12,7 +19,7 @@ const items = ref([
   },
   {
     image: '/images/men-card.png',
-  }
+  },
 ]);
 </script>
 
@@ -27,7 +34,7 @@ const items = ref([
     data-testid="category-card"
   >
     <div
-      v-for="{name, slug} in categories"
+      v-for="{ name, slug } in filteredCategories"
       :key="name"
       class="mr-2 md:mr-6 group"
     >

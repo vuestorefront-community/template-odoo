@@ -7,6 +7,7 @@ import {
   SfCounter,
   SfIconArrowBack,
   SfIconChevronLeft,
+  SfIconCheck,
   SfListItem,
   SfRadio,
   SfSelect,
