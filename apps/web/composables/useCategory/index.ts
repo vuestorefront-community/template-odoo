@@ -65,6 +65,6 @@ export const useCategory: any = () => {
     loading,
     loadCategoryProducts,
     loadCategoryList,
-    loadCategory
+    loadCategory,
   };
 };
