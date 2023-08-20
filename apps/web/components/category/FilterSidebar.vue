@@ -34,6 +34,13 @@ const facets = computed(() => [
     id: null,
     label: 'Price',
     type: 'price',
+    options: [
+      { id: 'pr1', label: 'Under $24.99', value: 'under' },
+      { id: 'pr2', label: '$25.00 - $49.99', value: '25-49' },
+      { id: 'pr3', label: '$50.00 - $99.99', value: '50-99' },
+      { id: 'pr4', label: '$100.00 - $199.99', value: '100-199' },
+      { id: 'pr5', label: '$200.00 and above', value: 'above' },
+    ],
   },
   ...getGrouped(props.attributes, ['color', 'size', 'material']),
 ]);
@@ -117,14 +124,6 @@ type Node = {
   type: string;
   details: FilterDetail[];
 };
-
-const filtersData = ref<any>([
-  { id: 'pr1', label: 'Under $24.99', value: 'under' },
-  { id: 'pr2', label: '$25.00 - $49.99', value: '25-49' },
-  { id: 'pr3', label: '$50.00 - $99.99', value: '50-99' },
-  { id: 'pr4', label: '$100.00 - $199.99', value: '100-199'},
-  { id: 'pr5', label: '$200.00 and above', value: 'above' },
-]);
 
 const selectedFilters = ref<string[]>([]);
 const opened = ref<boolean[]>(facets.value.map(() => true));
@@ -252,7 +251,7 @@ onMounted(() => {
             <template v-if="facet.type == 'price'">
               <fieldset id="radio-price">
                 <SfListItem
-                  v-for="{ id, value, label } in filtersData"
+                  v-for="{ id, value, label } in facet.options"
                   :key="id"
                   tag="label"
                   size="sm"
