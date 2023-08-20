@@ -237,7 +237,7 @@ const data = ref({
             {{ $t('placeOrder') }}
           </SfButton>
           <p class="text-sm text-center mt-4 pb-4 md:pb-0">
-            <i18n-t keypath="termsInfo">
+            <i18n-t keypath="termsInfo" scope="global">
               <template #terms>
                 <SfLink
                   href="#"
