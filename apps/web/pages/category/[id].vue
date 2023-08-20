@@ -7,7 +7,7 @@ const mediaQueries = {
   tablet: '(min-width: 768px)',
   desktop: '(min-width: 1024px)',
 };
-const route = useRoute();
+const route:any = useRoute();
 const { isOpen, open, close } = useDisclosure();
 const { loading, loadCategoryProducts } = useCategory();
 const { getRegularPrice, getSpecialPrice } = useProductAttributes();
@@ -23,8 +23,6 @@ const { products, attributes } = await loadCategoryProducts({
   sort: { [sort[0]]: sort[1] },
   filter: { categoryId: [Number(route.params.id)] },
 });
-
-// const products = computed(() => responseData.value);
 
 const mountUrlSlugForProductVariant = (product: {
   slug: any;
