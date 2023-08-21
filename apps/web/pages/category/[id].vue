@@ -17,8 +17,22 @@ const breadcrumbs = [
   { name: 'Home', link: '/' },
   { name: 'Category', link: `Category/${route.params.id}` },
 ];
+const { products: product, attributes: attribute } = await loadCategoryProducts(
+  getFacetsFromURL(route.query)
+);
+const products = ref([]);
+const attributes = ref([]);
 
-const { products, attributes } = await loadCategoryProducts(getFacetsFromURL());
+watch(
+  () => route.fullPath,
+  async () => {
+    const { products: product, attributes: attribute } =
+      await loadCategoryProducts(getFacetsFromURL(route.query));
+    products.value = product;
+    attributes.value = attribute;
+  },
+  { deep: true }
+);
 
 const mountUrlSlugForProductVariant = (product: {
   slug: any;
@@ -53,6 +67,8 @@ watch(isTabletScreen, (value) => {
 
 onMounted(() => {
   setMaxVisiblePages(isWideScreen.value);
+  products.value = product;
+  attributes.value = attribute;
 });
 </script>
 <template>
@@ -68,7 +84,7 @@ onMounted(() => {
         class="lg:hidden"
       >
         <template #default>
-          <CategoryFilterSidebar :attributes="attributes" />
+          <CategoryFilterSidebar :attributes="attribute" />
         </template>
       </LazyCategoryMobileSidebar>
       <div class="lg:ml-10">

@@ -30,6 +30,37 @@ const { categories: categoryTree } = await loadCategoryList({
   filter: { parent: true },
 });
 
+const getSortOptions = (searchData: { input: any }) => ({
+  options: [
+    {
+      id: 'list_price desc',
+      value: 'price,DESC',
+      attrName: 'Price: High to Low',
+      type: '',
+    },
+    {
+      id: 'list_price asc',
+      value: 'price,ASC',
+      attrName: 'Price: Low to High',
+      type: '',
+    },
+    { id: 'name asc', value: 'name,ASC', attrName: 'Name: A to Z', type: '' },
+    {
+      id: 'name desc',
+      value: 'name,DESC',
+      attrName: 'Name: Z to A',
+      type: '',
+    },
+  ],
+  selected: searchData.input.sort || 'name asc',
+});
+const changeSorting = async (sort: string) => {
+  router.push({ query: { ...route.query, sort } });
+};
+const sortBy = computed(() =>
+  getSortOptions({ input: { sort: route.query?.sort } })
+);
+
 const selectedFilters = ref<any>([]);
 const isFilterSelected = (option: any) => {
   return selectedFilters.value.some(
@@ -122,37 +153,6 @@ const clearFilters = () => {
   router.push({ query: {} });
 };
 
-const getSortOptions = (searchData: { input: any }) => ({
-  options: [
-    {
-      id: 'list_price desc',
-      value: 'price,DESC',
-      attrName: 'Price: High to Low',
-      type: '',
-    },
-    {
-      id: 'list_price asc',
-      value: 'price,ASC',
-      attrName: 'Price: Low to High',
-      type: '',
-    },
-    { id: 'name asc', value: 'name,ASC', attrName: 'Name: A to Z', type: '' },
-    {
-      id: 'name desc',
-      value: 'name,DESC',
-      attrName: 'Name: Z to A',
-      type: '',
-    },
-  ],
-  selected: searchData.input.sort || 'name asc',
-});
-const changeSorting = async (sort: string) => {
-  router.push({ query: { ...route.query, sort } });
-};
-const sortBy = computed(() =>
-  getSortOptions({ input: { sort: route.query?.sort } })
-);
-
 const parent = ref({
   name: 'All Products',
   href: '/',
@@ -189,7 +189,6 @@ const categories = ref([
 
 onMounted(() => {
   selectedFilters.value = facetsFromUrlToFilter();
-  console.log(facets.value);
 });
 </script>
 
