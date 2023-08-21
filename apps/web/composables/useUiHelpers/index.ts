@@ -1,4 +1,4 @@
-import { facets } from './facts';
+import { facetsMen, facetsWomen } from './facts';
 
 export const useUiHelpers: any = () => {
   const route: any = useRoute();
@@ -16,13 +16,6 @@ export const useUiHelpers: any = () => {
     return path;
   };
 
-  // const facets = [
-  //   {
-  //     id: null,
-  //     label: 'Price',
-  //     type: 'price',
-  //   },
-  // ];
   const getGroups = (searchData: any) => {
     if (!searchData) return [];
 
@@ -58,14 +51,21 @@ export const useUiHelpers: any = () => {
           htmlColor: item.htmlColor,
         });
     });
-    // facets.values.push[...data]
     return data;
   };
 
   const getAttributeValues = (filterKey: string, value: string) => {
-    const attribute: any = facets.find((item) => {
-      return item.label === filterKey;
-    });
+    let attribute: any = {};
+    if (route.path === '/category/14') {
+      attribute = facetsMen.find((item: { label: string }) => {
+        return item.label === filterKey;
+      });
+    } else {
+      attribute = facetsWomen.find((item: { label: string }) => {
+        return item.label === filterKey;
+      });
+    }
+
     let option = {};
     if (attribute) {
       option = attribute?.options.find((item: { value: any }) => {

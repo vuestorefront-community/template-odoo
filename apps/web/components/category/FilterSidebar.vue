@@ -45,11 +45,11 @@ const facets = computed(() => [
     label: 'Price',
     type: 'price',
     options: [
-      { id: 'pr1', label: 'Under $250.00', values: [0, 250] },
-      { id: 'pr2', label: '$250.00 - $500.00', values: [250, 500] },
-      { id: 'pr3', label: '$500.00 - $750.00', values: [500, 750] },
-      { id: 'pr4', label: '$750.00 - $1000.00', values: [750, 1000] },
-      { id: 'pr5', label: '$1000.00- $1500.00', values: [1000, 1500] },
+      { id: 'pr1', label: 'Under $250.00', values: '0-250' },
+      { id: 'pr2', label: '$250.00 - $500.00', values: '250-500' },
+      { id: 'pr3', label: '$500.00 - $750.00', values: '500-750' },
+      { id: 'pr4', label: '$750.00 - $1000.00', values: '750-1000' },
+      { id: 'pr5', label: '$1000.00- $1500.00', values: '1000-1500' },
     ],
   },
   ...getGroups(props.attributes),
@@ -74,21 +74,20 @@ const sortSize = (data: any[]) => {
       ?.sort((a: { label: number }, b: { label: number }) => a.label - b.label)
   );
 };
-const price = ref<any>([]);
 const priceModel = ref<any>('');
 const selectPrice = (values: any) => {
-  const newValue = `${values[0]}-${values[1]}`;
-  price.value = values;
+  const newValue: any = [values];
   const selectedValue = selectedFilters.value.find(
     (item: { filterName: string }) => item?.filterName === 'price'
   );
   if (selectedValue) {
-    selectedValue.id = newValue;
+    newValue.push[selectedValue.id];
   }
+
   selectedFilters.value.push({
     filterName: 'price',
     label: 'Price',
-    id: newValue,
+    id: newValue[0],
   });
 };
 const selectedFilter = (
