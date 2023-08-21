@@ -29,7 +29,16 @@ const { changeFilters, facetsFromUrlToFilter, getGroups } = useUiHelpers();
 const { categories: categoryTree } = await loadCategoryList({
   filter: { parent: true },
 });
+
 const selectedFilters = ref<any>([]);
+const isFilterSelected = (option: any) => {
+  return selectedFilters.value.some(
+    (filter: { id: any }) => String(filter.id) === String(option.value)
+  );
+};
+const isItemActive = (selectedValue: string) => {
+  return selectedFilters.value?.includes(selectedValue);
+};
 const facets = computed(() => [
   {
     id: null,
@@ -46,6 +55,7 @@ const facets = computed(() => [
   ...getGroups(props.attributes),
 ]);
 const opened = ref<boolean[]>(facets.value.map(() => true));
+
 const sortSize = (data: any[]) => {
   return (
     data
@@ -65,12 +75,8 @@ const sortSize = (data: any[]) => {
   );
 };
 const priceModel = ref('');
-const isItemActive = (selectedValue: string) => {
-  return selectedFilters.value?.includes(selectedValue);
-};
-
 const selectedFilter = (
-  facet: { label: any },
+  facet: { label: string },
   option: { id: string; value: string; label: string }
 ) => {
   const alreadySelectedIndex = selectedFilters.value.findIndex(
@@ -83,14 +89,16 @@ const selectedFilter = (
       label: option.label,
       id: option.value,
     });
-
     return;
   }
 
   selectedFilters.value.splice(alreadySelectedIndex, 1);
 };
 const applyFilters = () => {
-  changeFilters(selectedFilters.value);
+  const filters = selectedFilters.value.filter((item: any) => {
+    return typeof item === 'object';
+  });
+  changeFilters(filters);
 };
 const clearFilters = () => {
   selectedFilters.value = [];
@@ -163,8 +171,8 @@ const categories = ref([
 ]);
 
 onMounted(() => {
-  // selectedFilters.value = facetsFromUrlToFilter();
-  // console.log(facets);
+  selectedFilters.value = facetsFromUrlToFilter();
+  console.log(selectedFilters.value);
 });
 </script>
 
@@ -317,10 +325,10 @@ onMounted(() => {
                 :key="id"
               >
                 <SfChip
-                  v-model="selectedFilters"
                   class="w-full"
                   size="sm"
                   :input-props="{ value }"
+                  :model-value="isFilterSelected({ id, value, label })"
                   @update:model-value="
                     selectedFilter(facet, { id, value, label })
                   "
@@ -335,10 +343,10 @@ onMounted(() => {
             >
               <li v-for="{ id, value, label } in facet.options" :key="id">
                 <SfChip
-                  v-model="selectedFilters"
                   class="w-full"
                   size="sm"
                   :input-props="{ value }"
+                  :model-value="isFilterSelected({ id, value, label })"
                   @update:model-value="
                     selectedFilter(facet, { id, value, label })
                   "
@@ -355,7 +363,11 @@ onMounted(() => {
                 tag="label"
                 :class="[
                   'px-4 bg-transparent hover:bg-transparent',
-                  { 'font-medium': isItemActive(value) },
+                  {
+                    'font-medium':
+                      isItemActive(value) ||
+                      isFilterSelected({ id, value, label }),
+                  },
                 ]"
                 :selected="isItemActive(value)"
               >

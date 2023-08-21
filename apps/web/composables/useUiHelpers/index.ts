@@ -15,6 +15,14 @@ export const useUiHelpers: any = () => {
     }
     return path;
   };
+
+  // const facets = [
+  //   {
+  //     id: null,
+  //     label: 'Price',
+  //     type: 'price',
+  //   },
+  // ];
   const getGroups = (searchData: any) => {
     if (!searchData) return [];
 
@@ -50,6 +58,7 @@ export const useUiHelpers: any = () => {
           htmlColor: item.htmlColor,
         });
     });
+    // facets.values.push[...data]
     return data;
   };
 
