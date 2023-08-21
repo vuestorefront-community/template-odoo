@@ -81,7 +81,7 @@ const login = () => {
         class="mt-6 w-full p-4 md:p-6 !justify-start typography-text-base"
         variant="neutral"
       >
-        <i18n-t tag="span" keypath="auth.login.createAccountBanner">
+        <i18n-t tag="span" keypath="auth.login.createAccountBanner" scope="global">
           <SfLink :tag="NuxtLink" to="/signup" variant="primary">
             {{ $t('auth.login.createAccountLinkLabel') }}
           </SfLink>

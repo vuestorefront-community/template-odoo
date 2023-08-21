@@ -57,7 +57,7 @@
       >
         <SfLink
           v-if="index < breadcrumbs.length - 1"
-          :tag="NuxtLink"
+          :tag="item.link ? NuxtLink : 'div'"
           :to="item.link"
           variant="secondary"
           class="leading-5 no-underline hover:underline active:underline whitespace-nowrap outline-secondary-600 text-inherit"

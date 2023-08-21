@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { sdk } from '@/sdk.config';
+import { useProduct, useProductAttributes } from '@/composables';
 import {
   SfButton,
   SfCounter,
@@ -16,67 +16,45 @@ import {
   SfChip,
   SfThumbnail,
 } from '@storefront-ui/vue';
+import { LocationQueryRaw } from 'vue-router';
 
 const route = useRoute();
-const product = ref<any>();
+const router = useRouter();
+const { loading, loadProduct } = useProduct();
+const { getRegularPrice, getSpecialPrice } = useProductAttributes();
 
-const { data } = await sdk.odoo.getProductTemplate({
+const { product } = await loadProduct({
   slug: `/product/${route.params.slug}`,
 });
-
-if (data.product) {
-  product.value = data.product;
-}
 
 const breadcrumbs = computed(() => {
   return [
     { name: 'Home', link: '/' },
-    { name: 'Category', link: '/category' },
-    { name: product.value?.name, link: '/product' },
+    { name: 'product' },
+    { name: product?.name, link: `product/${product?.name}` },
   ];
 });
-
-const getRegularPrice = (product: {
-  firstVariant: { combinationInfoVariant: { list_price: any } };
-}) => {
-  if (product.firstVariant && product.firstVariant.combinationInfoVariant) {
-    return product.firstVariant.combinationInfoVariant.list_price;
-  }
-};
-
-const getSpecialPrice = (product: {
-  firstVariant: {
-    combinationInfoVariant: { has_discounted_price: any; price: any };
-  };
-}) => {
-  if (
-    product.firstVariant &&
-    product.firstVariant.combinationInfoVariant.has_discounted_price
-  ) {
-    return product.firstVariant.combinationInfoVariant.price;
-  }
-};
 
 const withBase = (filepath: string) =>
   `https://vsfdemo15.labs.odoogap.com${filepath}`;
 const images = computed(() => {
   return [
     {
-      imageSrc: withBase(product.value?.image),
-      imageThumbSrc: withBase(product.value?.image),
-      alt: product.value?.name,
+      imageSrc: withBase(product?.image),
+      imageThumbSrc: withBase(product?.image),
+      alt: product?.name,
     },
   ];
 });
 
-const selectedSize = 'S';
-const selectedColor = 'red';
-const selectedMaterials = '';
+const selectedSize = computed(() => route.query.Size);
+const selectedColor = computed(() => route.query.Color);
+const selectedMaterial = computed(() => route.query.Material);
 const productDetailsOpen = ref(true);
 const quantitySelectorValue = ref(1);
 
 const getAllSizes = computed(() => {
-  const sizes = product.value?.attributeValues?.filter((item: any) => {
+  const sizes = product?.attributeValues?.filter((item: any) => {
     return item.attribute.name === 'Size';
   });
   return sizes.map((item: any) => {
@@ -86,22 +64,19 @@ const getAllSizes = computed(() => {
     };
   });
 });
-
 const getAllColors = computed(() => {
-  const colors = product.value?.attributeValues?.filter((item: any) => {
+  const colors = product?.attributeValues?.filter((item: any) => {
     return item.attribute.name === 'Color';
   });
   return colors.map((item: any) => {
     return {
-      id: item.id,
-      value: item.name,
+      value: item.id,
       label: item.name,
     };
   });
 });
-
 const getAllMaterials = computed(() => {
-  const materials = product.value?.attributeValues?.filter((item: any) => {
+  const materials = product?.attributeValues?.filter((item: any) => {
     return item.attribute.name === 'Material';
   });
   return materials.map((item: any) => {
@@ -111,6 +86,12 @@ const getAllMaterials = computed(() => {
     };
   });
 });
+const updateFilter = (filter: LocationQueryRaw | undefined) => {
+  router.push({
+    path: route.path,
+    query: { ...route.query, ...filter },
+  });
+};
 
 onMounted(() => {});
 </script>
@@ -149,10 +130,10 @@ onMounted(() => {});
             class="mr-2 text-secondary-700 font-bold font-headings text-2xl"
             data-testid="price"
           >
-            ${{ getRegularPrice(product) }}
+            ${{ getSpecialPrice(product.firstVariant) }}
           </span>
           <span class="text-base font-normal text-neutral-500 line-through">
-            ${{ getSpecialPrice(product) }}
+            ${{ getRegularPrice(product.firstVariant) }}
           </span>
         </div>
         <div v-else class="my-1">
@@ -160,7 +141,7 @@ onMounted(() => {});
             class="mr-2 text-secondary-700 font-bold font-headings text-2xl"
             data-testid="price"
           >
-            ${{ getRegularPrice(product) }}
+            ${{ getRegularPrice(product.firstVariant) }}
           </span>
         </div>
         <div class="inline-flex items-center mt-4 mb-2">
@@ -222,7 +203,7 @@ onMounted(() => {});
             class="flex-shrink-0 mr-1 text-neutral-500"
           />
           <p class="text-sm">
-            <i18n-t keypath="additionalInfo.shipping">
+            <i18n-t keypath="additionalInfo.shipping" scope="global">
               <template #addAddress>
                 <SfLink href="#" variant="secondary">{{
                   $t('additionalInfo.addAddress')
@@ -237,7 +218,7 @@ onMounted(() => {});
             class="flex-shrink-0 mr-1 text-neutral-500"
           />
           <p class="text-sm">
-            <i18n-t keypath="additionalInfo.pickup">
+            <i18n-t keypath="additionalInfo.pickup" scope="global">
               <template #checkAvailability>
                 <SfLink href="#" variant="secondary">{{
                   $t('additionalInfo.checkAvailability')
@@ -281,23 +262,26 @@ onMounted(() => {});
               :input-props="{
                 onClick: (e) => value == selectedSize && e.preventDefault(),
               }"
-              :model-value="value === selectedSize"
-              @update:model-value=""
+              :model-value="value == selectedSize"
+              @update:model-value="
+                value != selectedSize &&
+                  updateFilter({ ['Size']: value.toString() })
+              "
             >
               {{ label }}
             </SfChip>
           </span>
         </fieldset>
-        <fieldset v-if="getAllSizes && getAllSizes?.length" class="pb-2 flex">
+        <fieldset v-if="getAllColors && getAllColors?.length" class="pb-2 flex">
           <legend
             class="block mb-2 text-base font-medium leading-6 text-neutral-900"
           >
             Color
           </legend>
           <span
-            v-for="{ id, label, value } in getAllColors"
+            v-for="{ label, value } in getAllColors"
             class="mr-2 mb-2 uppercase"
-            :key="id"
+            :key="value"
           >
             <SfChip
               class="min-w-[48px]"
@@ -305,11 +289,14 @@ onMounted(() => {});
               :input-props="{
                 onClick: (e) => value == selectedColor && e.preventDefault(),
               }"
-              :model-value="id === selectedColor"
-              @update:model-value=""
+              :model-value="value == selectedColor"
+              @update:model-value="
+                value != selectedColor &&
+                  updateFilter({ ['Color']: value.toString() })
+              "
             >
               <template #prefix>
-                <SfThumbnail size="sm" :style="{ background: value }" />
+                <SfThumbnail size="sm" :style="{ background: label }" />
               </template>
               {{ label }}
             </SfChip>
@@ -333,11 +320,13 @@ onMounted(() => {});
               class="min-w-[48px]"
               size="sm"
               :input-props="{
-                onClick: (e) =>
-                  value == selectedMaterials && e.preventDefault(),
+                onClick: (e) => value == selectedMaterial && e.preventDefault(),
               }"
-              :model-value="value === selectedMaterials"
-              @update:model-value=""
+              :model-value="value == selectedMaterial"
+              @update:model-value="
+                value != selectedMaterial &&
+                  updateFilter({ ['Material']: value.toString() })
+              "
             >
               {{ label }}
             </SfChip>

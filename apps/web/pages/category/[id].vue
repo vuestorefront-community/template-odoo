@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { sdk } from '@/sdk.config';
-import { Product } from '@erpgap/odoo-sdk-api-client';
+import { useCategory, useProductAttributes } from '@/composables';
 import { SfButton, SfIconTune, useDisclosure } from '@storefront-ui/vue';
 import { useMediaQuery } from '@vueuse/core';
 
@@ -8,33 +7,38 @@ const mediaQueries = {
   tablet: '(min-width: 768px)',
   desktop: '(min-width: 1024px)',
 };
+const route = useRoute();
 const { isOpen, open, close } = useDisclosure();
+const { loading, responseData, loadCategoryProducts } = useCategory();
+const { getRegularPrice, getSpecialPrice } = useProductAttributes();
+
 const breadcrumbs = [
   { name: 'Home', link: '/' },
-  { name: 'Category', link: '/category' },
+  { name: 'Category', link: `Category/${route.params.id}` },
 ];
+const sort = route.query?.sort?.split(',') || [];
 
-const route = useRoute();
-const products = ref<object[]>([]);
+const { products } = await loadCategoryProducts({
+  pageSize: 12,
+  sort: { [sort[0]]: sort[1] },
+  filter: { categoryId: [Number(route.params.id)] },
+});
 
-if (products.value.length === 0) {
-  const { data } = await useAsyncData(
-    'product',
-    async () =>
-      await sdk.odoo.getProductTemplateList({
-        pageSize: 12,
-        filter: { categoryId: [Number(route.params.id)] },
-      })
-  );
-  products.value = data.value?.data.products?.products || [];
-}
+// const products = computed(() => responseData.value);
 
-const mountUrlSlugForProductVariant = (product: { slug: any; variantAttributeValues: any; }) => {
+const mountUrlSlugForProductVariant = (product: {
+  slug: any;
+  variantAttributeValues: any;
+}) => {
   if (product) {
     const { slug, variantAttributeValues } = product;
-    return `${slug}?${variantAttributeValues
-      .map((variant: { attribute: { name: any; }; id: any; }) => `${variant?.attribute?.name}=${variant?.id}&`)
+    const joinedSlug = `${slug}?${variantAttributeValues
+      .map(
+        (variant: { attribute: { name: any }; id: any }) =>
+          `${variant?.attribute?.name}=${variant?.id}&`
+      )
       .join('')}`;
+    return joinedSlug.slice(0, -1);
   }
 };
 
@@ -42,7 +46,8 @@ const isTabletScreen = useMediaQuery(mediaQueries.tablet);
 const isWideScreen = useMediaQuery(mediaQueries.desktop);
 const maxVisiblePages = ref(1);
 
-const setMaxVisiblePages = (isWide: boolean) => (maxVisiblePages.value = isWide ? 5 : 1);
+const setMaxVisiblePages = (isWide: boolean) =>
+  (maxVisiblePages.value = isWide ? 5 : 1);
 
 watch(isWideScreen, (value) => setMaxVisiblePages(value));
 
@@ -69,7 +74,7 @@ onMounted(() => {
         class="lg:hidden"
       >
         <template #default>
-          <CategoryFilterSidebar />
+          <CategoryFilterSidebar :result="products" />
         </template>
       </LazyCategoryMobileSidebar>
       <div class="lg:ml-10">
@@ -91,13 +96,14 @@ onMounted(() => {
           class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
         >
           <LazyUiProductCard
-            v-for="product in products"
-            :key="product.id"
-            :name="product.name"
-            :slug="mountUrlSlugForProductVariant(product.firstVariant)"
-            :image-url="`https://vsfdemo15.labs.odoogap.com${product.image}`"
-            :image-alt="product.name"
-            :price="product.price.toString()"
+            v-for="{ id, name, firstVariant, image } in products"
+            :key="id"
+            :name="name"
+            :slug="mountUrlSlugForProductVariant(firstVariant)"
+            :image-url="`https://vsfdemo15.labs.odoogap.com${image}`"
+            :image-alt="name"
+            :regular-price="getRegularPrice(firstVariant)"
+            :special-price="getSpecialPrice(firstVariant)"
             :rating-count="123"
             :rating="Number(4)"
           />

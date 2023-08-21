@@ -37,9 +37,13 @@ defineProps({
     type: Number,
     required: false,
   },
-  price: {
-    type: String,
+  regularPrice: {
+    type: Number,
     required: true,
+  },
+  specialPrice: {
+    type: Number,
+    required: false,
   },
 });
 
@@ -90,9 +94,14 @@ const NuxtLink = resolveComponent('NuxtLink');
       >
         {{ description }}
       </p>
-      <span class="block pb-10 pt-3 font-bold typography-text-sm"
-        >${{ price }}</span
-      >
+      <div class="block pb-10 pt-3">
+        <span class="font-bold typography-text-sm">${{ regularPrice }}</span>
+        <span
+          v-if="specialPrice"
+          class="ml-1.5 font-normal typography-text-xs line-through"
+          >${{ specialPrice }}</span
+        >
+      </div>
       <SfButton type="button" class="absolute bottom-2" size="sm">
         <template #prefix>
           <SfIconShoppingCart size="sm" />

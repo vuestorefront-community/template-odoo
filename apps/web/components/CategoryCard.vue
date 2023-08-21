@@ -1,10 +1,17 @@
-<script setup>
-defineProps({
+<script lang="ts" setup>
+const props = defineProps({
   categories: {
     type: Array,
     required: true,
   },
 });
+
+const topCategories = props.categories;
+const filteredCategories: any = computed(() =>
+  topCategories?.filter(
+    (category: any) => category.name === 'WOMEN' || category.name === 'MEN'
+  )
+);
 
 const items = ref([
   {
@@ -12,7 +19,7 @@ const items = ref([
   },
   {
     image: '/images/men-card.png',
-  }
+  },
 ]);
 </script>
 
@@ -27,31 +34,31 @@ const items = ref([
     data-testid="category-card"
   >
     <div
-      v-for="category in categories"
-      :key="category.name"
+      v-for="{ name, slug } in filteredCategories"
+      :key="name"
       class="mr-2 md:mr-6 group"
     >
       <NuxtLink
-        :to="category.slug"
+        :to="slug"
         class="w-full h-full z-1 focus-visible:outline focus-visible:outline-offset focus-visible:rounded-md"
-        :aria-label="category.name"
+        :aria-label="name"
       >
         <div
           class="relative h-[240px] w-[240px] rounded-full bg-neutral-100 group-hover:shadow-xl group-active:shadow-none"
         >
           <NuxtImg
-            v-if="category.name == 'WOMEN'"
+            v-if="name == 'WOMEN'"
             :src="items[0].image"
-            :alt="category.name"
+            :alt="name"
             width="240"
             height="240"
             loading="lazy"
             format="webp"
           />
           <NuxtImg
-            v-if="category.name == 'MEN'"
+            v-if="name == 'MEN'"
             :src="items[1].image"
-            :alt="category.name"
+            :alt="name"
             width="240"
             height="240"
             loading="lazy"
@@ -62,7 +69,7 @@ const items = ref([
           <p
             class="mt-4 font-semibold no-underline text-normal-900 typography-text-base group-hover:underline group-hover:text-primary-800 group-hover:font-normal group-active:text-primary-800 group-active:font-normal"
           >
-            {{ category.name }}
+            {{ name }}
           </p>
         </div>
       </NuxtLink>
