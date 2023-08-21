@@ -1,4 +1,4 @@
-export const facets = [
+export const facetsMen = [
   {
     id: null,
     label: 'Price',
@@ -293,6 +293,159 @@ export const facets = [
         label: 'Red',
         metadata: '7-43',
         htmlColor: '#f40000',
+      },
+    ],
+  },
+];
+
+export const facetsWomen = [
+  {
+    id: null,
+    label: 'Price',
+    type: 'price',
+    options: [
+      {
+        id: 'pr1',
+        label: 'Under $250.00',
+        values: '0-250',
+      },
+      {
+        id: 'pr2',
+        label: '$250.00 - $500.00',
+        values: '250-500',
+      },
+      {
+        id: 'pr3',
+        label: '$500.00 - $750.00',
+        values: '500-750',
+      },
+      {
+        id: 'pr4',
+        label: '$750.00 - $1000.00',
+        values: '750-1000',
+      },
+      {
+        id: 'pr5',
+        label: '$1000.00- $1500.00',
+        values: '1000-1500',
+      },
+    ],
+  },
+  {
+    id: '5',
+    label: 'Size',
+    attributeName: 'Size',
+    type: 'select',
+    count: 0,
+    options: [
+      {
+        id: '5-9',
+        value: 9,
+        label: '5',
+        metadata: '5-9',
+        htmlColor: null,
+      },
+      {
+        id: '5-10',
+        value: 10,
+        label: '6',
+        metadata: '5-10',
+        htmlColor: null,
+      },
+      {
+        id: '5-20',
+        value: 20,
+        label: '36',
+        metadata: '5-20',
+        htmlColor: null,
+      },
+      {
+        id: '5-24',
+        value: 24,
+        label: '40',
+        metadata: '5-24',
+        htmlColor: null,
+      },
+      {
+        id: '5-8',
+        value: 8,
+        label: 'One Size',
+        metadata: '5-8',
+        htmlColor: null,
+      },
+    ],
+  },
+  {
+    id: '6',
+    label: 'Material',
+    attributeName: 'Material',
+    type: 'radio',
+    count: 0,
+    options: [
+      {
+        id: '6-38',
+        value: 38,
+        label: 'Leather',
+        metadata: '6-38',
+        htmlColor: null,
+      },
+      {
+        id: '6-37',
+        value: 37,
+        label: 'Cotton',
+        metadata: '6-37',
+        htmlColor: null,
+      },
+    ],
+  },
+  {
+    id: '7',
+    label: 'Color',
+    attributeName: 'Color',
+    type: 'color',
+    count: 0,
+    options: [
+      {
+        id: '7-44',
+        value: 44,
+        label: 'Yellow',
+        metadata: '7-44',
+        htmlColor: '#f7f41b',
+      },
+      {
+        id: '7-45',
+        value: 45,
+        label: 'Blue',
+        metadata: '7-45',
+        htmlColor: '#0c7af7',
+      },
+      {
+        id: '7-47',
+        value: 47,
+        label: 'Brown',
+        metadata: '7-47',
+        htmlColor: '#964B00',
+      },
+      {
+        id: '7-48',
+        value: 48,
+        label: 'Pink',
+        metadata: '7-48',
+        htmlColor: '#FFC0CB',
+      },
+      {
+        id: '7-40',
+        value: 40,
+        label: 'Black',
+        metadata: '7-40',
+        htmlColor: '#000000',
+      },
+      {
+        id: '7-42',
+        value: 42,
+        label: 'White',
+        metadata: '7-42',
+        htmlColor: '#ffffff',
       },
     ],
   },
