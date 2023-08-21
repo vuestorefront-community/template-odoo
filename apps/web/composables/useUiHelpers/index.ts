@@ -75,8 +75,9 @@ export const useUiHelpers: any = () => {
     return option;
   };
 
-  const getFacetsFromURL = (): any => {
+  const getFacetsFromURL = (QueryFromUrl: any): any => {
     const filters: string[] = [];
+    const query = QueryFromUrl;
     if (query) {
       Object.keys(query).forEach((filterKey) => {
         if (![...queryParamsNotFilters, 'price'].includes(filterKey)) {
