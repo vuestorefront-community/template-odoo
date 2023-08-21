@@ -56,7 +56,7 @@ const facets = computed(() => [
 ]);
 const opened = ref<boolean[]>(facets.value.map(() => true));
 
-const sortSize = (data: any[]) => {
+const serializeSize = (data: any[]) => {
   return (
     data
       // eslint-disable-next-line func-names
@@ -74,6 +74,7 @@ const sortSize = (data: any[]) => {
       ?.sort((a: { label: number }, b: { label: number }) => a.label - b.label)
   );
 };
+
 const priceModel = ref<any>('');
 const selectPrice = (values: any) => {
   const newValue: any = [values];
@@ -90,6 +91,7 @@ const selectPrice = (values: any) => {
     id: newValue[0],
   });
 };
+
 const selectedFilter = (
   facet: { label: string },
   option: { id: string; value: string; label: string }
@@ -337,7 +339,7 @@ onMounted(() => {
               class="grid grid-cols-5 gap-2 px-3"
             >
               <li
-                v-for="{ id, value, label } in sortSize(facet.options)"
+                v-for="{ id, value, label } in serializeSize(facet.options)"
                 :key="id"
               >
                 <SfChip

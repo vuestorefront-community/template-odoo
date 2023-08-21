@@ -197,14 +197,10 @@ export const useUiHelpers: any = () => {
 
     router.push({ query: allQuery });
   };
-  const clearAllFilters = () => {
-    router.push({ query: {} });
-  };
   return {
     getGroups,
     getFacetsFromURL,
     changeFilters,
-    clearAllFilters,
     facetsFromUrlToFilter,
   };
 };
