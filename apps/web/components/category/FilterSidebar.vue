@@ -45,11 +45,11 @@ const facets = computed(() => [
     label: 'Price',
     type: 'price',
     options: [
-      { id: 'pr1', label: 'Under $24.99', value: 'under' },
-      { id: 'pr2', label: '$25.00 - $49.99', value: '25-49' },
-      { id: 'pr3', label: '$50.00 - $99.99', value: '50-99' },
-      { id: 'pr4', label: '$100.00 - $199.99', value: '100-199' },
-      { id: 'pr5', label: '$200.00 and above', value: 'above' },
+      { id: 'pr1', label: 'Under $250.00', values: [0, 250] },
+      { id: 'pr2', label: '$250.00 - $500.00', values: [250, 500] },
+      { id: 'pr3', label: '$500.00 - $750.00', values: [500, 750] },
+      { id: 'pr4', label: '$750.00 - $1000.00', values: [750, 1000] },
+      { id: 'pr5', label: '$1000.00- $1500.00', values: [1000, 1500] },
     ],
   },
   ...getGroups(props.attributes),
@@ -74,7 +74,23 @@ const sortSize = (data: any[]) => {
       ?.sort((a: { label: number }, b: { label: number }) => a.label - b.label)
   );
 };
-const priceModel = ref('');
+const price = ref<any>([]);
+const priceModel = ref<any>('');
+const selectPrice = (values: any) => {
+  const newValue = `${values[0]}-${values[1]}`;
+  price.value = values;
+  const selectedValue = selectedFilters.value.find(
+    (item: { filterName: string }) => item?.filterName === 'price'
+  );
+  if (selectedValue) {
+    selectedValue.id = newValue;
+  }
+  selectedFilters.value.push({
+    filterName: 'price',
+    label: 'Price',
+    id: newValue,
+  });
+};
 const selectedFilter = (
   facet: { label: string },
   option: { id: string; value: string; label: string }
@@ -129,7 +145,7 @@ const getSortOptions = (searchData: { input: any }) => ({
   ],
   selected: searchData.input.sort || 'name asc',
 });
-const changeSorting = (sort: string) => {
+const changeSorting = async (sort: string) => {
   router.push({ query: { ...route.query, sort } });
 };
 const sortBy = computed(() =>
@@ -172,7 +188,7 @@ const categories = ref([
 
 onMounted(() => {
   selectedFilters.value = facetsFromUrlToFilter();
-  console.log(selectedFilters.value);
+  console.log(facets.value);
 });
 </script>
 
@@ -289,7 +305,7 @@ onMounted(() => {
             <template v-if="facet.type == 'price'">
               <fieldset id="radio-price">
                 <SfListItem
-                  v-for="{ id, value, label } in facet.options"
+                  v-for="{ id, values, label } in facet.options"
                   :key="id"
                   tag="label"
                   size="sm"
@@ -300,15 +316,16 @@ onMounted(() => {
                       v-model="priceModel"
                       class="flex items-center"
                       name="radio-price"
-                      :value="value"
-                      @click="priceModel = priceModel === value ? '' : value"
+                      :value="values"
+                      @click="priceModel = priceModel === values ? '' : values"
+                      @update:model-value="selectPrice(values)"
                     />
                   </template>
                   <p>
                     <span
                       :class="[
                         'text-sm mr-2',
-                        { 'font-medium': priceModel === value },
+                        { 'font-medium': priceModel === values },
                       ]"
                       >{{ label }}</span
                     >
