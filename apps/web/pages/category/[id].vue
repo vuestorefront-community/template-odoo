@@ -9,7 +9,8 @@ const mediaQueries = {
 };
 const route: any = useRoute();
 const { isOpen, open, close } = useDisclosure();
-const { loading, loadCategoryProducts } = useCategory();
+const { loading, loadCategoryProducts, loadCategory, getCategoryTree } =
+  useCategory();
 const { getRegularPrice, getSpecialPrice } = useProductAttributes();
 const { getFacetsFromURL, getGroups } = useUiHelpers();
 
@@ -17,22 +18,17 @@ const breadcrumbs = [
   { name: 'Home', link: '/' },
   { name: 'Category', link: `Category/${route.params.id}` },
 ];
-const { products: product, attributes: allAttribute } =
-  await loadCategoryProducts(getFacetsFromURL(route.query));
-const products = ref([]);
-const attributes = await getGroups(allAttribute);
 
-watch(
-  () => route.fullPath,
-  async () => {
-    const { products: product } = await loadCategoryProducts(
-      getFacetsFromURL(route.query)
-    );
-    products.value = product;
-  },
-  { deep: true }
+const { products: AllProduct, attributes: attrs } = await loadCategoryProducts(
+  getFacetsFromURL(route.query)
 );
+const { category } = await loadCategory({
+  id: Number(route.params.id),
+});
+const attributes = await getGroups(attrs);
+const categories = await getCategoryTree(category);
 
+const products = ref([]);
 const mountUrlSlugForProductVariant = (product: {
   slug: any;
   variantAttributeValues: any;
@@ -48,16 +44,23 @@ const mountUrlSlugForProductVariant = (product: {
     return joinedSlug.slice(0, -1);
   }
 };
+watch(
+  () => route.fullPath,
+  async () => {
+    const { products: AllProduct } = await loadCategoryProducts(
+      getFacetsFromURL(route.query)
+    );
+    products.value = AllProduct;
+  },
+  { deep: true }
+);
 
 const isTabletScreen = useMediaQuery(mediaQueries.tablet);
 const isWideScreen = useMediaQuery(mediaQueries.desktop);
 const maxVisiblePages = ref(1);
-
 const setMaxVisiblePages = (isWide: boolean) =>
   (maxVisiblePages.value = isWide ? 5 : 1);
-
 watch(isWideScreen, (value) => setMaxVisiblePages(value));
-
 watch(isTabletScreen, (value) => {
   if (value && isOpen.value) {
     close();
@@ -66,7 +69,7 @@ watch(isTabletScreen, (value) => {
 
 onMounted(() => {
   setMaxVisiblePages(isWideScreen.value);
-  products.value = product;
+  products.value = AllProduct;
 });
 </script>
 <template>
@@ -82,10 +85,13 @@ onMounted(() => {
         class="lg:hidden"
       >
         <template #default>
-          <CategoryFilterSidebar :attributes="attributes" />
+          <CategoryFilterSidebar
+            :attributes="attributes"
+            :categories="categories"
+          />
         </template>
       </LazyCategoryMobileSidebar>
-      <div class="lg:ml-10">
+      <div v-if="products.length > 0" class="lg:ml-10">
         <div class="flex justify-between items-center mb-6">
           <span class="font-bold font-headings md:text-lg"> 45 Products </span>
           <SfButton
@@ -100,7 +106,6 @@ onMounted(() => {
           </SfButton>
         </div>
         <section
-          v-if="products"
           class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
         >
           <LazyUiProductCard
@@ -117,12 +122,16 @@ onMounted(() => {
           />
         </section>
         <LazyUiPagination
+          v-if="products.length > 0"
           class="mt-5"
           :current-page="1"
           :total-items="102"
           :page-size="6"
           :max-visible-pages="maxVisiblePages"
         />
+      </div>
+      <div class="min-w-full" v-else>
+        <CategoryEmptyState class="text-center" />
       </div>
     </div>
   </div>

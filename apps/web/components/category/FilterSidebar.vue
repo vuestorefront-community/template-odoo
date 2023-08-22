@@ -1,33 +1,41 @@
 <script lang="ts" setup>
-import { useCategory, useUiHelpers } from '@/composables';
+import { useUiHelpers } from '@/composables';
 import {
   SfAccordionItem,
   SfButton,
   SfChip,
-  SfCounter,
   SfIconArrowBack,
   SfIconChevronLeft,
-  SfIconCheck,
   SfListItem,
   SfRadio,
   SfSelect,
   SfThumbnail,
+  useDisclosure,
 } from '@storefront-ui/vue';
+
+const { close } = useDisclosure();
 
 const props = defineProps({
   attributes: {
     type: Array,
     required: true,
   },
+  categories: {
+    type: Object,
+    required: true,
+  },
 });
 
-const route = useRoute();
-const router = useRouter();
-const { loadCategoryList } = useCategory();
-const { changeFilters, facetsFromUrlToFilter, getGroups } = useUiHelpers();
+const route: any = useRoute();
+const router: any = useRouter();
+const { changeFilters, facetsFromUrlToFilter } = useUiHelpers();
 
-const { categories: categoryTree } = await loadCategoryList({
-  filter: { parent: true },
+const categoryTree = computed(() => props.categories);
+const parent = computed(() => {
+  return {
+    label: props.categories.label.toLowerCase(),
+    slug: props.categories.slug,
+  };
 });
 
 const getSortOptions = (searchData: { input: any }) => ({
@@ -139,55 +147,20 @@ const selectedFilter = (
     });
     return;
   }
-
   selectedFilters.value.splice(alreadySelectedIndex, 1);
 };
 const applyFilters = () => {
   const filters = selectedFilters.value.filter((item: any) => {
     return typeof item === 'object';
   });
-  console.log(filters, 'filters');
-
   changeFilters(filters);
+  close();
 };
 const clearFilters = () => {
   selectedFilters.value = [];
   router.push({ query: {} });
+  close();
 };
-
-const parent = ref({
-  name: 'All Products',
-  href: '/',
-  count: '1429',
-});
-
-const categories = ref([
-  {
-    name: 'New',
-    href: '/',
-    count: '29',
-  },
-  {
-    name: 'Women',
-    href: '/',
-    count: '1921',
-  },
-  {
-    name: 'Men',
-    href: '/',
-    count: '642',
-  },
-  {
-    name: 'Accessories',
-    href: '/',
-    count: '29',
-  },
-  {
-    name: 'Sale',
-    href: '/',
-    count: '29',
-  },
-]);
 
 onMounted(() => {
   selectedFilters.value = facetsFromUrlToFilter();
@@ -208,58 +181,47 @@ onMounted(() => {
         :class="[
           'md:sf-list-item-sm md:py-1.5 sf-list-item',
           {
-            'bg-primary-100 hover:bg-primary-100 active:bg-primary-100 font-medium': false,
+            'bg-primary-100 hover:bg-primary-100 active:bg-primary-100 font-medium': true,
           },
         ]"
         data-testid="category-tree-item"
       >
-        <NuxtLink :to="parent.href">
+        <NuxtLink @click="router.back()">
           <span class="flex gap-2 items-center">
             <span
               class="text-base md:text-sm capitalize flex items-center"
               data-testid="list-item-menu-label"
             >
               <SfIconArrowBack size="sm" class="text-neutral-500 mr-2" />
-              {{ parent.name }}
+              {{ parent.label }}
             </span>
-            <SfCounter v-if="Number(122) > -1" class="md:text-sm font-normal">{{
-              parent.count
-            }}</SfCounter>
           </span>
-          <template #suffix>
-            <SfIconCheck v-if="true" size="sm" class="text-primary-700" />
-          </template>
         </NuxtLink>
       </SfListItem>
     </div>
     <ul class="mt-4 mb-6 md:mt-2" data-testid="categories">
       <SfListItem
-        v-for="({ name, href, count }, index) in categories"
-        :key="name"
+        v-for="({ id, label, slug }, index) in categoryTree.items"
+        :key="label"
         size="lg"
         :class="[
           'md:sf-list-item-sm md:py-1.5 sf-list-item',
           {
             'bg-primary-100 hover:bg-primary-100 active:bg-primary-100 font-medium':
-              index === 0,
+              id === route.query.id,
           },
         ]"
         data-testid="category-tree-item"
       >
-        <NuxtLink :to="href">
+        <NuxtLink :to="slug">
           <span class="flex gap-2 items-center">
             <span
               class="text-base md:text-sm capitalize flex items-center"
               data-testid="list-item-menu-label"
             >
               <slot />
-              {{ name }}
+              {{ label }}
             </span>
-            <SfCounter
-              v-if="Number(count) > -1"
-              class="md:text-sm font-normal"
-              >{{ count }}</SfCounter
-            >
           </span>
         </NuxtLink>
       </SfListItem>
