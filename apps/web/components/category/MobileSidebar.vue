@@ -1,3 +1,15 @@
+<script setup lang="ts">
+import { SfDrawer, SfButton, SfIconClose } from '@storefront-ui/vue';
+
+export type CategorySidebarProps = {
+  isOpen: boolean;
+};
+export type CategorySidebarEmits = (event: 'close') => void;
+
+defineProps<CategorySidebarProps>();
+defineEmits<CategorySidebarEmits>();
+</script>
+
 <template>
   <transition
     enter-active-class="transition duration-500 ease-in-out"
@@ -35,15 +47,3 @@
     </SfDrawer>
   </transition>
 </template>
-
-<script setup lang="ts">
-import { SfDrawer, SfButton, SfIconClose } from '@storefront-ui/vue';
-
-export type CategorySidebarProps = {
-  isOpen: boolean;
-};
-export type CategorySidebarEmits = (event: 'close') => void;
-
-defineProps<CategorySidebarProps>();
-defineEmits<CategorySidebarEmits>();
-</script>

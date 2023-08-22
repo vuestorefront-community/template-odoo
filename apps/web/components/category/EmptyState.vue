@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import { SfButton } from '@storefront-ui/vue';
+
+const NuxtLink = resolveComponent('NuxtLink');
+const route = useRoute();
+</script>
 <template>
   <section
     data-testid="category-empty-state"
@@ -6,19 +12,13 @@
     <NuxtImg
       src="/images/something-went-wrong.svg"
       :alt="$t('emptyStateAltText')"
-      width="192"
-      height="192"
+      width="300"
+      height="300"
     />
     <p class="mt-8 font-medium">{{ $t('emptyStateText') }}</p>
     <p class="mt-4">{{ $t('emptyStateText2') }}</p>
-    <SfButton :tag="NuxtLink" to="/" variant="secondary" class="mt-4">
+    <SfButton :tag="NuxtLink" :to="route.path" variant="secondary" class="mt-4">
       {{ $t('allProductsLinkText') }}
     </SfButton>
   </section>
 </template>
-
-<script setup lang="ts">
-import { SfButton } from '@storefront-ui/vue';
-
-const NuxtLink = resolveComponent('NuxtLink');
-</script>

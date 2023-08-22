@@ -61,10 +61,50 @@ export const useCategory: any = () => {
     }
   };
 
+  const buildTree = (categories: any) => {
+    if (!categories) {
+      return [];
+    }
+    return categories.map(
+      (category: { name: string; slug: string; childs: any; id: string }) => ({
+        label: category.name,
+        slug: category.slug,
+        items: buildTree(category.childs),
+        isCurrent: false,
+        id: category.id,
+      })
+    );
+  };
+
+  const getCategoryTree = (searchData: { data: { category: any } }) => {
+    if (!searchData) {
+      return { items: [], label: '', isCurrent: false };
+    }
+
+    const category: any = searchData;
+    let parentCategory = category;
+
+    if (!category?.childs && category?.parent) {
+      parentCategory = category?.parent?.parent;
+    }
+
+    if (category) {
+      return {
+        label: category.name,
+        slug: category.slug,
+        items: buildTree(category.childs),
+        isCurrent: false,
+        id: category.id,
+      };
+    }
+    return {};
+  };
+
   return {
     loading,
     loadCategoryProducts,
     loadCategoryList,
     loadCategory,
+    getCategoryTree,
   };
 };
