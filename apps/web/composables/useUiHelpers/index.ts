@@ -1,4 +1,4 @@
-import { facetsMen, facetsWomen } from './facts';
+import { facetsMen, facetsWomen } from './facets';
 
 export const useUiHelpers: any = () => {
   const route: any = useRoute();
