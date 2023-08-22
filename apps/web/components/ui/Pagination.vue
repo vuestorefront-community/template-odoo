@@ -164,7 +164,6 @@ import {
   SfIconChevronRight,
   usePagination,
 } from '@storefront-ui/vue';
-import { useMediaQuery } from '@vueuse/core';
 
 const props = defineProps({
   currentPage: Number,
@@ -177,7 +176,7 @@ const {
   pageSize,
   totalItems,
   maxVisiblePages: maxVisiblePagesProperty,
-} = toRefs(props);
+}: any = toRefs(props);
 
 const pagination = computed(() =>
   reactive(

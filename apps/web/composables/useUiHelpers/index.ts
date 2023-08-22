@@ -74,7 +74,7 @@ export const useUiHelpers: any = () => {
     return option;
   };
 
-  const getFacetsFromURL = (QueryFromUrl: any): any => {
+  const getFacetsFromURL = (QueryFromUrl: any) => {
     const filters: string[] = [];
     const query = QueryFromUrl;
     if (query) {
