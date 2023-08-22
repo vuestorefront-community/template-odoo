@@ -1,9 +1,10 @@
-import { facetsMen, facetsWomen } from './facets';
-
 export const useUiHelpers: any = () => {
   const route: any = useRoute();
   const router = useRouter();
   const { query, path } = route;
+  const productAttributes = reactive<any>({
+    attributes: [],
+  });
 
   const queryParamsNotFilters = ['page', 'sort', 'itemsPerPage'];
   const localePrefixes = ['/en', '/de', '/ru'];
@@ -16,7 +17,7 @@ export const useUiHelpers: any = () => {
     return path;
   };
 
-  const getGroups = (searchData: any) => {
+  const getGroups = async (searchData: any) => {
     if (!searchData) return [];
 
     const data: any = [];
@@ -51,20 +52,18 @@ export const useUiHelpers: any = () => {
           htmlColor: item.htmlColor,
         });
     });
+    productAttributes.attributes = data;
     return data;
   };
 
   const getAttributeValues = (filterKey: string, value: string) => {
     let attribute: any = {};
-    if (route.path === '/category/14') {
-      attribute = facetsMen.find((item: { label: string }) => {
+
+    attribute = productAttributes.attributes?.find(
+      (item: { label: string }) => {
         return item.label === filterKey;
-      });
-    } else {
-      attribute = facetsWomen.find((item: { label: string }) => {
-        return item.label === filterKey;
-      });
-    }
+      }
+    );
 
     let option = {};
     if (attribute) {
