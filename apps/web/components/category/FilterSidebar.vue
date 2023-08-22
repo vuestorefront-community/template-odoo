@@ -70,7 +70,7 @@ const isFilterSelected = (option: any) => {
 const isItemActive = (selectedValue: string) => {
   return selectedFilters.value?.includes(selectedValue);
 };
-const facets = computed(() => [
+const facets: any = computed(() => [
   {
     id: null,
     label: 'Price',
@@ -83,7 +83,7 @@ const facets = computed(() => [
       { id: 'pr5', label: '$1000.00- $1500.00', values: '1000-1500' },
     ],
   },
-  ...getGroups(props.attributes),
+  ...props.attributes,
 ]);
 const opened = ref<boolean[]>(facets.value.map(() => true));
 
@@ -109,18 +109,18 @@ const serializeSize = (data: any[]) => {
 const priceModel = ref<any>('');
 const selectPrice = (values: any) => {
   const newValue: any = [values];
-  const selectedValue = selectedFilters.value.find(
+  const getIndex = selectedFilters.value.findIndex(
     (item: { filterName: string }) => item?.filterName === 'price'
   );
-  if (selectedValue) {
-    newValue.push[selectedValue.id];
+  if (getIndex > -1) {
+    selectedFilters.value[getIndex].id = newValue[0];
+  } else {
+    selectedFilters.value.push({
+      filterName: 'price',
+      label: 'Price',
+      id: newValue[0],
+    });
   }
-
-  selectedFilters.value.push({
-    filterName: 'price',
-    label: 'Price',
-    id: newValue[0],
-  });
 };
 
 const selectedFilter = (
@@ -146,6 +146,8 @@ const applyFilters = () => {
   const filters = selectedFilters.value.filter((item: any) => {
     return typeof item === 'object';
   });
+  console.log(filters, 'filters');
+
   changeFilters(filters);
 };
 const clearFilters = () => {
@@ -400,10 +402,12 @@ onMounted(() => {
                   />
                   <span
                     class="inline-flex items-center justify-center p-1 transition duration-300 rounded-full cursor-pointer ring-1 ring-neutral-200 ring-inset outline-offset-2 outline-secondary-600 peer-checked:ring-2 peer-checked:ring-primary-700 peer-hover:bg-primary-100 peer-[&:not(:checked):hover]:ring-primary-200 peer-active:bg-primary-200 peer-active:ring-primary-300 peer-disabled:cursor-not-allowed peer-disabled:bg-disabled-100 peer-disabled:opacity-50 peer-disabled:ring-1 peer-disabled:ring-disabled-200 peer-disabled:hover:ring-disabled-200 peer-checked:hover:ring-primary-700 peer-checked:active:ring-primary-700 peer-focus-visible:outline"
-                    ><SfThumbnail
+                  >
+                    <SfThumbnail
                       size="sm"
                       :style="{ backgroundColor: htmlColor }"
-                  /></span>
+                    />
+                  </span>
                 </template>
                 <p>
                   <span class="mr-2 typography-text-sm">{{ label }}</span>

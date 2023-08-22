@@ -11,25 +11,24 @@ const route: any = useRoute();
 const { isOpen, open, close } = useDisclosure();
 const { loading, loadCategoryProducts } = useCategory();
 const { getRegularPrice, getSpecialPrice } = useProductAttributes();
-const { getFacetsFromURL } = useUiHelpers();
+const { getFacetsFromURL, getGroups } = useUiHelpers();
 
 const breadcrumbs = [
   { name: 'Home', link: '/' },
   { name: 'Category', link: `Category/${route.params.id}` },
 ];
-const { products: product, attributes: attribute } = await loadCategoryProducts(
-  getFacetsFromURL(route.query)
-);
+const { products: product, attributes: allAttribute } =
+  await loadCategoryProducts(getFacetsFromURL(route.query));
 const products = ref([]);
-const attributes = ref([]);
+const attributes = await getGroups(allAttribute);
 
 watch(
   () => route.fullPath,
   async () => {
-    const { products: product, attributes: attribute } =
-      await loadCategoryProducts(getFacetsFromURL(route.query));
+    const { products: product } = await loadCategoryProducts(
+      getFacetsFromURL(route.query)
+    );
     products.value = product;
-    attributes.value = attribute;
   },
   { deep: true }
 );
@@ -68,7 +67,6 @@ watch(isTabletScreen, (value) => {
 onMounted(() => {
   setMaxVisiblePages(isWideScreen.value);
   products.value = product;
-  attributes.value = attribute;
 });
 </script>
 <template>
@@ -84,7 +82,7 @@ onMounted(() => {
         class="lg:hidden"
       >
         <template #default>
-          <CategoryFilterSidebar :attributes="attribute" />
+          <CategoryFilterSidebar :attributes="attributes" />
         </template>
       </LazyCategoryMobileSidebar>
       <div class="lg:ml-10">
