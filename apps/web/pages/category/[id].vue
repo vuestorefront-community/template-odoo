@@ -19,9 +19,11 @@ const breadcrumbs = [
   { name: 'Category', link: `Category/${route.params.id}` },
 ];
 
-const { products: AllProduct, attributes: attrs } = await loadCategoryProducts(
-  getFacetsFromURL(route.query)
-);
+const {
+  products: AllProduct,
+  attributes: attrs,
+  totalProducts,
+} = await loadCategoryProducts(getFacetsFromURL(route.query));
 const { category } = await loadCategory({
   id: Number(route.params.id),
 });
@@ -67,6 +69,19 @@ watch(isTabletScreen, (value) => {
   }
 });
 
+const getPagination = (totalProducts: any) => {
+  const itemsPerPage = totalProducts.input?.pageSize || 12;
+
+  return {
+    currentPage: 1,
+    totalPages: Math.ceil(totalProducts / itemsPerPage) || 1,
+    totalItems: totalProducts,
+    itemsPerPage,
+    pageOptions: [5, 12, 15, 20],
+  };
+};
+const pagination = computed(() => getPagination(totalProducts));
+
 onMounted(() => {
   setMaxVisiblePages(isWideScreen.value);
   products.value = AllProduct;
@@ -93,7 +108,9 @@ onMounted(() => {
       </LazyCategoryMobileSidebar>
       <div v-if="products.length > 0" class="lg:ml-10">
         <div class="flex justify-between items-center mb-6">
-          <span class="font-bold font-headings md:text-lg"> 45 Products </span>
+          <span class="font-bold font-headings md:text-lg"
+            >{{ products.length }} Products
+          </span>
           <SfButton
             @click="open"
             variant="tertiary"
@@ -122,11 +139,11 @@ onMounted(() => {
           />
         </section>
         <LazyUiPagination
-          v-if="products.length > 0"
+          v-if="pagination.totalPages > 1"
           class="mt-5"
-          :current-page="1"
-          :total-items="102"
-          :page-size="6"
+          :current-page="pagination.currentPage"
+          :total-items="pagination.totalItems"
+          :page-size="pagination.totalPages"
           :max-visible-pages="maxVisiblePages"
         />
       </div>
