@@ -12,9 +12,9 @@ import {
   SfThumbnail,
   useDisclosure,
 } from '@storefront-ui/vue';
+import { ProductFilterType } from '~/types/product';
 
 const { close } = useDisclosure();
-
 const props = defineProps({
   attributes: {
     type: Array,
@@ -25,11 +25,9 @@ const props = defineProps({
     required: true,
   },
 });
-
 const route: any = useRoute();
 const router: any = useRouter();
 const { changeFilters, facetsFromUrlToFilter } = useUiHelpers();
-
 const categoryTree = computed(() => props.categories);
 const parent = computed(() => {
   return {
@@ -37,7 +35,6 @@ const parent = computed(() => {
     slug: props.categories.slug,
   };
 });
-
 const getSortOptions = (searchData: { input: any }) => ({
   options: [
     {
@@ -68,12 +65,11 @@ const changeSorting = async (sort: string) => {
 const sortBy = computed(() =>
   getSortOptions({ input: { sort: route.query?.sort } })
 );
-
 const selectedFilters = ref<any>([]);
 const isFilterSelected = (option: any) => {
-  return selectedFilters.value.some(
-    (filter: { id: any }) => String(filter.id) === String(option.value)
-  );
+  return selectedFilters.value.some((filter: { id: any }) => {
+    return String(filter.id) === String(option.label);
+  });
 };
 const isItemActive = (selectedValue: string) => {
   return selectedFilters.value?.includes(selectedValue);
@@ -94,7 +90,6 @@ const facets: any = computed(() => [
   ...props.attributes,
 ]);
 const opened = ref<boolean[]>(facets.value.map(() => true));
-
 const serializeSize = (data: any[]) => {
   return (
     data
@@ -113,7 +108,6 @@ const serializeSize = (data: any[]) => {
       ?.sort((a: { label: number }, b: { label: number }) => a.label - b.label)
   );
 };
-
 const priceModel = ref<any>('');
 const selectPrice = (values: any) => {
   const newValue: any = [values];
@@ -130,7 +124,6 @@ const selectPrice = (values: any) => {
     });
   }
 };
-
 const selectedFilter = (
   facet: { label: string },
   option: { id: string; value: string; label: string }
@@ -138,7 +131,6 @@ const selectedFilter = (
   const alreadySelectedIndex = selectedFilters.value.findIndex(
     (filter: { id: string }) => String(filter.id) === String(option.value)
   );
-
   if (alreadySelectedIndex === -1) {
     selectedFilters.value.push({
       filterName: facet.label,
@@ -161,12 +153,16 @@ const clearFilters = () => {
   router.push({ query: {} });
   close();
 };
-
 onMounted(() => {
   selectedFilters.value = facetsFromUrlToFilter();
+  const priceFilter = selectedFilters.value?.find((item: ProductFilterType) => {
+    return item.filterName === 'price';
+  });
+  if (priceFilter) {
+    priceModel.value = priceFilter.id;
+  }
 });
 </script>
-
 <template>
   <aside class="w-full md:max-w-[376px]">
     <div
@@ -241,6 +237,7 @@ onMounted(() => {
         <option
           v-for="{ id, value, attrName } in sortBy.options"
           :key="id"
+          :selected="sortBy.selected === value"
           :value="value"
         >
           {{ attrName }}
@@ -308,11 +305,14 @@ onMounted(() => {
                 <SfChip
                   class="w-full"
                   size="sm"
-                  :input-props="{ value }"
-                  :model-value="isFilterSelected({ id, value, label })"
-                  @update:model-value="
-                    selectedFilter(facet, { id, value, label })
-                  "
+                  v-model="selectedFilters"
+                  :input-props="{
+                    value: {
+                      filterName: facet.label,
+                      label,
+                      id: value,
+                    },
+                  }"
                 >
                   {{ label }}
                 </SfChip>
@@ -326,11 +326,14 @@ onMounted(() => {
                 <SfChip
                   class="w-full"
                   size="sm"
-                  :input-props="{ value }"
-                  :model-value="isFilterSelected({ id, value, label })"
-                  @update:model-value="
-                    selectedFilter(facet, { id, value, label })
-                  "
+                  v-model="selectedFilters"
+                  :input-props="{
+                    value: {
+                      filterName: facet.label,
+                      label,
+                      id: value,
+                    },
+                  }"
                 >
                   {{ label }}
                 </SfChip>
@@ -345,9 +348,7 @@ onMounted(() => {
                 :class="[
                   'px-4 bg-transparent hover:bg-transparent',
                   {
-                    'font-medium':
-                      isItemActive(value) ||
-                      isFilterSelected({ id, value, label }),
+                    'font-medium': isItemActive(value),
                   },
                 ]"
                 :selected="isItemActive(value)"

@@ -31,6 +31,8 @@ const attributes = await getGroups(attrs);
 const categories = await getCategoryTree(category);
 
 const products = ref([]);
+const productLoading = ref(true);
+const productsForPagination = ref([]);
 const mountUrlSlugForProductVariant = (product: {
   slug: any;
   variantAttributeValues: any;
@@ -49,10 +51,13 @@ const mountUrlSlugForProductVariant = (product: {
 watch(
   () => route.fullPath,
   async () => {
-    const { products: AllProduct } = await loadCategoryProducts(
+    productLoading.value = true;
+    const { products: AllProduct, totalProducts } = await loadCategoryProducts(
       getFacetsFromURL(route.query)
     );
     products.value = AllProduct;
+    productLoading.value = false;
+    productsForPagination.value = totalProducts;
   },
   { deep: true }
 );
@@ -70,22 +75,30 @@ watch(isTabletScreen, (value) => {
 });
 
 const getPagination = (totalProducts: any) => {
-  const itemsPerPage = totalProducts.input?.pageSize || 12;
+  const itemsPerPage = totalProducts.value.input?.pageSize || 12;
 
   return {
     currentPage: 1,
-    totalPages: Math.ceil(totalProducts / itemsPerPage) || 1,
-    totalItems: totalProducts,
+    totalPages: Math.ceil(totalProducts.value / itemsPerPage) || 1,
+    totalItems: totalProducts.value,
     itemsPerPage,
     pageOptions: [5, 12, 15, 20],
   };
 };
-const pagination = computed(() => getPagination(totalProducts));
+const pagination = computed(() => getPagination(productsForPagination));
+watch(
+  () => route.fullPath,
+  () => {
+    getPagination(productsForPagination);
+  },
+  { deep: true }
+);
 
 onMounted(() => {
   setMaxVisiblePages(isWideScreen.value);
   products.value = AllProduct;
-  console.log(pagination.value);
+  productsForPagination.value = totalProducts;
+  productLoading.value = false;
 });
 </script>
 <template>
@@ -107,50 +120,55 @@ onMounted(() => {
           />
         </template>
       </LazyCategoryMobileSidebar>
-      <div v-if="products.length > 0" class="lg:ml-10">
-        <div class="flex justify-between items-center mb-6">
-          <span class="font-bold font-headings md:text-lg"
-            >{{ products.length }} Products
-          </span>
-          <SfButton
-            @click="open"
-            variant="tertiary"
-            class="lg:hidden whitespace-nowrap"
+      <template v-if="!productLoading">
+        <div v-if="products.length > 0" class="lg:ml-10">
+          <div class="flex justify-between items-center mb-6">
+            <span class="font-bold font-headings md:text-lg"
+              >{{ products.length }} Products
+            </span>
+            <SfButton
+              @click="open"
+              variant="tertiary"
+              class="lg:hidden whitespace-nowrap"
+            >
+              <template #prefix>
+                <SfIconTune />
+              </template>
+              {{ $t('listSettings') }}
+            </SfButton>
+          </div>
+          <section
+            class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
           >
-            <template #prefix>
-              <SfIconTune />
-            </template>
-            {{ $t('listSettings') }}
-          </SfButton>
-        </div>
-        <section
-          class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
-        >
-          <LazyUiProductCard
-            v-for="{ id, name, firstVariant, image } in products"
-            :key="id"
-            :name="name"
-            :slug="mountUrlSlugForProductVariant(firstVariant) || ''"
-            :image-url="`https://vsfdemo15.labs.odoogap.com${image}`"
-            :image-alt="name"
-            :regular-price="getRegularPrice(firstVariant)"
-            :special-price="getSpecialPrice(firstVariant)"
-            :rating-count="123"
-            :rating="Number(4)"
+            <LazyUiProductCard
+              v-for="{ id, name, firstVariant, image } in products"
+              :key="id"
+              :name="name"
+              :slug="mountUrlSlugForProductVariant(firstVariant) || ''"
+              :image-url="`https://vsfdemo15.labs.odoogap.com${image}`"
+              :image-alt="name"
+              :regular-price="getRegularPrice(firstVariant) || 250"
+              :special-price="getSpecialPrice(firstVariant)"
+              :rating-count="123"
+              :rating="Number(4)"
+            />
+          </section>
+          <LazyUiPagination
+            v-if="pagination.totalPages > 1"
+            class="mt-5"
+            :current-page="pagination.currentPage"
+            :total-items="pagination.totalItems"
+            :page-size="pagination.itemsPerPage"
+            :max-visible-pages="maxVisiblePages"
           />
-        </section>
-        <LazyUiPagination
-          v-if="pagination.totalItems > 12"
-          class="mt-5"
-          :current-page="pagination.currentPage"
-          :total-items="pagination.totalItems"
-          :page-size="pagination.itemsPerPage"
-          :max-visible-pages="maxVisiblePages"
-        />
-      </div>
-      <div class="min-w-full" v-else>
-        <CategoryEmptyState class="text-center" />
-      </div>
+        </div>
+        <div class="min-w-full" v-else>
+          <CategoryEmptyState class="text-center" />
+        </div>
+      </template>
+      <template v-else>
+        <div class="w-full text-center">Loading Products...</div>
+      </template>
     </div>
   </div>
 </template>

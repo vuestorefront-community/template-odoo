@@ -12,7 +12,7 @@
       :disabled="pagination.selectedPage <= 1"
       variant="tertiary"
       class="gap-3"
-      @click="pagination.prev"
+      @click="pagination.prev, setParams({ ['page']: pagination.selectedPage })"
     >
       <template #prefix>
         <SfIconChevronLeft />
@@ -164,6 +164,7 @@ import {
   SfIconChevronRight,
   usePagination,
 } from '@storefront-ui/vue';
+import { LocationQueryRaw } from 'vue-router';
 
 const props = defineProps({
   currentPage: Number,
@@ -171,13 +172,13 @@ const props = defineProps({
   totalItems: Number,
   maxVisiblePages: Number,
 });
+
 const {
   currentPage,
   pageSize,
   totalItems,
   maxVisiblePages: maxVisiblePagesProperty,
 }: any = toRefs(props);
-
 const pagination = computed(() =>
   reactive(
     usePagination({
@@ -188,4 +189,22 @@ const pagination = computed(() =>
     })
   )
 );
+
+const route = useRoute();
+const router = useRouter();
+
+const setParams = (filter: LocationQueryRaw | undefined) => {
+  router.push({ query: { ...route.query, ...filter } });
+};
+
+watch(
+  () => route.fullPath,
+  () => {},
+  { deep: true }
+);
+
+onMounted(() => {
+  console.log(pagination.value);
+  // console.log(route);
+});
 </script>

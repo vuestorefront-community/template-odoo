@@ -7,7 +7,11 @@ import {
 
 export const useCategory: any = () => {
   const loading = ref(false);
-
+  const error = reactive<any>({
+    loadCategoryProducts: null,
+    loadCategory: null,
+    loadCategoryList: null,
+  });
   const loadCategoryProducts = async (
     params: QueryProductsArgs | undefined
   ) => {
@@ -27,7 +31,7 @@ export const useCategory: any = () => {
         totalProducts: productData.products.totalCount,
       };
     } catch (err) {
-      console.log(err);
+      error.loadCategoryProducts = err;
     } finally {
       loading.value = false;
     }
@@ -35,29 +39,23 @@ export const useCategory: any = () => {
 
   const loadCategory = async (params: QueryCategoryArgs) => {
     try {
-      loading.value = true;
       const categoryResponse: any = await sdk.odoo.getCategory(params);
       return {
         category: categoryResponse?.data?.category || {},
       };
     } catch (err) {
-      console.log(err);
-    } finally {
-      loading.value = false;
+      error.loadCategory = err;
     }
   };
 
   const loadCategoryList = async (params: QueryCategoriesArgs | undefined) => {
     try {
-      loading.value = true;
       const categoryListResponse: any = await sdk.odoo.getCategoryList(params);
       return {
         categories: categoryListResponse?.data?.categories?.categories || [],
       };
     } catch (err) {
-      console.log(err);
-    } finally {
-      loading.value = false;
+      error.loadCategoryList = err;
     }
   };
 
@@ -101,10 +99,11 @@ export const useCategory: any = () => {
   };
 
   return {
-    loading,
+    loading: computed(() => loading.value),
     loadCategoryProducts,
     loadCategoryList,
     loadCategory,
     getCategoryTree,
+    error: computed(() => error),
   };
 };
