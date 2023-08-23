@@ -200,8 +200,5 @@ const setParams = (filter: any) => {
   router.push({ query: { ...route.query, ...filter } });
 };
 
-onMounted(() => {
-  console.log(pagination.value);
-  // console.log(route);
-});
+onMounted(() => {});
 </script>
