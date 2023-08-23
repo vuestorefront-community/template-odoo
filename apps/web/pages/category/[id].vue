@@ -85,6 +85,7 @@ const pagination = computed(() => getPagination(totalProducts));
 onMounted(() => {
   setMaxVisiblePages(isWideScreen.value);
   products.value = AllProduct;
+  console.log(pagination.value);
 });
 </script>
 <template>
@@ -129,7 +130,7 @@ onMounted(() => {
             v-for="{ id, name, firstVariant, image } in products"
             :key="id"
             :name="name"
-            :slug="mountUrlSlugForProductVariant(firstVariant)"
+            :slug="mountUrlSlugForProductVariant(firstVariant) || ''"
             :image-url="`https://vsfdemo15.labs.odoogap.com${image}`"
             :image-alt="name"
             :regular-price="getRegularPrice(firstVariant)"
@@ -139,11 +140,11 @@ onMounted(() => {
           />
         </section>
         <LazyUiPagination
-          v-if="pagination.totalPages > 1"
+          v-if="pagination.totalItems > 12"
           class="mt-5"
           :current-page="pagination.currentPage"
           :total-items="pagination.totalItems"
-          :page-size="pagination.totalPages"
+          :page-size="pagination.itemsPerPage"
           :max-visible-pages="maxVisiblePages"
         />
       </div>
