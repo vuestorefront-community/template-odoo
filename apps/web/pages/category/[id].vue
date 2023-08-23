@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useCategory, useProductAttributes, useUiHelpers } from '@/composables';
+import { ProductList, Attribute } from '@erpgap/odoo-sdk-api-client';
 import { SfButton, SfIconTune, useDisclosure } from '@storefront-ui/vue';
 import { useMediaQuery } from '@vueuse/core';
 
@@ -29,7 +30,7 @@ const { category } = await loadCategory({
 const attributes = await getGroups(attrs);
 const categories = await getCategoryTree(category);
 
-const products = useState<any[]>('product', () => []);
+const products = useState<any>('products');
 const productLoading = ref(true);
 const productsForPagination = ref([]);
 const mountUrlSlugForProductVariant = (product: {

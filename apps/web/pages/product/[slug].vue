@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useProduct, useProductAttributes } from '@/composables';
+import { ProductImage } from '@erpgap/odoo-sdk-api-client';
 import {
   SfButton,
   SfCounter,
