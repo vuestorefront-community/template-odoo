@@ -6,4 +6,8 @@ export interface Discount {
 export interface VariantPrice {
   combinationInfoVariant: Discount;
 }
-
+export interface ProductFilterType {
+  filterName: string;
+  id: string;
+  label: string;
+}
