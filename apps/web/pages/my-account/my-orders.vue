@@ -96,6 +96,7 @@
               :tag="NuxtLink"
               size="sm"
               variant="tertiary"
+              :to="`'/my-account/my-orders/'${id}`"
             >
               {{ $t('account.ordersAndReturns.details') }}</SfButton
             >
