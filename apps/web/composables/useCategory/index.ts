@@ -8,13 +8,11 @@ import {
 export const useCategory: any = () => {
   const loading = ref(false);
   const error = reactive<any>({
-    loadCategoryProducts: null,
+    loadProducts: null,
     loadCategory: null,
     loadCategoryList: null,
   });
-  const loadCategoryProducts = async (
-    params: QueryProductsArgs | undefined
-  ) => {
+  const loadProducts = async (params: QueryProductsArgs | undefined) => {
     try {
       loading.value = true;
       const { data: productData }: any = await sdk.odoo.getProductTemplateList(
@@ -31,7 +29,7 @@ export const useCategory: any = () => {
         totalProducts: productData.products.totalCount,
       };
     } catch (err) {
-      error.loadCategoryProducts = err;
+      error.loadProducts = err;
     } finally {
       loading.value = false;
     }
@@ -100,7 +98,7 @@ export const useCategory: any = () => {
 
   return {
     loading: computed(() => loading.value),
-    loadCategoryProducts,
+    loadProducts,
     loadCategoryList,
     loadCategory,
     getCategoryTree,

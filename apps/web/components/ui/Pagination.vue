@@ -12,7 +12,7 @@
       :disabled="pagination.selectedPage <= 1"
       variant="tertiary"
       class="gap-3"
-      @click="pagination.prev, setParams({ ['page']: pagination.selectedPage })"
+      @click="pagination.prev"
     >
       <template #prefix>
         <SfIconChevronLeft />
@@ -89,7 +89,10 @@
               },
             ]"
             :aria-current="pagination.selectedPage === page"
-            @click="pagination.setPage(page)"
+            @click="
+              pagination.setPage(page);
+              setParams({ ['page']: pagination.selectedPage });
+            "
           >
             {{ page }}
           </button>
@@ -193,15 +196,9 @@ const pagination = computed(() =>
 const route = useRoute();
 const router = useRouter();
 
-const setParams = (filter: LocationQueryRaw | undefined) => {
+const setParams = (filter: any) => {
   router.push({ query: { ...route.query, ...filter } });
 };
-
-watch(
-  () => route.fullPath,
-  () => {},
-  { deep: true }
-);
 
 onMounted(() => {
   console.log(pagination.value);
