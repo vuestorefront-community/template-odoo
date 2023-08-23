@@ -9,8 +9,7 @@ const mediaQueries = {
 };
 const route: any = useRoute();
 const { isOpen, open, close } = useDisclosure();
-const { loading, loadCategoryProducts, loadCategory, getCategoryTree } =
-  useCategory();
+const { loading, loadProducts, loadCategory, getCategoryTree } = useCategory();
 const { getRegularPrice, getSpecialPrice } = useProductAttributes();
 const { getFacetsFromURL, getGroups } = useUiHelpers();
 
@@ -23,14 +22,14 @@ const {
   products: AllProduct,
   attributes: attrs,
   totalProducts,
-} = await loadCategoryProducts(getFacetsFromURL(route.query));
+} = await loadProducts(getFacetsFromURL(route.query));
 const { category } = await loadCategory({
   id: Number(route.params.id),
 });
 const attributes = await getGroups(attrs);
 const categories = await getCategoryTree(category);
 
-const products = ref([]);
+const products = useState<any[]>('product', () => []);
 const productLoading = ref(true);
 const productsForPagination = ref([]);
 const mountUrlSlugForProductVariant = (product: {
@@ -52,7 +51,7 @@ watch(
   () => route.fullPath,
   async () => {
     productLoading.value = true;
-    const { products: AllProduct, totalProducts } = await loadCategoryProducts(
+    const { products: AllProduct, totalProducts } = await loadProducts(
       getFacetsFromURL(route.query)
     );
     products.value = AllProduct;
@@ -124,7 +123,7 @@ onMounted(() => {
         <div v-if="products.length > 0" class="lg:ml-10">
           <div class="flex justify-between items-center mb-6">
             <span class="font-bold font-headings md:text-lg"
-              >{{ products.length }} Products
+              >{{ pagination.totalItems }} Products
             </span>
             <SfButton
               @click="open"
