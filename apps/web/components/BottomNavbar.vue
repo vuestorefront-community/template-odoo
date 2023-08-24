@@ -51,11 +51,6 @@ const items = [
     link: '/',
   },
   {
-    label: t('products'),
-    icon: SfIconMenu,
-    link: '/category/1',
-  },
-  {
     label: t('cart'),
     icon: SfIconShoppingCart,
     link: '/cart',
@@ -63,7 +58,7 @@ const items = [
   {
     label: 'wishlist',
     icon: SfIconFavorite,
-    link: '/',
+    link: '#',
   },
   {
     label: t('account.navBarBottomHeading'),

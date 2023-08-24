@@ -35,4 +35,7 @@
   .grid-in-left-bottom {
     grid-area: left-bottom;
   }
+  .top-index {
+    z-index: 10 !important;
+  }
 }

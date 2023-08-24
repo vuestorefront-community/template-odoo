@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+defineProps<{
+  filled?: boolean;
+}>();
+</script>
+
 <template>
   <svg
     xmlns="http://www.w3.org/2000/svg"
