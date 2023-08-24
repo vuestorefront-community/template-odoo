@@ -91,7 +91,7 @@ export const useCategory: any = () => {
   };
 
   return {
-    loading: computed(() => loading.value),
+    loading,
     loadProducts,
     loadCategoryList,
     loadCategory,
