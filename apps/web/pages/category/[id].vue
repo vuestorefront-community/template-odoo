@@ -143,7 +143,6 @@ onMounted(() => {
             <LazyUiProductCard
               v-for="{ id, name, firstVariant, image } in products"
               :key="id"
-              :name="name"
               :slug="mountUrlSlugForProductVariant(firstVariant) || ''"
               :image-url="`https://vsfdemo15.labs.odoogap.com${image}`"
               :image-alt="name"
@@ -151,6 +150,7 @@ onMounted(() => {
               :special-price="getSpecialPrice(firstVariant)"
               :rating-count="123"
               :rating="Number(4)"
+              :first-variant="firstVariant"
             />
           </section>
           <LazyUiPagination
