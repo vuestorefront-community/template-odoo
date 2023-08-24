@@ -137,13 +137,13 @@ const bannerDetails = {
                   v-model="isOpen"
                   disable-click-away
                   placement="top"
-                  class="bg-white p-0 max-h-screen overflow-y-auto md:!absolute md:!top-[5rem] max-w-[376px] md:max-w-full md:p-6 mr-[50px] md:mr-0 top-index"
+                  class="bg-white p-0 max-h-screen overflow-y-auto md:!absolute md:!top-[5rem] max-w-full md:p-6 top-index"
                 >
                   <div
                     class="grid grid-cols-1 md:gap-x-6 md:grid-cols-3 md:narrow-container md:relative"
                   >
                     <div
-                      class="sticky top-0 flex items-center justify-between py-2 px-4 bg-primary-700 md:hidden w-full max-w-[376px]"
+                      class="sticky top-0 flex items-center justify-between py-2 px-4 bg-primary-700 md:hidden w-full"
                     >
                       <div
                         class="flex items-center typography-text-lg font-medium text-white"
