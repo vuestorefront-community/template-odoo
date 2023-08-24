@@ -28,7 +28,6 @@ const props = defineProps({
 const route: any = useRoute();
 const router: any = useRouter();
 const { changeFilters, facetsFromUrlToFilter } = useUiHelpers();
-
 const categoryTree = computed(() => props.categories);
 const parent = computed(() => {
   return {
@@ -36,7 +35,6 @@ const parent = computed(() => {
     slug: props.categories.slug,
   };
 });
-
 const getSortOptions = (searchData: { input: any }) => ({
   options: [
     {
@@ -144,6 +142,13 @@ const selectedFilter = (
   selectedFilters.value.splice(alreadySelectedIndex, 1);
 };
 const applyFilters = () => {
+  if (!priceModel.value) {
+    selectedFilters.value = selectedFilters.value?.filter(
+      (item: ProductFilterType) => {
+        return item.filterName !== 'price';
+      }
+    );
+  }
   const filters = selectedFilters.value.filter((item: any) => {
     return typeof item === 'object';
   });
@@ -297,7 +302,31 @@ onMounted(() => {
               </fieldset>
             </template>
             <ul
-              v-if="facet.type === 'select'"
+              v-if="facet.type === 'select' && facet.label === 'Duration'"
+              class="grid grid-cols-5 gap-2 px-3"
+            >
+              <li
+                v-for="{ id, value, label } in serializeSize(facet.options)"
+                :key="id"
+              >
+                <SfChip
+                  class="w-full"
+                  size="sm"
+                  v-model="selectedFilters"
+                  :input-props="{
+                    value: {
+                      filterName: facet.label,
+                      label: value,
+                      id: value,
+                    },
+                  }"
+                >
+                  {{ label }}
+                </SfChip>
+              </li>
+            </ul>
+            <ul
+              v-if="facet.type === 'select' && facet.label !== 'Duration'"
               class="grid grid-cols-5 gap-2 px-3"
             >
               <li
@@ -332,7 +361,7 @@ onMounted(() => {
                   :input-props="{
                     value: {
                       filterName: facet.label,
-                      label,
+                      label: value,
                       id: value,
                     },
                   }"
@@ -358,12 +387,13 @@ onMounted(() => {
                 <template #prefix>
                   <input
                     v-model="selectedFilters"
-                    :value="label"
+                    :value="{
+                      filterName: facet.label,
+                      label: value,
+                      id: value,
+                    }"
                     class="appearance-none peer"
                     type="checkbox"
-                    @update:model-value="
-                      selectedFilter(facet, { id, value, label })
-                    "
                   />
                   <span
                     class="inline-flex items-center justify-center p-1 transition duration-300 rounded-full cursor-pointer ring-1 ring-neutral-200 ring-inset outline-offset-2 outline-secondary-600 peer-checked:ring-2 peer-checked:ring-primary-700 peer-hover:bg-primary-100 peer-[&:not(:checked):hover]:ring-primary-200 peer-active:bg-primary-200 peer-active:ring-primary-300 peer-disabled:cursor-not-allowed peer-disabled:bg-disabled-100 peer-disabled:opacity-50 peer-disabled:ring-1 peer-disabled:ring-disabled-200 peer-disabled:hover:ring-disabled-200 peer-checked:hover:ring-primary-700 peer-checked:active:ring-primary-700 peer-focus-visible:outline"

@@ -1,10 +1,33 @@
+<script setup>
+import {
+  SfDropdown,
+  SfButton,
+  SfLink,
+  SfIconMoreHoriz,
+} from '@storefront-ui/vue';
+
+defineProps({
+  breadcrumbs: Array,
+});
+
+const dropdownOpened = ref(false);
+const close = () => {
+  dropdownOpened.value = false;
+};
+const toggle = () => {
+  dropdownOpened.value = !dropdownOpened.value;
+};
+
+const NuxtLink = resolveComponent('NuxtLink');
+</script>
+
 <template>
   <nav
     data-testid="breadcrumbs"
     class="inline-flex items-center text-sm font-normal font-body"
   >
     <ol class="flex w-auto leading-none group md:flex-wrap pl-0">
-      <li class="flex items-center sm:hidden text-neutral-500 z-10">
+      <li class="flex items-center sm:hidden text-neutral-500 z-1">
         <SfDropdown
           v-model="dropdownOpened"
           strategy="absolute"
@@ -71,26 +94,3 @@
     </ol>
   </nav>
 </template>
-
-<script setup>
-import {
-  SfDropdown,
-  SfButton,
-  SfLink,
-  SfIconMoreHoriz,
-} from '@storefront-ui/vue';
-
-defineProps({
-  breadcrumbs: Array,
-});
-
-const dropdownOpened = ref(false);
-const close = () => {
-  dropdownOpened.value = false;
-};
-const toggle = () => {
-  dropdownOpened.value = !dropdownOpened.value;
-};
-
-const NuxtLink = resolveComponent('NuxtLink');
-</script>

@@ -78,8 +78,7 @@ const actionItems = [
 ];
 
 const bannerDetails = {
-  image:
-    'https://storage.googleapis.com/sfui_docs_artifacts_bucket_public/production/watch.png',
+  image: '/images/watch.png',
   title: 'New in designer watches',
 };
 </script>
@@ -88,7 +87,7 @@ const bannerDetails = {
   <div class="w-full">
     <div
       v-if="isOpen"
-      class="fixed !w-screen !h-screen inset-0 bg-neutral-500 bg-opacity-50 transition-opacity top-index"
+      class="fixed !w-screen !h-screen inset-0 bg-neutral-500 bg-opacity-50 transition-opacity duration-1000 top-index"
     />
     <header
       ref="menuRef"
@@ -194,7 +193,7 @@ const bannerDetails = {
                     <div
                       class="flex flex-col items-center justify-center bg-neutral-100 md:rounded-md border-neutral-300 overflow-hidden grow"
                     >
-                      <img
+                      <NuxtImg
                         :src="bannerDetails.image"
                         :alt="bannerDetails.title"
                         class="object-contain"

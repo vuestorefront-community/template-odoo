@@ -1,6 +1,8 @@
 export const useUiHelpers: any = () => {
   const route: any = useRoute();
   const router = useRouter();
+  const { loadProducts } = useCategory();
+
   const { query, path } = route;
   const productAttributes = reactive<any>({
     attributes: [],
@@ -17,12 +19,13 @@ export const useUiHelpers: any = () => {
     return path;
   };
 
-  const getGroups = async (searchData: any) => {
-    if (!searchData) return [];
+  const getGroups = async (params: any) => {
+    const { attributes } = await loadProducts(params);
+    if (!attributes) return [];
 
     const data: any = [];
 
-    searchData.forEach((item: any) => {
+    attributes.forEach((item: any) => {
       const current = data.find(
         (itemData: { attributeName: any }) =>
           itemData.attributeName === item.attribute?.name
@@ -140,7 +143,7 @@ export const useUiHelpers: any = () => {
         if (label === 'price') {
           const item = {
             filterName: label,
-            label: `${value.slice(0, 2)}`,
+            label: 'Price',
             id: value,
           };
           formattedFilters.push(item);
