@@ -1,25 +1,40 @@
 <script lang="ts" setup>
-import { useCategory } from '@/composables';
+import { useUiHelpers } from '@/composables';
 import {
   SfAccordionItem,
   SfButton,
   SfChip,
-  SfCounter,
   SfIconArrowBack,
   SfIconChevronLeft,
-  SfIconCheck,
   SfListItem,
   SfRadio,
   SfSelect,
   SfThumbnail,
+  useDisclosure,
 } from '@storefront-ui/vue';
+import { ProductFilterType } from '~/types/product';
 
-const route = useRoute();
-const router = useRouter();
-const { loadCategoryList } = useCategory();
-
-const {categories: categoryTree} = await loadCategoryList({ filter: { parent: true } });
-
+const { close } = useDisclosure();
+const props = defineProps({
+  attributes: {
+    type: Array,
+    required: true,
+  },
+  categories: {
+    type: Object,
+    required: true,
+  },
+});
+const route: any = useRoute();
+const router: any = useRouter();
+const { changeFilters, facetsFromUrlToFilter } = useUiHelpers();
+const categoryTree = computed(() => props.categories);
+const parent = computed(() => {
+  return {
+    label: props.categories.label.toLowerCase(),
+    slug: props.categories.slug,
+  };
+});
 const getSortOptions = (searchData: { input: any }) => ({
   options: [
     {
@@ -44,155 +59,110 @@ const getSortOptions = (searchData: { input: any }) => ({
   ],
   selected: searchData.input.sort || 'name asc',
 });
-const changeSorting = (sort: string) => {
+const changeSorting = async (sort: string) => {
   router.push({ query: { ...route.query, sort } });
 };
 const sortBy = computed(() =>
   getSortOptions({ input: { sort: route.query?.sort } })
 );
-
-const parent = ref({
-  name: 'All Products',
-  href: '/',
-  count: '1429',
-});
-
-const categories = ref([
-  {
-    name: 'New',
-    href: '/',
-    count: '29',
-  },
-  {
-    name: 'Women',
-    href: '/',
-    count: '1921',
-  },
-  {
-    name: 'Men',
-    href: '/',
-    count: '642',
-  },
-  {
-    name: 'Accessories',
-    href: '/',
-    count: '29',
-  },
-  {
-    name: 'Sale',
-    href: '/',
-    count: '29',
-  },
-]);
-
-type FilterDetail = {
-  id: string;
-  label: string;
-  value: string;
-  counter?: number;
-  link?: string;
+const selectedFilters = ref<any>([]);
+const isFilterSelected = (option: any) => {
+  return selectedFilters.value.some((filter: { id: any }) => {
+    return String(filter.id) === String(option.label);
+  });
 };
-
-type Node = {
-  id: string;
-  summary: string;
-  type: string;
-  details: FilterDetail[];
-};
-
-const filtersData = ref<Node[]>([
-  {
-    id: 'acc1',
-    summary: 'Size',
-    type: 'size',
-    details: [
-      { id: 's1', label: '6', value: '6', counter: 10 },
-      { id: 's2', label: '6.5', value: '6.5', counter: 10 },
-      { id: 's3', label: '7', value: '7.5', counter: 30 },
-      { id: 's4', label: '8', value: '8', counter: 0 },
-      { id: 's5', label: '8.5', value: '8.5', counter: 3 },
-      { id: 's6', label: '9', value: '9', counter: 7 },
-      { id: 's7', label: '9.5', value: '9.5', counter: 9 },
-      { id: 's8', label: '10', value: '10', counter: 11 },
-      { id: 's9', label: '10.5', value: '10.5', counter: 12 },
-      { id: 's10', label: '11', value: '11', counter: 0 },
-      { id: 's11', label: '11.5', value: '11.5', counter: 4 },
-      { id: 's12', label: '12', value: '12', counter: 1 },
-    ],
-  },
-  {
-    id: 'acc3',
-    summary: 'Color',
-    type: 'color',
-    details: [
-      {
-        id: 'c1',
-        label: 'Primary',
-        value: 'bg-primary-500',
-        counter: 10,
-      },
-      {
-        id: 'c2',
-        label: 'Black and gray',
-        value: 'bg-[linear-gradient(-45deg,#000_50%,#d1d5db_50%)]',
-        counter: 5,
-      },
-      {
-        id: 'c3',
-        label: 'Violet',
-        value: 'bg-violet-500',
-        counter: 0,
-      },
-      {
-        id: 'c4',
-        label: 'Red',
-        value: 'bg-red-500',
-        counter: 2,
-      },
-      {
-        id: 'c5',
-        label: 'Yellow',
-        value: 'bg-yellow-500',
-        counter: 100,
-      },
-      {
-        id: 'c6',
-        label: 'Avocado',
-        value: 'bg-gradient-to-tr from-yellow-300 to-primary-500',
-        counter: 14,
-      },
-    ],
-  },
-  {
-    id: 'acc5',
-    summary: 'Price',
-    type: 'radio',
-    details: [
-      { id: 'pr1', label: 'Under $24.99', value: 'under', counter: 123 },
-      { id: 'pr2', label: '$25.00 - $49.99', value: '25-49', counter: 100 },
-      { id: 'pr3', label: '$50.00 - $99.99', value: '50-99', counter: 12 },
-      { id: 'pr4', label: '$100.00 - $199.99', value: '100-199', counter: 3 },
-      { id: 'pr5', label: '$200.00 and above', value: 'above', counter: 18 },
-    ],
-  },
-]);
-
-const selectedFilters = ref<string[]>([]);
-const opened = ref<boolean[]>(filtersData.value.map(() => true));
-const priceModel = ref('');
-const ratingsModel = ref('');
-
 const isItemActive = (selectedValue: string) => {
   return selectedFilters.value?.includes(selectedValue);
 };
-const handleClearFilters = () => {
-  selectedFilters.value = [];
-  priceModel.value = '';
-  ratingsModel.value = '';
+const facets: any = computed(() => [
+  {
+    id: null,
+    label: 'Price',
+    type: 'price',
+    options: [
+      { id: 'pr1', label: 'Under $250.00', values: '0-250' },
+      { id: 'pr2', label: '$250.00 - $500.00', values: '250-500' },
+      { id: 'pr3', label: '$500.00 - $750.00', values: '500-750' },
+      { id: 'pr4', label: '$750.00 - $1000.00', values: '750-1000' },
+      { id: 'pr5', label: '$1000.00- $1500.00', values: '1000-1500' },
+    ],
+  },
+  ...props.attributes,
+]);
+const opened = ref<boolean[]>(facets.value.map(() => true));
+const serializeSize = (data: any[]) => {
+  return (
+    data
+      // eslint-disable-next-line func-names
+      ?.sort(function (a: any, b: any) {
+        const labelA = a.label;
+        const labelB = b.label;
+        if (labelA === labelB) {
+          const lastCharA = labelA.charAt(labelA.length - 1);
+          const lastCharB = labelB.charAt(labelB.length - 1);
+          return lastCharA.localeCompare(lastCharB);
+        } else {
+          return labelA.localeCompare(labelB);
+        }
+      })
+      ?.sort((a: { label: number }, b: { label: number }) => a.label - b.label)
+  );
 };
-onMounted(() => {});
+const priceModel = ref<any>('');
+const selectPrice = (values: any) => {
+  const newValue: any = [values];
+  const getIndex = selectedFilters.value.findIndex(
+    (item: { filterName: string }) => item?.filterName === 'price'
+  );
+  if (getIndex > -1) {
+    selectedFilters.value[getIndex].id = newValue[0];
+  } else {
+    selectedFilters.value.push({
+      filterName: 'price',
+      label: 'Price',
+      id: newValue[0],
+    });
+  }
+};
+const selectedFilter = (
+  facet: { label: string },
+  option: { id: string; value: string; label: string }
+) => {
+  const alreadySelectedIndex = selectedFilters.value.findIndex(
+    (filter: { id: string }) => String(filter.id) === String(option.value)
+  );
+  if (alreadySelectedIndex === -1) {
+    selectedFilters.value.push({
+      filterName: facet.label,
+      label: option.label,
+      id: option.value,
+    });
+    return;
+  }
+  selectedFilters.value.splice(alreadySelectedIndex, 1);
+};
+const applyFilters = () => {
+  const filters = selectedFilters.value.filter((item: any) => {
+    return typeof item === 'object';
+  });
+  changeFilters(filters);
+  close();
+};
+const clearFilters = () => {
+  selectedFilters.value = [];
+  router.push({ query: {} });
+  close();
+};
+onMounted(() => {
+  selectedFilters.value = facetsFromUrlToFilter();
+  const priceFilter = selectedFilters.value?.find((item: ProductFilterType) => {
+    return item.filterName === 'price';
+  });
+  if (priceFilter) {
+    priceModel.value = priceFilter.id;
+  }
+});
 </script>
-
 <template>
   <aside class="w-full md:max-w-[376px]">
     <div
@@ -207,58 +177,47 @@ onMounted(() => {});
         :class="[
           'md:sf-list-item-sm md:py-1.5 sf-list-item',
           {
-            'bg-primary-100 hover:bg-primary-100 active:bg-primary-100 font-medium': false,
+            'bg-primary-100 hover:bg-primary-100 active:bg-primary-100 font-medium': true,
           },
         ]"
         data-testid="category-tree-item"
       >
-        <NuxtLink :to="parent.href">
+        <NuxtLink @click="router.back()">
           <span class="flex gap-2 items-center">
             <span
               class="text-base md:text-sm capitalize flex items-center"
               data-testid="list-item-menu-label"
             >
               <SfIconArrowBack size="sm" class="text-neutral-500 mr-2" />
-              {{ parent.name }}
+              {{ parent.label }}
             </span>
-            <SfCounter v-if="Number(122) > -1" class="md:text-sm font-normal">{{
-              parent.count
-            }}</SfCounter>
           </span>
-          <template #suffix>
-            <SfIconCheck v-if="true" size="sm" class="text-primary-700" />
-          </template>
         </NuxtLink>
       </SfListItem>
     </div>
     <ul class="mt-4 mb-6 md:mt-2" data-testid="categories">
       <SfListItem
-        v-for="({ name, href, count }, index) in categories"
-        :key="name"
+        v-for="({ id, label, slug }, index) in categoryTree.items"
+        :key="label"
         size="lg"
         :class="[
           'md:sf-list-item-sm md:py-1.5 sf-list-item',
           {
             'bg-primary-100 hover:bg-primary-100 active:bg-primary-100 font-medium':
-              index === 0,
+              id === route.query.id,
           },
         ]"
         data-testid="category-tree-item"
       >
-        <NuxtLink :to="href">
+        <NuxtLink :to="slug">
           <span class="flex gap-2 items-center">
             <span
               class="text-base md:text-sm capitalize flex items-center"
               data-testid="list-item-menu-label"
             >
               <slot />
-              {{ name }}
+              {{ label }}
             </span>
-            <SfCounter
-              v-if="Number(count) > -1"
-              class="md:text-sm font-normal"
-              >{{ count }}</SfCounter
-            >
           </span>
         </NuxtLink>
       </SfListItem>
@@ -278,6 +237,7 @@ onMounted(() => {});
         <option
           v-for="{ id, value, attrName } in sortBy.options"
           :key="id"
+          :selected="sortBy.selected === value"
           :value="value"
         >
           {{ attrName }}
@@ -291,69 +251,22 @@ onMounted(() => {});
     </h5>
     <client-only>
       <ul>
-        <li
-          v-for="(
-            { id: filterDataId, type, summary, details }, index
-          ) in filtersData"
-          :key="filterDataId"
-        >
+        <li v-for="(facet, index) in facets" :key="index">
           <SfAccordionItem v-model="opened[index]">
             <template #summary>
               <div class="flex justify-between items-center p-2 mb-2">
                 <p class="p-2 font-medium typography-headline-5">
-                  {{ summary }}
+                  {{ facet.label }}
                 </p>
                 <SfIconChevronLeft
                   :class="opened[index] ? 'rotate-90' : '-rotate-90'"
                 />
               </div>
             </template>
-            <ul v-if="type === 'size'" class="grid grid-cols-5 gap-2 px-3">
-              <li v-for="{ id, value, counter, label } in details" :key="id">
-                <SfChip
-                  v-model="selectedFilters"
-                  class="w-full"
-                  size="sm"
-                  :input-props="{ value, disabled: !counter }"
-                >
-                  {{ label }}
-                </SfChip>
-              </li>
-            </ul>
-            <template v-if="type === 'color'">
-              <SfListItem
-                v-for="{ id, value, label, counter } in details"
-                :key="id"
-                size="sm"
-                tag="label"
-                :class="[
-                  'px-4 bg-transparent hover:bg-transparent',
-                  { 'font-medium': isItemActive(value) },
-                ]"
-                :selected="isItemActive(value)"
-              >
-                <template #prefix>
-                  <input
-                    v-model="selectedFilters"
-                    :value="value"
-                    class="appearance-none peer"
-                    type="checkbox"
-                  />
-                  <span
-                    class="inline-flex items-center justify-center p-1 transition duration-300 rounded-full cursor-pointer ring-1 ring-neutral-200 ring-inset outline-offset-2 outline-secondary-600 peer-checked:ring-2 peer-checked:ring-primary-700 peer-hover:bg-primary-100 peer-[&:not(:checked):hover]:ring-primary-200 peer-active:bg-primary-200 peer-active:ring-primary-300 peer-disabled:cursor-not-allowed peer-disabled:bg-disabled-100 peer-disabled:opacity-50 peer-disabled:ring-1 peer-disabled:ring-disabled-200 peer-disabled:hover:ring-disabled-200 peer-checked:hover:ring-primary-700 peer-checked:active:ring-primary-700 peer-focus-visible:outline"
-                    ><SfThumbnail size="sm" :class="value"
-                  /></span>
-                </template>
-                <p>
-                  <span class="mr-2 typography-text-sm">{{ label }}</span>
-                  <SfCounter size="sm">{{ counter }}</SfCounter>
-                </p>
-              </SfListItem>
-            </template>
-            <template v-if="type === 'radio'">
+            <template v-if="facet.type == 'price'">
               <fieldset id="radio-price">
                 <SfListItem
-                  v-for="{ id, value, label, counter } in details"
+                  v-for="{ id, values, label } in facet.options"
                   :key="id"
                   tag="label"
                   size="sm"
@@ -364,22 +277,105 @@ onMounted(() => {});
                       v-model="priceModel"
                       class="flex items-center"
                       name="radio-price"
-                      :value="value"
-                      @click="priceModel = priceModel === value ? '' : value"
+                      :value="values"
+                      @click="priceModel = priceModel === values ? '' : values"
+                      @update:model-value="selectPrice(values)"
                     />
                   </template>
                   <p>
                     <span
                       :class="[
                         'text-sm mr-2',
-                        { 'font-medium': priceModel === value },
+                        { 'font-medium': priceModel === values },
                       ]"
                       >{{ label }}</span
                     >
-                    <SfCounter size="sm">{{ counter }}</SfCounter>
                   </p>
                 </SfListItem>
               </fieldset>
+            </template>
+            <ul
+              v-if="facet.type === 'select'"
+              class="grid grid-cols-5 gap-2 px-3"
+            >
+              <li
+                v-for="{ id, value, label } in serializeSize(facet.options)"
+                :key="id"
+              >
+                <SfChip
+                  class="w-full"
+                  size="sm"
+                  v-model="selectedFilters"
+                  :input-props="{
+                    value: {
+                      filterName: facet.label,
+                      label,
+                      id: value,
+                    },
+                  }"
+                >
+                  {{ label }}
+                </SfChip>
+              </li>
+            </ul>
+            <ul
+              v-if="facet.type === 'radio'"
+              class="grid grid-cols-3 gap-2 px-3"
+            >
+              <li v-for="{ id, value, label } in facet.options" :key="id">
+                <SfChip
+                  class="w-full"
+                  size="sm"
+                  v-model="selectedFilters"
+                  :input-props="{
+                    value: {
+                      filterName: facet.label,
+                      label,
+                      id: value,
+                    },
+                  }"
+                >
+                  {{ label }}
+                </SfChip>
+              </li>
+            </ul>
+            <template v-if="facet.type == 'color'">
+              <SfListItem
+                v-for="{ id, value, label, htmlColor } in facet.options"
+                :key="id"
+                size="sm"
+                tag="label"
+                :class="[
+                  'px-4 bg-transparent hover:bg-transparent',
+                  {
+                    'font-medium': isItemActive(value),
+                  },
+                ]"
+                :selected="isItemActive(value)"
+              >
+                <template #prefix>
+                  <input
+                    v-model="selectedFilters"
+                    :value="label"
+                    class="appearance-none peer"
+                    type="checkbox"
+                    @update:model-value="
+                      selectedFilter(facet, { id, value, label })
+                    "
+                  />
+                  <span
+                    class="inline-flex items-center justify-center p-1 transition duration-300 rounded-full cursor-pointer ring-1 ring-neutral-200 ring-inset outline-offset-2 outline-secondary-600 peer-checked:ring-2 peer-checked:ring-primary-700 peer-hover:bg-primary-100 peer-[&:not(:checked):hover]:ring-primary-200 peer-active:bg-primary-200 peer-active:ring-primary-300 peer-disabled:cursor-not-allowed peer-disabled:bg-disabled-100 peer-disabled:opacity-50 peer-disabled:ring-1 peer-disabled:ring-disabled-200 peer-disabled:hover:ring-disabled-200 peer-checked:hover:ring-primary-700 peer-checked:active:ring-primary-700 peer-focus-visible:outline"
+                  >
+                    <SfThumbnail
+                      size="sm"
+                      :style="{ backgroundColor: htmlColor }"
+                    />
+                  </span>
+                </template>
+                <p>
+                  <span class="mr-2 typography-text-sm">{{ label }}</span>
+                </p>
+              </SfListItem>
             </template>
           </SfAccordionItem>
           <hr class="my-4" />
@@ -389,14 +385,12 @@ onMounted(() => {});
     <div
       class="flex flex-col lg:flex-row gap-y-4 lg:gap-y-0 lg:justify-between px-3 lg:px-0"
     >
-      <SfButton
-        variant="secondary"
-        class="w-full mr-3"
-        @click="handleClearFilters()"
-      >
+      <SfButton variant="secondary" class="w-full mr-3" @click="clearFilters">
         {{ $t('clearFilters') }}
       </SfButton>
-      <SfButton class="w-full">{{ $t('showProducts') }}</SfButton>
+      <SfButton class="w-full" @click="applyFilters">{{
+        $t('showProducts')
+      }}</SfButton>
     </div>
   </aside>
 </template>

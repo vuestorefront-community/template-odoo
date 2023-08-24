@@ -7,10 +7,12 @@ import {
 
 export const useCategory: any = () => {
   const loading = ref(false);
-
-  const loadCategoryProducts = async (
-    params: QueryProductsArgs | undefined
-  ) => {
+  const error = reactive<any>({
+    loadProducts: null,
+    loadCategory: null,
+    loadCategoryList: null,
+  });
+  const loadProducts = async (params: QueryProductsArgs | undefined) => {
     try {
       loading.value = true;
       const { data: productData }: any = await sdk.odoo.getProductTemplateList(
@@ -27,7 +29,7 @@ export const useCategory: any = () => {
         totalProducts: productData.products.totalCount,
       };
     } catch (err) {
-      console.log(err);
+      error.loadProducts = err;
     } finally {
       loading.value = false;
     }
@@ -35,36 +37,71 @@ export const useCategory: any = () => {
 
   const loadCategory = async (params: QueryCategoryArgs) => {
     try {
-      loading.value = true;
       const categoryResponse: any = await sdk.odoo.getCategory(params);
       return {
         category: categoryResponse?.data?.category || {},
       };
     } catch (err) {
-      console.log(err);
-    } finally {
-      loading.value = false;
+      error.loadCategory = err;
     }
   };
 
   const loadCategoryList = async (params: QueryCategoriesArgs | undefined) => {
     try {
-      loading.value = true;
       const categoryListResponse: any = await sdk.odoo.getCategoryList(params);
       return {
         categories: categoryListResponse?.data?.categories?.categories || [],
       };
     } catch (err) {
-      console.log(err);
-    } finally {
-      loading.value = false;
+      error.loadCategoryList = err;
     }
   };
 
+  const buildTree = (categories: any) => {
+    if (!categories) {
+      return [];
+    }
+    return categories.map(
+      (category: { name: string; slug: string; childs: any; id: string }) => ({
+        label: category.name,
+        slug: category.slug,
+        items: buildTree(category.childs),
+        isCurrent: false,
+        id: category.id,
+      })
+    );
+  };
+
+  const getCategoryTree = (searchData: { data: { category: any } }) => {
+    if (!searchData) {
+      return { items: [], label: '', isCurrent: false };
+    }
+
+    const category: any = searchData;
+    let parentCategory = category;
+
+    if (!category?.childs && category?.parent) {
+      parentCategory = category?.parent?.parent;
+    }
+
+    if (category) {
+      return {
+        label: category.name,
+        slug: category.slug,
+        items: buildTree(category.childs),
+        isCurrent: false,
+        id: category.id,
+      };
+    }
+    return {};
+  };
+
   return {
-    loading,
-    loadCategoryProducts,
+    loading: computed(() => loading.value),
+    loadProducts,
     loadCategoryList,
     loadCategory,
+    getCategoryTree,
+    error: computed(() => error),
   };
 };

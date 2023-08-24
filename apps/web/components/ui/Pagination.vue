@@ -89,7 +89,10 @@
               },
             ]"
             :aria-current="pagination.selectedPage === page"
-            @click="pagination.setPage(page)"
+            @click="
+              pagination.setPage(page);
+              setParams({ ['page']: pagination.selectedPage });
+            "
           >
             {{ page }}
           </button>
@@ -164,7 +167,7 @@ import {
   SfIconChevronRight,
   usePagination,
 } from '@storefront-ui/vue';
-import { useMediaQuery } from '@vueuse/core';
+import { LocationQueryRaw } from 'vue-router';
 
 const props = defineProps({
   currentPage: Number,
@@ -172,13 +175,13 @@ const props = defineProps({
   totalItems: Number,
   maxVisiblePages: Number,
 });
+
 const {
   currentPage,
   pageSize,
   totalItems,
   maxVisiblePages: maxVisiblePagesProperty,
-} = toRefs(props);
-
+}: any = toRefs(props);
 const pagination = computed(() =>
   reactive(
     usePagination({
@@ -189,4 +192,13 @@ const pagination = computed(() =>
     })
   )
 );
+
+const route = useRoute();
+const router = useRouter();
+
+const setParams = (filter: any) => {
+  router.push({ query: { ...route.query, ...filter } });
+};
+
+onMounted(() => {});
 </script>
