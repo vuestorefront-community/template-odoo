@@ -28,6 +28,7 @@ const props = defineProps({
 const route: any = useRoute();
 const router: any = useRouter();
 const { changeFilters, facetsFromUrlToFilter } = useUiHelpers();
+
 const categoryTree = computed(() => props.categories);
 const parent = computed(() => {
   return {
@@ -35,6 +36,7 @@ const parent = computed(() => {
     slug: props.categories.slug,
   };
 });
+
 const getSortOptions = (searchData: { input: any }) => ({
   options: [
     {

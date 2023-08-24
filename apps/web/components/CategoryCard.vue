@@ -6,9 +6,9 @@ const props = defineProps({
   },
 });
 
-const topCategories = props.categories;
+const topCategories = computed(() => props.categories);
 const filteredCategories: any = computed(() =>
-  topCategories?.filter(
+  topCategories.value?.filter(
     (category: any) => category.name === 'WOMEN' || category.name === 'MEN'
   )
 );
