@@ -65,7 +65,7 @@ const actionItems = [
     ariaLabel: 'Cart',
     role: 'button',
     badge: true,
-    link: 'cart',
+    link: '/cart',
   },
   {
     icon: SfIconPerson,
@@ -73,7 +73,7 @@ const actionItems = [
     ariaLabel: 'Log in',
     role: 'login',
     badge: false,
-    link: 'my-account',
+    link: '/my-account',
   },
 ];
 
