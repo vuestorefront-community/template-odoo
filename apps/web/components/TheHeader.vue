@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { useCategory } from '@/composables';
 import {
   SfButton,
   SfDrawer,
@@ -16,16 +17,17 @@ import {
   SfIconSearch,
 } from '@storefront-ui/vue';
 import { onClickOutside } from '@vueuse/core';
-import { ref } from 'vue';
 
 defineProps<{
   filled?: boolean;
 }>();
 
+const { loadCategoryList } = useCategory();
 const { isOpen, toggle, close } = useDisclosure();
+const NuxtLink = resolveComponent('NuxtLink');
+
 const menuRef = ref();
 const drawerRef = ref();
-
 useTrapFocus(drawerRef, {
   activeState: isOpen,
   arrowKeysUpDown: true,
@@ -35,22 +37,20 @@ onClickOutside(menuRef, () => {
   close();
 });
 
-const inputValue = ref('');
+const { categories } = await loadCategoryList({ filter: { parent: true } });
 
+const filteredCategories: any = computed(() =>
+  categories?.filter(
+    (category: any) => category.name === 'WOMEN' || category.name === 'MEN'
+  )
+);
+
+const inputValue = ref('');
 const search = () => {
   // eslint-disable-next-line no-alert
   alert(`Successfully found 10 results for ${inputValue.value}`);
 };
-
 const actionItems = [
-  {
-    icon: SfIconShoppingCart,
-    label: '',
-    ariaLabel: 'Cart',
-    role: 'button',
-    badge: true,
-    link: 'cart',
-  },
   {
     icon: SfIconFavorite,
     label: '',
@@ -58,6 +58,14 @@ const actionItems = [
     role: 'button',
     badge: true,
     link: '#',
+  },
+  {
+    icon: SfIconShoppingCart,
+    label: '',
+    ariaLabel: 'Cart',
+    role: 'button',
+    badge: true,
+    link: 'cart',
   },
   {
     icon: SfIconPerson,
@@ -68,74 +76,12 @@ const actionItems = [
     link: 'my-account',
   },
 ];
-const NuxtLink = resolveComponent('NuxtLink');
+
 const bannerDetails = {
   image:
     'https://storage.googleapis.com/sfui_docs_artifacts_bucket_public/production/watch.png',
   title: 'New in designer watches',
 };
-
-const categoriesContent = [
-  {
-    heading: 'Women',
-    items: [
-      {
-        // eslint-disable-next-line quotes
-        title: "All Women's",
-        link: '#',
-      },
-      {
-        title: 'Clothing',
-        link: '#',
-      },
-      {
-        title: 'Shoes',
-        link: '#',
-      },
-      {
-        title: 'Accessories',
-        link: '#',
-      },
-      {
-        title: 'Wearables',
-        link: '#',
-      },
-      {
-        title: 'Food & Drinks',
-        link: '#',
-      },
-    ],
-  },
-  {
-    heading: 'Men',
-    items: [
-      {
-        title: 'All Men’s',
-        link: '#',
-      },
-      {
-        title: 'Clothing',
-        link: '#',
-      },
-      {
-        title: 'Shoes',
-        link: '#',
-      },
-      {
-        title: 'Accessories',
-        link: '#',
-      },
-      {
-        title: 'Wearables',
-        link: '#',
-      },
-      {
-        title: 'Food & Drinks',
-        link: '#',
-      },
-    ],
-  },
-];
 </script>
 
 <template>
@@ -216,27 +162,31 @@ const categoriesContent = [
                       </SfButton>
                     </div>
                     <div
-                      v-for="{ heading, items } in categoriesContent"
-                      :key="heading"
+                      v-for="{ name, childs } in filteredCategories"
+                      :key="name"
                       class="[&:nth-child(2)]:pt-0 pt-6 md:pt-0 text-black"
                     >
                       <h2
                         role="presentation"
                         class="typography-text-base font-medium text-neutral-900 whitespace-nowrap p-4 md:py-1.5"
                       >
-                        {{ heading }}
+                        {{ name }}
                       </h2>
                       <hr class="mb-3.5" />
                       <ul>
-                        <li v-for="item in items" :key="item.title">
+                        <li
+                          v-for="{ name, slug, childs: subcategory } in childs"
+                          :key="name"
+                        >
                           <SfListItem
+                            v-if="subcategory !== null"
                             tag="a"
-                            :href="item.link"
+                            :href="slug"
                             size="sm"
                             role="none"
                             class="typography-text-base md:typography-text-sm py-4 md:py-1.5"
                           >
-                            {{ item.title }}
+                            {{ name }}
                           </SfListItem>
                         </li>
                       </ul>

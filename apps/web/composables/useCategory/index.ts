@@ -78,12 +78,6 @@ export const useCategory: any = () => {
     }
 
     const category: any = searchData;
-    let parentCategory = category;
-
-    if (!category?.childs && category?.parent) {
-      parentCategory = category?.parent?.parent;
-    }
-
     if (category) {
       return {
         label: category.name,
