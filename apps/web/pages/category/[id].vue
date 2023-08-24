@@ -10,7 +10,7 @@ const mediaQueries = {
 };
 const route: any = useRoute();
 const { isOpen, open, close } = useDisclosure();
-const { loading, loadProducts, loadCategory, getCategoryTree } = useCategory();
+const { loadProducts, loadCategory, getCategoryTree } = useCategory();
 const { getRegularPrice, getSpecialPrice } = useProductAttributes();
 const { getFacetsFromURL, getGroups } = useUiHelpers();
 
@@ -18,19 +18,29 @@ const breadcrumbs = [
   { name: 'Home', link: '/' },
   { name: 'Category', link: `Category/${route.params.id}` },
 ];
-
-const {
-  products: AllProduct,
-  attributes: attrs,
-  totalProducts,
-} = await loadProducts(getFacetsFromURL(route.query));
+const attributes = await getGroups({
+  pageSize: 12,
+  currentPage: 1,
+  search: '',
+  sort: {},
+  filter: {
+    minPrice: null,
+    maxPrice: null,
+    attribValues: [],
+    categorySlug: '/category/' + route.params.id,
+  },
+});
+const { products: AllProduct, totalProducts } = await loadProducts(
+  getFacetsFromURL(route.query)
+);
 const { category } = await loadCategory({
   id: Number(route.params.id),
 });
-const attributes = await getGroups(attrs);
+
 const categories = await getCategoryTree(category);
 
 const products = useState<any>('products');
+
 const productLoading = ref(true);
 const productsForPagination = ref([]);
 const mountUrlSlugForProductVariant = (product: {
