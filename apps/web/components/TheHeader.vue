@@ -1,217 +1,308 @@
-<script setup lang="ts">
+<script lang="ts" setup>
+import { useCategory } from '@/composables';
 import {
-  SfBadge,
   SfButton,
-  SfIconExpandMore,
+  SfDrawer,
+  SfBadge,
   SfIconShoppingCart,
   SfIconFavorite,
-  SfIconSearch,
-  SfInput,
-  SfIconCancel,
   SfIconPerson,
-  SfDropdown,
+  SfIconClose,
+  SfIconExpandMore,
   SfListItem,
-  SfModal,
   useDisclosure,
+  useTrapFocus,
+  SfIconMenu,
+  SfInput,
+  SfIconSearch,
 } from '@storefront-ui/vue';
-import { unrefElement } from '@vueuse/core';
+import { onClickOutside } from '@vueuse/core';
 
 defineProps<{
   filled?: boolean;
 }>();
 
-const { open } = useDisclosure();
+const { loadCategoryList } = useCategory();
+const { isOpen, toggle, close } = useDisclosure();
+const NuxtLink = resolveComponent('NuxtLink');
 
-const inputModel = ref('');
-const inputReference = ref<HTMLSpanElement>();
-const handleInputFocus = () => {
-  const inputElement = unrefElement(inputReference)?.querySelector('input');
-  inputElement?.focus();
-};
-const handleReset = () => {
-  inputModel.value = '';
-  handleInputFocus();
-};
-const handleSubmit = () => {
-  handleReset();
-};
-
-watch(inputModel, () => {
-  if (inputModel.value === '') {
-    handleReset();
-  }
+const menuRef = ref();
+const drawerRef = ref();
+useTrapFocus(drawerRef, {
+  activeState: isOpen,
+  arrowKeysUpDown: true,
+  initialFocus: 'container',
+});
+onClickOutside(menuRef, () => {
+  close();
 });
 
-const { isOpen: isAccountDropdownOpen, toggle: accountDropdownToggle } =
-  useDisclosure();
-const {
-  isOpen: isSearchModalOpen,
-  open: searchModalOpen,
-  close: searchModalClose,
-} = useDisclosure();
+const { categories } = await loadCategoryList({ filter: { parent: true } });
 
-const NuxtLink = resolveComponent('NuxtLink');
-const cartLineItemsCount = 3;
+const filteredCategories: any = computed(() =>
+  categories?.filter(
+    (category: any) => category.name === 'WOMEN' || category.name === 'MEN'
+  )
+);
 
-const accountDropdown = [
+const inputValue = ref('');
+const search = () => {
+  // eslint-disable-next-line no-alert
+  alert(`Successfully found 10 results for ${inputValue.value}`);
+};
+const actionItems = [
   {
-    label: 'My Account',
+    icon: SfIconFavorite,
+    label: '',
+    ariaLabel: 'Wishlist',
+    role: 'button',
+    badge: true,
+    link: '#',
+  },
+  {
+    icon: SfIconShoppingCart,
+    label: '',
+    ariaLabel: 'Cart',
+    role: 'button',
+    badge: true,
+    link: '/cart',
+  },
+  {
+    icon: SfIconPerson,
+    label: 'Log in',
+    ariaLabel: 'Log in',
+    role: 'login',
+    badge: false,
     link: '/my-account',
   },
-  {
-    label: 'My Orders',
-    link: '/my-account/my-orders',
-  },
-  {
-    label: 'Returns',
-    link: '/my-account/returns',
-  },
-  {
-    label: 'Logout',
-    link: '/',
-  },
 ];
+
+const bannerDetails = {
+  image: '/images/watch.png',
+  title: 'New in designer watches',
+};
 </script>
 
 <template>
-  <header
-    :class="[
-      'h-14 md:h-20 flex z-50 md:sticky md:top-0 md:shadow-md',
-      { 'bg-primary-700 text-white': filled },
-      { 'bg-white text-[#02C652] border-b border-neutral-200': !filled },
-    ]"
-    data-testid="navbar-top"
-  >
+  <div class="w-full">
     <div
-      class="flex gap-[clamp(1rem,3vw,3rem)] items-center w-full narrow-container sticky top-0 justify-between md:justify-normal"
+      v-if="isOpen"
+      class="fixed !w-screen !h-screen inset-0 bg-neutral-500 bg-opacity-50 transition-opacity duration-1000 top-index"
+    />
+    <header
+      ref="menuRef"
+      :class="[
+        'h-14 md:h-20 flex z-50 md:sticky md:top-0 md:shadow-md flex-wrap md:flex-nowrap w-full py-2 md:py-5 border-0 bg-primary-700 border-neutral-200 md:z-10',
+        { 'bg-primary-700 text-white': filled },
+        { 'bg-white border-b border-neutral-200': !filled },
+      ]"
     >
-      <NuxtLink to="/" aria-label="Sf Homepage" class="h-6 md:h-7 -mt-1.5">
-        <VsfLogo />
-      </NuxtLink>
-      <SfButton
-        v-if="filled"
-        class="!px-2 mr-auto hidden lg:flex text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900"
-        type="button"
-        variant="tertiary"
-        :tag="NuxtLink"
-        to="/category/13"
+      <div
+        class="flex items-center justify-between md:justify-start h-full w-full narrow-container"
       >
-        <span class="hidden lg:flex whitespace-nowrap">{{
-          $t('allProductsLinkText')
-        }}</span>
-      </SfButton>
-      <div v-if="filled" class="hidden md:block flex-1">
+        <NuxtLink to="/" aria-label="Sf Homepage" class="h-6 md:h-7 -mt-1.5">
+          <VsfLogo />
+        </NuxtLink>
+        <SfButton
+          v-if="filled"
+          class="hidden md:flex text-white font-body bg-transparent hover:bg-primary-800 hover:text-white active:bg-primary-900 active:text-white ml-6"
+          type="button"
+          :aria-haspopup="true"
+          :aria-expanded="isOpen"
+          variant="tertiary"
+          square
+          @click="toggle()"
+        >
+          <template #suffix>
+            <SfIconExpandMore class="hidden md:inline-flex" />
+          </template>
+          <span class="hidden md:inline-flex whitespace-nowrap px-2"
+            >Browse products</span
+          >
+        </SfButton>
+        <nav>
+          <ul>
+            <li role="none">
+              <transition
+                enter-active-class="transform transition duration-500 ease-in-out"
+                leave-active-class="transform transition duration-500 ease-in-out"
+                enter-from-class="-translate-x-full md:translate-x-0 md:opacity-0"
+                enter-to-class="translate-x-0 md:translate-x-0 md:opacity-100"
+                leave-from-class="translate-x-0 md:opacity-100"
+                leave-to-class="-translate-x-full md:translate-x-0 md:opacity-0"
+              >
+                <SfDrawer
+                  ref="drawerRef"
+                  v-model="isOpen"
+                  disable-click-away
+                  placement="top"
+                  class="bg-white p-0 max-h-screen overflow-y-auto md:!absolute md:!top-[5rem] max-w-full md:p-6 top-index"
+                >
+                  <div
+                    class="grid grid-cols-1 md:gap-x-6 md:grid-cols-3 md:narrow-container md:relative"
+                  >
+                    <div
+                      class="sticky top-0 flex items-center justify-between py-2 px-4 bg-primary-700 md:hidden w-full"
+                    >
+                      <div
+                        class="flex items-center typography-text-lg font-medium text-white"
+                      >
+                        Browse products
+                      </div>
+                      <SfButton
+                        square
+                        variant="tertiary"
+                        aria-label="Close navigation menu"
+                        class="text-white ml-2"
+                        @click="close()"
+                        @keydown.enter.space="close()"
+                      >
+                        <SfIconClose />
+                      </SfButton>
+                    </div>
+                    <div
+                      v-for="{ name, childs } in filteredCategories"
+                      :key="name"
+                      class="[&:nth-child(2)]:pt-0 pt-6 md:pt-0 text-black"
+                    >
+                      <h2
+                        role="presentation"
+                        class="typography-text-base font-medium text-neutral-900 whitespace-nowrap p-4 md:py-1.5"
+                      >
+                        {{ name }}
+                      </h2>
+                      <hr class="mb-3.5" />
+                      <ul>
+                        <li
+                          v-for="{ name, slug, childs: subcategory } in childs"
+                          :key="name"
+                        >
+                          <SfListItem
+                            v-if="subcategory !== null"
+                            tag="a"
+                            :href="slug"
+                            size="sm"
+                            role="none"
+                            class="typography-text-base md:typography-text-sm py-4 md:py-1.5"
+                          >
+                            {{ name }}
+                          </SfListItem>
+                        </li>
+                      </ul>
+                    </div>
+                    <div
+                      class="flex flex-col items-center justify-center bg-neutral-100 md:rounded-md border-neutral-300 overflow-hidden grow"
+                    >
+                      <NuxtImg
+                        :src="bannerDetails.image"
+                        :alt="bannerDetails.title"
+                        class="object-contain"
+                      />
+                      <p
+                        class="mb-4 mt-4 px-4 text-center text-black typography-text-base font-medium"
+                      >
+                        {{ bannerDetails.title }}
+                      </p>
+                    </div>
+                    <SfButton
+                      square
+                      size="sm"
+                      variant="tertiary"
+                      aria-label="Close navigation menu"
+                      class="hidden md:block md:absolute md:right-0 md:top-0 hover:bg-white active:bg-white"
+                      @click="close()"
+                    >
+                      <SfIconClose class="text-neutral-500" />
+                    </SfButton>
+                  </div>
+                </SfDrawer>
+              </transition>
+            </li>
+          </ul>
+        </nav>
         <form
-          ref="referenceRef"
+          v-if="filled"
           role="search"
-          class="relative"
-          @submit.prevent="handleSubmit"
+          class="hidden md:flex flex-[100%] mt-2 md:mt-0 md:ml-10 pb-2 md:pb-0"
+          @submit.prevent="search"
         >
           <SfInput
-            ref="inputReference"
-            v-model="inputModel"
-            aria-label="Search"
+            v-model="inputValue"
+            type="search"
+            class="[&::-webkit-search-cancel-button]:appearance-none"
             placeholder="Search"
-            @focus="open"
+            wrapper-class="flex-1 h-10 pr-0"
+            size="base"
           >
-            <template #prefix>
-              <SfIconSearch />
-            </template>
             <template #suffix>
-              <button
-                v-if="inputModel"
-                type="button"
-                aria-label="Reset search"
-                class="flex rounded-md focus-visible:outline focus-visible:outline-offset"
-                @click="handleReset"
-              >
-                <SfIconCancel />
-              </button>
+              <span class="flex items-center">
+                <SfButton
+                  variant="tertiary"
+                  square
+                  aria-label="search"
+                  type="submit"
+                  class="rounded-l-none hover:bg-transparent active:bg-transparent"
+                >
+                  <SfIconSearch />
+                </SfButton>
+              </span>
             </template>
           </SfInput>
         </form>
-      </div>
-      <nav v-if="filled" class="hidden md:flex md:flex-row md:flex-nowrap">
-        <SfButton
-          class="group relative text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 mr-1 -ml-0.5 rounded-md"
-          :tag="NuxtLink"
-          to="/"
-          :aria-label="$t('numberInCart', cartLineItemsCount)"
-          variant="tertiary"
-          square
+        <nav
+          v-if="filled"
+          class="hidden md:flex flex-nowrap justify-end items-center md:ml-10 gap-x-1"
+          aria-label="SF Navigation"
         >
-          <template #prefix>
-            <SfIconFavorite />
-            <SfBadge
-              :content="cartLineItemsCount"
-              class="outline outline-primary-700 bg-white !text-neutral-900 group-hover:outline-primary-800 group-active:outline-primary-900 flex justify-center"
-              data-testid="cart-badge"
-            />
-          </template>
-        </SfButton>
-        <SfButton
-          class="group relative text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 mr-1 ml-3 rounded-md"
-          :tag="NuxtLink"
-          to="/cart"
-          :aria-label="$t('numberInCart', cartLineItemsCount)"
-          variant="tertiary"
-          square
-        >
-          <template #prefix>
-            <SfIconShoppingCart />
-            <SfBadge
-              :content="cartLineItemsCount"
-              class="outline outline-primary-700 bg-white !text-neutral-900 group-hover:outline-primary-800 group-active:outline-primary-900 flex justify-center"
-              data-testid="cart-badge"
-            />
-          </template>
-        </SfButton>
-        <SfDropdown v-model="isAccountDropdownOpen" placement="bottom-end">
-          <template #trigger>
-            <SfButton
-              variant="tertiary"
-              class="relative text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 rounded-md"
-              :class="{ 'bg-primary-900': isAccountDropdownOpen }"
-              @click="accountDropdownToggle()"
-            >
-              <template #prefix><SfIconPerson /></template>
-              Mahade
-            </SfButton>
-          </template>
-          <ul
-            class="rounded bg-white shadow-md border border-neutral-100 text-neutral-900 min-w-[152px] py-2"
+          <SfButton
+            v-for="{ ariaLabel, label, icon, link, badge, role } in actionItems"
+            :key="ariaLabel"
+            class="group relative text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 mr-1 -ml-0.5 rounded-md"
+            :aria-label="ariaLabel"
+            :tag="NuxtLink"
+            :to="link"
+            variant="tertiary"
+            square
           >
-            <li v-for="{ label, link } in accountDropdown" :key="label">
-              <template v-if="label === 'account.logout'">
-                <UiDivider class="my-2" />
-                <SfListItem
-                  tag="button"
-                  class="text-left"
-                  @click="accountDropdownToggle()"
-                  >{{ $t(label) }}</SfListItem
-                >
-              </template>
-              <SfListItem
-                v-else
-                :tag="NuxtLink"
-                :to="link"
-                :class="{ 'bg-neutral-200': $route.path === link }"
-              >
-                {{ $t(label) }}
-              </SfListItem>
-            </li>
-          </ul>
-        </SfDropdown>
-      </nav>
-      <SfButton
-        v-if="filled"
-        variant="tertiary"
-        class="relative text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 rounded-md md:hidden"
-        square
-        @click="$emit('searchModalOpen')"
-      >
-        <SfIconSearch />
-      </SfButton>
-    </div>
-  </header>
+            <template #prefix>
+              <Component :is="icon" />
+              <SfBadge
+                v-if="badge"
+                content="3"
+                class="outline outline-primary-700 bg-white !text-neutral-900 group-hover:outline-primary-800 group-active:outline-primary-900 flex justify-center"
+                data-testid="cart-badge"
+              />
+            </template>
+            <span
+              v-if="role === 'login'"
+              class="hidden lg:inline-flex whitespace-nowrap pr-2"
+              >{{ label }}</span
+            >
+          </SfButton>
+        </nav>
+        <div v-if="filled">
+          <SfButton
+            v-if="filled"
+            variant="tertiary"
+            class="relative text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 rounded-md md:hidden"
+            square
+            @click="$emit('searchModalOpen')"
+          >
+            <SfIconSearch />
+          </SfButton>
+          <SfButton
+            class="block md:hidden text-white font-body bg-transparent hover:bg-primary-800 hover:text-white active:bg-primary-900 active:text-white self-end"
+            type="button"
+            :aria-haspopup="true"
+            :aria-expanded="isOpen"
+            variant="tertiary"
+            square
+            @click="toggle()"
+          >
+            <SfIconMenu class="text-white" />
+          </SfButton>
+        </div>
+      </div>
+    </header>
+  </div>
 </template>

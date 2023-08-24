@@ -78,12 +78,6 @@ export const useCategory: any = () => {
     }
 
     const category: any = searchData;
-    let parentCategory = category;
-
-    if (!category?.childs && category?.parent) {
-      parentCategory = category?.parent?.parent;
-    }
-
     if (category) {
       return {
         label: category.name,
@@ -97,7 +91,7 @@ export const useCategory: any = () => {
   };
 
   return {
-    loading: computed(() => loading.value),
+    loading,
     loadProducts,
     loadCategoryList,
     loadCategory,

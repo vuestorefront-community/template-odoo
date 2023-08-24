@@ -14,6 +14,11 @@ export default <Config>{
         xxl: '1440px',
         xs: '376px'
       },
+      zIndex: {
+        60: '60',
+        80: '60',
+        100: '100',
+      }
     },
   },
 };

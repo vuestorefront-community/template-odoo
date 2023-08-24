@@ -12,7 +12,10 @@
       :disabled="pagination.selectedPage <= 1"
       variant="tertiary"
       class="gap-3"
-      @click="pagination.prev"
+      @click="
+        pagination.prev();
+        setParams({ ['page']: pagination.selectedPage });
+      "
     >
       <template #prefix>
         <SfIconChevronLeft />
@@ -91,7 +94,7 @@
             :aria-current="pagination.selectedPage === page"
             @click="
               pagination.setPage(page);
-              setParams({ ['page']: pagination.selectedPage });
+              setParams({ ['page']: page });
             "
           >
             {{ page }}
@@ -150,7 +153,10 @@
       :disabled="pagination.selectedPage >= pagination.totalPages"
       variant="tertiary"
       class="gap-3"
-      @click="pagination.next"
+      @click="
+        pagination.next();
+        setParams({ ['page']: pagination.selectedPage });
+      "
     >
       <span class="hidden sm:inline-flex">Next</span>
       <template #suffix>
@@ -175,6 +181,8 @@ const props = defineProps({
   totalItems: Number,
   maxVisiblePages: Number,
 });
+const route = useRoute();
+const router = useRouter();
 
 const {
   currentPage,
@@ -182,7 +190,7 @@ const {
   totalItems,
   maxVisiblePages: maxVisiblePagesProperty,
 }: any = toRefs(props);
-const pagination = computed(() =>
+const pagination = computed<any>(() =>
   reactive(
     usePagination({
       totalItems: totalItems.value,
@@ -193,12 +201,11 @@ const pagination = computed(() =>
   )
 );
 
-const route = useRoute();
-const router = useRouter();
-
 const setParams = (filter: any) => {
   router.push({ query: { ...route.query, ...filter } });
 };
 
-onMounted(() => {});
+onMounted(() => {
+  pagination.value?.setPage(route.query.page ? Number(route.query.page) : 1);
+});
 </script>
