@@ -8,6 +8,10 @@ import {
   SfIconFavorite,
 } from '@storefront-ui/vue';
 
+import { useCart } from '@/composables';
+
+const { cartAdd } = useCart();
+
 defineProps({
   imageUrl: {
     type: String,
@@ -45,7 +49,15 @@ defineProps({
     type: Number,
     required: false,
   },
+  firstVariant: {
+    type: Object,
+    required: true
+  }
 });
+
+const addToCart = async (firstVariant: any) => {
+  const response = await cartAdd(firstVariant.id, 1);
+};
 
 const NuxtLink = resolveComponent('NuxtLink');
 </script>
@@ -102,7 +114,8 @@ const NuxtLink = resolveComponent('NuxtLink');
           >${{ specialPrice }}</span
         >
       </div>
-      <SfButton type="button" class="absolute bottom-2" size="sm">
+      <SfButton type="button" class="absolute bottom-2" size="sm" @click="addToCart(firstVariant)">
+
         <template #prefix>
           <SfIconShoppingCart size="sm" />
         </template>

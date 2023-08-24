@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useProduct, useProductAttributes } from '@/composables';
-import { ProductImage } from '@erpgap/odoo-sdk-api-client';
+import { useProduct, useProductAttributes, useCart } from '@/composables';
+
 import {
   SfButton,
   SfCounter,
@@ -21,8 +21,9 @@ import { LocationQueryRaw } from 'vue-router';
 
 const route = useRoute();
 const router = useRouter();
-const { loading, loadProductDetails } = useProduct();
+const { loadProductDetails } = useProduct();
 const { getRegularPrice, getSpecialPrice } = useProductAttributes();
+const { cartAdd } = useCart();
 
 const { product } = await loadProductDetails({
   slug: `/product/${route.params.slug}`,
@@ -94,7 +95,11 @@ const updateFilter = (filter: LocationQueryRaw | undefined) => {
   });
 };
 
-onMounted(() => {});
+const addToCart = async () => {
+  const response = await cartAdd(product.firstVariant.id, quantitySelectorValue.value);
+};
+
+
 </script>
 
 <template>
@@ -175,6 +180,7 @@ onMounted(() => {});
               class="min-w-[145px] flex-grow flex-shrink-0 basis-0"
             />
             <SfButton
+              @click="addToCart"
               type="button"
               size="lg"
               class="flex-grow-[2] flex-shrink basis-auto whitespace-nowrap"
