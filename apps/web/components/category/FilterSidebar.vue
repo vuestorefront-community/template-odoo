@@ -67,9 +67,9 @@ const sortBy = computed(() =>
 );
 const selectedFilters = ref<any>([]);
 const isFilterSelected = (option: any) => {
-  return selectedFilters.value.some((filter: { id: any }) => {
-    return String(filter.id) === String(option.label);
-  });
+  return selectedFilters.value.some(
+    (filter: { id: any }) => String(filter.id) === String(option.value)
+  );
 };
 const isItemActive = (selectedValue: string) => {
   return selectedFilters.value?.includes(selectedValue);
@@ -170,6 +170,7 @@ onMounted(() => {
   }
 });
 </script>
+
 <template>
   <aside class="w-full md:max-w-[376px]">
     <div
@@ -302,7 +303,7 @@ onMounted(() => {
               </fieldset>
             </template>
             <ul
-              v-if="facet.type === 'select' && facet.label === 'Duration'"
+              v-if="facet.type === 'select'"
               class="grid grid-cols-5 gap-2 px-3"
             >
               <li
@@ -312,38 +313,11 @@ onMounted(() => {
                 <SfChip
                   class="w-full"
                   size="sm"
-                  v-model="selectedFilters"
-                  :input-props="{
-                    value: {
-                      filterName: facet.label,
-                      label: value,
-                      id: value,
-                    },
-                  }"
-                >
-                  {{ label }}
-                </SfChip>
-              </li>
-            </ul>
-            <ul
-              v-if="facet.type === 'select' && facet.label !== 'Duration'"
-              class="grid grid-cols-5 gap-2 px-3"
-            >
-              <li
-                v-for="{ id, value, label } in serializeSize(facet.options)"
-                :key="id"
-              >
-                <SfChip
-                  class="w-full"
-                  size="sm"
-                  v-model="selectedFilters"
-                  :input-props="{
-                    value: {
-                      filterName: facet.label,
-                      label,
-                      id: value,
-                    },
-                  }"
+                  :input-props="{ value }"
+                  :model-value="isFilterSelected({ id, value, label })"
+                  @update:model-value="
+                    selectedFilter(facet, { id, value, label })
+                  "
                 >
                   {{ label }}
                 </SfChip>
@@ -357,14 +331,11 @@ onMounted(() => {
                 <SfChip
                   class="w-full"
                   size="sm"
-                  v-model="selectedFilters"
-                  :input-props="{
-                    value: {
-                      filterName: facet.label,
-                      label: value,
-                      id: value,
-                    },
-                  }"
+                  :input-props="{ value }"
+                  :model-value="isFilterSelected({ id, value, label })"
+                  @update:model-value="
+                    selectedFilter(facet, { id, value, label })
+                  "
                 >
                   {{ label }}
                 </SfChip>
@@ -379,7 +350,9 @@ onMounted(() => {
                 :class="[
                   'px-4 bg-transparent hover:bg-transparent',
                   {
-                    'font-medium': isItemActive(value),
+                    'font-medium':
+                      isItemActive(value) ||
+                      isFilterSelected({ id, value, label }),
                   },
                 ]"
                 :selected="isItemActive(value)"
@@ -387,13 +360,12 @@ onMounted(() => {
                 <template #prefix>
                   <input
                     v-model="selectedFilters"
-                    :value="{
-                      filterName: facet.label,
-                      label: value,
-                      id: value,
-                    }"
+                    :value="label"
                     class="appearance-none peer"
                     type="checkbox"
+                    @update:model-value="
+                      selectedFilter(facet, { id, value, label })
+                    "
                   />
                   <span
                     class="inline-flex items-center justify-center p-1 transition duration-300 rounded-full cursor-pointer ring-1 ring-neutral-200 ring-inset outline-offset-2 outline-secondary-600 peer-checked:ring-2 peer-checked:ring-primary-700 peer-hover:bg-primary-100 peer-[&:not(:checked):hover]:ring-primary-200 peer-active:bg-primary-200 peer-active:ring-primary-300 peer-disabled:cursor-not-allowed peer-disabled:bg-disabled-100 peer-disabled:opacity-50 peer-disabled:ring-1 peer-disabled:ring-disabled-200 peer-disabled:hover:ring-disabled-200 peer-checked:hover:ring-primary-700 peer-checked:active:ring-primary-700 peer-focus-visible:outline"
@@ -420,7 +392,7 @@ onMounted(() => {
       <SfButton variant="secondary" class="w-full mr-3" @click="clearFilters">
         {{ $t('clearFilters') }}
       </SfButton>
-      <SfButton class="w-full" @click="applyFilters">{{
+      <SfButton class="w-full" @close="close" @click="applyFilters">{{
         $t('showProducts')
       }}</SfButton>
     </div>
