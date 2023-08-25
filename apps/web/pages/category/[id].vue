@@ -117,11 +117,11 @@ onMounted(() => {
     <h1 class="font-bold typography-headline-3 md:typography-headline-2 mb-10">
       All products
     </h1>
-    <div class="flex flex-row items-stretch">
+    <div class="grid grid-cols-12">
       <LazyCategoryMobileSidebar
         :is-open="isOpen"
         @close="close"
-        class="lg:hidden"
+        class="col-span-12 lg:col-span-3"
       >
         <template #default>
           <CategoryFilterSidebar
@@ -130,55 +130,56 @@ onMounted(() => {
           />
         </template>
       </LazyCategoryMobileSidebar>
-      <template v-if="!productLoading">
-        <div v-if="products.length > 0" class="lg:ml-10">
-          <div class="flex justify-between items-center mb-6">
-            <span class="font-bold font-headings md:text-lg"
-              >{{ pagination.totalItems }} Products
-            </span>
-            <SfButton
-              @click="open"
-              variant="tertiary"
-              class="lg:hidden whitespace-nowrap"
+      <div class="col-span-12 lg:col-span-9 gap-x-12">
+        <template v-if="!productLoading">
+          <div v-if="products.length > 0">
+            <div class="flex justify-between items-center mb-6">
+              <span class="font-bold font-headings md:text-lg"
+                >{{ pagination.totalItems }} Products
+              </span>
+              <SfButton
+                @click="open"
+                variant="tertiary"
+                class="lg:hidden whitespace-nowrap"
+              >
+                <template #prefix>
+                  <SfIconTune />
+                </template>
+                Filter
+              </SfButton>
+            </div>
+            <section
+              class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
             >
-              <template #prefix>
-                <SfIconTune />
-              </template>
-              {{ $t('listSettings') }}
-            </SfButton>
-          </div>
-          <section
-            class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
-          >
-            <LazyUiProductCard
-              v-for="{ id, name, firstVariant, image } in products"
-              :key="id"
-              :slug="mountUrlSlugForProductVariant(firstVariant) || ''"
-              :image-url="`https://vsfdemo15.labs.odoogap.com${image}`"
-              :image-alt="name"
-              :regular-price="getRegularPrice(firstVariant) || 250"
-              :special-price="getSpecialPrice(firstVariant)"
-              :rating-count="123"
-              :rating="Number(4)"
-              :first-variant="firstVariant"
+              <LazyUiProductCard
+                v-for="{ id, name, firstVariant, image } in products"
+                :key="id"
+                :name="name"
+                :slug="mountUrlSlugForProductVariant(firstVariant) || ''"
+                :image-url="`https://vsfdemo15.labs.odoogap.com${image}`"
+                :image-alt="name"
+                :regular-price="getRegularPrice(firstVariant) || 250"
+                :special-price="getSpecialPrice(firstVariant)"
+                :rating-count="123"
+                :rating="Number(4)"
+                :first-variant="firstVariant"
+              />
+            </section>
+            <LazyUiPagination
+              v-if="pagination.totalPages > 1"
+              class="mt-5"
+              :current-page="pagination.currentPage"
+              :total-items="pagination.totalItems"
+              :page-size="pagination.itemsPerPage"
+              :max-visible-pages="maxVisiblePages"
             />
-          </section>
-          <LazyUiPagination
-            v-if="pagination.totalPages > 1"
-            class="mt-5"
-            :current-page="pagination.currentPage"
-            :total-items="pagination.totalItems"
-            :page-size="pagination.itemsPerPage"
-            :max-visible-pages="maxVisiblePages"
-          />
-        </div>
-        <div class="min-w-full" v-else>
-          <CategoryEmptyState class="text-center" />
-        </div>
-      </template>
-      <template v-else>
-        <div class="w-full text-center">Loading Products...</div>
-      </template>
+          </div>
+          <CategoryEmptyState v-else />
+        </template>
+        <template v-else>
+          <div class="w-full text-center">Loading Products...</div>
+        </template>
+      </div>
     </div>
   </div>
 </template>
