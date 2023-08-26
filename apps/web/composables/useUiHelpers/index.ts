@@ -138,12 +138,11 @@ export const useUiHelpers: any = () => {
       if (queryParamsNotFilters.includes(label)) return;
 
       const valueList = query[label].split(',');
-
-      valueList.forEach((value: any) => {
+      valueList.forEach((value: string) => {
         if (label === 'price') {
           const item = {
             filterName: label,
-            label: 'Price',
+            label: `${value.slice(0, 2)}`,
             id: value,
           };
           formattedFilters.push(item);
@@ -158,7 +157,6 @@ export const useUiHelpers: any = () => {
         }
       });
     });
-
     return formattedFilters;
   };
 
@@ -197,7 +195,6 @@ export const useUiHelpers: any = () => {
     }
 
     delete allQuery.page;
-
     router.push({ query: allQuery });
   };
   return {
