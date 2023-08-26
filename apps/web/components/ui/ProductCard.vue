@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { useCart } from '@/composables';
 import {
   SfRating,
   SfCounter,
@@ -7,8 +8,6 @@ import {
   SfIconShoppingCart,
   SfIconFavorite,
 } from '@storefront-ui/vue';
-
-import { useCart } from '@/composables';
 
 const { cartAdd } = useCart();
 
@@ -51,7 +50,7 @@ defineProps({
   },
   firstVariant: {
     type: Object,
-    required: true
+    required: true,
   }
 });
 
@@ -114,8 +113,12 @@ const NuxtLink = resolveComponent('NuxtLink');
           >${{ specialPrice }}</span
         >
       </div>
-      <SfButton type="button" class="absolute bottom-2" size="sm" @click="addToCart(firstVariant)">
-
+      <SfButton
+        type="button"
+        class="absolute bottom-2"
+        size="sm"
+        @click="addToCart(firstVariant)"
+      >
         <template #prefix>
           <SfIconShoppingCart size="sm" />
         </template>
