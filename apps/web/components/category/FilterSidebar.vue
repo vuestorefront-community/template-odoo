@@ -10,7 +10,7 @@ import {
   SfRadio,
   SfSelect,
   SfThumbnail,
-  useDisclosure,
+  SfCheckbox,
 } from '@storefront-ui/vue';
 import { ProductFilterType } from '~/types/product';
 
@@ -69,6 +69,11 @@ const selectedFilters = ref<any>([]);
 const isFilterSelected = (option: any) => {
   return selectedFilters.value.some(
     (filter: { id: any }) => String(filter.id) === String(option.value)
+  );
+};
+const isPriceSelected = (option: any) => {
+  return selectedFilters.value.some(
+    (filter: { id: any }) => String(filter.id) === String(option.values)
   );
 };
 const isItemActive = (selectedValue: string) => {
@@ -314,7 +319,7 @@ onMounted(() => {
                   class="w-full"
                   size="sm"
                   :input-props="{ value }"
-                  :model-value="isFilterSelected({ id, value, label })"
+                  :model-value="isFilterSelected({ id, value })"
                   @update:model-value="
                     selectedFilter(facet, { id, value, label })
                   "
@@ -332,7 +337,7 @@ onMounted(() => {
                   class="w-full"
                   size="sm"
                   :input-props="{ value }"
-                  :model-value="isFilterSelected({ id, value, label })"
+                  :model-value="isFilterSelected({ id, value })"
                   @update:model-value="
                     selectedFilter(facet, { id, value, label })
                   "
@@ -350,19 +355,16 @@ onMounted(() => {
                 :class="[
                   'px-4 bg-transparent hover:bg-transparent',
                   {
-                    'font-medium':
-                      isItemActive(value) ||
-                      isFilterSelected({ id, value, label }),
+                    'font-medium': isFilterSelected({ id, value }),
                   },
                 ]"
-                :selected="isItemActive(value)"
+                :selected="isFilterSelected({ id, value })"
               >
                 <template #prefix>
-                  <input
-                    v-model="selectedFilters"
+                  <SfCheckbox
                     :value="label"
-                    class="appearance-none peer"
-                    type="checkbox"
+                    class="appearance-none peer hidden"
+                    :model-value="isFilterSelected({ id, value })"
                     @update:model-value="
                       selectedFilter(facet, { id, value, label })
                     "
