@@ -41,7 +41,7 @@ const categories = await getCategoryTree(category);
 
 const products = useState<any>('products');
 
-const productLoading = ref(true);
+const isLoading = ref(true);
 const productsForPagination = ref([]);
 const mountUrlSlugForProductVariant = (product: {
   slug: any;
@@ -61,12 +61,12 @@ const mountUrlSlugForProductVariant = (product: {
 watch(
   () => route.fullPath,
   async () => {
-    productLoading.value = true;
+    isLoading.value = true;
     const { products: AllProduct, totalProducts } = await loadProducts(
       getFacetsFromURL(route.query)
     );
     products.value = AllProduct;
-    productLoading.value = false;
+    isLoading.value = false;
     productsForPagination.value = totalProducts;
   },
   { deep: true }
@@ -103,12 +103,15 @@ watch(
   },
   { deep: true }
 );
+const totalItems = computed(() =>
+  pagination.value.totalItems === 0 ? 'No' : pagination.value.totalItems
+);
 
 onMounted(() => {
   setMaxVisiblePages(isWideScreen.value);
   products.value = AllProduct;
   productsForPagination.value = totalProducts;
-  productLoading.value = false;
+  isLoading.value = false;
 });
 </script>
 <template>
@@ -117,64 +120,67 @@ onMounted(() => {
     <h1 class="font-bold typography-headline-3 md:typography-headline-2 mb-10">
       All products
     </h1>
-    <div class="grid grid-cols-12">
-      <LazyCategoryMobileSidebar
-        :is-open="isOpen"
-        @close="close"
-        class="col-span-12 lg:col-span-3"
-      >
-        <template #default>
-          <CategoryFilterSidebar
-            :attributes="attributes"
-            :categories="categories"
-          />
-        </template>
-      </LazyCategoryMobileSidebar>
-      <div class="col-span-12 lg:col-span-9 gap-x-12">
-        <template v-if="!productLoading">
-          <div v-if="products.length > 0">
-            <div class="flex justify-between items-center mb-6">
-              <span class="font-bold font-headings md:text-lg"
-                >{{ pagination.totalItems }} Products
-              </span>
-              <SfButton
-                @click="open"
-                variant="tertiary"
-                class="lg:hidden whitespace-nowrap"
-              >
-                <template #prefix>
-                  <SfIconTune />
-                </template>
-                Filter
-              </SfButton>
-            </div>
-            <section
-              class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
-            >
-              <LazyUiProductCard
-                v-for="{ id, name, firstVariant, image } in products"
-                :key="id"
-                :name="name"
-                :slug="mountUrlSlugForProductVariant(firstVariant) || ''"
-                :image-url="`https://vsfdemo15.labs.odoogap.com${image}`"
-                :image-alt="name"
-                :regular-price="getRegularPrice(firstVariant) || 250"
-                :special-price="getSpecialPrice(firstVariant)"
-                :rating-count="123"
-                :rating="Number(4)"
-                :first-variant="firstVariant"
-              />
-            </section>
-            <LazyUiPagination
-              v-if="pagination.totalPages > 1"
-              class="mt-5"
-              :current-page="pagination.currentPage"
-              :total-items="pagination.totalItems"
-              :page-size="pagination.itemsPerPage"
-              :max-visible-pages="maxVisiblePages"
+    <div class="grid grid-cols-12 lg:gap-x-6">
+      <div class="col-span-12 lg:col-span-4 xl:col-span-3">
+        <CategoryFilterSidebar
+          class="hidden lg:block"
+          :attributes="attributes"
+          :categories="categories"
+        />
+        <LazyCategoryMobileSidebar :is-open="isOpen" @close="close">
+          <template #default>
+            <CategoryFilterSidebar
+              class="block lg:hidden"
+              :attributes="attributes"
+              :categories="categories"
             />
+          </template>
+        </LazyCategoryMobileSidebar>
+      </div>
+      <div class="col-span-12 lg:col-span-8 xl:col-span-9">
+        <template v-if="!isLoading">
+          <div class="flex justify-between items-center mb-6">
+            <span class="font-bold font-headings md:text-lg"
+              >{{ totalItems }} Products
+            </span>
+            <SfButton
+              @click="open"
+              variant="tertiary"
+              class="lg:hidden whitespace-nowrap"
+            >
+              <template #prefix>
+                <SfIconTune />
+              </template>
+              Filter
+            </SfButton>
           </div>
+          <section
+            v-if="products.length > 0"
+            class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
+          >
+            <LazyUiProductCard
+              v-for="{ id, name, firstVariant, image } in products"
+              :key="id"
+              :name="name"
+              :slug="mountUrlSlugForProductVariant(firstVariant) || ''"
+              :image-url="`https://vsfdemo15.labs.odoogap.com${image}`"
+              :image-alt="name"
+              :regular-price="getRegularPrice(firstVariant) || 250"
+              :special-price="getSpecialPrice(firstVariant)"
+              :rating-count="123"
+              :rating="Number(4)"
+              :first-variant="firstVariant"
+            />
+          </section>
           <CategoryEmptyState v-else />
+          <LazyUiPagination
+            v-if="pagination.totalPages > 1"
+            class="mt-5"
+            :current-page="pagination.currentPage"
+            :total-items="pagination.totalItems"
+            :page-size="pagination.itemsPerPage"
+            :max-visible-pages="maxVisiblePages"
+          />
         </template>
         <template v-else>
           <div class="w-full text-center">Loading Products...</div>
