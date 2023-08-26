@@ -37,7 +37,10 @@
             type="button"
             class="px-4 py-3 md:w-12 rounded-md text-neutral-500 hover:bg-primary-100 hover:text-primary-800 active:bg-primary-200 active:text-primary-900"
             :aria-current="pagination.selectedPage === 1"
-            @click="pagination.setPage(1)"
+            @click="
+              pagination.setPage(1);
+              setParams({ ['page']: 1 });
+            "
           >
             1
           </button>
@@ -66,7 +69,10 @@
             type="button"
             class="px-4 py-3 md:w-12 rounded-md text-neutral-500 hover:bg-primary-100 hover:text-primary-800 active:bg-primary-200 active:text-primary-900"
             :aria-current="pagination.endPage - 1 === pagination.selectedPage"
-            @click="pagination.setPage(pagination.endPage - 1)"
+            @click="
+              pagination.setPage(pagination.endPage - 1);
+              setParams({ ['page']: pagination.selectedPage });
+            "
           >
             {{ pagination.endPage - 1 }}
           </button>
@@ -107,7 +113,10 @@
             type="button"
             class="px-4 py-3 md:w-12 rounded-md text-neutral-500 hover:bg-primary-100 hover:text-primary-800 active:bg-primary-200 active:text-primary-900"
             aria-label="Second page"
-            @click="pagination.setPage(2)"
+            @click="
+              pagination.setPage(2);
+              setParams({ ['page']: 2 });
+            "
           >
             2
           </button>
@@ -139,7 +148,10 @@
             type="button"
             class="px-4 py-3 md:w-12 rounded-md text-neutral-500 hover:bg-primary-100 hover:text-primary-800 active:bg-primary-200 active:text-primary-900"
             :aria-current="pagination.totalPages === pagination.selectedPage"
-            @click="pagination.setPage(pagination.totalPages)"
+            @click="
+              pagination.setPage(pagination.totalPages);
+              setParams({ ['page']: pagination.totalPages });
+            "
           >
             {{ pagination.totalPages }}
           </button>

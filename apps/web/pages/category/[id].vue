@@ -86,7 +86,6 @@ watch(isTabletScreen, (value) => {
 
 const getPagination = (totalProducts: any) => {
   const itemsPerPage = totalProducts.value.input?.pageSize || 12;
-
   return {
     currentPage: 1,
     totalPages: Math.ceil(totalProducts.value / itemsPerPage) || 1,
@@ -131,6 +130,7 @@ onMounted(() => {
           <template #default>
             <CategoryFilterSidebar
               class="block lg:hidden"
+              @close="close"
               :attributes="attributes"
               :categories="categories"
             />

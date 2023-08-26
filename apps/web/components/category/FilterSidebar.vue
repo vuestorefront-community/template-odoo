@@ -14,7 +14,7 @@ import {
 } from '@storefront-ui/vue';
 import { ProductFilterType } from '~/types/product';
 
-const { close } = useDisclosure();
+const emit = defineEmits(['close']);
 const props = defineProps({
   attributes: {
     type: Array,
@@ -153,12 +153,12 @@ const applyFilters = () => {
     return typeof item === 'object';
   });
   changeFilters(filters);
-  close();
+  emit('close');
 };
 const clearFilters = () => {
   selectedFilters.value = [];
   router.push({ query: {} });
-  close();
+  emit('close');
 };
 onMounted(() => {
   selectedFilters.value = facetsFromUrlToFilter();
@@ -392,7 +392,7 @@ onMounted(() => {
       <SfButton variant="secondary" class="w-full mr-3" @click="clearFilters">
         {{ $t('clearFilters') }}
       </SfButton>
-      <SfButton class="w-full" @close="close" @click="applyFilters">{{
+      <SfButton class="w-full" @click="applyFilters">{{
         $t('showProducts')
       }}</SfButton>
     </div>
