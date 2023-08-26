@@ -50,7 +50,7 @@ defineProps({
   },
   firstVariant: {
     type: Object,
-    required: true,
+    required: false,
   }
 });
 
