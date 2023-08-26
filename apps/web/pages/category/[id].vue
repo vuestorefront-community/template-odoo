@@ -41,7 +41,7 @@ const categories = await getCategoryTree(category);
 
 const products = useState<any>('products');
 
-const productLoading = ref(true);
+const isLoading = ref(true);
 const productsForPagination = ref([]);
 const mountUrlSlugForProductVariant = (product: {
   slug: any;
@@ -61,12 +61,12 @@ const mountUrlSlugForProductVariant = (product: {
 watch(
   () => route.fullPath,
   async () => {
-    productLoading.value = true;
+    isLoading.value = true;
     const { products: AllProduct, totalProducts } = await loadProducts(
       getFacetsFromURL(route.query)
     );
     products.value = AllProduct;
-    productLoading.value = false;
+    isLoading.value = false;
     productsForPagination.value = totalProducts;
   },
   { deep: true }
@@ -86,7 +86,6 @@ watch(isTabletScreen, (value) => {
 
 const getPagination = (totalProducts: any) => {
   const itemsPerPage = totalProducts.value.input?.pageSize || 12;
-
   return {
     currentPage: 1,
     totalPages: Math.ceil(totalProducts.value / itemsPerPage) || 1,
@@ -103,12 +102,15 @@ watch(
   },
   { deep: true }
 );
+const totalItems = computed(() =>
+  pagination.value.totalItems === 0 ? 'No' : pagination.value.totalItems
+);
 
 onMounted(() => {
   setMaxVisiblePages(isWideScreen.value);
   products.value = AllProduct;
   productsForPagination.value = totalProducts;
-  productLoading.value = false;
+  isLoading.value = false;
 });
 </script>
 <template>
@@ -117,24 +119,29 @@ onMounted(() => {
     <h1 class="font-bold typography-headline-3 md:typography-headline-2 mb-10">
       All products
     </h1>
-    <div class="flex flex-row items-stretch">
-      <LazyCategoryMobileSidebar
-        :is-open="isOpen"
-        @close="close"
-        class="lg:hidden"
-      >
-        <template #default>
-          <CategoryFilterSidebar
-            :attributes="attributes"
-            :categories="categories"
-          />
-        </template>
-      </LazyCategoryMobileSidebar>
-      <template v-if="!productLoading">
-        <div v-if="products.length > 0" class="lg:ml-10">
+    <div class="grid grid-cols-12 lg:gap-x-6">
+      <div class="col-span-12 lg:col-span-4 xl:col-span-3">
+        <CategoryFilterSidebar
+          class="hidden lg:block"
+          :attributes="attributes"
+          :categories="categories"
+        />
+        <LazyCategoryMobileSidebar :is-open="isOpen" @close="close">
+          <template #default>
+            <CategoryFilterSidebar
+              class="block lg:hidden"
+              @close="close"
+              :attributes="attributes"
+              :categories="categories"
+            />
+          </template>
+        </LazyCategoryMobileSidebar>
+      </div>
+      <div class="col-span-12 lg:col-span-8 xl:col-span-9">
+        <template v-if="!isLoading">
           <div class="flex justify-between items-center mb-6">
             <span class="font-bold font-headings md:text-lg"
-              >{{ pagination.totalItems }} Products
+              >{{ totalItems }} Products
             </span>
             <SfButton
               @click="open"
@@ -144,15 +151,17 @@ onMounted(() => {
               <template #prefix>
                 <SfIconTune />
               </template>
-              {{ $t('listSettings') }}
+              Filter
             </SfButton>
           </div>
           <section
+            v-if="products.length > 0"
             class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
           >
             <LazyUiProductCard
               v-for="{ id, name, firstVariant, image } in products"
               :key="id"
+              :name="name"
               :slug="mountUrlSlugForProductVariant(firstVariant) || ''"
               :image-url="`https://vsfdemo15.labs.odoogap.com${image}`"
               :image-alt="name"
@@ -163,6 +172,7 @@ onMounted(() => {
               :first-variant="firstVariant"
             />
           </section>
+          <CategoryEmptyState v-else />
           <LazyUiPagination
             v-if="pagination.totalPages > 1"
             class="mt-5"
@@ -171,14 +181,11 @@ onMounted(() => {
             :page-size="pagination.itemsPerPage"
             :max-visible-pages="maxVisiblePages"
           />
-        </div>
-        <div class="min-w-full" v-else>
-          <CategoryEmptyState class="text-center" />
-        </div>
-      </template>
-      <template v-else>
-        <div class="w-full text-center">Loading Products...</div>
-      </template>
+        </template>
+        <template v-else>
+          <div class="w-full text-center">Loading Products...</div>
+        </template>
+      </div>
     </div>
   </div>
 </template>

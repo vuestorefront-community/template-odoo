@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useProduct, useProductAttributes, useCart } from '@/composables';
-
 import {
   SfButton,
   SfCounter,
@@ -96,10 +95,11 @@ const updateFilter = (filter: LocationQueryRaw | undefined) => {
 };
 
 const addToCart = async () => {
-  const response = await cartAdd(product.firstVariant.id, quantitySelectorValue.value);
+  const response = await cartAdd(
+    product.firstVariant.id,
+    quantitySelectorValue.value
+  );
 };
-
-
 </script>
 
 <template>

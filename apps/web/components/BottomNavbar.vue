@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="w-full fixed bottom-0 left-0 flex flex-row items-stretch md:hidden"
+    class="w-full fixed bottom-0 left-0 flex flex-row items-stretch lg:hidden"
     data-testid="navbar-bottom"
   >
     <SfButton
