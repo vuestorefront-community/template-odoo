@@ -14,7 +14,7 @@ const {
 </script>
 
 <template>
-  <!-- <TheHeader @search-modal-open="searchModalOpen" filled /> -->
+  <TheHeader @search-modal-open="searchModalOpen" filled />
   <main class="w-full narrow-container bg-white">
     <NuxtPage />
   </main>

@@ -98,14 +98,14 @@ const bannerDetails = {
       ]"
     >
       <div
-        class="flex items-center justify-between md:justify-start h-full w-full narrow-container"
+        class="flex items-center justify-between lg:justify-start h-full w-full narrow-container"
       >
         <NuxtLink to="/" aria-label="Sf Homepage" class="h-6 md:h-7 -mt-1.5">
           <VsfLogo />
         </NuxtLink>
         <SfButton
           v-if="filled"
-          class="hidden md:flex text-white font-body bg-transparent hover:bg-primary-800 hover:text-white active:bg-primary-900 active:text-white ml-6"
+          class="hidden lg:flex text-white font-body bg-transparent hover:bg-primary-800 hover:text-white active:bg-primary-900 active:text-white ml-6"
           type="button"
           :aria-haspopup="true"
           :aria-expanded="isOpen"
@@ -136,13 +136,13 @@ const bannerDetails = {
                   v-model="isOpen"
                   disable-click-away
                   placement="top"
-                  class="bg-white p-0 max-h-screen overflow-y-auto md:!absolute md:!top-[5rem] max-w-full md:p-6 top-index"
+                  class="bg-white p-0 max-h-screen overflow-y-auto lg:!absolute lg:!top-[5rem] max-w-full lg:p-6 top-index"
                 >
                   <div
-                    class="grid grid-cols-1 md:gap-x-6 md:grid-cols-3 md:narrow-container md:relative"
+                    class="grid grid-cols-1 lg:gap-x-6 lg:grid-cols-3 lg:narrow-container lg:relative"
                   >
                     <div
-                      class="sticky top-0 flex items-center justify-between py-2 px-4 bg-primary-700 md:hidden w-full"
+                      class="sticky top-0 flex items-center justify-between py-2 px-4 bg-primary-700 lg:hidden w-full"
                     >
                       <div
                         class="flex items-center typography-text-lg font-medium text-white"
@@ -167,7 +167,7 @@ const bannerDetails = {
                     >
                       <h2
                         role="presentation"
-                        class="typography-text-base font-medium text-neutral-900 whitespace-nowrap p-4 md:py-1.5"
+                        class="typography-text-base font-medium text-neutral-900 whitespace-nowrap p-4 lg:py-1.5"
                       >
                         {{ name }}
                       </h2>
@@ -183,7 +183,7 @@ const bannerDetails = {
                             :href="slug"
                             size="sm"
                             role="none"
-                            class="typography-text-base md:typography-text-sm py-4 md:py-1.5"
+                            class="typography-text-base lg:typography-text-sm py-4 lg:py-1.5"
                           >
                             {{ name }}
                           </SfListItem>
@@ -191,7 +191,7 @@ const bannerDetails = {
                       </ul>
                     </div>
                     <div
-                      class="flex flex-col items-center justify-center bg-neutral-100 md:rounded-md border-neutral-300 overflow-hidden grow"
+                      class="flex flex-col items-center justify-center bg-neutral-100 lg:rounded-md border-neutral-300 overflow-hidden grow"
                     >
                       <NuxtImg
                         :src="bannerDetails.image"
@@ -209,7 +209,7 @@ const bannerDetails = {
                       size="sm"
                       variant="tertiary"
                       aria-label="Close navigation menu"
-                      class="hidden md:block md:absolute md:right-0 md:top-0 hover:bg-white active:bg-white"
+                      class="hidden lg:block lg:absolute lg:right-0 lg:top-0 hover:bg-white active:bg-white"
                       @click="close()"
                     >
                       <SfIconClose class="text-neutral-500" />
@@ -223,7 +223,7 @@ const bannerDetails = {
         <form
           v-if="filled"
           role="search"
-          class="hidden md:flex flex-[100%] mt-2 md:mt-0 md:ml-10 pb-2 md:pb-0"
+          class="hidden lg:flex flex-[100%] mt-2 md:mt-0 md:ml-10 pb-2 md:pb-0"
           @submit.prevent="search"
         >
           <SfInput
@@ -251,7 +251,7 @@ const bannerDetails = {
         </form>
         <nav
           v-if="filled"
-          class="hidden md:flex flex-nowrap justify-end items-center md:ml-10 gap-x-1"
+          class="hidden lg:flex flex-nowrap justify-end items-center md:ml-10 gap-x-1"
           aria-label="SF Navigation"
         >
           <SfButton
@@ -284,14 +284,14 @@ const bannerDetails = {
           <SfButton
             v-if="filled"
             variant="tertiary"
-            class="relative text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 rounded-md md:hidden"
+            class="relative text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 rounded-md lg:hidden"
             square
             @click="$emit('searchModalOpen')"
           >
             <SfIconSearch />
           </SfButton>
           <SfButton
-            class="block md:hidden text-white font-body bg-transparent hover:bg-primary-800 hover:text-white active:bg-primary-900 active:text-white self-end"
+            class="block lg:hidden text-white font-body bg-transparent hover:bg-primary-800 hover:text-white active:bg-primary-900 active:text-white self-end"
             type="button"
             :aria-haspopup="true"
             :aria-expanded="isOpen"
