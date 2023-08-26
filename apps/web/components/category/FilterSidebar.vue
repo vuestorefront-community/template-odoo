@@ -159,6 +159,7 @@ const applyFilters = () => {
   });
   changeFilters(filters);
   emit('close');
+  facetsFromUrlToFilter();
 };
 const clearFilters = () => {
   selectedFilters.value = [];
