@@ -15,7 +15,7 @@ const props = defineProps({
 });
 defineEmits(['close']);
 
-const collectedProducts = computed(() => props.collectedProducts);
+const { isOpen, collectedProducts } = toRefs(props);
 const withBase = (filepath: string) =>
   `https://vsfdemo15.labs.odoogap.com${filepath}`;
 </script>
@@ -30,7 +30,7 @@ const withBase = (filepath: string) =>
     leave-to-class="translate-x-full"
   >
     <SfDrawer
-      v-show="props.isOpen"
+      v-show="isOpen"
       :model-value="true"
       :disable-click-away="true"
       :disable-esc="true"
