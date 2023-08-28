@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useCart } from '@/composables';
+import { useCart, useWishlist } from '@/composables';
 import {
   SfRating,
   SfCounter,
@@ -10,6 +10,7 @@ import {
 } from '@storefront-ui/vue';
 
 const { cartAdd } = useCart();
+const { WishlistAddItem } = useWishlist();
 
 defineProps({
   imageUrl: {
@@ -51,11 +52,15 @@ defineProps({
   firstVariant: {
     type: Object,
     required: false,
-  }
+  },
 });
 
 const addToCart = async (firstVariant: any) => {
   const response = await cartAdd(firstVariant.id, 1);
+};
+const addToWishlist = async (firstVariant: any) => {
+  const response = await WishlistAddItem(Number(firstVariant.id));
+  console.log(response);
 };
 
 const NuxtLink = resolveComponent('NuxtLink');
@@ -80,6 +85,7 @@ const NuxtLink = resolveComponent('NuxtLink');
         square
         class="absolute bottom-0 right-0 mr-2 mb-2 bg-white border border-neutral-200 !rounded-full"
         aria-label="Add to wishlist"
+        @click="addToWishlist"
       >
         <SfIconFavorite size="sm" />
       </SfButton>
