@@ -114,7 +114,7 @@ const handleWishlistSideBar = async () => {
           <SfIconPerson />
         </div>
       </template>
-      {{ $t('account') }}
+      account
     </SfButton>
   </nav>
 </template>
