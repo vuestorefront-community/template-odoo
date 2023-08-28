@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { SfLink, SfButton } from '@storefront-ui/vue';
 
+const NuxtLink = resolveComponent('NuxtLink');
 type WishlistProductCardProps = {
   imageUrl?: string | null;
   imageAlt?: string | null;
@@ -10,8 +11,8 @@ type WishlistProductCardProps = {
   slug: string;
 };
 
-defineProps<WishlistProductCardProps>();
-const NuxtLink = resolveComponent('NuxtLink');
+const props = defineProps<WishlistProductCardProps>();
+const { imageUrl, imageAlt, name, price, specialPrice, slug } = toRefs(props);
 </script>
 
 <template>
@@ -20,7 +21,7 @@ const NuxtLink = resolveComponent('NuxtLink');
     data-testid="cart-product-card"
   >
     <div class="relative overflow-hidden rounded-md">
-      <SfLink :tag="NuxtLink" to="/product/1">
+      <SfLink :to="slug" :tag="NuxtLink">
         <NuxtImg
           class="border rounded-md border-neutral-200"
           :src="imageUrl ?? '/images/product.webp'"
@@ -35,7 +36,7 @@ const NuxtLink = resolveComponent('NuxtLink');
       <div class="flex flex-col min-w-[180px] flex-1">
         <SfLink
           :tag="NuxtLink"
-          to="/product/1"
+          :to="slug"
           variant="secondary"
           class="no-underline typography-text-sm sm:typography-text-lg"
         >
@@ -63,8 +64,8 @@ const NuxtLink = resolveComponent('NuxtLink');
       </div>
       <div>
         <SfButton type="button" variant="secondary" size="sm">
-        Remove
-      </SfButton>
+          Remove
+        </SfButton>
       </div>
     </div>
   </div>
