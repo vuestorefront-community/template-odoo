@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useCategory } from '@/composables';
+import { useCategory, useWishlist } from '@/composables';
 import {
   SfButton,
   SfDrawer,
@@ -23,7 +23,8 @@ defineProps<{
 }>();
 
 const { loadCategoryList } = useCategory();
-const { isOpen, toggle, close, open } = useDisclosure();
+const { loadWishlist } = useWishlist();
+const { isOpen, toggle, close } = useDisclosure();
 const {
   isOpen: wishlistIsOpen,
   toggle: wishlistToggle,
@@ -79,7 +80,12 @@ const bannerDetails = {
   image: '/images/watch.png',
   title: 'New in designer watches',
 };
-console.log(wishlistIsOpen);
+
+const handleWishlistSideBar = async () => {
+  wishlistToggle();
+  const collectedProducts = await loadWishlist();
+  console.log(collectedProducts, 'sidebar');
+};
 </script>
 
 <template>
@@ -261,14 +267,11 @@ console.log(wishlistIsOpen);
               :aria-expanded="wishlistIsOpen"
               variant="tertiary"
               square
-              @click="wishlistToggle"
+              @click="handleWishlistSideBar"
             >
               <SfIconFavorite class="text-white" />
             </SfButton>
-            <WishlistSidebar
-              :is-open="wishlistIsOpen"
-              @close="wishlistClose"
-            />
+            <WishlistSidebar :is-open="wishlistIsOpen" @close="wishlistClose" />
           </div>
           <SfButton
             v-for="{ ariaLabel, label, icon, link, badge, role } in actionItems"

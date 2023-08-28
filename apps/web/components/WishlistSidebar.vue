@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { SfDrawer, SfButton, SfIconClose } from '@storefront-ui/vue';
 
-export type CategorySidebarProps = {
-  isOpen: boolean;
-};
-export type CategorySidebarEmits = (event: 'close') => void;
-
-defineProps<CategorySidebarProps>();
-defineEmits<CategorySidebarEmits>();
+defineProps({
+  isOpen: {
+    type: Boolean,
+    required: true,
+  },
+});
+defineEmits(['close']);
 </script>
 
 <template>
@@ -47,7 +47,7 @@ defineEmits<CategorySidebarEmits>();
           </div>
           <div
             v-else
-            class="flex items-center justify-center flex-col pt-24 pb-32 text-black"
+            class="flex items-center justify-center flex-col py-48 text-black"
             data-testid="cart-page-content"
           >
             <NuxtImg
