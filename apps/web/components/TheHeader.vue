@@ -23,7 +23,7 @@ defineProps<{
 }>();
 
 const { loadCategoryList } = useCategory();
-const { loadWishlist } = useWishlist();
+const { loading, loadWishlist } = useWishlist();
 const { isOpen, toggle, close } = useDisclosure();
 const {
   isOpen: wishlistIsOpen,
@@ -80,7 +80,7 @@ const bannerDetails = {
   title: 'New in designer watches',
 };
 
-const collectedProducts: any = ref('');
+const collectedProducts: any = useState('wishlist');
 const handleWishlistSideBar = async () => {
   wishlistToggle();
   collectedProducts.value = await loadWishlist();
@@ -272,6 +272,7 @@ const handleWishlistSideBar = async () => {
             </SfButton>
             <WishlistSidebar
               :collected-products="collectedProducts"
+              :loading="loading"
               :is-open="wishlistIsOpen"
               @close="wishlistClose"
             />

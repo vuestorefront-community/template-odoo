@@ -39,7 +39,7 @@ const { category } = await loadCategory({
 
 const categories = await getCategoryTree(category);
 
-const products = useState<any>('products');
+const products = useState<any>('products', () => []);
 
 const isLoading = ref(true);
 const productsForPagination = ref([]);

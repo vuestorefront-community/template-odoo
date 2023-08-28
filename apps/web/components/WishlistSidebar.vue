@@ -11,6 +11,7 @@ const props = defineProps({
     required: false,
     default: {},
   },
+  loading: Boolean,
 });
 defineEmits(['close']);
 
@@ -50,14 +51,14 @@ const withBase = (filepath: string) =>
             </template>
           </SfButton>
         </div>
-        <div>
+        <div v-if="!loading">
           <div
             v-if="collectedProducts"
             class="overflow-y-scroll h-[800px] p-4 text-black"
           >
             <div class="flex items-center font-medium pb-6">
               <p class="text-gray-600 mr-1">Number of products :</p>
-              {{ collectedProducts.wishlistItems.length }}
+              {{ collectedProducts?.wishlistItems?.length }}
             </div>
             <div
               v-for="{ product, id } in collectedProducts.wishlistItems"
@@ -76,10 +77,6 @@ const withBase = (filepath: string) =>
                 :slug="product.slug"
               />
             </div>
-            <div class="flex items-center font-medium pb-6">
-              <p class="text-gray-600 mr-1">Total Price :</p>
-              {{ collectedProducts.wishlistItems.length }}
-            </div>
           </div>
           <div
             v-else
@@ -94,6 +91,9 @@ const withBase = (filepath: string) =>
             />
             <h2 class="mt-8 font-medium">Your Wishlist is empty</h2>
           </div>
+        </div>
+        <div class="flex items-center justify-center h-full" v-else>
+          <p class="text-black inline">loading...</p>
         </div>
       </div>
     </SfDrawer>
