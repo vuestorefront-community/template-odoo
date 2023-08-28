@@ -24,12 +24,13 @@ defineEmits<CategorySidebarEmits>();
       :model-value="true"
       :disable-click-away="true"
       :disable-esc="true"
-      class="w-full shadow-none lg:translate-x-0 z-[100] lg:z-0 lg:static lg:!block -translate-x-full shrink-0 lg:w-[303px] bg-white"
+      placement="right"
+      class="shadow-none z-[100] w-full lg:w-[400px] bg-white"
       data-testid="category-sidebar"
     >
-      <div class="grid grid-rows-category-sidebar h-full lg:block">
-        <div class="p-4 flex justify-between items-center lg:hidden">
-          <span class="font-bold text-lg">Filter</span>
+      <div class="flex flex-col h-full">
+        <div class="p-4 flex justify-between items-center">
+          <span class="font-bold text-lg text-black">Wishlist</span>
           <SfButton
             variant="tertiary"
             @click="$emit('close')"
@@ -40,8 +41,23 @@ defineEmits<CategorySidebarEmits>();
             </template>
           </SfButton>
         </div>
-        <div class="overflow-y-auto lg:overflow-y-visible py-4 lg:p-0">
-          <slot />
+        <div>
+          <div v-if="false" class="overflow-y-auto p-4 text-black">
+            This is wishlist
+          </div>
+          <div
+            v-else
+            class="flex items-center justify-center flex-col pt-24 pb-32 text-black"
+            data-testid="cart-page-content"
+          >
+            <NuxtImg
+              src="/images/empty-cart.svg"
+              :alt="$t('emptyCartImgAlt')"
+              width="192"
+              height="192"
+            />
+            <h2 class="mt-8">Your Wishlist is empty</h2>
+          </div>
         </div>
       </div>
     </SfDrawer>

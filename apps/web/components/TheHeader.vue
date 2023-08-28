@@ -23,7 +23,13 @@ defineProps<{
 }>();
 
 const { loadCategoryList } = useCategory();
-const { isOpen, toggle, close } = useDisclosure();
+const { isOpen, toggle, close, open } = useDisclosure();
+const {
+  isOpen: wishlistIsOpen,
+  toggle: wishlistToggle,
+  close: wishlistClose,
+  open: wishlistOpen,
+} = useDisclosure();
 const NuxtLink = resolveComponent('NuxtLink');
 
 const menuRef = ref();
@@ -52,14 +58,6 @@ const search = () => {
 };
 const actionItems = [
   {
-    icon: SfIconFavorite,
-    label: '',
-    ariaLabel: 'Wishlist',
-    role: 'button',
-    badge: true,
-    link: '#',
-  },
-  {
     icon: SfIconShoppingCart,
     label: '',
     ariaLabel: 'Cart',
@@ -81,6 +79,7 @@ const bannerDetails = {
   image: '/images/watch.png',
   title: 'New in designer watches',
 };
+console.log(wishlistIsOpen);
 </script>
 
 <template>
@@ -251,9 +250,26 @@ const bannerDetails = {
         </form>
         <nav
           v-if="filled"
-          class="hidden lg:flex flex-nowrap justify-end items-center md:ml-10 gap-x-1"
+          class="flex flex-nowrap justify-end items-center md:ml-10 gap-x-1"
           aria-label="SF Navigation"
         >
+          <div>
+            <SfButton
+              class="block text-white font-body bg-transparent hover:bg-primary-800 hover:text-white active:bg-primary-900 active:text-white self-end"
+              type="button"
+              :aria-haspopup="true"
+              :aria-expanded="wishlistIsOpen"
+              variant="tertiary"
+              square
+              @click="wishlistToggle"
+            >
+              <SfIconFavorite class="text-white" />
+            </SfButton>
+            <WishlistSidebar
+              :is-open="wishlistIsOpen"
+              @close="wishlistClose"
+            />
+          </div>
           <SfButton
             v-for="{ ariaLabel, label, icon, link, badge, role } in actionItems"
             :key="ariaLabel"
