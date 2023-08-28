@@ -7,10 +7,8 @@ export const useWishlist: any = () => {
   const loadWishlist = async () => {
     try {
       loading.value = true;
-      const { data } = await sdk.odoo.wishlistLoad();
-      return {
-        data,
-      };
+      const { data }: any = await sdk.odoo.wishlistLoad();
+      return data.wishlistItems;
     } catch (err) {
       console.log(err);
     } finally {
@@ -18,16 +16,14 @@ export const useWishlist: any = () => {
     }
   };
 
-  const WishlistAddItem = async () => {
+  const WishlistAddItem = async (productId: number) => {
     try {
       loading.value = true;
-      const { data } = await sdk.odoo.wishlistAdd(
+      const { data }: any = await sdk.odoo.wishlistAdd(
         { productId },
         { wishlistAdd: 'customQuery' }
       );
-      return {
-        data,
-      };
+      return data.wishlistAddItem;
     } catch (err) {
       console.log(err);
     } finally {

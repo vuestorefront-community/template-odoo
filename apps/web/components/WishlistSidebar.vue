@@ -1,26 +1,35 @@
 <script setup lang="ts">
 import { SfDrawer, SfButton, SfIconClose } from '@storefront-ui/vue';
 
-defineProps({
+const props = defineProps({
   isOpen: {
     type: Boolean,
     required: true,
   },
+  collectedProducts: {
+    type: Object,
+    required: false,
+    default: {},
+  },
 });
 defineEmits(['close']);
+
+const collectedProducts = computed(() => props.collectedProducts);
+const withBase = (filepath: string) =>
+  `https://vsfdemo15.labs.odoogap.com${filepath}`;
 </script>
 
 <template>
   <transition
     enter-active-class="transition duration-500 ease-in-out"
     leave-active-class="transition duration-500 ease-in-out"
-    enter-from-class="-translate-x-full"
+    enter-from-class="translate-x-full"
     enter-to-class="translate-x-0"
     leave-from-class="translate-x-0"
-    leave-to-class="-translate-x-full"
+    leave-to-class="translate-x-full"
   >
     <SfDrawer
-      v-show="isOpen"
+      v-show="props.isOpen"
       :model-value="true"
       :disable-click-away="true"
       :disable-esc="true"
@@ -42,8 +51,35 @@ defineEmits(['close']);
           </SfButton>
         </div>
         <div>
-          <div v-if="false" class="overflow-y-auto p-4 text-black">
-            This is wishlist
+          <div
+            v-if="collectedProducts"
+            class="overflow-y-scroll h-[800px] p-4 text-black"
+          >
+            <div class="flex items-center font-medium pb-6">
+              <p class="text-gray-600 mr-1">Number of products :</p>
+              {{ collectedProducts.wishlistItems.length }}
+            </div>
+            <div
+              v-for="{ product, id } in collectedProducts.wishlistItems"
+              :key="id"
+            >
+              <WishlistCollectedProductCard
+                :image-url="withBase(product.image)"
+                :image-alt="product.name"
+                :name="product.name ?? ''"
+                :price="
+                  product?.firstVariant?.combinationInfoVariant?.list_price
+                "
+                :special-price="
+                  product?.firstVariant?.combinationInfoVariant?.price
+                "
+                :slug="product.slug"
+              />
+            </div>
+            <div class="flex items-center font-medium pb-6">
+              <p class="text-gray-600 mr-1">Total Price :</p>
+              {{ collectedProducts.wishlistItems.length }}
+            </div>
           </div>
           <div
             v-else
@@ -56,7 +92,7 @@ defineEmits(['close']);
               width="192"
               height="192"
             />
-            <h2 class="mt-8">Your Wishlist is empty</h2>
+            <h2 class="mt-8 font-medium">Your Wishlist is empty</h2>
           </div>
         </div>
       </div>

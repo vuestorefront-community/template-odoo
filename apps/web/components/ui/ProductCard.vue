@@ -59,7 +59,7 @@ const addToCart = async (firstVariant: any) => {
   const response = await cartAdd(firstVariant.id, 1);
 };
 const addToWishlist = async (firstVariant: any) => {
-  const response = await WishlistAddItem(Number(firstVariant.id));
+  const response = await WishlistAddItem(firstVariant.id);
   console.log(response);
 };
 
@@ -85,7 +85,7 @@ const NuxtLink = resolveComponent('NuxtLink');
         square
         class="absolute bottom-0 right-0 mr-2 mb-2 bg-white border border-neutral-200 !rounded-full"
         aria-label="Add to wishlist"
-        @click="addToWishlist"
+        @click="addToWishlist(firstVariant)"
       >
         <SfIconFavorite size="sm" />
       </SfButton>
