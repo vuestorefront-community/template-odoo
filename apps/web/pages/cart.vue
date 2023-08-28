@@ -42,7 +42,7 @@ const cart = ref({
   <div v-if="data" class="pb-20">
     <div class="flex justify-between mt-8 mb-10">
       <h1 class="font-bold typography-headline-3 md:typography-headline-2">
-        Checkout
+        Cart
       </h1>
       <SfButton
         :tag="NuxtLink"
@@ -65,7 +65,7 @@ const cart = ref({
         <template #prefix>
           <SfIconArrowBack />
         </template>
-        {{ $t('backToCart') }}
+        {{ $t('backToShopping') }}
       </SfButton>
     </div>
     <div

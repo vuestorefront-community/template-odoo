@@ -29,7 +29,6 @@ const {
   isOpen: wishlistIsOpen,
   toggle: wishlistToggle,
   close: wishlistClose,
-  open: wishlistOpen,
 } = useDisclosure();
 const NuxtLink = resolveComponent('NuxtLink');
 
@@ -81,10 +80,10 @@ const bannerDetails = {
   title: 'New in designer watches',
 };
 
+const collectedProducts: any = ref('');
 const handleWishlistSideBar = async () => {
   wishlistToggle();
-  const collectedProducts = await loadWishlist();
-  console.log(collectedProducts, 'sidebar');
+  collectedProducts.value = await loadWishlist();
 };
 </script>
 
@@ -256,7 +255,7 @@ const handleWishlistSideBar = async () => {
         </form>
         <nav
           v-if="filled"
-          class="flex flex-nowrap justify-end items-center md:ml-10 gap-x-1"
+          class="hidden lg:flex flex-nowrap justify-end items-center md:ml-10 gap-x-1"
           aria-label="SF Navigation"
         >
           <div>
@@ -271,7 +270,11 @@ const handleWishlistSideBar = async () => {
             >
               <SfIconFavorite class="text-white" />
             </SfButton>
-            <WishlistSidebar :is-open="wishlistIsOpen" @close="wishlistClose" />
+            <WishlistSidebar
+              :collected-products="collectedProducts"
+              :is-open="wishlistIsOpen"
+              @close="wishlistClose"
+            />
           </div>
           <SfButton
             v-for="{ ariaLabel, label, icon, link, badge, role } in actionItems"
