@@ -12,7 +12,10 @@ const props = defineProps({
     required: false,
     default: {},
   },
-  loading: Boolean,
+  loading: {
+    type: Boolean,
+    required: true,
+  },
 });
 const emit = defineEmits(['close']);
 
@@ -75,7 +78,7 @@ const withBase = (filepath: string) =>
                 </div>
                 <div v-for="{ product, id } in collectedProducts" :key="id">
                   <WishlistCollectedProductCard
-                    :id="product.firstVariant.id || product.id"
+                    :id="id"
                     :image-url="withBase(product.image)"
                     :image-alt="product.name"
                     :name="product.name ?? ''"

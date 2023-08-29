@@ -17,9 +17,11 @@ const props = defineProps<WishlistProductCardProps>();
 const { id, imageUrl, imageAlt, name, price, specialPrice, slug } =
   toRefs(props);
 
-const { WishlistRemoveItem } = useWishlist();
+const { WishlistRemoveItem, loadWishlist } = useWishlist();
+
 const removeFromWishlist = async (id: number) => {
   await WishlistRemoveItem(id);
+  await loadWishlist();
 };
 </script>
 

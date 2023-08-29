@@ -36,12 +36,9 @@ export const useWishlist: any = () => {
   };
 
   const WishlistRemoveItem = async (id: number) => {
-    // const wishlistItem = currentWishlist.value?.wishlistItems.find(
-    //   (item: { product: { id: number } }) => item.product.id === id
-    // );
     try {
       const removeItemParams: any = {
-        wishId: 182,
+        wishId: id,
       };
       loading.value = true;
       const { data }: any = await sdk.odoo.wishlistRemove(removeItemParams, {
