@@ -81,9 +81,11 @@ const bannerDetails = {
 };
 
 const collectedProducts: any = useState('wishlist');
+const wishlistTotalItems: any = ref();
 const handleWishlistSideBar = async () => {
   wishlistToggle();
   collectedProducts.value = await loadWishlist();
+  wishlistTotalItems.value = collectedProducts.value.wishlistItems.length;
   console.log(collectedProducts.value, 'collected products');
 };
 </script>
@@ -261,7 +263,7 @@ const handleWishlistSideBar = async () => {
         >
           <div>
             <SfButton
-              class="block text-white font-body bg-transparent hover:bg-primary-800 hover:text-white active:bg-primary-900 active:text-white self-end"
+              class="group relative text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 mr-1 -ml-0.5 rounded-md"
               type="button"
               :aria-haspopup="true"
               :aria-expanded="wishlistIsOpen"
@@ -269,7 +271,15 @@ const handleWishlistSideBar = async () => {
               square
               @click="handleWishlistSideBar"
             >
-              <SfIconFavorite class="text-white" />
+              <template #prefix>
+                <SfIconFavorite class="text-white" />
+                <SfBadge
+                  v-if="wishlistTotalItems"
+                  :content="wishlistTotalItems"
+                  class="outline outline-primary-700 bg-white !text-neutral-900 group-hover:outline-primary-800 group-active:outline-primary-900 flex justify-center"
+                  data-testid="wishlist-badge"
+                />
+              </template>
             </SfButton>
             <WishlistSidebar
               :collected-products="collectedProducts"
