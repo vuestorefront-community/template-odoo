@@ -1,18 +1,26 @@
 <script setup lang="ts">
-import { SfLink, SfButton } from '@storefront-ui/vue';
+import { useWishlist } from '@/composables';
+import { SfLink, SfButton, SfIconClose } from '@storefront-ui/vue';
 
 const NuxtLink = resolveComponent('NuxtLink');
 type WishlistProductCardProps = {
+  id: number;
   imageUrl?: string | null;
   imageAlt?: string | null;
   name: string;
   price: number;
-  specialPrice: string;
+  specialPrice: number;
   slug: string;
 };
 
 const props = defineProps<WishlistProductCardProps>();
-const { imageUrl, imageAlt, name, price, specialPrice, slug } = toRefs(props);
+const { id, imageUrl, imageAlt, name, price, specialPrice, slug } =
+  toRefs(props);
+
+const { WishlistRemoveItem } = useWishlist();
+const removeFromWishlist = async (id: number) => {
+  await WishlistRemoveItem(id);
+};
 </script>
 
 <template>
@@ -32,7 +40,7 @@ const { imageUrl, imageAlt, name, price, specialPrice, slug } = toRefs(props);
         />
       </SfLink>
     </div>
-    <div class="flex flex-col pl-4">
+    <div class="flex flex-col pl-4 pr-5">
       <div class="flex flex-col min-w-[180px] flex-1">
         <SfLink
           :tag="NuxtLink"
@@ -62,11 +70,17 @@ const { imageUrl, imageAlt, name, price, specialPrice, slug } = toRefs(props);
           </span>
         </div>
       </div>
-      <div>
-        <SfButton type="button" variant="secondary" size="sm">
-          Remove
-        </SfButton>
-      </div>
+    </div>
+    <div>
+      <SfButton
+        class="!p-1 !rounded-full absolute top-2 right-2"
+        type="button"
+        variant="tertiary"
+        size="sm"
+        @click="removeFromWishlist(id)"
+      >
+        <SfIconClose />
+      </SfButton>
     </div>
   </div>
 </template>
