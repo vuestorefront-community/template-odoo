@@ -19,7 +19,7 @@ const props = defineProps({
 });
 const emit = defineEmits(['close']);
 
-const { isOpen, collectedProducts } = toRefs(props);
+const { isOpen, collectedProducts, loading } = toRefs(props);
 
 const WishlistRef = ref();
 onClickOutside(WishlistRef, () => {

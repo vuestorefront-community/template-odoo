@@ -8,11 +8,13 @@ import {
   SfIconShoppingCart,
   SfIconFavorite,
 } from '@storefront-ui/vue';
+import { useToast } from 'vue-toastification';
 
 const NuxtLink = resolveComponent('NuxtLink');
 
 const { cartAdd } = useCart();
 const { WishlistAddItem, isInWishlist } = useWishlist();
+const toast = useToast();
 
 defineProps({
   imageUrl: {
@@ -62,7 +64,12 @@ const addToCart = async (firstVariant: any) => {
 };
 
 const addToWishlist = async (firstVariant: any) => {
-  await WishlistAddItem(firstVariant.id);
+  const response = await WishlistAddItem(firstVariant.id);
+  if (response) {
+    toast.success('Product has been added to wishlist');
+  } else {
+    toast.warning('Product has already been added to wishlist');
+  }
 };
 </script>
 <template>
