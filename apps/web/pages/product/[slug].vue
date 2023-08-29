@@ -20,13 +20,14 @@ import { LocationQueryRaw } from 'vue-router';
 
 const route = useRoute();
 const router = useRouter();
-const { loadProductDetails } = useProduct();
+const { loadProductDetails, loadProductVariant } = useProduct();
 const { getRegularPrice, getSpecialPrice } = useProductAttributes();
 const { cartAdd } = useCart();
 
 const { product } = await loadProductDetails({
   slug: `/product/${route.params.slug}`,
 });
+// await loadProductVariant({ combinationId: [14, 306], productTemplateId: 40 });
 
 const breadcrumbs = computed(() => {
   return [
@@ -239,7 +240,7 @@ const addToCart = async () => {
             size="sm"
             class="flex-shrink-0 mr-1 text-neutral-500"
           />
-          <i18n-t keypath="additionalInfo.returns">
+          <i18n-t keypath="additionalInfo.returns" scope="global">
             <template #details>
               <SfLink href="#" variant="secondary">{{
                 $t('additionalInfo.details')

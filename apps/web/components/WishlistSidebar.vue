@@ -71,10 +71,10 @@ const withBase = (filepath: string) =>
               >
                 <div class="flex items-center font-medium pb-6">
                   <p class="text-gray-600 mr-1">Number of products :</p>
-                  {{ collectedProducts?.wishlistItems?.length }}
+                  {{ collectedProducts?.length }}
                 </div>
                 <div
-                  v-for="{ product, id } in collectedProducts.wishlistItems"
+                  v-for="{ product, id } in collectedProducts"
                   :key="id"
                 >
                   <WishlistCollectedProductCard

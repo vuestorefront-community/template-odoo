@@ -1,5 +1,8 @@
 import { sdk } from '@/sdk.config';
-import { QueryProductArgs } from '@erpgap/odoo-sdk-api-client';
+import {
+  QueryProductArgs,
+  QueryProductVariantArgs,
+} from '@erpgap/odoo-sdk-api-client';
 
 export const useProduct: any = () => {
   const loading = ref(false);
@@ -20,8 +23,24 @@ export const useProduct: any = () => {
     }
   };
 
+  const loadProductVariant = async (
+    params: QueryProductVariantArgs,
+    customQuery = {}
+  ) => {
+    try {
+      loading.value = true;
+      const { data } = await sdk.odoo.getProductVariant(params, customQuery);
+      return data;
+    } catch (err) {
+      console.log(err);
+    } finally {
+      loading.value = false;
+    }
+  };
+
   return {
     loading,
     loadProductDetails,
+    loadProductVariant,
   };
 };
