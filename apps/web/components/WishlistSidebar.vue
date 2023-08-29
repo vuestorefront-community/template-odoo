@@ -8,7 +8,7 @@ const props = defineProps({
     required: true,
   },
   collectedProducts: {
-    type: Object,
+    type: [String, Object],
     required: false,
     default: {},
   },
@@ -73,12 +73,9 @@ const withBase = (filepath: string) =>
                   <p class="text-gray-600 mr-1">Number of products :</p>
                   {{ collectedProducts?.length }}
                 </div>
-                <div
-                  v-for="{ product, id } in collectedProducts"
-                  :key="id"
-                >
+                <div v-for="{ product, id } in collectedProducts" :key="id">
                   <WishlistCollectedProductCard
-                    :id="product.id"
+                    :id="product.firstVariant.id || product.id"
                     :image-url="withBase(product.image)"
                     :image-alt="product.name"
                     :name="product.name ?? ''"

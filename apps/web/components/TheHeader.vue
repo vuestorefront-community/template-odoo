@@ -80,12 +80,12 @@ const bannerDetails = {
   title: 'New in designer watches',
 };
 
-const collectedProducts: any = computed(() => wishlistItems?.value);
+const collectedProducts: any = computed(() => wishlistItems.value);
 const wishlistTotalItems: any = ref();
 const handleWishlistSideBar = async () => {
   wishlistToggle();
   await loadWishlist();
-  wishlistTotalItems.value = wishlistItems.value.length;
+  wishlistTotalItems.value = wishlistItems.value?.length;
 };
 </script>
 

@@ -9,8 +9,10 @@ import {
   SfIconFavorite,
 } from '@storefront-ui/vue';
 
+const NuxtLink = resolveComponent('NuxtLink');
+
 const { cartAdd } = useCart();
-const { WishlistAddItem } = useWishlist();
+const { WishlistAddItem, isInWishlist } = useWishlist();
 
 defineProps({
   imageUrl: {
@@ -60,11 +62,8 @@ const addToCart = async (firstVariant: any) => {
 };
 
 const addToWishlist = async (firstVariant: any) => {
-  const response = await WishlistAddItem(firstVariant.id);
-  console.log(response, 'add cart');
+  await WishlistAddItem(firstVariant.id);
 };
-
-const NuxtLink = resolveComponent('NuxtLink');
 </script>
 <template>
   <div class="relative border border-neutral-200 rounded-md hover:shadow-lg">
@@ -84,7 +83,10 @@ const NuxtLink = resolveComponent('NuxtLink');
         variant="tertiary"
         size="sm"
         square
-        class="absolute bottom-0 right-0 mr-2 mb-2 bg-white border border-neutral-200 !rounded-full"
+        :class="[
+          'absolute bottom-0 right-0 mr-2 mb-2 bg-white border border-neutral-200 !rounded-full',
+          // { '!bg-green-100': isInWishlist(firstVariant?.id) },
+        ]"
         aria-label="Add to wishlist"
         @click="addToWishlist(firstVariant)"
       >
