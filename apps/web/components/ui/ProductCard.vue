@@ -58,9 +58,10 @@ defineProps({
 const addToCart = async (firstVariant: any) => {
   const response = await cartAdd(firstVariant.id, 1);
 };
+
 const addToWishlist = async (firstVariant: any) => {
   const response = await WishlistAddItem(firstVariant.id);
-  console.log(response);
+  console.log(response, 'add cart');
 };
 
 const NuxtLink = resolveComponent('NuxtLink');

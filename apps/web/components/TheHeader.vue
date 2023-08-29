@@ -84,6 +84,7 @@ const collectedProducts: any = useState('wishlist');
 const handleWishlistSideBar = async () => {
   wishlistToggle();
   collectedProducts.value = await loadWishlist();
+  console.log(collectedProducts.value, 'collected products');
 };
 </script>
 

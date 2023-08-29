@@ -35,7 +35,7 @@ const withBase = (filepath: string) =>
       :disable-click-away="true"
       :disable-esc="true"
       placement="right"
-      class="shadow-none z-[100] w-full lg:w-[400px] bg-white"
+      class="shadow-none z-[100] w-full lg:w-[420px] bg-white"
       data-testid="category-sidebar"
     >
       <div class="flex flex-col h-full">
@@ -65,6 +65,7 @@ const withBase = (filepath: string) =>
               :key="id"
             >
               <WishlistCollectedProductCard
+                :id="product.id"
                 :image-url="withBase(product.image)"
                 :image-alt="product.name"
                 :name="product.name ?? ''"
