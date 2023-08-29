@@ -36,19 +36,19 @@ export const useWishlist: any = () => {
   };
 
   const WishlistRemoveItem = async (id: number) => {
-    console.log(currentWishlist.value);
-    const wishlistItem = currentWishlist.value?.wishlistItems.find(
-      (item: { product: { id: number } }) => item.product.id === id
-    );
+    // const wishlistItem = currentWishlist.value?.wishlistItems.find(
+    //   (item: { product: { id: number } }) => item.product.id === id
+    // );
     try {
       const removeItemParams: any = {
-        wishId: wishlistItem.id,
+        wishId: 182,
       };
       loading.value = true;
       const { data }: any = await sdk.odoo.wishlistRemove(removeItemParams, {
         wishlistRemove: 'customQuery',
       });
-      return data.wishlistAddItem;
+      currentWishlist.value = data.wishlistRemoveItem;
+      return data.wishlistRemoveItem;
     } catch (err) {
       console.log(err);
     } finally {
@@ -56,17 +56,17 @@ export const useWishlist: any = () => {
     }
   };
 
-  const isInWishlist = async (id: number) => {
-    return currentWishlist.value?.wishlistItems.some(
-      (item: { product: { id: number } }) => item.product.id === id
-    );
-  };
+  // const isInWishlist = async (id: number) => {
+  //   return currentWishlist.value?.wishlistItems.some(
+  //     (item: { product: { id: number } }) => item.product.id === id
+  //   );
+  // };
 
   return {
     loading,
     loadWishlist,
     wishlistItems: computed(() => currentWishlist.value?.wishlistItems),
-    isInWishlist,
+    // isInWishlist,
     WishlistAddItem,
     WishlistRemoveItem,
   };

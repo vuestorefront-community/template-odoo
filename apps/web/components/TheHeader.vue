@@ -86,6 +86,7 @@ const handleWishlistSideBar = async () => {
   wishlistToggle();
   await loadWishlist();
   wishlistTotalItems.value = wishlistItems.value?.length;
+  console.log(wishlistItems.value);
 };
 </script>
 
