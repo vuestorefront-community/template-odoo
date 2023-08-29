@@ -23,7 +23,7 @@ defineProps<{
 }>();
 
 const { loadCategoryList } = useCategory();
-const { loading, loadWishlist } = useWishlist();
+const { loading, loadWishlist, wishlistItems } = useWishlist();
 const { isOpen, toggle, close } = useDisclosure();
 const {
   isOpen: wishlistIsOpen,
@@ -80,13 +80,12 @@ const bannerDetails = {
   title: 'New in designer watches',
 };
 
-const collectedProducts: any = useState('wishlist');
+const collectedProducts: any = computed(() => wishlistItems?.value);
 const wishlistTotalItems: any = ref();
 const handleWishlistSideBar = async () => {
   wishlistToggle();
-  collectedProducts.value = await loadWishlist();
-  wishlistTotalItems.value = collectedProducts.value.wishlistItems.length;
-  console.log(collectedProducts.value, 'collected products');
+  await loadWishlist();
+  wishlistTotalItems.value = wishlistItems.value.length;
 };
 </script>
 
