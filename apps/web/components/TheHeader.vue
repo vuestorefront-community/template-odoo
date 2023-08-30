@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useCategory, useWishlist } from '@/composables';
+import { useCategory } from '@/composables';
 import {
   SfButton,
   SfDrawer,
@@ -23,7 +23,6 @@ defineProps<{
 }>();
 
 const { loadCategoryList } = useCategory();
-const { loading, loadWishlist, wishlistItems } = useWishlist();
 const { isOpen, toggle, close } = useDisclosure();
 const {
   isOpen: wishlistIsOpen,
@@ -80,12 +79,14 @@ const bannerDetails = {
   title: 'New in designer watches',
 };
 
-const collectedProducts: any = computed(() => wishlistItems.value);
 const wishlistTotalItems: any = ref();
+
+const setWishlistCount = async (count: number) => {
+  wishlistTotalItems.value = count;
+};
+
 const handleWishlistSideBar = async () => {
   wishlistToggle();
-  await loadWishlist();
-  wishlistTotalItems.value = wishlistItems.value?.length;
 };
 </script>
 
@@ -281,10 +282,9 @@ const handleWishlistSideBar = async () => {
               </template>
             </SfButton>
             <WishlistSidebar
-              :collected-products="collectedProducts"
-              :loading="loading"
               :is-open="wishlistIsOpen"
               @close="wishlistClose"
+              @wishlistCount="setWishlistCount"
             />
           </div>
           <SfButton

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useWishlist } from '@/composables';
 import { SfDrawer, SfButton, SfIconClose } from '@storefront-ui/vue';
 import { onClickOutside } from '@vueuse/core';
 
@@ -12,14 +13,30 @@ const props = defineProps({
     required: true,
     default: {},
   },
-  loading: {
-    type: Boolean,
-    required: false,
-  },
 });
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'wishlistCount']);
 
-const { isOpen, collectedProducts, loading } = toRefs(props);
+const { loadWishlist, loading, WishlistRemoveItem } = useWishlist();
+const { isOpen } = toRefs(props);
+const wishlistItems = ref<any[]>([]);
+
+watch(isOpen, async (val) => {
+  if (val) {
+    const res = await loadWishlist();
+    if (res && res.wishlistItems) {
+      wishlistItems.value = res.wishlistItems;
+      emit('wishlistCount', wishlistItems.value?.length);
+    }
+  }
+});
+
+const removeFromWishlist = async (id: number) => {
+  const response = await WishlistRemoveItem(id);
+  if (response && response.wishlistItems) {
+    wishlistItems.value = response.wishlistItems;
+    emit('wishlistCount', wishlistItems.value?.length);
+  }
+};
 
 const WishlistRef = ref();
 onClickOutside(WishlistRef, () => {
@@ -69,14 +86,14 @@ const withBase = (filepath: string) =>
             </div>
             <div v-if="!loading">
               <div
-                v-if="collectedProducts.length > 0"
+                v-if="wishlistItems"
                 class="overflow-y-scroll h-[800px] p-4 text-black"
               >
                 <div class="flex items-center font-medium pb-6">
                   <p class="text-gray-600 mr-1">Number of products :</p>
-                  {{ collectedProducts?.length }}
+                  {{ wishlistItems?.length }}
                 </div>
-                <div v-for="{ product, id } in collectedProducts" :key="id">
+                <div v-for="{ product, id } in wishlistItems" :key="id">
                   <WishlistCollectedProductCard
                     :id="id"
                     :image-url="withBase(product.image)"
@@ -89,6 +106,7 @@ const withBase = (filepath: string) =>
                       product?.firstVariant?.combinationInfoVariant?.price
                     "
                     :slug="product.slug"
+                    @removeFromWishlist="removeFromWishlist"
                   />
                 </div>
               </div>
