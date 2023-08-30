@@ -111,6 +111,7 @@ onMounted(() => {
   products.value = AllProduct;
   productsForPagination.value = totalProducts;
   isLoading.value = false;
+  console.log(products);
 });
 </script>
 <template>
@@ -159,7 +160,7 @@ onMounted(() => {
             class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
           >
             <LazyUiProductCard
-              v-for="{ id, name, firstVariant, image } in products"
+              v-for="{ id, name, firstVariant, image, isInWishlist } in products"
               :key="id"
               :name="name"
               :slug="mountUrlSlugForProductVariant(firstVariant) || ''"
@@ -167,6 +168,7 @@ onMounted(() => {
               :image-alt="name"
               :regular-price="getRegularPrice(firstVariant) || 250"
               :special-price="getSpecialPrice(firstVariant)"
+              :is-in-wishlist = "isInWishlist"
               :rating-count="123"
               :rating="Number(4)"
               :first-variant="firstVariant"
