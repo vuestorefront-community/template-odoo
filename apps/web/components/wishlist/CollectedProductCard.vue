@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { useWishlist } from '@/composables';
 import { SfLink, SfButton, SfIconClose } from '@storefront-ui/vue';
-import { useToast } from 'vue-toastification';
 
 const NuxtLink = resolveComponent('NuxtLink');
 type WishlistProductCardProps = {
@@ -17,17 +15,6 @@ type WishlistProductCardProps = {
 const props = defineProps<WishlistProductCardProps>();
 const { id, imageUrl, imageAlt, name, price, specialPrice, slug } =
   toRefs(props);
-
-const { WishlistRemoveItem, loadWishlist } = useWishlist();
-const toast = useToast();
-
-const removeFromWishlist = async (id: number) => {
-  const response = await WishlistRemoveItem(id);
-  await loadWishlist();
-  if (response) {
-    toast.success('Product has been removed from wishlist');
-  }
-};
 </script>
 
 <template>
@@ -35,7 +22,7 @@ const removeFromWishlist = async (id: number) => {
     class="relative flex first:border-t border-b-[1px] border-neutral-200 hover:shadow-lg min-w-[320px] p-4 last:mb-0"
     data-testid="cart-product-card"
   >
-    <div class="min-w-[114px] w-[114px] h-[150px] overflow-hidden rounded-md">
+    <div class="min-w-[114px] w-[114px] overflow-hidden rounded-md">
       <SfLink :to="slug" :tag="NuxtLink">
         <NuxtImg
           class="border rounded-md border-neutral-200"
@@ -84,7 +71,7 @@ const removeFromWishlist = async (id: number) => {
         type="button"
         variant="tertiary"
         size="sm"
-        @click="removeFromWishlist(id)"
+        @click="$emit('removeFromWishlist', id)"
       >
         <SfIconClose />
       </SfButton>

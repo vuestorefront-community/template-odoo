@@ -28,7 +28,7 @@ const route = useRoute();
 const router = useRouter();
 const { loadProductDetails, loadProductVariant } = useProduct();
 const { getRegularPrice, getSpecialPrice } = useProductAttributes();
-const { WishlistAddItem, isInWishlist } = useWishlist();
+const { WishlistAddItem } = useWishlist();
 const { cartAdd } = useCart();
 
 const { product } = await loadProductDetails({
@@ -296,7 +296,7 @@ const addToWishlist = async (firstVariant: any) => {
               class="min-w-[48px]"
               size="sm"
               :input-props="{
-                onClick: (e: { preventDefault: () => any; }) => value == selectedSize && e.preventDefault(),
+                onClick: (e) => value == selectedSize && e.preventDefault(),
               }"
               :model-value="value == selectedSize"
               @update:model-value="
@@ -323,7 +323,7 @@ const addToWishlist = async (firstVariant: any) => {
               class="min-w-[48px]"
               size="sm"
               :input-props="{
-                onClick: (e: { preventDefault: () => any; }) => value == selectedColor && e.preventDefault(),
+                onClick: (e) => value == selectedColor && e.preventDefault(),
               }"
               :model-value="value == selectedColor"
               @update:model-value="
@@ -356,7 +356,7 @@ const addToWishlist = async (firstVariant: any) => {
               class="min-w-[48px]"
               size="sm"
               :input-props="{
-                onClick: (e: { preventDefault: () => any; }) => value == selectedMaterial && e.preventDefault(),
+                onClick: (e) => value == selectedMaterial && e.preventDefault(),
               }"
               :model-value="value == selectedMaterial"
               @update:model-value="

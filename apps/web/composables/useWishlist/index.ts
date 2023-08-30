@@ -1,5 +1,5 @@
 import { sdk } from '@/sdk.config';
-import { MutationWishlistAddItemArgs } from '@erpgap/odoo-sdk-api-client';
+import { } from '@erpgap/odoo-sdk-api-client';
 
 export const useWishlist: any = () => {
   const loading = ref(false);
@@ -40,16 +40,12 @@ export const useWishlist: any = () => {
       const removeItemParams: any = {
         wishId: id,
       };
-      loading.value = true;
       const { data }: any = await sdk.odoo.wishlistRemove(removeItemParams, {
         wishlistRemove: 'customQuery',
       });
-      currentWishlist.value = data.wishlistRemoveItem;
       return data.wishlistRemoveItem;
     } catch (err) {
       console.log(err);
-    } finally {
-      loading.value = false;
     }
   };
 
