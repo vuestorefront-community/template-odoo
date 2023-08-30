@@ -9,7 +9,7 @@ import {
   SfIconBlock,
   SfListItem,
   SfRadio,
-  SfLink
+  SfLink,
 } from '@storefront-ui/vue';
 
 enum PaymentMethod {
@@ -52,15 +52,8 @@ const billingAddress = ref({
 const shippingMethods = ref([
   {
     id: '1',
-    name: 'Standard',
+    name: 'Free Delivery charge',
     estimatedDelivery: 'tomorrow',
-    price: '3',
-  },
-  {
-    id: '2',
-    name: 'Empress',
-    estimatedDelivery: 'tomorrow',
-    price: '10',
   },
 ]);
 const radioModel = ref('1');
@@ -170,19 +163,19 @@ const data = ref({
 
           <UiDivider class="w-screen md:w-auto -mx-4 md:mx-0" />
           <CheckoutAddressForm
-            :heading="$t('billing.heading')"
-            :description="$t('billing.description')"
-            :button-text="$t('billing.addButton')"
-            :saved-address="billingAddress"
-            type="billingAddress"
-          />
-          <UiDivider class="w-screen md:w-auto -mx-4 md:mx-0" />
-          <CheckoutAddressForm
             :heading="$t('shipping.heading')"
             :description="$t('shipping.description')"
             :button-text="$t('shipping.addButton')"
             :saved-address="shippingAddress"
             type="shippingAddress"
+          />
+          <UiDivider class="w-screen md:w-auto -mx-4 md:mx-0" />
+          <CheckoutAddressForm
+            :heading="$t('billing.heading')"
+            :description="$t('billing.description')"
+            :button-text="$t('billing.addButton')"
+            :saved-address="billingAddress"
+            type="billingAddress"
           />
 
           <UiDivider class-name="w-screen md:w-auto -mx-4 md:mx-0" />
@@ -199,12 +192,7 @@ const data = ref({
                 role="radiogroup"
               >
                 <SfListItem
-                  v-for="{
-                    id,
-                    name,
-                    estimatedDelivery,
-                    price,
-                  } in shippingMethods"
+                  v-for="{ id, name, estimatedDelivery } in shippingMethods"
                   tag="label"
                   :key="id"
                   class="border rounded-md items-start"
@@ -218,7 +206,6 @@ const data = ref({
                         {{ estimatedDelivery }}
                       </p>
                     </div>
-                    <p class="ml-auto">${{ price }}</p>
                   </div>
                 </SfListItem>
               </ul>

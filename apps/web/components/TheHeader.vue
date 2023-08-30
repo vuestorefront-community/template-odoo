@@ -24,6 +24,11 @@ defineProps<{
 
 const { loadCategoryList } = useCategory();
 const { isOpen, toggle, close } = useDisclosure();
+const {
+  isOpen: wishlistIsOpen,
+  toggle: wishlistToggle,
+  close: wishlistClose,
+} = useDisclosure();
 const NuxtLink = resolveComponent('NuxtLink');
 
 const menuRef = ref();
@@ -52,14 +57,6 @@ const search = () => {
 };
 const actionItems = [
   {
-    icon: SfIconFavorite,
-    label: '',
-    ariaLabel: 'Wishlist',
-    role: 'button',
-    badge: true,
-    link: '#',
-  },
-  {
     icon: SfIconShoppingCart,
     label: '',
     ariaLabel: 'Cart',
@@ -80,6 +77,16 @@ const actionItems = [
 const bannerDetails = {
   image: '/images/watch.png',
   title: 'New in designer watches',
+};
+
+const wishlistTotalItems: any = ref();
+
+const setWishlistCount = async (count: number) => {
+  wishlistTotalItems.value = count;
+};
+
+const handleWishlistSideBar = async () => {
+  wishlistToggle();
 };
 </script>
 
@@ -254,6 +261,32 @@ const bannerDetails = {
           class="hidden lg:flex flex-nowrap justify-end items-center md:ml-10 gap-x-1"
           aria-label="SF Navigation"
         >
+          <div>
+            <SfButton
+              class="group relative text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 mr-1 -ml-0.5 rounded-md"
+              type="button"
+              :aria-haspopup="true"
+              :aria-expanded="wishlistIsOpen"
+              variant="tertiary"
+              square
+              @click="handleWishlistSideBar"
+            >
+              <template #prefix>
+                <SfIconFavorite class="text-white" />
+                <SfBadge
+                  v-if="wishlistTotalItems"
+                  :content="wishlistTotalItems"
+                  class="outline outline-primary-700 bg-white !text-neutral-900 group-hover:outline-primary-800 group-active:outline-primary-900 flex justify-center"
+                  data-testid="wishlist-badge"
+                />
+              </template>
+            </SfButton>
+            <WishlistSidebar
+              :is-open="wishlistIsOpen"
+              @close="wishlistClose"
+              @wishlistCount="setWishlistCount"
+            />
+          </div>
           <SfButton
             v-for="{ ariaLabel, label, icon, link, badge, role } in actionItems"
             :key="ariaLabel"

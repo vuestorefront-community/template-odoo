@@ -1,71 +1,136 @@
-<template>
-  <nav
-    class="w-full fixed bottom-0 left-0 flex flex-row items-stretch lg:hidden"
-    data-testid="navbar-bottom"
-  >
-    <SfButton
-      v-for="{ label, icon, link } in items"
-      :key="label"
-      variant="tertiary"
-      :class="[
-        '!p-1 !pt-3 flex flex-col h-full w-full rounded-none bg-primary-700 text-white hover:text-white hover:bg-primary-800 active:text-white active:bg-primary-900 !text-xs !font-base',
-        { 'text-white bg-primary-900': $route.path === link },
-      ]"
-      size="sm"
-      :tag="NuxtLink"
-      :to="link"
-    >
-      <template #prefix>
-        <div class="relative">
-          <component :is="icon" />
-          <SfBadge
-            v-if="label === 'cart'"
-            :content="cartLineItemsCount"
-            class="outline-white bg-white !text-neutral-900 translate-x-[5px] translate-y-[-3px]"
-          />
-        </div>
-      </template>
-      {{ label }}
-    </SfButton>
-  </nav>
-</template>
-
 <script setup lang="ts">
+import { useWishlist } from '@/composables';
 import {
   SfButton,
   SfBadge,
   SfIconShoppingCart,
   SfIconFavorite,
   SfIconHome,
-  SfIconMenu,
   SfIconPerson,
+  useDisclosure,
 } from '@storefront-ui/vue';
 
+const {
+  isOpen: wishlistIsOpen,
+  toggle: wishlistToggle,
+  close: wishlistClose,
+} = useDisclosure();
+const { loadWishlist } = useWishlist();
 const NuxtLink = resolveComponent('NuxtLink');
-const { t } = useI18n();
 
-const items = [
-  {
-    label: t('home'),
-    icon: SfIconHome,
-    link: '/',
-  },
-  {
-    label: t('cart'),
-    icon: SfIconShoppingCart,
-    link: '/cart',
-  },
-  {
-    label: 'wishlist',
-    icon: SfIconFavorite,
-    link: '#',
-  },
-  {
-    label: t('account.navBarBottomHeading'),
-    icon: SfIconPerson,
-    link: '/my-account',
-  },
-];
+const collectedProducts: any = ref('');
+const isActive = ref(false);
+const setIsActive = (param: boolean) => {
+  isActive.value = param;
+};
 
-const cartLineItemsCount = 3;
+const wishlistTotalItems: any = ref();
+const setWishlistCount = async (count: number) => {
+  wishlistTotalItems.value = count;
+};
+const handleWishlistSideBar = async () => {
+  wishlistToggle();
+  setIsActive(true);
+  collectedProducts.value = await loadWishlist();
+};
 </script>
+
+<template>
+  <WishlistSidebar
+    :collected-products="collectedProducts"
+    :is-open="wishlistIsOpen"
+    @wishlistCount="setWishlistCount"
+    @close="wishlistClose"
+  />
+  <nav
+    class="w-full fixed bottom-0 left-0 flex flex-row items-stretch lg:hidden"
+    data-testid="navbar-bottom"
+  >
+    <SfButton
+      key="home"
+      variant="tertiary"
+      :class="[
+        '!p-1 !pt-3 flex flex-col h-full w-full rounded-none bg-primary-700 text-white hover:text-white hover:bg-primary-800 active:text-white active:bg-primary-900 !text-xs !font-base',
+        { 'text-white bg-primary-900': $route.path === '/' && !isActive },
+      ]"
+      size="sm"
+      :tag="NuxtLink"
+      to="/"
+      @click="setIsActive(false)"
+    >
+      <template #prefix>
+        <div class="relative">
+          <SfIconHome />
+        </div>
+      </template>
+      {{ $t('home') }}
+    </SfButton>
+    <SfButton
+      key="wishlist"
+      variant="tertiary"
+      :class="[
+        '!p-1 !pt-3 flex flex-col h-full w-full rounded-none bg-primary-700 text-white hover:text-white hover:bg-primary-800 active:text-white active:bg-primary-900 !text-xs !font-base',
+        { 'text-white bg-primary-900': isActive },
+      ]"
+      size="sm"
+      @click="handleWishlistSideBar"
+    >
+      <template #prefix>
+        <div class="relative">
+          <SfIconFavorite />
+          <SfBadge
+            v-if="wishlistTotalItems"
+            :content="wishlistTotalItems"
+            class="outline-white bg-white !text-neutral-900 translate-x-[5px] translate-y-[-3px]"
+          />
+        </div>
+      </template>
+      {{ $t('wishlist') }}
+    </SfButton>
+    <SfButton
+      key="cart"
+      variant="tertiary"
+      :class="[
+        '!p-1 !pt-3 flex flex-col h-full w-full rounded-none bg-primary-700 text-white hover:text-white hover:bg-primary-800 active:text-white active:bg-primary-900 !text-xs !font-base',
+        { 'text-white bg-primary-900': $route.path === '/cart' && !isActive },
+      ]"
+      size="sm"
+      :tag="NuxtLink"
+      to="/cart"
+      @click="setIsActive(false)"
+    >
+      <template #prefix>
+        <div class="relative">
+          <SfIconShoppingCart />
+          <SfBadge
+            :content="3"
+            class="outline-white bg-white !text-neutral-900 translate-x-[5px] translate-y-[-3px]"
+          />
+        </div>
+      </template>
+      {{ $t('cart') }}
+    </SfButton>
+    <SfButton
+      key="account"
+      variant="tertiary"
+      :class="[
+        '!p-1 !pt-3 flex flex-col h-full w-full rounded-none bg-primary-700 text-white hover:text-white hover:bg-primary-800 active:text-white active:bg-primary-900 !text-xs !font-base',
+        {
+          'text-white bg-primary-900':
+            $route.path === '/my-account' && !isActive,
+        },
+      ]"
+      size="sm"
+      :tag="NuxtLink"
+      to="/my-account"
+      @click="setIsActive(false)"
+    >
+      <template #prefix>
+        <div class="relative">
+          <SfIconPerson />
+        </div>
+      </template>
+      account
+    </SfButton>
+  </nav>
+</template>

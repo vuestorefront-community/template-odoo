@@ -1,8 +1,48 @@
+<script lang="ts" setup>
+import { SfButton, SfIconArrowBack } from '@storefront-ui/vue';
+
+const NuxtLink = resolveComponent('NuxtLink');
+
+const data:any = ref([
+  {
+    id: 1,
+    attributes: [
+      {
+        name: 'Size',
+        label: '40',
+      },
+      {
+        name: 'Color',
+        label: 'White',
+      },
+    ],
+    imageUrl: null,
+    imageAlt: 'athletic-mens-walking-sneakers',
+    maxValue: 20,
+    minValue: 1,
+    name: 'athletic-mens-walking-sneakers',
+    price: '89.95',
+    specialPrice: '100.99',
+    quantity: 10,
+    slug: '/product/1',
+  },
+]);
+
+const cart = ref({
+  length: 1,
+  totalPrice: '89.95',
+  subtotalRegularPrice: '100.99',
+  totalCouponDiscounts: '20',
+  shippingPrice: '0',
+  totalTax: '1.38',
+});
+</script>
+
 <template>
   <div v-if="data" class="pb-20">
     <div class="flex justify-between mt-8 mb-10">
       <h1 class="font-bold typography-headline-3 md:typography-headline-2">
-        Checkout
+        Cart
       </h1>
       <SfButton
         :tag="NuxtLink"
@@ -25,7 +65,7 @@
         <template #prefix>
           <SfIconArrowBack />
         </template>
-        {{ $t('backToCart') }}
+        {{ $t('backToShopping') }}
       </SfButton>
     </div>
     <div
@@ -88,43 +128,3 @@
     <h2 class="mt-8">{{ $t('emptyCart') }}</h2>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { SfButton, SfIconArrowBack } from '@storefront-ui/vue';
-
-const NuxtLink = resolveComponent('NuxtLink');
-
-const data = ref([
-  {
-    id: 1,
-    attributes: [
-      {
-        name: 'Size',
-        label: '40',
-      },
-      {
-        name: 'Color',
-        label: 'White',
-      },
-    ],
-    imageUrl: null,
-    imageAlt: 'athletic-mens-walking-sneakers',
-    maxValue: 20,
-    minValue: 1,
-    name: 'athletic-mens-walking-sneakers',
-    price: '89.95',
-    specialPrice: '100.99',
-    quantity: 10,
-    slug: '/product/1',
-  },
-]);
-
-const cart = ref({
-  length: 1,
-  totalPrice: '89.95',
-  subtotalRegularPrice: '100.99',
-  totalCouponDiscounts: '20',
-  shippingPrice: '0',
-  totalTax: '1.38',
-});
-</script>

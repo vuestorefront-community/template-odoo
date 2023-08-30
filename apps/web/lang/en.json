@@ -11,6 +11,7 @@
   },
   "form": {
     "firstNameLabel": "First Name",
+    "NameLabel": "Name",
     "lastNameLabel": "Last Name",
     "phoneLabel": "Phone",
     "countryLabel": "Country",

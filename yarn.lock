@@ -1107,7 +1107,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@erpgap/odoo-sdk-api-client@npm:0.1.5, @erpgap/odoo-sdk-api-client@npm:^0.1.5":
+"@erpgap/odoo-sdk-api-client@npm:0.1.5":
   version: 0.1.5
   resolution: "@erpgap/odoo-sdk-api-client@npm:0.1.5"
   dependencies:
@@ -1123,13 +1123,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@erpgap/odoo-sdk-api-client@npm:^0.1.5":
+  version: 0.1.6
+  resolution: "@erpgap/odoo-sdk-api-client@npm:0.1.6"
+  dependencies:
+    "@apollo/client": ^3.7.16
+    "@vue-storefront/middleware": 3.0.0-rc.2
+    axios: ^0.21.1
+    consola: ^3.0.0
+    cross-fetch: ^4.0.0
+    graphql: ^16.7.1
+    request-ip: ^3.3.0
+    winston: ^3.9.0
+  checksum: 329559629e3be94f8bf23849e9895cea181b5d705b09faf7711ee169115ee84e820d239c1ccc93fd20a2b7129960fffd85c5daf7f921b428ccb6446a37934efc
+  languageName: node
+  linkType: hard
+
 "@erpgap/odoo-sdk@npm:^0.1.4":
-  version: 0.1.5
-  resolution: "@erpgap/odoo-sdk@npm:0.1.5"
+  version: 0.1.6
+  resolution: "@erpgap/odoo-sdk@npm:0.1.6"
   dependencies:
     "@apollo/client": ^3.7.16
     axios: ^1.4.0
-  checksum: f7c03a1eba612f829772eee925b381dfea30d23353e25bc53953566286e1744a8fccb2f2d983a5bf424f4b0793d4c1dbd810fa08a539a14e79e21c5556b37b41
+  checksum: 0ca623078dd8040643b9b92c4fad75f1f2893aaee2a93f328440d20c1af1c437ded29d071db6ca3f1ad604eac818a2d4ba479c1f0b480b870d02422f75d3c4df
   languageName: node
   linkType: hard
 
@@ -17050,6 +17066,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vue-toastification@npm:next":
+  version: 2.0.0-rc.5
+  resolution: "vue-toastification@npm:2.0.0-rc.5"
+  peerDependencies:
+    vue: ^3.0.2
+  checksum: 358ac0eb8f40b1bbadc84c5a686d80c9fd7d6c37a3cec0c3a422f1157f4aa8a882e585404fe4efb7ac4ae52d627c65a30750b31425d7df1d6643f0c80ffcd668
+  languageName: node
+  linkType: hard
+
 "vue3-json-viewer@npm:^2.2.2":
   version: 2.2.2
   resolution: "vue3-json-viewer@npm:2.2.2"
@@ -17121,6 +17146,7 @@ __metadata:
     "@vue-storefront/sdk": ^1.0.1
     clipboard: ^2.0.11
     nuxt: ^3.6.0
+    vue-toastification: next
     vue3-json-viewer: ^2.2.2
   languageName: unknown
   linkType: soft

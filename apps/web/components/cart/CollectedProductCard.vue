@@ -1,3 +1,29 @@
+<script setup lang="ts">
+import { SfLink, SfIconSell } from '@storefront-ui/vue';
+
+interface Attribute {
+  label: string;
+  name: string;
+  value: string;
+}
+
+type CartProductCardProps = {
+  attributes: Attribute[];
+  imageUrl?: string | null;
+  imageAlt?: string | null;
+  maxValue: number;
+  minValue: number;
+  name: string;
+  price: string;
+  specialPrice: string;
+  value: number;
+  slug: string;
+};
+
+defineProps<CartProductCardProps>();
+const NuxtLink = resolveComponent('NuxtLink');
+</script>
+
 <template>
   <div
     class="relative flex first:border-t border-b-[1px] border-neutral-200 hover:shadow-lg min-w-[320px] p-4 last:mb-0"
@@ -70,30 +96,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { SfLink, SfIconSell } from '@storefront-ui/vue';
-
-interface Attribute {
-  label: string;
-  name: string;
-  value: string;
-}
-
-type CartProductCardProps = {
-  attributes: Attribute[];
-  imageUrl?: string | null;
-  imageAlt?: string | null;
-  maxValue: number;
-  minValue: number;
-  name: string;
-  price: string;
-  specialPrice: string;
-  value: number;
-  slug: string;
-};
-
-defineProps<CartProductCardProps>();
-
-const NuxtLink = resolveComponent('NuxtLink');
-</script>

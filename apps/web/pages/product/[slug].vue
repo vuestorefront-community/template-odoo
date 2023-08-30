@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { useProduct, useProductAttributes, useCart } from '@/composables';
+import {
+  useProduct,
+  useProductAttributes,
+  useCart,
+  useWishlist,
+} from '@/composables';
 import {
   SfButton,
   SfCounter,
@@ -17,16 +22,24 @@ import {
   SfThumbnail,
 } from '@storefront-ui/vue';
 import { LocationQueryRaw } from 'vue-router';
+import { useToast } from 'vue-toastification';
 
 const route = useRoute();
 const router = useRouter();
-const { loadProductDetails } = useProduct();
+const { loadProductDetails, loadProductVariant } = useProduct();
 const { getRegularPrice, getSpecialPrice } = useProductAttributes();
+const { WishlistAddItem } = useWishlist();
 const { cartAdd } = useCart();
 
 const { product } = await loadProductDetails({
   slug: `/product/${route.params.slug}`,
 });
+
+const params = {
+  combinationId: product.attributeValues.map((item: { id: number }) => item.id),
+  productTemplateId: product.combinationInfo.product_template_id,
+};
+// await loadProductVariant(params);
 
 const breadcrumbs = computed(() => {
   return [
@@ -35,6 +48,7 @@ const breadcrumbs = computed(() => {
     { name: product?.name, link: `product/${product?.name}` },
   ];
 });
+const toast = useToast();
 
 const withBase = (filepath: string) =>
   `https://vsfdemo15.labs.odoogap.com${filepath}`;
@@ -99,6 +113,15 @@ const addToCart = async () => {
     product.firstVariant.id,
     quantitySelectorValue.value
   );
+};
+
+const addToWishlist = async (firstVariant: any) => {
+  const response = await WishlistAddItem(firstVariant.id);
+  if (response) {
+    toast.success('Product has been added to wishlist');
+  } else {
+    toast.warning('Product has already been added to wishlist');
+  }
 };
 </script>
 
@@ -198,9 +221,15 @@ const addToCart = async () => {
               </template>
               {{ $t('compare') }}
             </SfButton>
-            <SfButton type="button" size="sm" variant="tertiary">
+            <SfButton
+              type="button"
+              size="sm"
+              variant="tertiary"
+              :class="product.isInWishlist ? 'bg-primary-100' : 'bg-white'"
+              @click="addToWishlist(product.firstVariant)"
+            >
               <SfIconFavorite size="sm" />
-              {{ $t('addToList') }}
+              Add to wishlist
             </SfButton>
           </div>
         </div>
@@ -239,7 +268,7 @@ const addToCart = async () => {
             size="sm"
             class="flex-shrink-0 mr-1 text-neutral-500"
           />
-          <i18n-t keypath="additionalInfo.returns">
+          <i18n-t keypath="additionalInfo.returns" scope="global">
             <template #details>
               <SfLink href="#" variant="secondary">{{
                 $t('additionalInfo.details')

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useCart } from '@/composables';
+import { useCart, useWishlist } from '@/composables';
 import {
   SfRating,
   SfCounter,
@@ -8,8 +8,13 @@ import {
   SfIconShoppingCart,
   SfIconFavorite,
 } from '@storefront-ui/vue';
+import { useToast } from 'vue-toastification';
+
+const NuxtLink = resolveComponent('NuxtLink');
 
 const { cartAdd } = useCart();
+const { WishlistAddItem } = useWishlist();
+const toast = useToast();
 
 defineProps({
   imageUrl: {
@@ -48,20 +53,31 @@ defineProps({
     type: Number,
     required: false,
   },
+  isInWishlist: {
+    type: Boolean,
+    required: false,
+  },
   firstVariant: {
     type: Object,
     required: false,
-  }
+  },
 });
 
 const addToCart = async (firstVariant: any) => {
   const response = await cartAdd(firstVariant.id, 1);
 };
 
-const NuxtLink = resolveComponent('NuxtLink');
+const addToWishlist = async (firstVariant: any) => {
+  const response = await WishlistAddItem(firstVariant.id);
+  if (response) {
+    toast.success('Product has been added to wishlist');
+  } else {
+    toast.warning('Product has already been added to wishlist');
+  }
+};
 </script>
 <template>
-  <div class="relative border border-neutral-200 rounded-md hover:shadow-lg">
+  <div class="relative border border-neutral-200 rounded-md hover:shadow-lg min-h-[350px]">
     <div class="relative">
       <SfLink :href="slug">
         <NuxtImg
@@ -78,8 +94,12 @@ const NuxtLink = resolveComponent('NuxtLink');
         variant="tertiary"
         size="sm"
         square
-        class="absolute bottom-0 right-0 mr-2 mb-2 bg-white border border-neutral-200 !rounded-full"
+        :class="[
+          'absolute bottom-0 right-0 mr-2 mb-2 bg-white border border-neutral-200 !rounded-full',
+          { '!bg-green-200': isInWishlist },
+        ]"
         aria-label="Add to wishlist"
+        @click="addToWishlist(firstVariant)"
       >
         <SfIconFavorite size="sm" />
       </SfButton>

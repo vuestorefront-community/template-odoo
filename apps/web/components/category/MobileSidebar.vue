@@ -29,7 +29,7 @@ defineEmits<CategorySidebarEmits>();
     >
       <div class="grid grid-rows-category-sidebar h-full lg:block">
         <div class="p-4 flex justify-between items-center lg:hidden">
-          <span class="font-bold text-lg">{{ $t('listSettings') }}</span>
+          <span class="font-bold text-lg">Filter</span>
           <SfButton
             variant="tertiary"
             @click="$emit('close')"
