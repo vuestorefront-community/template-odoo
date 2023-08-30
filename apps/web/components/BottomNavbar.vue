@@ -22,12 +22,21 @@ const collectedProducts: any = ref('');
 const isActive = ref(false);
 const handleWishlistSideBar = async () => {
   wishlistToggle();
-  isActive.value = !isActive.value;
+  setIsActive(true);
   collectedProducts.value = await loadWishlist();
+};
+
+const setIsActive = (param: boolean) => {
+  isActive.value = param;
 };
 </script>
 
 <template>
+  <WishlistSidebar
+    :collected-products="collectedProducts"
+    :is-open="wishlistIsOpen"
+    @close="wishlistClose"
+  />
   <nav
     class="w-full fixed bottom-0 left-0 flex flex-row items-stretch lg:hidden"
     data-testid="navbar-bottom"
@@ -42,6 +51,7 @@ const handleWishlistSideBar = async () => {
       size="sm"
       :tag="NuxtLink"
       to="/"
+      @click="setIsActive(false)"
     >
       <template #prefix>
         <div class="relative">
@@ -71,21 +81,17 @@ const handleWishlistSideBar = async () => {
       </template>
       {{ $t('wishlist') }}
     </SfButton>
-    <WishlistSidebar
-      :collected-products="collectedProducts"
-      :is-open="wishlistIsOpen"
-      @close="wishlistClose"
-    />
     <SfButton
       key="cart"
       variant="tertiary"
       :class="[
         '!p-1 !pt-3 flex flex-col h-full w-full rounded-none bg-primary-700 text-white hover:text-white hover:bg-primary-800 active:text-white active:bg-primary-900 !text-xs !font-base',
-        { 'text-white bg-primary-900': $route.path === '/cart' },
+        { 'text-white bg-primary-900': $route.path === '/cart' && !isActive },
       ]"
       size="sm"
       :tag="NuxtLink"
       to="/cart"
+      @click="setIsActive(false)"
     >
       <template #prefix>
         <div class="relative">
@@ -103,11 +109,15 @@ const handleWishlistSideBar = async () => {
       variant="tertiary"
       :class="[
         '!p-1 !pt-3 flex flex-col h-full w-full rounded-none bg-primary-700 text-white hover:text-white hover:bg-primary-800 active:text-white active:bg-primary-900 !text-xs !font-base',
-        { 'text-white bg-primary-900': $route.path === '/my-account' },
+        {
+          'text-white bg-primary-900':
+            $route.path === '/my-account' && !isActive,
+        },
       ]"
       size="sm"
       :tag="NuxtLink"
       to="/my-account"
+      @click="setIsActive(false)"
     >
       <template #prefix>
         <div class="relative">
