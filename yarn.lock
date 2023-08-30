@@ -1107,7 +1107,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@erpgap/odoo-sdk-api-client@npm:0.1.6, @erpgap/odoo-sdk-api-client@npm:^0.1.5":
+"@erpgap/odoo-sdk-api-client@npm:0.1.5":
+  version: 0.1.5
+  resolution: "@erpgap/odoo-sdk-api-client@npm:0.1.5"
+  dependencies:
+    "@apollo/client": ^3.7.16
+    "@vue-storefront/middleware": 3.0.0-rc.2
+    axios: ^0.21.1
+    consola: ^3.0.0
+    cross-fetch: ^4.0.0
+    graphql: ^16.7.1
+    request-ip: ^3.3.0
+    winston: ^3.9.0
+  checksum: db92353ec60a125367167c0dce21686cbfe2818cccf70bc2c54ccbecb0b7f8e50608b1706d6e90a719b822bc39e462eafa0862c92ea4721f955f65ef71089d2d
+  languageName: node
+  linkType: hard
+
+"@erpgap/odoo-sdk-api-client@npm:^0.1.5":
   version: 0.1.6
   resolution: "@erpgap/odoo-sdk-api-client@npm:0.1.6"
   dependencies:
@@ -14540,7 +14556,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "server@workspace:apps/server"
   dependencies:
-    "@erpgap/odoo-sdk-api-client": 0.1.6
+    "@erpgap/odoo-sdk-api-client": 0.1.5
     "@vue-storefront/middleware": 3.0.1
     cors: ^2.8.5
     nodemon: ^2.0.19
@@ -17050,6 +17066,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vue-toastification@npm:next":
+  version: 2.0.0-rc.5
+  resolution: "vue-toastification@npm:2.0.0-rc.5"
+  peerDependencies:
+    vue: ^3.0.2
+  checksum: 358ac0eb8f40b1bbadc84c5a686d80c9fd7d6c37a3cec0c3a422f1157f4aa8a882e585404fe4efb7ac4ae52d627c65a30750b31425d7df1d6643f0c80ffcd668
+  languageName: node
+  linkType: hard
+
 "vue3-json-viewer@npm:^2.2.2":
   version: 2.2.2
   resolution: "vue3-json-viewer@npm:2.2.2"
@@ -17121,6 +17146,7 @@ __metadata:
     "@vue-storefront/sdk": ^1.0.1
     clipboard: ^2.0.11
     nuxt: ^3.6.0
+    vue-toastification: next
     vue3-json-viewer: ^2.2.2
   languageName: unknown
   linkType: soft

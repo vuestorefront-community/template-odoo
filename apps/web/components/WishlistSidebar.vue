@@ -2,6 +2,7 @@
 import { useWishlist } from '@/composables';
 import { SfDrawer, SfButton, SfIconClose } from '@storefront-ui/vue';
 import { onClickOutside } from '@vueuse/core';
+import { useToast } from 'vue-toastification';
 
 const props = defineProps({
   isOpen: {
@@ -18,6 +19,12 @@ const emit = defineEmits(['close', 'wishlistCount']);
 
 const { loadWishlist, loading, WishlistRemoveItem } = useWishlist();
 const { isOpen } = toRefs(props);
+const toast = useToast();
+
+const WishlistRef = ref();
+onClickOutside(WishlistRef, () => {
+  emit('close');
+});
 const wishlistItems = ref<any[]>([]);
 
 watch(isOpen, async (val) => {
@@ -35,13 +42,9 @@ const removeFromWishlist = async (id: number) => {
   if (response && response.wishlistItems) {
     wishlistItems.value = response.wishlistItems;
     emit('wishlistCount', wishlistItems.value?.length);
+    toast.success('Product has been removed from wishlist');
   }
 };
-
-const WishlistRef = ref();
-onClickOutside(WishlistRef, () => {
-  emit('close');
-});
 
 const withBase = (filepath: string) =>
   `https://vsfdemo15.labs.odoogap.com${filepath}`;
