@@ -34,7 +34,13 @@ const { cartAdd } = useCart();
 const { product } = await loadProductDetails({
   slug: `/product/${route.params.slug}`,
 });
-// await loadProductVariant({ combinationId: [14, 306], productTemplateId: 40 });
+
+const params = {
+  combinationId: product.attributeValues.map((item: { id: number }) => item.id),
+  productTemplateId: product.combinationInfo.product_template_id,
+};
+const res = await loadProductVariant(params);
+console.log(res);
 
 const breadcrumbs = computed(() => {
   return [
@@ -118,6 +124,10 @@ const addToWishlist = async (firstVariant: any) => {
     toast.warning('Product has already been added to wishlist');
   }
 };
+
+onMounted(() => {
+  console.log(product);
+});
 </script>
 
 <template>
@@ -290,7 +300,7 @@ const addToWishlist = async (firstVariant: any) => {
               class="min-w-[48px]"
               size="sm"
               :input-props="{
-                onClick: (e) => value == selectedSize && e.preventDefault(),
+                onClick: (e: { preventDefault: () => any; }) => value == selectedSize && e.preventDefault(),
               }"
               :model-value="value == selectedSize"
               @update:model-value="
@@ -317,7 +327,7 @@ const addToWishlist = async (firstVariant: any) => {
               class="min-w-[48px]"
               size="sm"
               :input-props="{
-                onClick: (e) => value == selectedColor && e.preventDefault(),
+                onClick: (e: { preventDefault: () => any; }) => value == selectedColor && e.preventDefault(),
               }"
               :model-value="value == selectedColor"
               @update:model-value="
@@ -350,7 +360,7 @@ const addToWishlist = async (firstVariant: any) => {
               class="min-w-[48px]"
               size="sm"
               :input-props="{
-                onClick: (e) => value == selectedMaterial && e.preventDefault(),
+                onClick: (e: { preventDefault: () => any; }) => value == selectedMaterial && e.preventDefault(),
               }"
               :model-value="value == selectedMaterial"
               @update:model-value="

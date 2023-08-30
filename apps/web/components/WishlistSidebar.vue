@@ -19,7 +19,7 @@ const props = defineProps({
 });
 const emit = defineEmits(['close']);
 
-const { isOpen, collectedProducts, loading } = toRefs(props);
+const { isOpen, collectedProducts } = toRefs(props);
 
 const WishlistRef = ref();
 onClickOutside(WishlistRef, () => {
@@ -69,7 +69,7 @@ const withBase = (filepath: string) =>
             </div>
             <div v-if="!loading">
               <div
-                v-if="collectedProducts"
+                v-if="collectedProducts.length > 0"
                 class="overflow-y-scroll h-[800px] p-4 text-black"
               >
                 <div class="flex items-center font-medium pb-6">
