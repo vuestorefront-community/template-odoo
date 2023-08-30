@@ -9,7 +9,7 @@ import {
   SfIconBlock,
   SfListItem,
   SfRadio,
-  SfLink
+  SfLink,
 } from '@storefront-ui/vue';
 
 enum PaymentMethod {
@@ -170,19 +170,19 @@ const data = ref({
 
           <UiDivider class="w-screen md:w-auto -mx-4 md:mx-0" />
           <CheckoutAddressForm
-            :heading="$t('billing.heading')"
-            :description="$t('billing.description')"
-            :button-text="$t('billing.addButton')"
-            :saved-address="billingAddress"
-            type="billingAddress"
-          />
-          <UiDivider class="w-screen md:w-auto -mx-4 md:mx-0" />
-          <CheckoutAddressForm
             :heading="$t('shipping.heading')"
             :description="$t('shipping.description')"
             :button-text="$t('shipping.addButton')"
             :saved-address="shippingAddress"
             type="shippingAddress"
+          />
+          <UiDivider class="w-screen md:w-auto -mx-4 md:mx-0" />
+          <CheckoutAddressForm
+            :heading="$t('billing.heading')"
+            :description="$t('billing.description')"
+            :button-text="$t('billing.addButton')"
+            :saved-address="billingAddress"
+            type="billingAddress"
           />
 
           <UiDivider class-name="w-screen md:w-auto -mx-4 md:mx-0" />
