@@ -9,17 +9,17 @@ const props = defineProps({
   },
   collectedProducts: {
     type: [String, Object],
-    required: false,
+    required: true,
     default: {},
   },
   loading: {
     type: Boolean,
-    required: true,
+    required: false,
   },
 });
 const emit = defineEmits(['close']);
 
-const { isOpen, collectedProducts } = toRefs(props);
+const { isOpen, collectedProducts, loading } = toRefs(props);
 
 const WishlistRef = ref();
 onClickOutside(WishlistRef, () => {

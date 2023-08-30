@@ -39,8 +39,7 @@ const params = {
   combinationId: product.attributeValues.map((item: { id: number }) => item.id),
   productTemplateId: product.combinationInfo.product_template_id,
 };
-const res = await loadProductVariant(params);
-console.log(res);
+// await loadProductVariant(params);
 
 const breadcrumbs = computed(() => {
   return [
@@ -124,10 +123,6 @@ const addToWishlist = async (firstVariant: any) => {
     toast.warning('Product has already been added to wishlist');
   }
 };
-
-onMounted(() => {
-  console.log(product);
-});
 </script>
 
 <template>
@@ -230,6 +225,7 @@ onMounted(() => {
               type="button"
               size="sm"
               variant="tertiary"
+              :class="product.isInWishlist ? 'bg-primary-100' : 'bg-white'"
               @click="addToWishlist(product.firstVariant)"
             >
               <SfIconFavorite size="sm" />
