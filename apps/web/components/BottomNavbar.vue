@@ -20,14 +20,18 @@ const NuxtLink = resolveComponent('NuxtLink');
 
 const collectedProducts: any = ref('');
 const isActive = ref(false);
+const setIsActive = (param: boolean) => {
+  isActive.value = param;
+};
+
+const wishlistTotalItems: any = ref();
+const setWishlistCount = async (count: number) => {
+  wishlistTotalItems.value = count;
+};
 const handleWishlistSideBar = async () => {
   wishlistToggle();
   setIsActive(true);
   collectedProducts.value = await loadWishlist();
-};
-
-const setIsActive = (param: boolean) => {
-  isActive.value = param;
 };
 </script>
 
@@ -35,6 +39,7 @@ const setIsActive = (param: boolean) => {
   <WishlistSidebar
     :collected-products="collectedProducts"
     :is-open="wishlistIsOpen"
+    @wishlistCount="setWishlistCount"
     @close="wishlistClose"
   />
   <nav
@@ -74,7 +79,8 @@ const setIsActive = (param: boolean) => {
         <div class="relative">
           <SfIconFavorite />
           <SfBadge
-            :content="2"
+            v-if="wishlistTotalItems"
+            :content="wishlistTotalItems"
             class="outline-white bg-white !text-neutral-900 translate-x-[5px] translate-y-[-3px]"
           />
         </div>
