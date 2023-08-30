@@ -111,7 +111,6 @@ onMounted(() => {
   products.value = AllProduct;
   productsForPagination.value = totalProducts;
   isLoading.value = false;
-  console.log(products);
 });
 </script>
 <template>
