@@ -9,11 +9,6 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
-  collectedProducts: {
-    type: [String, Object],
-    required: true,
-    default: {},
-  },
 });
 const emit = defineEmits(['close', 'wishlistCount']);
 

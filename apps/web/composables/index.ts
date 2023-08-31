@@ -4,6 +4,7 @@ import { useProduct } from './useProduct';
 import { useProductAttributes } from './useProductAttributes';
 import { useUiHelpers } from './useUiHelpers';
 import { useWishlist } from './useWishlist';
+import { useNewsletter } from './useNewsletter';
 
 export {
   useCategory,
@@ -12,4 +13,5 @@ export {
   useCart,
   useWishlist,
   useUiHelpers,
+  useNewsletter,
 };
