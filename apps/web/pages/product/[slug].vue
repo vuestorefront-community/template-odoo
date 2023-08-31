@@ -313,7 +313,7 @@ onMounted(() => {
               class="min-w-[48px]"
               size="sm"
               :input-props="{
-                onClick: (e: { preventDefault: () => any; }) => value == selectedSize && e.preventDefault(),
+                onClick: (e) => value == selectedSize && e.preventDefault(),
               }"
               :model-value="value == selectedSize"
               @update:model-value="
@@ -340,7 +340,7 @@ onMounted(() => {
               class="min-w-[48px]"
               size="sm"
               :input-props="{
-                onClick: (e: { preventDefault: () => any; }) => value == selectedColor && e.preventDefault(),
+                onClick: (e) => value == selectedColor && e.preventDefault(),
               }"
               :model-value="value == selectedColor"
               @update:model-value="
@@ -373,7 +373,7 @@ onMounted(() => {
               class="min-w-[48px]"
               size="sm"
               :input-props="{
-                onClick: (e: { preventDefault: () => any; }) => value == selectedMaterial && e.preventDefault(),
+                onClick: (e) => value == selectedMaterial && e.preventDefault(),
               }"
               :model-value="value == selectedMaterial"
               @update:model-value="
