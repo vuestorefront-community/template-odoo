@@ -65,15 +65,12 @@ definePageMeta({
 const { isOpen, open, close } = useDisclosure();
 
 const userShippingAddress = ref({
-  firstName: 'Hieronim',
-  lastName: 'Anonim',
-  address1: 'Oak Drive',
-  address2: '3633',
+  name: 'Hieronim',
+  streetName: 'Oak Drive',
   city: 'Colonie',
   country: 'US',
   phoneNumber: '+1 321 765 0987',
   postalCode: '12205',
   state: 'NY',
-  titleCode: '',
 });
 </script>
