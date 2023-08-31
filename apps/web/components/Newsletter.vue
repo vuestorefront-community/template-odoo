@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useNewsletter } from '@/composables';
+import { useMailing } from '@/composables';
 import {
   SfButton,
   SfInput,
@@ -9,7 +9,7 @@ import {
 } from '@storefront-ui/vue';
 import { useToast } from 'vue-toastification';
 
-const { loading, sendSubscription } = useNewsletter;
+const { loading, sendSubscription } = useMailing;
 
 const toast = useToast();
 const inputValue = ref('');

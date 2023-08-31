@@ -7,10 +7,10 @@
     @on-click="open"
   >
     <p>
-      {{ userShippingAddress.firstName }} {{ userShippingAddress.lastName }}
+      {{ userShippingAddress.name }}
     </p>
     <p>{{ userShippingAddress.phoneNumber }}</p>
-    <p>{{ userShippingAddress.address1 }} {{ userShippingAddress.address2 }}</p>
+    <p>{{ userShippingAddress.streetName }}</p>
     <p>
       {{ userShippingAddress.city }}, {{ userShippingAddress.state }}
       {{ userShippingAddress.postalCode }}

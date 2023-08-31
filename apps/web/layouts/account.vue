@@ -9,7 +9,7 @@
       >
         {{ $t('account.heading') }}
       </h1>
-      <div v-else class="flex justify-start items-center mb-10 mt-4">
+      <div v-else class="flex justify-between items-center mb-10 mt-4">
         <div v-for="({ subsections }, i) in sections" :key="i">
           <div
             v-for="{ label, link } in subsections"
