@@ -1,5 +1,4 @@
 import { sdk } from '@/sdk.config';
-import { } from '@erpgap/odoo-sdk-api-client';
 
 export const useWishlist: any = () => {
   const loading = ref(false);
@@ -26,7 +25,7 @@ export const useWishlist: any = () => {
         { productId: id },
         { wishlistAdd: 'customQuery' }
       );
-      currentWishlist.value = data.wishlistItems;
+      currentWishlist.value = data.wishlistAddItem;
       return data.wishlistAddItem;
     } catch (err) {
       console.log(err);
@@ -49,17 +48,10 @@ export const useWishlist: any = () => {
     }
   };
 
-  // const isInWishlist = async (id: number) => {
-  //   return currentWishlist.value?.wishlistItems.some(
-  //     (item: { product: { id: number } }) => item.product.id === id
-  //   );
-  // };
-
   return {
     loading,
     loadWishlist,
     wishlistItems: computed(() => currentWishlist.value?.wishlistItems),
-    // isInWishlist,
     WishlistAddItem,
     WishlistRemoveItem,
   };

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useCart, useWishlist } from '@/composables';
+import { useCart } from '@/composables';
 import {
   SfRating,
   SfCounter,
@@ -8,13 +8,10 @@ import {
   SfIconShoppingCart,
   SfIconFavorite,
 } from '@storefront-ui/vue';
-import { useToast } from 'vue-toastification';
 
 const NuxtLink = resolveComponent('NuxtLink');
 
 const { cartAdd } = useCart();
-const { WishlistAddItem } = useWishlist();
-const toast = useToast();
 
 defineProps({
   imageUrl: {
@@ -66,18 +63,11 @@ defineProps({
 const addToCart = async (firstVariant: any) => {
   const response = await cartAdd(firstVariant.id, 1);
 };
-
-const addToWishlist = async (firstVariant: any) => {
-  const response = await WishlistAddItem(firstVariant.id);
-  if (response) {
-    toast.success('Product has been added to wishlist');
-  } else {
-    toast.warning('Product has already been added to wishlist');
-  }
-};
 </script>
 <template>
-  <div class="relative border border-neutral-200 rounded-md hover:shadow-lg min-h-[350px]">
+  <div
+    class="relative border border-neutral-200 rounded-md hover:shadow-lg min-h-[350px]"
+  >
     <div class="relative">
       <SfLink :href="slug">
         <NuxtImg
@@ -99,7 +89,7 @@ const addToWishlist = async (firstVariant: any) => {
           { '!bg-green-200': isInWishlist },
         ]"
         aria-label="Add to wishlist"
-        @click="addToWishlist(firstVariant)"
+        @click="$emit('click:addOrRemoveFromWishlists', firstVariant?.id)"
       >
         <SfIconFavorite size="sm" />
       </SfButton>

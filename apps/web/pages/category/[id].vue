@@ -1,8 +1,14 @@
 <script setup lang="ts">
-import { useCategory, useProductAttributes, useUiHelpers } from '@/composables';
-import { ProductList, Attribute } from '@erpgap/odoo-sdk-api-client';
+import {
+  useCategory,
+  useProductAttributes,
+  useUiHelpers,
+  useWishlist,
+} from '@/composables';
+import { Product } from '@erpgap/odoo-sdk-api-client';
 import { SfButton, SfIconTune, useDisclosure } from '@storefront-ui/vue';
 import { useMediaQuery } from '@vueuse/core';
+import { useToast } from 'vue-toastification';
 
 const mediaQueries = {
   tablet: '(min-width: 768px)',
@@ -10,9 +16,11 @@ const mediaQueries = {
 };
 const route: any = useRoute();
 const { isOpen, open, close } = useDisclosure();
+const toast = useToast();
 const { loadProducts, loadCategory, getCategoryTree } = useCategory();
 const { getRegularPrice, getSpecialPrice } = useProductAttributes();
 const { getFacetsFromURL, getGroups } = useUiHelpers();
+const { loadWishlist, WishlistAddItem, WishlistRemoveItem } = useWishlist();
 
 const breadcrumbs = [
   { name: 'Home', link: '/' },
@@ -106,6 +114,51 @@ const totalItems = computed(() =>
   pagination.value.totalItems === 0 ? 'No' : pagination.value.totalItems
 );
 
+const currentWishlist = ref<any[]>([]);
+const wLists = await loadWishlist();
+if (wLists && wLists.wishlistItems) {
+  currentWishlist.value = wLists.wishlistItems;
+}
+const getProductId = (product: Product) => {
+  return product?.firstVariant?.id || product.id;
+};
+const toggleProductToWishlist = (productId: number) => {
+  if (productId) {
+    products.value = products.value?.map((item: Product) => {
+      if (getProductId(item) === productId) {
+        item.isInWishlist = !item.isInWishlist;
+      }
+      return item;
+    });
+  }
+};
+const toggleWishlist = async (id: any) => {
+  const isExist = currentWishlist.value?.some((item: any) => {
+    return getProductId(item.product) === id;
+  });
+
+  if (isExist) {
+    const wishlistItem = currentWishlist.value.find(
+      (item) => item.product.id === id
+    );
+
+    toggleProductToWishlist(getProductId(wishlistItem?.product));
+
+    const response = await WishlistRemoveItem(wishlistItem?.id);
+    if (response && response.wishlistItems) {
+      currentWishlist.value = response.wishlistItems;
+      toast.success('Product has been removed from wishlist');
+    }
+  } else {
+    toggleProductToWishlist(id);
+    const response = await WishlistAddItem(id);
+    if (response && response.wishlistItems) {
+      currentWishlist.value = response.wishlistItems;
+      toast.success('Product has been added to wishlist');
+    }
+  }
+};
+
 onMounted(() => {
   setMaxVisiblePages(isWideScreen.value);
   products.value = AllProduct;
@@ -159,7 +212,13 @@ onMounted(() => {
             class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
           >
             <LazyUiProductCard
-              v-for="{ id, name, firstVariant, image, isInWishlist } in products"
+              v-for="{
+                id,
+                name,
+                firstVariant,
+                image,
+                isInWishlist,
+              } in products"
               :key="id"
               :name="name"
               :slug="mountUrlSlugForProductVariant(firstVariant) || ''"
@@ -167,10 +226,11 @@ onMounted(() => {
               :image-alt="name"
               :regular-price="getRegularPrice(firstVariant) || 250"
               :special-price="getSpecialPrice(firstVariant)"
-              :is-in-wishlist = "isInWishlist"
+              :is-in-wishlist="isInWishlist"
               :rating-count="123"
               :rating="Number(4)"
               :first-variant="firstVariant"
+              @click:addOrRemoveFromWishlists="toggleWishlist"
             />
           </section>
           <CategoryEmptyState v-else />
