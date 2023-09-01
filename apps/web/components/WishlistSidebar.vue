@@ -84,7 +84,7 @@ const withBase = (filepath: string) =>
             </div>
             <div v-if="!loading">
               <div
-                v-if="wishlistItems"
+                v-if="wishlistItems.length > 0"
                 class="overflow-y-scroll h-[800px] p-4 text-black"
               >
                 <div class="flex items-center font-medium pb-6">
