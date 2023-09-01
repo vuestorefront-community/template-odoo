@@ -1,9 +1,14 @@
 import { sdk } from '@/sdk.config';
+import { WishlistData } from '@erpgap/odoo-sdk-api-client';
 
 export const useWishlist: any = () => {
   const loading = ref(false);
-
-  const currentWishlist = ref<any>({});
+  const error = reactive<any>({
+    loadWishlist: null,
+    wishlistAddItem: null,
+    wishlistRemoveItem: null,
+  });
+  const currentWishlist = useState<WishlistData>('wishlist');
 
   const loadWishlist = async () => {
     try {
@@ -12,7 +17,7 @@ export const useWishlist: any = () => {
       currentWishlist.value = data.wishlistItems;
       return data.wishlistItems;
     } catch (err) {
-      console.log(err);
+      error.loadWishlist = err;
     } finally {
       loading.value = false;
     }
@@ -28,7 +33,7 @@ export const useWishlist: any = () => {
       currentWishlist.value = data.wishlistAddItem;
       return data.wishlistAddItem;
     } catch (err) {
-      console.log(err);
+      error.wishlistAddItem = err;
     } finally {
       loading.value = false;
     }
@@ -36,7 +41,7 @@ export const useWishlist: any = () => {
 
   const WishlistRemoveItem = async (id: number) => {
     try {
-      const removeItemParams: any = {
+      const removeItemParams = {
         wishId: id,
       };
       const { data }: any = await sdk.odoo.wishlistRemove(removeItemParams, {
@@ -44,7 +49,7 @@ export const useWishlist: any = () => {
       });
       return data.wishlistRemoveItem;
     } catch (err) {
-      console.log(err);
+      error.wishlistRemoveItem = err;
     }
   };
 
@@ -54,5 +59,6 @@ export const useWishlist: any = () => {
     wishlistItems: computed(() => currentWishlist.value?.wishlistItems),
     WishlistAddItem,
     WishlistRemoveItem,
+    error: computed(() => error),
   };
 };

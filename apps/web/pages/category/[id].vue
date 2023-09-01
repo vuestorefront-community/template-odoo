@@ -5,7 +5,7 @@ import {
   useUiHelpers,
   useWishlist,
 } from '@/composables';
-import { Product } from '@erpgap/odoo-sdk-api-client';
+import { Product, WishlistData } from '@erpgap/odoo-sdk-api-client';
 import { SfButton, SfIconTune, useDisclosure } from '@storefront-ui/vue';
 import { useMediaQuery } from '@vueuse/core';
 import { useToast } from 'vue-toastification';
@@ -52,14 +52,14 @@ const products = useState<any>('products', () => []);
 const isLoading = ref(true);
 const productsForPagination = ref([]);
 const mountUrlSlugForProductVariant = (product: {
-  slug: any;
+  slug: string;
   variantAttributeValues: any;
 }) => {
   if (product) {
     const { slug, variantAttributeValues } = product;
     const joinedSlug = `${slug}?${variantAttributeValues
       .map(
-        (variant: { attribute: { name: any }; id: any }) =>
+        (variant: { attribute: { name: string }; id: number }) =>
           `${variant?.attribute?.name}=${variant?.id}&`
       )
       .join('')}`;

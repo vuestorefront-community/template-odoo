@@ -6,6 +6,10 @@ import {
 
 export const useProduct: any = () => {
   const loading = ref(false);
+  const error = reactive<any>({
+    loadProduct: null,
+    loadProductVariant: null,
+  });
   const loadProductDetails = async (params: QueryProductArgs) => {
     try {
       loading.value = true;
@@ -16,7 +20,7 @@ export const useProduct: any = () => {
         product: data.product,
       };
     } catch (err) {
-      console.log(err);
+      error.loadProduct = err;
     } finally {
       loading.value = false;
     }
@@ -30,7 +34,7 @@ export const useProduct: any = () => {
       });
       return data;
     } catch (err) {
-      console.log(err);
+      error.loadProductVariant = err;
     } finally {
       loading.value = false;
     }
@@ -40,5 +44,6 @@ export const useProduct: any = () => {
     loading,
     loadProductDetails,
     loadProductVariant,
+    error: computed(() => error),
   };
 };
