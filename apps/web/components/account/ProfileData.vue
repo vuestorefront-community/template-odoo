@@ -18,11 +18,15 @@
 <script lang="ts" setup>
 import { SfButton } from '@storefront-ui/vue';
 
-type AccountDataProps = {
-  header: string;
-  buttonText: string;
-};
-
-defineProps<AccountDataProps>();
+defineProps({
+  header: {
+    type: String,
+    required: true,
+  },
+  buttonText: {
+    type: String,
+    required: false,
+  },
+});
 defineEmits(['on-click']);
 </script>

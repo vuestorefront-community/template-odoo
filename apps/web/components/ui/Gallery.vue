@@ -58,6 +58,7 @@ const images = computed<any[]>(() => props.images);
           :aria-label="alt"
           :aria-hidden="activeIndex !== index"
           class="object-cover w-auto h-full"
+          loading="lazy"
           :alt="alt"
           :src="imageSrc"
         />

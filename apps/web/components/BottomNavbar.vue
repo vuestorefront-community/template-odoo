@@ -37,7 +37,6 @@ const handleWishlistSideBar = async () => {
 
 <template>
   <WishlistSidebar
-    :collected-products="collectedProducts"
     :is-open="wishlistIsOpen"
     @wishlistCount="setWishlistCount"
     @close="wishlistClose"

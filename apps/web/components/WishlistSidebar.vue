@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useWishlist } from '@/composables';
+import { WishlistData, WishlistItem } from '@erpgap/odoo-sdk-api-client';
 import { SfDrawer, SfButton, SfIconClose } from '@storefront-ui/vue';
 import { onClickOutside } from '@vueuse/core';
 import { useToast } from 'vue-toastification';
@@ -8,11 +9,6 @@ const props = defineProps({
   isOpen: {
     type: Boolean,
     required: true,
-  },
-  collectedProducts: {
-    type: [String, Object],
-    required: true,
-    default: {},
   },
 });
 const emit = defineEmits(['close', 'wishlistCount']);
@@ -89,7 +85,7 @@ const withBase = (filepath: string) =>
             </div>
             <div v-if="!loading">
               <div
-                v-if="wishlistItems"
+                v-if="wishlistItems.length > 0"
                 class="overflow-y-scroll h-[800px] p-4 text-black"
               >
                 <div class="flex items-center font-medium pb-6">

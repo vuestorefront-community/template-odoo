@@ -35,12 +35,7 @@ const { product } = await loadProductDetails({
   slug: `/product/${route.params.slug}`,
 });
 
-const params = {
-  combinationId: product.attributeValues.map((item: { id: number }) => item.id),
-  productTemplateId: product.combinationInfo.product_template_id,
-};
-// await loadProductVariant(params);
-
+const toast = useToast();
 const breadcrumbs = computed(() => {
   return [
     { name: 'Home', link: '/' },
@@ -48,7 +43,25 @@ const breadcrumbs = computed(() => {
     { name: product?.name, link: `product/${product?.name}` },
   ];
 });
-const toast = useToast();
+
+const removeDuplicates = () => {
+  const unique: any[] = [];
+  product?.attributeValues.map((element: any) => {
+    if (!unique.includes(element.displayType)) {
+      unique.push(element.id, element.displayType);
+    }
+  });
+  return unique;
+};
+const params = {
+  combinationId: removeDuplicates().filter(
+    (element) => typeof element === 'number'
+  ),
+  productTemplateId: product.combinationInfo.product_template_id,
+};
+const res = await loadProductVariant(params);
+
+console.log(res);
 
 const withBase = (filepath: string) =>
   `https://vsfdemo15.labs.odoogap.com${filepath}`;
@@ -123,6 +136,8 @@ const addToWishlist = async (firstVariant: any) => {
     toast.warning('Product has already been added to wishlist');
   }
 };
+
+onMounted(() => {});
 </script>
 
 <template>
@@ -215,17 +230,10 @@ const addToWishlist = async (firstVariant: any) => {
             </SfButton>
           </div>
           <div class="flex justify-center mt-4 gap-x-4">
-            <SfButton type="button" size="sm" variant="tertiary">
-              <template #prefix>
-                <SfIconCompareArrows size="sm" />
-              </template>
-              {{ $t('compare') }}
-            </SfButton>
             <SfButton
               type="button"
               size="sm"
               variant="tertiary"
-              :class="product.isInWishlist ? 'bg-primary-100' : 'bg-white'"
               @click="addToWishlist(product.firstVariant)"
             >
               <SfIconFavorite size="sm" />

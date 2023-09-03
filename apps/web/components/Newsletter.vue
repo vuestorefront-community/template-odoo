@@ -1,3 +1,33 @@
+<script lang="ts" setup>
+import { useMailing } from '@/composables';
+import {
+  SfButton,
+  SfInput,
+  SfLink,
+  SfIconCheckCircle,
+  SfIconClose,
+} from '@storefront-ui/vue';
+import { useToast } from 'vue-toastification';
+
+const { loading, sendSubscription } = useMailing;
+
+const toast = useToast();
+const inputValue = ref('');
+const showPositiveAlert = ref(false);
+const showErrorAlert = ref(false);
+
+const subscribeNewsletter = async (email: string) => {
+  if (!email) return;
+  const data = await sendSubscription({ email });
+  if (data.subscribed) {
+    toast.success('Subscribe successfull!');
+    inputValue.value = '';
+  } else {
+    toast.error('Something wrong!');
+  }
+};
+</script>
+
 <template>
   <div class="relative">
     <div class="bg-neutral-100 p-4 sm:p-10 text-center">
@@ -68,35 +98,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import {
-  SfButton,
-  SfInput,
-  SfLink,
-  SfIconCheckCircle,
-  SfIconClose,
-} from '@storefront-ui/vue';
-import { ref, type Ref } from 'vue';
-
-const inputValue = ref('');
-const showPositiveAlert = ref(false);
-const showErrorAlert = ref(false);
-const emailDataBase: Ref<string[]> = ref([]);
-
-const checkEmailDataBase = (email: string) =>
-  emailDataBase.value.find((element) => element === email);
-
-const subscribeNewsletter = (email: string) => {
-  if (!email) return;
-  if (checkEmailDataBase(email)) {
-    showErrorAlert.value = true;
-    setTimeout(() => (showErrorAlert.value = false), 5000);
-  } else {
-    showPositiveAlert.value = true;
-    emailDataBase.value.push(email);
-    setTimeout(() => (showPositiveAlert.value = false), 5000);
-  }
-  inputValue.value = '';
-};
-</script>

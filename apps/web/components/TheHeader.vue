@@ -70,7 +70,7 @@ const actionItems = [
     ariaLabel: 'Log in',
     role: 'login',
     badge: false,
-    link: '/my-account',
+    link: '/my-account/personal-data',
   },
 ];
 

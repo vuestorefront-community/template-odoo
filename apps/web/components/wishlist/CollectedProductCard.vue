@@ -22,7 +22,7 @@ const { id, imageUrl, imageAlt, name, price, specialPrice, slug } =
     class="relative flex first:border-t border-b-[1px] border-neutral-200 hover:shadow-lg min-w-[320px] p-4 last:mb-0"
     data-testid="cart-product-card"
   >
-    <div class="min-w-[114px] w-[114px] overflow-hidden rounded-md">
+    <div class="min-w-[114px] w-[115px] h-[150px] overflow-hidden rounded-md">
       <SfLink :to="slug" :tag="NuxtLink">
         <NuxtImg
           class="border rounded-md border-neutral-200"
