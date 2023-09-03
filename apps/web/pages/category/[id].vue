@@ -6,7 +6,12 @@ import {
   useWishlist,
 } from '@/composables';
 import { Product, WishlistData } from '@erpgap/odoo-sdk-api-client';
-import { SfButton, SfIconTune, useDisclosure } from '@storefront-ui/vue';
+import {
+  SfButton,
+  SfIconTune,
+  SfLoaderCircular,
+  useDisclosure,
+} from '@storefront-ui/vue';
 import { useMediaQuery } from '@vueuse/core';
 import { useToast } from 'vue-toastification';
 
@@ -244,7 +249,9 @@ onMounted(() => {
           />
         </template>
         <template v-else>
-          <div class="w-full text-center">Loading Products...</div>
+          <div class="w-full text-center mb-16">
+            <SfLoaderCircular size="xl" />
+          </div>
         </template>
       </div>
     </div>
