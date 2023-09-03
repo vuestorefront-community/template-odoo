@@ -3,12 +3,12 @@ import { sdk } from '@/sdk.config';
 export const useCart: any = () => {
   const loading = ref(false);
 
-  const loadCart = async () => {
+  const loadCartDetails = async () => {
     try {
       loading.value = true;
       const { data } = await sdk.odoo.cartLoad();
       return {
-        data
+        cart: data?.cart,
       };
     } catch (err) {
       console.log(err);
@@ -35,7 +35,7 @@ export const useCart: any = () => {
 
   return {
     loading,
-    loadCart,
+    loadCartDetails,
     cartAdd
   };
 };

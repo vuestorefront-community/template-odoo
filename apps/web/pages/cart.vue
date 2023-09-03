@@ -1,45 +1,37 @@
 <script lang="ts" setup>
+import {
+  useCart
+} from '@/composables';
 import { SfButton, SfIconArrowBack } from '@storefront-ui/vue';
 
 const NuxtLink = resolveComponent('NuxtLink');
 
-const data:any = ref([
-  {
-    id: 1,
-    attributes: [
-      {
-        name: 'Size',
-        label: '40',
-      },
-      {
-        name: 'Color',
-        label: 'White',
-      },
-    ],
-    imageUrl: null,
-    imageAlt: 'athletic-mens-walking-sneakers',
-    maxValue: 20,
-    minValue: 1,
-    name: 'athletic-mens-walking-sneakers',
-    price: '89.95',
-    specialPrice: '100.99',
-    quantity: 10,
-    slug: '/product/1',
-  },
-]);
+const { loadCartDetails } = useCart();
 
-const cart = ref({
-  length: 1,
-  totalPrice: '89.95',
-  subtotalRegularPrice: '100.99',
-  totalCouponDiscounts: '20',
-  shippingPrice: '0',
-  totalTax: '1.38',
-});
+const { cart } = await loadCartDetails();
+
+const route: any = useRoute();
+
+const mountUrlSlugForProductVariant = (product: {
+  slug: string;
+  variantAttributeValues: any;
+}) => {
+  if (product) {
+    const { slug, variantAttributeValues } = product;
+    const joinedSlug = `${slug}?${variantAttributeValues
+      .map(
+        (variant: { attribute: { name: string }; id: number }) =>
+          `${variant?.attribute?.name}=${variant?.id}&`
+      )
+      .join('')}`;
+    return joinedSlug.slice(0, -1);
+  }
+};
+
 </script>
 
 <template>
-  <div v-if="data" class="pb-20">
+  <div v-if="cart.order.orderLines" class="pb-20">
     <div class="flex justify-between mt-8 mb-10">
       <h1 class="font-bold typography-headline-3 md:typography-headline-2">
         Cart
@@ -74,30 +66,21 @@ const cart = ref({
     >
       <div class="col-span-7 mb-10 lg:mb-0">
         <div
-          v-for="{
-            id,
-            attributes,
-            imageUrl,
-            imageAlt,
-            name,
-            price,
-            specialPrice,
-            quantity,
-            slug,
-          } in data"
-          :key="id"
+          v-for="
+            orderLine
+           in cart.order.orderLines"
         >
           <CartCollectedProductCard
-            :attributes="attributes"
-            :image-url="imageUrl"
-            :image-alt="imageAlt"
-            :name="name ?? ''"
-            :price="price"
-            :special-price="specialPrice"
-            :max-value="10"
-            :min-value="1"
-            :value="quantity"
-            :slug="slug"
+            :id="orderLine.product.id"
+            :displayName="orderLine.product.combinationInfo.display_name"
+            :imageUrl="orderLine.product.image"
+            :imageAlt="orderLine.product.imageFilename"
+            :attributes="orderLine.product.attributeValues"
+            :price="orderLine.product.combinationInfo.price"
+            :listPrice="orderLine.product.combinationInfo.list_price"
+            :minValue="1"
+            :maxValue="10"
+            :quantit="orderLine.quantity"
           />
         </div>
       </div>

@@ -1,27 +1,52 @@
 <script setup lang="ts">
+import { OrderLine } from '@erpgap/odoo-sdk-api-client';
 import { SfLink, SfIconSell } from '@storefront-ui/vue';
 
-interface Attribute {
-  label: string;
-  name: string;
-  value: string;
-}
-
-type CartProductCardProps = {
-  attributes: Attribute[];
-  imageUrl?: string | null;
-  imageAlt?: string | null;
-  maxValue: number;
-  minValue: number;
-  name: string;
-  price: string;
-  specialPrice: string;
-  value: number;
-  slug: string;
-};
-
-defineProps<CartProductCardProps>();
 const NuxtLink = resolveComponent('NuxtLink');
+
+defineProps({
+  id: {
+    type: Number,
+    required: true,
+  },
+  displayName: {
+    type: String,
+    required: true,
+  },
+  imageUrl: {
+    type: String,
+    required: true,
+  },
+  imageAlt: {
+    type: String,
+    required: true,
+  },
+  attributes: {
+    type: Array,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  listPrice: {
+    type: Number,
+    required: true,
+  },
+  minValue: {
+    type: Number,
+    required: true,
+  },
+  maxValue: {
+    type: Number,
+    required: true,
+  },
+  quantity: {
+    type: Number,
+    required: true,
+  },
+});
+
 </script>
 
 <template>
@@ -50,12 +75,11 @@ const NuxtLink = resolveComponent('NuxtLink');
     </div>
     <div class="flex flex-col pl-4 min-w-[180px] flex-1">
       <SfLink
-        :tag="NuxtLink"
-        to="/product/1"
+        :href="slug"
         variant="secondary"
         class="no-underline typography-text-sm sm:typography-text-lg"
       >
-        {{ name }}
+        {{ displayName }}
       </SfLink>
       <div class="my-2 sm:mb-0">
         <ul
@@ -71,14 +95,14 @@ const NuxtLink = resolveComponent('NuxtLink');
         class="items-start sm:items-center sm:mt-auto flex flex-col sm:flex-row"
       >
         <span
-          v-if="specialPrice"
+          v-if="listPrice"
           class="text-secondary-700 sm:order-1 font-bold typography-text-sm sm:typography-text-lg sm:ml-auto"
         >
-          ${{ specialPrice }}
+          ${{ price }}
           <span
             class="text-neutral-500 ml-2 line-through typography-text-xs sm:typography-text-sm font-normal"
           >
-            ${{ price }}
+            ${{listPrice  }}
           </span>
         </span>
         <span
