@@ -137,9 +137,7 @@ const addToWishlist = async (firstVariant: any) => {
   }
 };
 
-onMounted(() => {
-  // console.log(product);
-});
+onMounted(() => {});
 </script>
 
 <template>
