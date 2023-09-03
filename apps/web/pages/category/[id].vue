@@ -235,7 +235,7 @@ onMounted(() => {
               :rating-count="123"
               :rating="Number(4)"
               :first-variant="firstVariant"
-              @click:addOrRemoveFromWishlists="toggleWishlist"
+              @addOrRemoveFromWishlists="toggleWishlist"
             />
           </section>
           <CategoryEmptyState v-else />
@@ -249,7 +249,7 @@ onMounted(() => {
           />
         </template>
         <template v-else>
-          <div class="w-full text-center mb-16">
+          <div class="w-full text-center mb-20">
             <SfLoaderCircular size="xl" />
           </div>
         </template>

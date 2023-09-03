@@ -65,21 +65,21 @@ const addToCart = async (firstVariant: any) => {
 };
 </script>
 <template>
-  <div
-    class="relative border border-neutral-200 rounded-md hover:shadow-lg min-h-[350px]"
-  >
+  <div class="relative border border-neutral-200 rounded-md hover:shadow-lg">
     <div class="relative">
       <SfLink :href="slug">
         <NuxtImg
           :src="imageUrl"
           :alt="imageAlt"
-          class="rounded-md"
+          class="rounded-md min-h-[210px] lg:min-h-[250px]"
+          loading="lazy"
           fit="fill"
           width="full"
           height="full"
         />
       </SfLink>
       <SfButton
+        v-if="imageUrl"
         type="button"
         variant="tertiary"
         size="sm"
@@ -89,7 +89,7 @@ const addToCart = async (firstVariant: any) => {
           { '!bg-green-200': isInWishlist },
         ]"
         aria-label="Add to wishlist"
-        @click="$emit('click:addOrRemoveFromWishlists', firstVariant?.id)"
+        @click="$emit('addOrRemoveFromWishlists', firstVariant?.id)"
       >
         <SfIconFavorite size="sm" />
       </SfButton>

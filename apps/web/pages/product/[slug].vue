@@ -232,17 +232,10 @@ onMounted(() => {
             </SfButton>
           </div>
           <div class="flex justify-center mt-4 gap-x-4">
-            <SfButton type="button" size="sm" variant="tertiary">
-              <template #prefix>
-                <SfIconCompareArrows size="sm" />
-              </template>
-              {{ $t('compare') }}
-            </SfButton>
             <SfButton
               type="button"
               size="sm"
               variant="tertiary"
-              :class="product.isInWishlist ? 'bg-primary-100' : 'bg-white'"
               @click="addToWishlist(product.firstVariant)"
             >
               <SfIconFavorite size="sm" />

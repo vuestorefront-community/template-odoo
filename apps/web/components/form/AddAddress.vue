@@ -20,7 +20,7 @@ const props = defineProps({
   },
 });
 
-const { savedAddress } = toRefs(props);
+const { savedAddress }:any = toRefs(props);
 
 const defaultValues = ref({
   name: savedAddress?.name ?? '',

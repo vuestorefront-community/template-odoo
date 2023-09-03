@@ -1107,9 +1107,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@erpgap/odoo-sdk-api-client@npm:0.1.5":
-  version: 0.1.5
-  resolution: "@erpgap/odoo-sdk-api-client@npm:0.1.5"
+"@erpgap/odoo-sdk-api-client@npm:0.1.7, @erpgap/odoo-sdk-api-client@npm:^0.1.7":
+  version: 0.1.7
+  resolution: "@erpgap/odoo-sdk-api-client@npm:0.1.7"
   dependencies:
     "@apollo/client": ^3.7.16
     "@vue-storefront/middleware": 3.0.0-rc.2
@@ -1119,33 +1119,17 @@ __metadata:
     graphql: ^16.7.1
     request-ip: ^3.3.0
     winston: ^3.9.0
-  checksum: db92353ec60a125367167c0dce21686cbfe2818cccf70bc2c54ccbecb0b7f8e50608b1706d6e90a719b822bc39e462eafa0862c92ea4721f955f65ef71089d2d
+  checksum: 4de3cbb51f0f0c67706f6a8104f5121f667a312f8ccc0d3fc7a8b683e4982e53ea46c68326c374121304f56d6401ae328ca21aab73c3b2445017b7606c2e4444
   languageName: node
   linkType: hard
 
-"@erpgap/odoo-sdk-api-client@npm:^0.1.5":
-  version: 0.1.6
-  resolution: "@erpgap/odoo-sdk-api-client@npm:0.1.6"
-  dependencies:
-    "@apollo/client": ^3.7.16
-    "@vue-storefront/middleware": 3.0.0-rc.2
-    axios: ^0.21.1
-    consola: ^3.0.0
-    cross-fetch: ^4.0.0
-    graphql: ^16.7.1
-    request-ip: ^3.3.0
-    winston: ^3.9.0
-  checksum: 329559629e3be94f8bf23849e9895cea181b5d705b09faf7711ee169115ee84e820d239c1ccc93fd20a2b7129960fffd85c5daf7f921b428ccb6446a37934efc
-  languageName: node
-  linkType: hard
-
-"@erpgap/odoo-sdk@npm:^0.1.4":
-  version: 0.1.6
-  resolution: "@erpgap/odoo-sdk@npm:0.1.6"
+"@erpgap/odoo-sdk@npm:^0.1.7":
+  version: 0.1.7
+  resolution: "@erpgap/odoo-sdk@npm:0.1.7"
   dependencies:
     "@apollo/client": ^3.7.16
     axios: ^1.4.0
-  checksum: 0ca623078dd8040643b9b92c4fad75f1f2893aaee2a93f328440d20c1af1c437ded29d071db6ca3f1ad604eac818a2d4ba479c1f0b480b870d02422f75d3c4df
+  checksum: 4acdb36eec0e50aaac9324e6c9fced4f7d4063ce103414d400642309a64fb15c0d5bba3ed75beda40868ec125d89c8e492c479972a780f2d942a4a6baa1b0fa4
   languageName: node
   linkType: hard
 
@@ -3369,21 +3353,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue-storefront/middleware@npm:3.0.1":
-  version: 3.0.1
-  resolution: "@vue-storefront/middleware@npm:3.0.1"
+"@vue-storefront/middleware@npm:3.5.0":
+  version: 3.5.0
+  resolution: "@vue-storefront/middleware@npm:3.5.0"
   dependencies:
     consola: ^2.15.3
     cookie-parser: ^1.4.6
     cors: ^2.8.5
     express: ^4.18.1
     helmet: ^5.1.1
-    rimraf: ^4.1.2
-  checksum: 467d78596ad54463f2ba9fd6d7850ed7cad90489757b23b04d508f107292f659819f5808d4a0efccf91dcffd0f868c7127f04818889c5478fb463ff68515c890
+  checksum: 1e9359df576d404ac3aba2607090c9f1b5c57c028c4003e4d7092b92c70fafeea863c363ccb310deed0b42b1070e7b5ae43f1706befb9d2aa332c8fb07734257
   languageName: node
   linkType: hard
 
-"@vue-storefront/sdk@npm:^1.0.1":
+"@vue-storefront/sdk@npm:^1.1.2":
   version: 1.1.2
   resolution: "@vue-storefront/sdk@npm:1.1.2"
   dependencies:
@@ -14556,8 +14539,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "server@workspace:apps/server"
   dependencies:
-    "@erpgap/odoo-sdk-api-client": 0.1.5
-    "@vue-storefront/middleware": 3.0.1
+    "@erpgap/odoo-sdk-api-client": 0.1.7
+    "@vue-storefront/middleware": 3.5.0
     cors: ^2.8.5
     nodemon: ^2.0.19
     ts-node-dev: ^2.0.0
@@ -17134,8 +17117,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "web@workspace:apps/web"
   dependencies:
-    "@erpgap/odoo-sdk": ^0.1.4
-    "@erpgap/odoo-sdk-api-client": ^0.1.5
+    "@erpgap/odoo-sdk": ^0.1.7
+    "@erpgap/odoo-sdk-api-client": ^0.1.7
     "@nuxt/devtools": ^0.7.1
     "@nuxt/image": rc
     "@nuxtjs/fontaine": ^0.4.1
@@ -17143,7 +17126,7 @@ __metadata:
     "@nuxtjs/tailwindcss": ^6.8.0
     "@storefront-ui/typography": ^2.0.0
     "@storefront-ui/vue": ^2.5.0
-    "@vue-storefront/sdk": ^1.0.1
+    "@vue-storefront/sdk": ^1.1.2
     clipboard: ^2.0.11
     nuxt: ^3.6.0
     vue-toastification: next
