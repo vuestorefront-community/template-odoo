@@ -68,7 +68,7 @@ const { cart } = await loadCartDetails();
         </div>
       </div>
 
-      <UiOrderSummary :cart="cart" class="col-span-5 md:sticky md:top-20 h-fit">
+      <UiOrderSummary :order="cart.order" class="col-span-5 md:sticky md:top-20 h-fit">
         <SfButton
           :tag="NuxtLink"
           to="/checkout"
