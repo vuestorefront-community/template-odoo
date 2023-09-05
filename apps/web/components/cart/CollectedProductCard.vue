@@ -45,6 +45,10 @@ defineProps({
     type: Number,
     required: true,
   },
+  slug: {
+    type: String,
+    required: true,
+  },
 });
 
 </script>
@@ -55,7 +59,7 @@ defineProps({
     data-testid="cart-product-card"
   >
     <div class="relative overflow-hidden rounded-md w-[100px] sm:w-[176px]">
-      <SfLink :tag="NuxtLink" to="/product/1">
+      <SfLink :tag="NuxtLink" :href="`${slug}`">
         <NuxtImg
           class="w-full h-auto border rounded-md border-neutral-200"
           :src="imageUrl ?? '/images/product.webp'"

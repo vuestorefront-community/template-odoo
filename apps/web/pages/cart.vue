@@ -10,24 +10,6 @@ const { loadCartDetails } = useCart();
 
 const { cart } = await loadCartDetails();
 
-const route: any = useRoute();
-
-const mountUrlSlugForProductVariant = (product: {
-  slug: string;
-  variantAttributeValues: any;
-}) => {
-  if (product) {
-    const { slug, variantAttributeValues } = product;
-    const joinedSlug = `${slug}?${variantAttributeValues
-      .map(
-        (variant: { attribute: { name: string }; id: number }) =>
-          `${variant?.attribute?.name}=${variant?.id}&`
-      )
-      .join('')}`;
-    return joinedSlug.slice(0, -1);
-  }
-};
-
 </script>
 
 <template>
@@ -80,7 +62,8 @@ const mountUrlSlugForProductVariant = (product: {
             :listPrice="orderLine.product.combinationInfo.list_price"
             :minValue="1"
             :maxValue="10"
-            :quantit="orderLine.quantity"
+            :quantity="orderLine.quantity"
+            :slug="orderLine.product.slug"
           />
         </div>
       </div>
