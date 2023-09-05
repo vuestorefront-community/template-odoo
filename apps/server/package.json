@@ -10,7 +10,7 @@
     "dev": "nodemon"
   },
   "dependencies": {
-    "@erpgap/odoo-sdk-api-client": "0.1.7",
+    "@erpgap/odoo-sdk-api-client": "0.1.9",
     "@vue-storefront/middleware": "3.5.0",
     "cors": "^2.8.5",
     "nodemon": "^2.0.19",
