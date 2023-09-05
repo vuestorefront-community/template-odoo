@@ -1,6 +1,78 @@
+<script setup>
+import {
+  SfIconBase,
+  SfIconPerson,
+  SfIconShoppingCart,
+  SfListItem,
+  SfButton,
+  SfIconArrowBack,
+  SfIconChevronRight,
+} from '@storefront-ui/vue';
+
+const NuxtLink = resolveComponent('NuxtLink');
+const { t } = useI18n();
+const router = useRouter();
+const sections = [
+  {
+    title: t('account.accountSettings.heading'),
+    icon: SfIconPerson,
+    subsections: [
+      {
+        label: t('account.accountSettings.section.personalData'),
+        link: '/my-account/personal-data',
+      },
+      {
+        label: t('account.accountSettings.section.billingDetails'),
+        link: '/my-account/billing-details',
+      },
+      {
+        label: t('account.accountSettings.section.shippingDetails'),
+        link: '/my-account/shipping-details',
+      },
+      {
+        label: 'Newsletter',
+        link: '/my-account/newsletter',
+      },
+    ],
+  },
+  {
+    title: t('account.ordersAndReturns.heading'),
+    icon: SfIconShoppingCart,
+    subsections: [
+      {
+        label: t('account.ordersAndReturns.section.myOrders'),
+        link: '/my-account/my-orders',
+      },
+      {
+        label: t('account.ordersAndReturns.section.returns'),
+        link: '/my-account/returns',
+      },
+    ],
+  },
+];
+
+const currentPath = computed(() => router.currentRoute.value.path);
+const path = '/my-account';
+const rootPathRegex = new RegExp(`^${path}/?$`);
+const isRoot = computed(() => rootPathRegex.test(currentPath.value));
+const findCurrentPage = computed(() =>
+  sections
+    .flatMap(({ subsections }) => subsections)
+    .find(({ link }) => currentPath.value.includes(link))
+);
+
+const breadcrumbs = computed(() => [
+  { name: t('home'), link: '/' },
+  { name: t('account.heading'), link: '/my-account' },
+  ...(isRoot.value
+    ? []
+    : [{ name: findCurrentPage.value?.label, link: currentPath.value }]),
+]);
+</script>
+
 <template>
   <TheHeader filled />
-  <main class="narrow-container">
+  <main class="narrow-container lg:mt-20">
     <UiBreadcrumb :breadcrumbs="breadcrumbs" class="mt-5 mb-10" />
     <div data-testid="account-layout">
       <h1
@@ -9,7 +81,10 @@
       >
         {{ $t('account.heading') }}
       </h1>
-      <div v-else class="flex justify-between items-center mb-10 mt-4">
+      <div
+        v-else
+        class="flex justify-between md:justify-start items-center mb-10 mt-4"
+      >
         <div v-for="({ subsections }, i) in sections" :key="i">
           <div
             v-for="{ label, link } in subsections"
@@ -98,73 +173,3 @@
   <TheFooter />
   <BottomNavbar />
 </template>
-
-<script setup>
-import {
-  SfIconBase,
-  SfIconPerson,
-  SfIconShoppingCart,
-  SfListItem,
-  SfButton,
-  SfIconArrowBack,
-  SfIconChevronRight,
-} from '@storefront-ui/vue';
-
-const NuxtLink = resolveComponent('NuxtLink');
-const { t } = useI18n();
-const router = useRouter();
-const sections = [
-  {
-    title: t('account.accountSettings.heading'),
-    icon: SfIconPerson,
-    subsections: [
-      {
-        label: t('account.accountSettings.section.personalData'),
-        link: '/my-account/personal-data',
-      },
-      {
-        label: t('account.accountSettings.section.billingDetails'),
-        link: '/my-account/billing-details',
-      },
-      {
-        label: t('account.accountSettings.section.shippingDetails'),
-        link: '/my-account/shipping-details',
-      },
-      {
-        label: 'Newsletter',
-        link: '/my-account/newsletter',
-      },
-    ],
-  },
-  {
-    title: t('account.ordersAndReturns.heading'),
-    icon: SfIconShoppingCart,
-    subsections: [
-      {
-        label: t('account.ordersAndReturns.section.myOrders'),
-        link: '/my-account/my-orders',
-      },
-      {
-        label: t('account.ordersAndReturns.section.returns'),
-        link: '/my-account/returns',
-      },
-    ],
-  },
-];
-
-const currentPath = computed(() => router.currentRoute.value.path);
-const path = '/my-account';
-const rootPathRegex = new RegExp(`^${path}/?$`);
-const isRoot = computed(() => rootPathRegex.test(currentPath.value));
-const findCurrentPage = computed(() =>
-  sections.flatMap(({ subsections }) => subsections).find(({ link }) => currentPath.value.includes(link)),
-);
-
-const breadcrumbs = computed(() => [
-  { name: t('home'), link: '/' },
-  { name: t('account.heading'), link: '/my-account' },
-  ...(isRoot.value
-    ? []
-    : [{ name: findCurrentPage.value?.label, link: currentPath.value }]),
-]);
-</script>

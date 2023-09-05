@@ -1,3 +1,52 @@
+<script setup lang="ts">
+import {
+  SfButton,
+  SfIconChevronLeft,
+  SfIconChevronRight,
+  usePagination,
+} from '@storefront-ui/vue';
+import { LocationQueryRaw } from 'vue-router';
+
+const props = defineProps({
+  currentPage: Number,
+  pageSize: Number,
+  totalItems: Number,
+  maxVisiblePages: Number,
+});
+const route = useRoute();
+const router = useRouter();
+
+const {
+  currentPage,
+  pageSize,
+  totalItems,
+  maxVisiblePages: maxVisiblePagesProperty,
+}: any = toRefs(props);
+const pagination = computed<any>(() =>
+  reactive(
+    usePagination({
+      totalItems: totalItems.value,
+      currentPage: currentPage.value,
+      pageSize: pageSize.value,
+      maxPages: maxVisiblePagesProperty.value,
+    })
+  )
+);
+
+const setParams = (filter: any) => {
+  router.push({ query: { ...route.query, ...filter } });
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: 'smooth',
+  });
+};
+
+onMounted(() => {
+  pagination.value?.setPage(route.query.page ? Number(route.query.page) : 1);
+});
+</script>
+
 <template>
   <nav
     class="flex justify-between items-end border-t border-neutral-200"
@@ -177,47 +226,3 @@
     </SfButton>
   </nav>
 </template>
-
-<script setup lang="ts">
-import {
-  SfButton,
-  SfIconChevronLeft,
-  SfIconChevronRight,
-  usePagination,
-} from '@storefront-ui/vue';
-import { LocationQueryRaw } from 'vue-router';
-
-const props = defineProps({
-  currentPage: Number,
-  pageSize: Number,
-  totalItems: Number,
-  maxVisiblePages: Number,
-});
-const route = useRoute();
-const router = useRouter();
-
-const {
-  currentPage,
-  pageSize,
-  totalItems,
-  maxVisiblePages: maxVisiblePagesProperty,
-}: any = toRefs(props);
-const pagination = computed<any>(() =>
-  reactive(
-    usePagination({
-      totalItems: totalItems.value,
-      currentPage: currentPage.value,
-      pageSize: pageSize.value,
-      maxPages: maxVisiblePagesProperty.value,
-    })
-  )
-);
-
-const setParams = (filter: any) => {
-  router.push({ query: { ...route.query, ...filter } });
-};
-
-onMounted(() => {
-  pagination.value?.setPage(route.query.page ? Number(route.query.page) : 1);
-});
-</script>

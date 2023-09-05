@@ -40,7 +40,7 @@ const cart = ref({
 
 <template>
   <div v-if="data" class="pb-20">
-    <div class="flex justify-between mt-8 mb-10">
+    <div class="flex justify-between pt-8 pb-10">
       <h1 class="font-bold typography-headline-3 md:typography-headline-2">
         Cart
       </h1>

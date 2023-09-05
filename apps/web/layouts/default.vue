@@ -15,7 +15,7 @@ const {
 
 <template>
   <TheHeader @search-modal-open="searchModalOpen" filled />
-  <main class="w-full narrow-container bg-white">
+  <main class="w-full lg:mt-20 narrow-container bg-white">
     <NuxtPage />
   </main>
 

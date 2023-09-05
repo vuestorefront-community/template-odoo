@@ -1,19 +1,25 @@
 <script setup lang="ts">
 import { useWishlist } from '@/composables';
-import { WishlistData, WishlistItem } from '@erpgap/odoo-sdk-api-client';
-import { SfDrawer, SfButton, SfIconClose } from '@storefront-ui/vue';
+import '@erpgap/odoo-sdk-api-client';
+import {
+  SfDrawer,
+  SfButton,
+  SfIconClose,
+  SfLoaderCircular,
+} from '@storefront-ui/vue';
 import { onClickOutside } from '@vueuse/core';
 import { useToast } from 'vue-toastification';
 
+const NuxtLink = resolveComponent('NuxtLink');
 const props = defineProps({
   isOpen: {
     type: Boolean,
     required: true,
   },
 });
-const emit = defineEmits(['close', 'wishlistCount']);
+const emit = defineEmits(['close']);
 
-const { loadWishlist, loading, WishlistRemoveItem } = useWishlist();
+const { loading, loadWishlist, WishlistRemoveItem } = useWishlist();
 const { isOpen } = toRefs(props);
 const toast = useToast();
 
@@ -21,14 +27,16 @@ const WishlistRef = ref();
 onClickOutside(WishlistRef, () => {
   emit('close');
 });
-const wishlistItems = ref<any[]>([]);
 
+const withBase = (filepath: string) =>
+  `https://vsfdemo15.labs.odoogap.com${filepath}`;
+
+const wishlistItems = ref<any[]>([]);
 watch(isOpen, async (val) => {
   if (val) {
     const res = await loadWishlist();
     if (res && res.wishlistItems) {
       wishlistItems.value = res.wishlistItems;
-      emit('wishlistCount', wishlistItems.value?.length);
     }
   }
 });
@@ -37,13 +45,10 @@ const removeFromWishlist = async (id: number) => {
   const response = await WishlistRemoveItem(id);
   if (response && response.wishlistItems) {
     wishlistItems.value = response.wishlistItems;
-    emit('wishlistCount', wishlistItems.value?.length);
+    await loadWishlist();
     toast.success('Product has been removed from wishlist');
   }
 };
-
-const withBase = (filepath: string) =>
-  `https://vsfdemo15.labs.odoogap.com${filepath}`;
 </script>
 
 <template>
@@ -86,7 +91,7 @@ const withBase = (filepath: string) =>
             <div v-if="!loading">
               <div
                 v-if="wishlistItems.length > 0"
-                class="overflow-y-scroll h-[800px] p-4 text-black"
+                class="overflow-y-scroll h-[1000px] p-4 text-black no-scrollbar"
               >
                 <div class="flex items-center font-medium pb-6">
                   <p class="text-gray-600 mr-1">Number of products :</p>
@@ -106,25 +111,39 @@ const withBase = (filepath: string) =>
                     "
                     :slug="product.slug"
                     @removeFromWishlist="removeFromWishlist"
+                    @close="$emit('close')"
                   />
                 </div>
               </div>
-              <div
-                v-else
-                class="flex items-center justify-center flex-col py-48 text-black"
-                data-testid="cart-page-content"
-              >
-                <NuxtImg
-                  src="/images/empty-cart.svg"
-                  :alt="$t('emptyCartImgAlt')"
-                  width="192"
-                  height="192"
-                />
-                <h2 class="mt-8 font-medium">Your Wishlist is empty</h2>
+              <div v-else class="h-screen" data-testid="cart-page-content">
+                <div
+                  class="flex items-center justify-center flex-col h-[calc(100%-100px)] text-black"
+                >
+                  <NuxtImg
+                    src="/images/empty-cart.svg"
+                    :alt="$t('emptyCartImgAlt')"
+                    width="192"
+                    height="192"
+                  />
+                  <h2 class="my-6 mb-3 font-medium">Your Wishlist is empty</h2>
+                  <SfButton
+                    :tag="NuxtLink"
+                    to="/"
+                    variant="secondary"
+                    class="!ring-neutral-200"
+                    @click="$emit('close')"
+                  >
+                    {{ $t('account.ordersAndReturns.continue') }}</SfButton
+                  >
+                </div>
               </div>
             </div>
-            <div class="flex items-center justify-center h-full" v-else>
-              <p class="text-black inline">loading...</p>
+            <div class="h-screen" v-else>
+              <p
+                class="text-black flex justify-center items-center h-[calc(100%-50px)]"
+              >
+                <SfLoaderCircular size="lg" />
+              </p>
             </div>
           </div>
         </SfDrawer>

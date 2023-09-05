@@ -12,7 +12,6 @@
         height="300"
       />
       <p class="mt-8 font-medium">{{ $t('emptyStateText') }}</p>
-      <p class="mt-4">{{ $t('emptyStateText2') }}</p>
     </div>
   </section>
 </template>
