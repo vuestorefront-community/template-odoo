@@ -11,7 +11,7 @@ import {
 
 const NuxtLink = resolveComponent('NuxtLink');
 
-const { cartAdd } = useCart();
+const { cartAdd, loadCartDetails } = useCart();
 
 defineProps({
   imageUrl: {

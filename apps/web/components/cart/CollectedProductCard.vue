@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { OrderLine } from '@erpgap/odoo-sdk-api-client';
 import { SfLink, SfIconSell } from '@storefront-ui/vue';
+import {
+  useCart
+} from '@/composables';
+
+const { cartRemove } = useCart();
 
 const NuxtLink = resolveComponent('NuxtLink');
 
@@ -50,6 +55,10 @@ defineProps({
     required: true,
   },
 });
+
+const handleRemoveFromCart = async (id: any) => {
+  const response = await cartRemove(id);
+};
 
 </script>
 
@@ -120,6 +129,7 @@ defineProps({
           :max-value="maxValue"
           class="mt-4 sm:mt-0"
         />
+        <button @click="handleRemoveFromCart(id)" type="button" class="ml-4 font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
       </div>
     </div>
   </div>

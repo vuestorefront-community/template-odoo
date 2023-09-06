@@ -6,7 +6,7 @@ import { SfButton, SfIconArrowBack } from '@storefront-ui/vue';
 
 const NuxtLink = resolveComponent('NuxtLink');
 
-const { loadCartDetails } = useCart();
+const { loadCartDetails, cartRemove } = useCart();
 
 const { cart } = await loadCartDetails();
 
@@ -53,7 +53,7 @@ const { cart } = await loadCartDetails();
            in cart.order.orderLines"
         >
           <CartCollectedProductCard
-            :id="orderLine.product.id"
+            :id="orderLine.id"
             :displayName="orderLine.product.combinationInfo.display_name"
             :imageUrl="orderLine.product.image"
             :imageAlt="orderLine.product.imageFilename"
@@ -68,7 +68,7 @@ const { cart } = await loadCartDetails();
         </div>
       </div>
 
-      <UiOrderSummary :order="cart.order" class="col-span-5 md:sticky md:top-20 h-fit">
+      <UiOrderSummary @couponAddedSuccessfully="loadCartDetails()" :order="cart.order" class="col-span-5 md:sticky md:top-20 h-fit">
         <SfButton
           :tag="NuxtLink"
           to="/checkout"

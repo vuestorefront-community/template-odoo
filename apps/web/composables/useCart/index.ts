@@ -33,9 +33,40 @@ export const useCart: any = () => {
     }
   };
 
+  const cartRemove = async (lineId: number) => {
+    try {
+      const { data } = await sdk.odoo.cartRemove(
+        { lineId }
+      );
+
+      return {data};
+    } catch (err) {
+      console.log(err);
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const cartApplyCoupon = async (promo: string) => {
+    try {
+
+      const { data } = await sdk.odoo.cartApplyCoupon(
+        { promo: promo }
+      );
+
+      return {data};
+    } catch (err) {
+      console.log(err);
+    } finally {
+      loading.value = false;
+    }
+  };
+
   return {
     loading,
     loadCartDetails,
-    cartAdd
+    cartAdd,
+    cartRemove,
+    cartApplyCoupon
   };
 };
