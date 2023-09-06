@@ -115,6 +115,7 @@ const serializeSize = (data: any[]) => {
 };
 const priceModel = ref<any>('');
 const selectPrice = (values: any) => {
+  priceModel.value = priceModel === values ? '' : values;
   const newValue: any = [values];
   const getIndex = selectedFilters.value.findIndex(
     (item: { filterName: string }) => item?.filterName === 'price'
@@ -157,11 +158,13 @@ const applyFilters = () => {
   const filters = selectedFilters.value.filter((item: any) => {
     return typeof item === 'object';
   });
+
   changeFilters(filters);
   emit('close');
   facetsFromUrlToFilter();
 };
 const clearFilters = () => {
+  priceModel.value = '';
   selectedFilters.value = [];
   router.push({ query: {} });
   emit('close');
@@ -211,7 +214,7 @@ onMounted(() => {
     </div>
     <ul class="mt-4 mb-6 md:mt-2" data-testid="categories">
       <SfListItem
-        v-for="({ id, label, slug }, index) in categoryTree.items"
+        v-for="{ id, label, slug } in categoryTree.items"
         :key="label"
         size="lg"
         :class="[
@@ -288,11 +291,10 @@ onMounted(() => {
                 >
                   <template #prefix>
                     <SfRadio
-                      v-model="priceModel"
                       class="flex items-center"
                       name="radio-price"
                       :value="values"
-                      @click="priceModel = priceModel === values ? '' : values"
+                      :model-value="priceModel"
                       @update:model-value="selectPrice(values)"
                     />
                   </template>

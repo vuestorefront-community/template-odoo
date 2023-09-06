@@ -9,6 +9,7 @@ import {
   SfIconFavorite,
 } from '@storefront-ui/vue';
 
+defineEmits(['addOrRemoveFromWishlists']);
 const NuxtLink = resolveComponent('NuxtLink');
 
 const { cartAdd, loadCartDetails } = useCart();

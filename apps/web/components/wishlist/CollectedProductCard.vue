@@ -12,6 +12,7 @@ type WishlistProductCardProps = {
   slug: string;
 };
 
+defineEmits(['close', 'removeFromWishlist']);
 const props = defineProps<WishlistProductCardProps>();
 const { id, imageUrl, imageAlt, name, price, specialPrice, slug } =
   toRefs(props);
@@ -22,7 +23,10 @@ const { id, imageUrl, imageAlt, name, price, specialPrice, slug } =
     class="relative flex first:border-t border-b-[1px] border-neutral-200 hover:shadow-lg min-w-[320px] p-4 last:mb-0"
     data-testid="cart-product-card"
   >
-    <div class="min-w-[114px] w-[115px] h-[150px] overflow-hidden rounded-md">
+    <div
+      @click="$emit('close')"
+      class="min-w-[114px] w-[115px] h-[150px] overflow-hidden rounded-md"
+    >
       <SfLink :to="slug" :tag="NuxtLink">
         <NuxtImg
           class="border rounded-md border-neutral-200"
@@ -37,6 +41,7 @@ const { id, imageUrl, imageAlt, name, price, specialPrice, slug } =
     <div class="flex flex-col pl-4 pr-5">
       <div class="flex flex-col min-w-[180px] flex-1">
         <SfLink
+          @click="$emit('close')"
           :tag="NuxtLink"
           :to="slug"
           variant="secondary"
@@ -71,7 +76,7 @@ const { id, imageUrl, imageAlt, name, price, specialPrice, slug } =
         type="button"
         variant="tertiary"
         size="sm"
-        @click="$emit('removeFromWishlist', id)"
+        @click.stop="$emit('removeFromWishlist', id)"
       >
         <SfIconClose />
       </SfButton>

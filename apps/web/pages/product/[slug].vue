@@ -61,8 +61,6 @@ const params = {
 };
 const res = await loadProductVariant(params);
 
-console.log(res);
-
 const withBase = (filepath: string) =>
   `https://vsfdemo15.labs.odoogap.com${filepath}`;
 const images = computed(() => {
