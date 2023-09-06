@@ -1,9 +1,21 @@
 <script setup lang="ts">
+import {
+  useCart
+} from '@/composables';
 import { SfButton, SfInput } from '@storefront-ui/vue';
+
+const { cartApplyCoupon, loadCartDetails } = useCart();
+const coupon = ref('');
+
+const emit = defineEmits(['couponAddedSuccessfully']);
 
 defineProps({
   order: Object,
 });
+const addCouponToCart = async () => {
+  const response = await cartApplyCoupon(coupon.value);
+  emit('couponAddedSuccessfully');
+};
 </script>
 <template>
   <div
@@ -17,7 +29,7 @@ defineProps({
         {{ $t('orderSummary') }}
       </p>
       <p class="typography-text-base font-medium" data-testid="total-in-cart">
-        {{ $t('itemsInCart') }} {{ order?.orderLines.length }}
+        {{ $t('itemsInCart') + order?.orderLines.length }}
       </p>
     </div>
     <div class="px-4 pb-4 mt-3 md:px-6 md:pb-6 md:mt-0">
@@ -45,7 +57,7 @@ defineProps({
           <p>${{ order?.amountTax }}</p>
         </div>
       </div>
-      <div class="flex items-center py-4 border-t border-neutral-200">
+      <div v-if="order?.coupons" class="flex items-center py-4 border-t border-neutral-200">
         <p>{{ $t('promoCode') }}</p>
         <SfButton size="sm" variant="tertiary" class="ml-auto mr-2">
           {{ $t('remove') }}
@@ -56,8 +68,9 @@ defineProps({
         <SfInput
           wrapper-class="grow"
           :placeholder="$t('promoCodePlaceholder')"
+          v-model="coupon"
         />
-        <SfButton variant="secondary">{{ $t('apply') }}</SfButton>
+        <SfButton @click="addCouponToCart" variant="secondary">{{ $t('apply') }}</SfButton>
       </div>
       <div
         class="px-3 py-3 bg-secondary-100 text-secondary-700 typography-text-sm rounded-md text-center mb-4"

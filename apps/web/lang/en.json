@@ -33,7 +33,7 @@
   },
   "myCart": "My Cart",
   "orderSummary": "Order Summary",
-  "itemsInCart": "(Items: {count})",
+  "itemsInCart": "Items: {count}",
   "itemsSubtotal": "Items subtotal",
   "originalPrice": "Original price",
   "savings": "Savings",
