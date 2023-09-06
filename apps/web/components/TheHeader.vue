@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useCategory } from '@/composables';
+import { useCategory, useWishlist } from '@/composables';
 import {
   SfButton,
   SfDrawer,
@@ -22,8 +22,9 @@ defineProps<{
   filled?: boolean;
 }>();
 
-const { loadCategoryList } = useCategory();
 const { isOpen, toggle, close } = useDisclosure();
+const { loadCategoryList } = useCategory();
+const { wishlistTotalItems: totalItems } = useWishlist();
 const {
   isOpen: wishlistIsOpen,
   toggle: wishlistToggle,
@@ -79,12 +80,7 @@ const bannerDetails = {
   title: 'New in designer watches',
 };
 
-const wishlistTotalItems: any = ref();
-
-const setWishlistCount = async (count: number) => {
-  wishlistTotalItems.value = count;
-};
-
+const wishlistTotalItems = computed(() => totalItems.value);
 const handleWishlistSideBar = async () => {
   wishlistToggle();
 };
@@ -99,7 +95,7 @@ const handleWishlistSideBar = async () => {
     <header
       ref="menuRef"
       :class="[
-        'h-14 md:h-20 flex z-50 md:sticky md:top-0 md:shadow-md flex-wrap md:flex-nowrap w-full py-2 md:py-5 border-0 bg-primary-700 border-neutral-200 md:z-10',
+        'h-14 md:h-20 flex z-50 lg:!fixed md:!top-0 md:shadow-md flex-wrap md:flex-nowrap w-full py-2 md:py-5 border-0 bg-primary-700 border-neutral-200',
         { 'bg-primary-700 text-white': filled },
         { 'bg-white border-b border-neutral-200': !filled },
       ]"
@@ -108,7 +104,7 @@ const handleWishlistSideBar = async () => {
         class="flex items-center justify-between lg:justify-start h-full w-full narrow-container"
       >
         <NuxtLink to="/" aria-label="Sf Homepage" class="h-6 md:h-7 -mt-1.5">
-          <VsfLogo />
+          <VsfLogo :filled="filled" />
         </NuxtLink>
         <SfButton
           v-if="filled"
@@ -281,11 +277,7 @@ const handleWishlistSideBar = async () => {
                 />
               </template>
             </SfButton>
-            <WishlistSidebar
-              :is-open="wishlistIsOpen"
-              @close="wishlistClose"
-              @wishlistCount="setWishlistCount"
-            />
+            <WishlistSidebar :is-open="wishlistIsOpen" @close="wishlistClose" />
           </div>
           <SfButton
             v-for="{ ariaLabel, label, icon, link, badge, role } in actionItems"

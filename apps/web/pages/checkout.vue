@@ -70,7 +70,7 @@ const data = ref({
 
 <template>
   <div class="md:px-0 mb-20">
-    <div class="flex justify-between mt-8 mb-10">
+    <div class="flex justify-between pt-8 pb-10">
       <h1 class="font-bold typography-headline-3 md:typography-headline-2">
         Checkout
       </h1>

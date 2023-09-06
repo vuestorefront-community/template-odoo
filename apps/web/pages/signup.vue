@@ -1,23 +1,6 @@
 <template>
   <div>
     <NuxtLayout name="auth" :heading="$t('auth.signup.heading')">
-      <UiAlert
-        class="w-full p-4 md:p-6 mb-6 !justify-start typography-text-base"
-        variant="neutral"
-      >
-        <P keypath="auth.signup.bannerText" scope="global">
-          <template #login>
-            <SfLink
-              :tag="NuxtLink"
-              to="/login"
-              class="focus:outline focus:outline-offset-2 focus:outline-2 outline-secondary-600 rounded"
-            >
-              {{ $t('auth.login.heading') }}
-            </SfLink>
-          </template>
-        </P>
-      </UiAlert>
-
       <form
         data-testid="signup-form"
         class="flex flex-col md:border md:border-neutral-200 rounded-md gap-4 md:p-6"
@@ -113,6 +96,15 @@
 
         <SfButton type="submit" size="lg" class="w-full">
           {{ $t('auth.signup.createButton') }}
+        </SfButton>
+        <SfButton
+          :tag="NuxtLink"
+          to="login"
+          type="submit"
+          size="lg"
+          class="w-full"
+        >
+          Back To Login
         </SfButton>
       </form>
 

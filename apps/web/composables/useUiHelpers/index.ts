@@ -161,6 +161,8 @@ export const useUiHelpers: any = () => {
   };
 
   const changeFilters = (filters: any[]) => {
+    const route: any = useRoute();
+    const { query } = route;
     const formattedFilters: any = {};
     filters.forEach((element) => {
       if (element.filterName === 'Size') {

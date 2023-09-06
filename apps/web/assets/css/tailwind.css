@@ -38,4 +38,11 @@
   .top-index {
     z-index: 10 !important;
   }
+  .no-scrollbar {
+    overflow: auto;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }

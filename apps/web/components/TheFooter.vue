@@ -1,3 +1,141 @@
+<script lang="ts" setup>
+import {
+  SfIconContactSupport,
+  SfIconFacebook,
+  SfIconHelp,
+  SfIconCall,
+  SfIconPinterest,
+  SfIconTwitter,
+  SfIconYoutube,
+  SfButton,
+  SfLink,
+  SfListItem,
+} from '@storefront-ui/vue';
+
+const categories = [
+  {
+    label: 'About Us',
+    subcategories: [
+      {
+        subcategoryLabel: 'Who we are',
+        link: '#',
+      },
+      {
+        subcategoryLabel: 'Quality in the details',
+        link: '#',
+      },
+      {
+        subcategoryLabel: 'Customer Reviews',
+        link: '#',
+      },
+    ],
+  },
+  {
+    label: 'Departments',
+    subcategories: [
+      {
+        subcategoryLabel: 'Women fashion',
+        link: '#',
+      },
+      {
+        subcategoryLabel: 'Men fashion',
+        link: '#',
+      },
+      {
+        subcategoryLabel: 'Kids wear',
+        link: '#',
+      },
+      {
+        subcategoryLabel: 'Home',
+        link: '#',
+      },
+    ],
+  },
+  {
+    label: 'Help',
+    subcategories: [
+      {
+        subcategoryLabel: 'Customer service',
+        link: '#',
+      },
+      {
+        subcategoryLabel: 'Size guide',
+        link: '#',
+      },
+      {
+        subcategoryLabel: 'Contact us',
+        link: '#',
+      },
+    ],
+  },
+  {
+    label: 'Payment and Delivery',
+    subcategories: [
+      {
+        subcategoryLabel: 'Purchase terms',
+        link: '#',
+      },
+      {
+        subcategoryLabel: 'Guarantee',
+        link: '#',
+      },
+    ],
+  },
+];
+const socialMedia = [
+  {
+    label: 'Facebook',
+    link: 'https://www.facebook.com/',
+    icon: SfIconFacebook,
+  },
+  {
+    label: 'Twitter',
+    link: 'https://twitter.com/',
+    icon: SfIconTwitter,
+  },
+  {
+    label: 'Pinterest',
+    link: 'https://www.pinterest.com/',
+    icon: SfIconPinterest,
+  },
+  {
+    label: 'Youtube',
+    link: 'https://twitter.com/',
+    icon: SfIconYoutube,
+  },
+];
+const contactOptions = [
+  {
+    label: 'Help center',
+    link: '#',
+    details: ['Find answers online anytime'],
+    icon: SfIconHelp,
+  },
+  {
+    label: 'Live chat',
+    link: '#',
+    details: ['Mon–Fri, 5am–10pm PT', 'Sat–Sun, 6am–9pm PT'],
+    icon: SfIconContactSupport,
+  },
+  {
+    label: '1 234 567 8901',
+    link: '#',
+    details: ['Mon–Fri, 5am–10pm PT', 'Sat–Sun, 6am–9pm PT'],
+    icon: SfIconCall,
+  },
+];
+const bottomLinks = [
+  {
+    label: 'Terms',
+    link: '#',
+  },
+  {
+    label: 'Privacy policy',
+    link: '#',
+  },
+];
+</script>
+
 <template>
   <footer class="pt-10 bg-neutral-100">
     <div
@@ -6,7 +144,7 @@
       <div
         v-for="{ label, subcategories } in categories"
         :key="label"
-        class="grid grid-cols xs:pb-4"
+        class="flex flex-col xs:pb-4"
       >
         <div
           class="ml-4 text-lg font-medium leading-7 text-neutral-900 font-body"
@@ -94,170 +232,3 @@
     </div>
   </footer>
 </template>
-<script lang="ts" setup>
-import {
-  SfIconContactSupport,
-  SfIconFacebook,
-  SfIconHelp,
-  SfIconInstagram,
-  SfIconCall,
-  SfIconPinterest,
-  SfIconTwitter,
-  SfIconYoutube,
-  SfButton,
-  SfLink,
-  SfListItem,
-} from '@storefront-ui/vue';
-
-const categories = [
-  {
-    label: 'How to buy',
-    subcategories: [
-      {
-        subcategoryLabel: 'Payment methods',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Order pickup',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Purchase status',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Track orders',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Returns',
-        link: '#',
-      },
-    ],
-  },
-  {
-    label: 'Help',
-    subcategories: [
-      {
-        subcategoryLabel: 'Help centers',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Security & fraud',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Feedback',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Contact',
-        link: '#',
-      },
-    ],
-  },
-  {
-    label: 'Services',
-    subcategories: [
-      {
-        subcategoryLabel: 'Gift cards',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Order pickup',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Purchase status',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Track orders',
-        link: '#',
-      },
-    ],
-  },
-  {
-    label: 'About',
-    subcategories: [
-      {
-        subcategoryLabel: 'About us',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Order pickup',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Purchase status',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Track orders',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Returns',
-        link: '#',
-      },
-    ],
-  },
-];
-const socialMedia = [
-  {
-    label: 'Facebook',
-    link: '#',
-    icon: SfIconFacebook,
-  },
-  {
-    label: 'Twitter',
-    link: '#',
-    icon: SfIconTwitter,
-  },
-  {
-    label: 'Instagram',
-    link: '#',
-    icon: SfIconInstagram,
-  },
-  {
-    label: 'Pinterest',
-    link: '#',
-    icon: SfIconPinterest,
-  },
-  {
-    label: 'Youtube',
-    link: '#',
-    icon: SfIconYoutube,
-  },
-];
-const contactOptions = [
-  {
-    label: 'Help center',
-    link: '#',
-    details: ['Find answers online anytime'],
-    icon: SfIconHelp,
-  },
-  {
-    label: 'Live chat',
-    link: '#',
-    details: ['Mon–Fri, 5am–10pm PT', 'Sat–Sun, 6am–9pm PT'],
-    icon: SfIconContactSupport,
-  },
-  {
-    label: '1 234 567 8901',
-    link: '#',
-    details: ['Mon–Fri, 5am–10pm PT', 'Sat–Sun, 6am–9pm PT'],
-    icon: SfIconCall,
-  },
-];
-const bottomLinks = [
-  {
-    label: 'Terms',
-    link: '#',
-  },
-  {
-    label: 'Privacy policy',
-    link: '#',
-  },
-];
-</script>

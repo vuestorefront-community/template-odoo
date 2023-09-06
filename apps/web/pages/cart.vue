@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-import {
-  useCart
-} from '@/composables';
+import { useCart } from '@/composables';
 import { SfButton, SfIconArrowBack } from '@storefront-ui/vue';
 
 const NuxtLink = resolveComponent('NuxtLink');
@@ -9,7 +7,6 @@ const NuxtLink = resolveComponent('NuxtLink');
 const { loadCartDetails, cartRemove } = useCart();
 
 const { cart } = await loadCartDetails();
-
 </script>
 
 <template>
@@ -47,11 +44,7 @@ const { cart } = await loadCartDetails();
       data-testid="cart-page-content"
     >
       <div class="col-span-7 mb-10 lg:mb-0">
-        <div
-          v-for="
-            orderLine
-           in cart.order.orderLines"
-        >
+        <div v-for="orderLine in cart.order.orderLines">
           <CartCollectedProductCard
             :id="orderLine.id"
             :displayName="orderLine.product.combinationInfo.display_name"
@@ -68,7 +61,11 @@ const { cart } = await loadCartDetails();
         </div>
       </div>
 
-      <UiOrderSummary @couponAddedSuccessfully="loadCartDetails()" :order="cart.order" class="col-span-5 md:sticky md:top-20 h-fit">
+      <UiOrderSummary
+        @couponAddedSuccessfully="loadCartDetails()"
+        :order="cart.order"
+        class="col-span-5 md:sticky md:top-20 h-fit"
+      >
         <SfButton
           :tag="NuxtLink"
           to="/checkout"

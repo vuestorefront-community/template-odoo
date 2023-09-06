@@ -9,6 +9,10 @@ export const useWishlist: any = () => {
     wishlistRemoveItem: null,
   });
   const currentWishlist = useState<WishlistData>('wishlist');
+  const wishlistItems = computed(() => currentWishlist.value?.wishlistItems);
+  const wishlistTotalItems = computed(
+    () => currentWishlist.value?.wishlistItems?.length
+  );
 
   const loadWishlist = async () => {
     try {
@@ -56,7 +60,8 @@ export const useWishlist: any = () => {
   return {
     loading,
     loadWishlist,
-    wishlistItems: computed(() => currentWishlist.value?.wishlistItems),
+    wishlistItems,
+    wishlistTotalItems,
     WishlistAddItem,
     WishlistRemoveItem,
     error: computed(() => error),

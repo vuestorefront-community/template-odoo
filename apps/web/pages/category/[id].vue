@@ -75,6 +75,11 @@ watch(
   () => route.fullPath,
   async () => {
     isLoading.value = true;
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
     const { products: AllProduct, totalProducts } = await loadProducts(
       getFacetsFromURL(route.query)
     );
@@ -119,11 +124,9 @@ const totalItems = computed(() =>
   pagination.value.totalItems === 0 ? 'No' : pagination.value.totalItems
 );
 
-const currentWishlist = ref<any[]>([]);
-const wLists = await loadWishlist();
-if (wLists && wLists.wishlistItems) {
-  currentWishlist.value = wLists.wishlistItems;
-}
+const wishList = await loadWishlist();
+const currentWishlist = ref<any[]>(wishList.wishlistItems);
+
 const getProductId = (product: Product) => {
   return product?.firstVariant?.id || product.id;
 };
@@ -146,12 +149,11 @@ const toggleWishlist = async (id: any) => {
     const wishlistItem = currentWishlist.value.find(
       (item) => item.product.id === id
     );
-
     toggleProductToWishlist(getProductId(wishlistItem?.product));
-
     const response = await WishlistRemoveItem(wishlistItem?.id);
     if (response && response.wishlistItems) {
       currentWishlist.value = response.wishlistItems;
+      await loadWishlist();
       toast.success('Product has been removed from wishlist');
     }
   } else {
@@ -159,6 +161,7 @@ const toggleWishlist = async (id: any) => {
     const response = await WishlistAddItem(id);
     if (response && response.wishlistItems) {
       currentWishlist.value = response.wishlistItems;
+      await loadWishlist();
       toast.success('Product has been added to wishlist');
     }
   }
