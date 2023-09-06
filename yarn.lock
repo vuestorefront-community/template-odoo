@@ -1107,9 +1107,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@erpgap/odoo-sdk-api-client@npm:0.1.7, @erpgap/odoo-sdk-api-client@npm:^0.1.7":
-  version: 0.1.7
-  resolution: "@erpgap/odoo-sdk-api-client@npm:0.1.7"
+"@erpgap/odoo-sdk-api-client@npm:0.1.9, @erpgap/odoo-sdk-api-client@npm:^0.1.9":
+  version: 0.1.9
+  resolution: "@erpgap/odoo-sdk-api-client@npm:0.1.9"
   dependencies:
     "@apollo/client": ^3.7.16
     "@vue-storefront/middleware": 3.0.0-rc.2
@@ -1119,17 +1119,17 @@ __metadata:
     graphql: ^16.7.1
     request-ip: ^3.3.0
     winston: ^3.9.0
-  checksum: 4de3cbb51f0f0c67706f6a8104f5121f667a312f8ccc0d3fc7a8b683e4982e53ea46c68326c374121304f56d6401ae328ca21aab73c3b2445017b7606c2e4444
+  checksum: a08d89c62ce786fed22504dbc66c0d0dfaadad0b88a503810907402e67994692a67a6fdc98bb3bd4d20cd9ad79fe0ff2ce1afe89b224dcc7e72d2179fc613f2f
   languageName: node
   linkType: hard
 
-"@erpgap/odoo-sdk@npm:^0.1.7":
-  version: 0.1.7
-  resolution: "@erpgap/odoo-sdk@npm:0.1.7"
+"@erpgap/odoo-sdk@npm:^0.1.9":
+  version: 0.1.9
+  resolution: "@erpgap/odoo-sdk@npm:0.1.9"
   dependencies:
     "@apollo/client": ^3.7.16
     axios: ^1.4.0
-  checksum: 4acdb36eec0e50aaac9324e6c9fced4f7d4063ce103414d400642309a64fb15c0d5bba3ed75beda40868ec125d89c8e492c479972a780f2d942a4a6baa1b0fa4
+  checksum: 3bd6324ad401622d6eec4d27c166f77bd6588235e1c9d97be0cda96f0fac83846acf18b753d320e23a4c486d0a73a3c8763b96dfcf884862dadcbcc24738dfca
   languageName: node
   linkType: hard
 
@@ -14539,7 +14539,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "server@workspace:apps/server"
   dependencies:
-    "@erpgap/odoo-sdk-api-client": 0.1.7
+    "@erpgap/odoo-sdk-api-client": 0.1.9
     "@vue-storefront/middleware": 3.5.0
     cors: ^2.8.5
     nodemon: ^2.0.19
@@ -17117,8 +17117,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "web@workspace:apps/web"
   dependencies:
-    "@erpgap/odoo-sdk": ^0.1.7
-    "@erpgap/odoo-sdk-api-client": ^0.1.7
+    "@erpgap/odoo-sdk": ^0.1.9
+    "@erpgap/odoo-sdk-api-client": ^0.1.9
     "@nuxt/devtools": ^0.7.1
     "@nuxt/image": rc
     "@nuxtjs/fontaine": ^0.4.1

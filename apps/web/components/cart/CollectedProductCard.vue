@@ -1,27 +1,65 @@
 <script setup lang="ts">
+import { OrderLine } from '@erpgap/odoo-sdk-api-client';
 import { SfLink, SfIconSell } from '@storefront-ui/vue';
+import {
+  useCart
+} from '@/composables';
 
-interface Attribute {
-  label: string;
-  name: string;
-  value: string;
-}
+const { cartRemove } = useCart();
 
-type CartProductCardProps = {
-  attributes: Attribute[];
-  imageUrl?: string | null;
-  imageAlt?: string | null;
-  maxValue: number;
-  minValue: number;
-  name: string;
-  price: string;
-  specialPrice: string;
-  value: number;
-  slug: string;
+const NuxtLink = resolveComponent('NuxtLink');
+
+defineProps({
+  id: {
+    type: Number,
+    required: true,
+  },
+  displayName: {
+    type: String,
+    required: true,
+  },
+  imageUrl: {
+    type: String,
+    required: true,
+  },
+  imageAlt: {
+    type: String,
+    required: true,
+  },
+  attributes: {
+    type: Array,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  listPrice: {
+    type: Number,
+    required: true,
+  },
+  minValue: {
+    type: Number,
+    required: true,
+  },
+  maxValue: {
+    type: Number,
+    required: true,
+  },
+  quantity: {
+    type: Number,
+    required: true,
+  },
+  slug: {
+    type: String,
+    required: true,
+  },
+});
+
+const handleRemoveFromCart = async (id: any) => {
+  const response = await cartRemove(id);
 };
 
-defineProps<CartProductCardProps>();
-const NuxtLink = resolveComponent('NuxtLink');
 </script>
 
 <template>
@@ -30,7 +68,7 @@ const NuxtLink = resolveComponent('NuxtLink');
     data-testid="cart-product-card"
   >
     <div class="relative overflow-hidden rounded-md w-[100px] sm:w-[176px]">
-      <SfLink :tag="NuxtLink" to="/product/1">
+      <SfLink :tag="NuxtLink" :href="`${slug}`">
         <NuxtImg
           class="w-full h-auto border rounded-md border-neutral-200"
           :src="imageUrl ?? '/images/product.webp'"
@@ -50,12 +88,11 @@ const NuxtLink = resolveComponent('NuxtLink');
     </div>
     <div class="flex flex-col pl-4 min-w-[180px] flex-1">
       <SfLink
-        :tag="NuxtLink"
-        to="/product/1"
+        :href="slug"
         variant="secondary"
         class="no-underline typography-text-sm sm:typography-text-lg"
       >
-        {{ name }}
+        {{ displayName }}
       </SfLink>
       <div class="my-2 sm:mb-0">
         <ul
@@ -71,14 +108,14 @@ const NuxtLink = resolveComponent('NuxtLink');
         class="items-start sm:items-center sm:mt-auto flex flex-col sm:flex-row"
       >
         <span
-          v-if="specialPrice"
+          v-if="listPrice"
           class="text-secondary-700 sm:order-1 font-bold typography-text-sm sm:typography-text-lg sm:ml-auto"
         >
-          ${{ specialPrice }}
+          ${{ price }}
           <span
             class="text-neutral-500 ml-2 line-through typography-text-xs sm:typography-text-sm font-normal"
           >
-            ${{ price }}
+            ${{listPrice  }}
           </span>
         </span>
         <span
@@ -92,6 +129,7 @@ const NuxtLink = resolveComponent('NuxtLink');
           :max-value="maxValue"
           class="mt-4 sm:mt-0"
         />
+        <button @click="handleRemoveFromCart(id)" type="button" class="ml-4 font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
       </div>
     </div>
   </div>
