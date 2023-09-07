@@ -8,7 +8,7 @@ export const useWishlist: any = () => {
     wishlistAddItem: null,
     wishlistRemoveItem: null,
   });
-  const currentWishlist = useState<WishlistData>('wishlist');
+  const currentWishlist = useState<WishlistData>(() => <any>[]);
   const wishlistItems = computed(() => currentWishlist.value?.wishlistItems);
   const wishlistTotalItems = computed(
     () => currentWishlist.value?.wishlistItems?.length

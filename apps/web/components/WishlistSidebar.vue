@@ -31,7 +31,7 @@ onClickOutside(WishlistRef, () => {
 const withBase = (filepath: string) =>
   `https://vsfdemo15.labs.odoogap.com${filepath}`;
 
-const wishlistItems = ref<any[]>([]);
+const wishlistItems = useState(() => []);
 watch(isOpen, async (val) => {
   if (val) {
     const res = await loadWishlist();

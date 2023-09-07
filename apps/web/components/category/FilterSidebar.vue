@@ -65,19 +65,12 @@ const changeSorting = async (sort: string) => {
 const sortBy = computed(() =>
   getSortOptions({ input: { sort: route.query?.sort } })
 );
+
 const selectedFilters = ref<any>([]);
 const isFilterSelected = (option: any) => {
   return selectedFilters.value.some(
     (filter: { id: any }) => String(filter.id) === String(option.value)
   );
-};
-const isPriceSelected = (option: any) => {
-  return selectedFilters.value.some(
-    (filter: { id: any }) => String(filter.id) === String(option.values)
-  );
-};
-const isItemActive = (selectedValue: string) => {
-  return selectedFilters.value?.includes(selectedValue);
 };
 const facets: any = computed(() => [
   {
@@ -113,6 +106,7 @@ const serializeSize = (data: any[]) => {
       ?.sort((a: { label: number }, b: { label: number }) => a.label - b.label)
   );
 };
+
 const priceModel = ref<any>('');
 const selectPrice = (values: any) => {
   priceModel.value = priceModel === values ? '' : values;
@@ -130,6 +124,7 @@ const selectPrice = (values: any) => {
     });
   }
 };
+
 const selectedFilter = (
   facet: { label: string },
   option: { id: string; value: string; label: string }
@@ -169,6 +164,7 @@ const clearFilters = () => {
   router.push({ query: {} });
   emit('close');
 };
+
 onMounted(() => {
   selectedFilters.value = facetsFromUrlToFilter();
   const priceFilter = selectedFilters.value?.find((item: ProductFilterType) => {
