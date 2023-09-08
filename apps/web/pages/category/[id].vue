@@ -153,7 +153,6 @@ const toggleWishlist = async (id: any) => {
     const response = await WishlistRemoveItem(wishlistItem?.id);
     if (response && response.wishlistItems) {
       currentWishlist.value = response.wishlistItems;
-      await loadWishlist();
       toast.success('Product has been removed from wishlist');
     }
   } else {
@@ -161,7 +160,6 @@ const toggleWishlist = async (id: any) => {
     const response = await WishlistAddItem(id);
     if (response && response.wishlistItems) {
       currentWishlist.value = response.wishlistItems;
-      await loadWishlist();
       toast.success('Product has been added to wishlist');
     }
   }

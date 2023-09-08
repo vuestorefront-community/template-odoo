@@ -10,7 +10,7 @@ export const useWishlist: any = () => {
   });
   const currentWishlist = useState<WishlistData>(() => <any>[]);
   const wishlistItems = computed(() => currentWishlist.value?.wishlistItems);
-  const wishlistTotalItems = computed(
+  const totalItems = computed(
     () => currentWishlist.value?.wishlistItems?.length
   );
 
@@ -51,19 +51,29 @@ export const useWishlist: any = () => {
       const { data }: any = await sdk.odoo.wishlistRemove(removeItemParams, {
         wishlistRemove: 'customQuery',
       });
+      currentWishlist.value = data.wishlistRemoveItem;
       return data.wishlistRemoveItem;
     } catch (err) {
       error.wishlistRemoveItem = err;
     }
   };
 
+  const isInWishlist = (currentWishlist : any, variantId :number) => {
+    return currentWishlist?.wishlistItems.some(
+      (item: { product: { id: number; }; }) => {
+        item.product.id === variantId;
+      }
+    );
+  };
+
   return {
     loading,
     loadWishlist,
     wishlistItems,
-    wishlistTotalItems,
+    totalItems,
     WishlistAddItem,
     WishlistRemoveItem,
+    isInWishlist,
     error: computed(() => error),
   };
 };
