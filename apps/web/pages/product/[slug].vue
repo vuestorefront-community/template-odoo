@@ -11,7 +11,6 @@ import {
   SfLink,
   SfRating,
   SfIconSafetyCheck,
-  SfIconCompareArrows,
   SfIconWarehouse,
   SfIconPackage,
   SfIconFavorite,

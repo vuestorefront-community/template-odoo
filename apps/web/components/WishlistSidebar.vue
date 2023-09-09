@@ -31,7 +31,7 @@ onClickOutside(WishlistRef, () => {
 const withBase = (filepath: string) =>
   `https://vsfdemo15.labs.odoogap.com${filepath}`;
 
-const wishlistItems = ref<any[]>([]);
+const wishlistItems: any = ref([]);
 watch(isOpen, async (val) => {
   if (val) {
     const res = await loadWishlist();
@@ -45,7 +45,6 @@ const removeFromWishlist = async (id: number) => {
   const response = await WishlistRemoveItem(id);
   if (response && response.wishlistItems) {
     wishlistItems.value = response.wishlistItems;
-    await loadWishlist();
     toast.success('Product has been removed from wishlist');
   }
 };

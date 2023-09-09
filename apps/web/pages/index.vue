@@ -3,7 +3,11 @@ import { useCategory } from '@/composables';
 
 const { loadCategoryList } = useCategory();
 
-const { categories } = await loadCategoryList({ filter: { parent: true } });
+const { categories: cat } = await loadCategoryList({
+  filter: { parent: true },
+});
+
+const categories = useState<any>(() => cat || []);
 </script>
 
 <template>

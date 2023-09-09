@@ -15,7 +15,7 @@ const {
   toggle: wishlistToggle,
   close: wishlistClose,
 } = useDisclosure();
-const { loadWishlist } = useWishlist();
+const { loadWishlist, totalItems } = useWishlist();
 const NuxtLink = resolveComponent('NuxtLink');
 
 const collectedProducts: any = ref('');
@@ -24,10 +24,10 @@ const setIsActive = (param: boolean) => {
   isActive.value = param;
 };
 
-const wishlistTotalItems: any = ref();
-const setWishlistCount = async (count: number) => {
-  wishlistTotalItems.value = count;
-};
+const wishlistTotalItems = ref();
+watch(totalItems, () => {
+  wishlistTotalItems.value = totalItems.value;
+});
 const handleWishlistSideBar = async () => {
   wishlistToggle();
   setIsActive(true);
@@ -38,7 +38,6 @@ const handleWishlistSideBar = async () => {
 <template>
   <WishlistSidebar
     :is-open="wishlistIsOpen"
-    @wishlistCount="setWishlistCount"
     @close="wishlistClose"
   />
   <nav

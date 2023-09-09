@@ -24,7 +24,7 @@ defineProps<{
 
 const { isOpen, toggle, close } = useDisclosure();
 const { loadCategoryList } = useCategory();
-const { wishlistTotalItems: totalItems } = useWishlist();
+const { totalItems } = useWishlist();
 const {
   isOpen: wishlistIsOpen,
   toggle: wishlistToggle,
@@ -80,7 +80,10 @@ const bannerDetails = {
   title: 'New in designer watches',
 };
 
-const wishlistTotalItems = computed(() => totalItems.value);
+const wishlistTotalItems = ref();
+watch(totalItems, () => {
+  wishlistTotalItems.value = totalItems.value;
+});
 const handleWishlistSideBar = async () => {
   wishlistToggle();
 };

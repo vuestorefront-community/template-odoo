@@ -52,10 +52,10 @@ const { category } = await loadCategory({
 
 const categories = await getCategoryTree(category);
 
-const products = useState<any>('products', () => []);
+const products = useState<any>(() => AllProduct || []);
 
 const isLoading = ref(true);
-const productsForPagination = ref([]);
+const productsForPagination = useState(() => []);
 const mountUrlSlugForProductVariant = (product: {
   slug: string;
   variantAttributeValues: any;
@@ -125,7 +125,7 @@ const totalItems = computed(() =>
 );
 
 const wishList = await loadWishlist();
-const currentWishlist = ref<any[]>(wishList.wishlistItems);
+const currentWishlist = useState<any[]>(() => wishList.wishlistItems || []);
 
 const getProductId = (product: Product) => {
   return product?.firstVariant?.id || product.id;
@@ -153,7 +153,6 @@ const toggleWishlist = async (id: any) => {
     const response = await WishlistRemoveItem(wishlistItem?.id);
     if (response && response.wishlistItems) {
       currentWishlist.value = response.wishlistItems;
-      await loadWishlist();
       toast.success('Product has been removed from wishlist');
     }
   } else {
@@ -161,7 +160,6 @@ const toggleWishlist = async (id: any) => {
     const response = await WishlistAddItem(id);
     if (response && response.wishlistItems) {
       currentWishlist.value = response.wishlistItems;
-      await loadWishlist();
       toast.success('Product has been added to wishlist');
     }
   }
